@@ -1,6 +1,6 @@
 # Tranquilpeak
 # Version : 0.4.3-BETA
-# Author : Thibaud Leprêtre
+# Author : Thibaud LeprÃªtre
 
 # I STRONGLY recommend you to use a CDN to speed up loading of pages.
 # There is many free CDN like Cloudinary or you can also use indirectly
@@ -22,6 +22,7 @@ googleAnalytics = "UA-112393378-1"
 paginate = 7
 canonifyurls = true
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+math = true 
 
 [permalinks]
   post = "/:year/:month/:slug/"
@@ -211,6 +212,6 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   # [params.sidebar.profile]
   #   url = "/#about"
 
-  # Customize copyright value "© 2017 <CUSTOMIZATION>. All Rights Reserved"
+  # Customize copyright value "Â© 2017 <CUSTOMIZATION>. All Rights Reserved"
   # [params.footer]
   #   copyright = "<a href=\"https://github.com/kakawait\">kakawait</a>"

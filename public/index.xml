@@ -2,31 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/</link>
+    <link>/</link>
     <description>Recent content on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Assessing Model Accuracy (Linear Models)</title>
+      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <description>IntroductionThis article talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
+Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
+    </item>
+    
+    <item>
       <title>About</title>
-      <link>https://yetanotheriteration.netlify.com/about/</link>
+      <link>/about/</link>
       <pubDate>Sun, 14 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/about/</guid>
+      <guid>/about/</guid>
       <description>Giuliano Sposito Myself Computer Engineer and Master in Strategic Management of Technological Innovation, both by Unicamp, and with a specialization in Data Science. Senior Manager at CI&amp;amp;T, current working as Lean Digital Consulting.
 My Job Innovation is now everyone&amp;rsquo;s business. If you are a manager in a global company, an entrepreneur starting your business, a team leader, or even a developer within a development team, it is expected that you do more and better with fewer resources (Get Lean!</description>
     </item>
     
     <item>
       <title>We have a blog!</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</link>
+      <link>/2018/01/we-have-a-blog/</link>
       <pubDate>Sun, 14 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</guid>
+      <guid>/2018/01/we-have-a-blog/</guid>
       <description>It&amp;rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
 When you’ve written the same code 3 times, write a function
 When you’ve given the same in-person advice 3 times, write a blog post
