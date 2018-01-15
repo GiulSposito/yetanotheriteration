@@ -13,15 +13,6 @@
     
     <item>
       <title>Curse of Dimensionality</title>
-      <link>/2018/01/curse-of-dimensionality/</link>
-      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/01/curse-of-dimensionality/</guid>
-      <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
-    </item>
-    
-    <item>
-      <title>Curse of Dimensionality</title>
       <link>/2018/01/curse-of-dimensionalityrmd/</link>
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
