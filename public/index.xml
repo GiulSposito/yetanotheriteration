@@ -21,5 +21,15 @@
 My Job Innovation is now everyone&amp;rsquo;s business. If you are a manager in a global company, an entrepreneur starting your business, a team leader, or even a developer within a development team, it is expected that you do more and better with fewer resources (Get Lean!</description>
     </item>
     
+    <item>
+      <title>We have a blog!</title>
+      <link>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</link>
+      <pubDate>Sun, 14 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</guid>
+      <description>It&amp;rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
+The same blog is an experience with R (my current favorite language), created using pages written in RMarkdown and converted to a site using Blogdown and Hugo, versioned in GitHub and published in Netlify.</description>
+    </item>
+    
   </channel>
 </rss>
