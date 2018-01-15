@@ -1,0 +1,809 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.32.4 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Curse of Dimensionality</title>
+    <meta name="author" content="Giuliano Sposito">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.">
+    <meta property="og:description" content="This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Curse of Dimensionality">
+    <meta property="og:url" content="/2018/01/curse-of-dimensinalityrmd/">
+    <meta property="og:site_name" content="Yet Another Iteration">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Yet Another Iteration">
+    <meta name="twitter:description" content="This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.">
+    
+      <meta name="twitter:creator" content="@gsposito">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+    
+
+    
+      <meta property="og:image" content="/images/lines-shapes-digital-art-abstract.png">
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-112393378-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Curse of Dimensionality
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-01-12T00:00:00Z">
+        
+  January 12, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>This R Notebook reproduces the <strong>Curse of Dimensionality</strong><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> in the <em>nearest neighbor regression</em> that here is defined as <em>the increasing of the interval size</em> to get 10% of the data <em>acording with the increasing of dimentions</em>. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</p>
+<div id="nearest-neighbor-moving-average" class="section level2">
+<h2>Nearest Neighbor Moving Average</h2>
+<p>In this article, the <em>curse of dimensionality</em> comes from try to use of <em>Nearest Neighbor</em> as predictors for a function. We iteratively select 10% of nearest points in the data set at a specific point X<sub>0</sub> and calculates the average of these points to use as the result of prediction of a function in at the X<sub>0</sub> point.</p>
+<p>With lower dimensionality (around 4) and a great number of sample this is a great technique and easy to use, to compute and to interpret, but according the number of dimensions increase, we loose the locality of the information because to get 10% of the points we need do increase the interval around the X<sub>0</sub>. Let’s see this effect in a simulation data.</p>
+</div>
+<div id="dataset" class="section level2">
+<h2>Dataset</h2>
+<p>Let’s build a 5 dimensional data set</p>
+<pre class="r"><code>library(ggplot2)
+library(tidyverse)
+library(reshape2)</code></pre>
+<pre class="r"><code># five dimentional datapoints
+total_points &lt;- 1000
+dt &lt;- data_frame(
+  x = runif(total_points,0,100),
+  y = runif(total_points,0,100),
+  z = runif(total_points,0,100),
+  w = runif(total_points,0,100),
+  v = runif(total_points,0,100)
+)
+
+# let&#39;s see them
+ggplot(dt, aes(x=x, y=y)) + geom_point() + coord_fixed(ratio = 1) + theme_bw()</code></pre>
+<p><img src="/post/2018-01-15-curse-of-dimensinality_files/figure-html/one_dim-1.png" width="672" /></p>
+<p>Let’s suppose that we need to get 10% of points around <code>x=50</code> (100 points), what is the size of interval necessary to get these points?</p>
+<pre class="r"><code>x_dist &lt;- quantile(x=dt$x,probs = .1)
+x_dist</code></pre>
+<pre><code>##      10% 
+## 7.980151</code></pre>
+<p>We can see that in one dimension the size of the range necessary to get 10% of the data points are around 10% of this dimensions (uniform distributed)</p>
+<pre class="r"><code># mark the points in this range
+dt %&gt;%
+  mutate(
+    in_interval = case_when(
+      x &lt;= 50+(x_dist/2) &amp; x &gt;= 50-(x_dist/2) ~ TRUE,
+      TRUE ~ FALSE
+    )
+  ) -&gt; dt
+
+# plot them
+ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
+  geom_point() +
+  geom_vline(xintercept = 50-(x_dist/2), linetype=&quot;dotted&quot;) +
+  geom_vline(xintercept = 50+(x_dist/2), linetype=&quot;dotted&quot;) +
+  coord_fixed(ratio = 1) + theme_bw()</code></pre>
+<p><img src="/post/2018-01-15-curse-of-dimensinality_files/figure-html/get10pct-1.png" width="672" /></p>
+<pre class="r"><code># how much points?
+dt %&gt;%
+  filter(in_interval==T) %&gt;%
+  nrow()</code></pre>
+<pre><code>## [1] 56</code></pre>
+</div>
+<div id="two-dimension" class="section level2">
+<h2>Two Dimension</h2>
+<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 7.9801509, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
+<pre class="r"><code>dt %&gt;%
+  mutate(
+    in_interval = case_when(
+      sqrt((x-50)^2 + (y-50)^2) &lt; x_dist ~ TRUE,
+      TRUE ~ FALSE
+    )
+  ) -&gt; dt
+      
+
+ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
+  geom_point() + coord_fixed(ratio = 1) + theme_bw()</code></pre>
+<p><img src="/post/2018-01-15-curse-of-dimensinality_files/figure-html/twodim-1.png" width="672" /></p>
+<p>Now wee see that the number of point get in this range is significantly lower than previous case.</p>
+<pre class="r"><code># how much points?
+dt %&gt;%
+  filter(in_interval==T) %&gt;%
+  nrow() -&gt; sel_points
+
+sel_points_pct &lt;- sel_points/total_points
+
+sel_points</code></pre>
+<pre><code>## [1] 22</code></pre>
+<p>In fact, with the new distance, we can only reach 2.2 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
+<pre class="r"><code># percents 
+dists &lt;- 1:100
+
+dists %&gt;%
+  map(function(dist){
+    dt %&gt;%
+      filter(sqrt((x-50)^2 + (y-50)^2) &lt; dist) %&gt;%
+      nrow() -&gt; sel_points
+    
+    return(data_frame(
+      dist = dist,
+      points = sel_points,
+      pct = sel_points/total_points
+    ))
+  }) %&gt;% bind_rows() -&gt; distCases
+
+ggplot(distCases, aes(x=dist, y=pct)) +
+  geom_line() +
+  geom_hline(yintercept = 0.1, linetype=&quot;dotted&quot;) + 
+  theme_bw()</code></pre>
+<p><img src="/post/2018-01-15-curse-of-dimensinality_files/figure-html/coverageTwoDim-1.png" width="672" /></p>
+<pre class="r"><code>distCases %&gt;%
+  filter( pct &lt;= .1 ) %&gt;%
+  filter( pct == max(pct) ) -&gt; twoDim10pct
+
+print(twoDim10pct)</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##    dist points   pct
+##   &lt;int&gt;  &lt;int&gt; &lt;dbl&gt;
+## 1    18    100 0.100</code></pre>
+<p>The distance to get 10% of data points are 18 in size, about twice the original range in one dimension.</p>
+<pre class="r"><code>dt %&gt;%
+  mutate(
+    in_interval = case_when(
+      sqrt((x-50)^2 + (y-50)^2) &lt; twoDim10pct$dist ~ TRUE,
+      TRUE ~ FALSE
+    )
+  ) -&gt; dt
+
+ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
+  geom_point() + coord_fixed(ratio = 1) +
+  theme_bw()</code></pre>
+<p><img src="/post/2018-01-15-curse-of-dimensinality_files/figure-html/twoDim20Pct-1.png" width="672" /></p>
+</div>
+<div id="more-dimentions" class="section level2">
+<h2>More dimentions</h2>
+<p>We can generalize and see the impact in the size of range along the additional dimension?</p>
+<pre class="r"><code># percents 
+dists &lt;- 1:100
+
+dists %&gt;%
+  map(function(dist){
+        dt %&gt;% 
+          group_by() %&gt;%
+          summarise(
+            d1 = sum( abs(50-x) &lt;= dist ),
+            d2 = sum( sqrt( (x-50)^2 + (y-50)^2) &lt; dist ),
+            d3 = sum( sqrt( (x-50)^2 + (y-50)^2 + (z-50)^2 ) &lt; dist ),
+            d4 = sum( sqrt( (x-50)^2 + (y-50)^2 + (z-50)^2 + (w-50)^2 ) &lt; dist ),
+            d5 = sum( sqrt( (x-50)^2 + (y-50)^2 + (z-50)^2 + (w-50)^2 + (v-50)^2 ) &lt; dist )
+          ) %&gt;% mutate_all(function(x) x/total_points) %&gt;% mutate( dist=dist )
+    }) %&gt;%
+  bind_rows() %&gt;% 
+  melt(id.vars = c(&quot;dist&quot;)) %&gt;%
+  rename( 
+    cover_pct = value,
+    dimensions = variable
+  ) %&gt;%
+  mutate( dimensions=as.factor(dimensions) ) -&gt; multDimCases
+
+multDimCases %&gt;%
+  ggplot(aes(x=dist, y=cover_pct, colour=dimensions)) +
+  geom_line() +
+  geom_hline(yintercept = 0.1, linetype=&quot;dotted&quot;) + 
+  theme_bw() </code></pre>
+<p><img src="/post/2018-01-15-curse-of-dimensinality_files/figure-html/aditionalDim-1.png" width="672" /></p>
+<p>The distances to capture 10% of data points along the 5 dimension.</p>
+<pre class="r"><code>multDimCases %&gt;% 
+  group_by(dimensions) %&gt;%
+  filter( cover_pct &lt;= 0.1 ) %&gt;%
+  filter( cover_pct == max(cover_pct) ) %&gt;%
+  select( dimensions, dist ) %&gt;% print()</code></pre>
+<pre><code>## # A tibble: 5 x 2
+## # Groups: dimensions [5]
+##   dimensions  dist
+##   &lt;fctr&gt;     &lt;int&gt;
+## 1 d1             6
+## 2 d2            18
+## 3 d3            28
+## 4 d4            39
+## 5 d5            46</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>We can see clearly how the effect of the increase of the data dimensionality affects the size of interval, at 5-dimensions is necessary that half of total length of data points to get 10% of the data set, destroying the “locality” information.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality" class="uri">https://en.wikipedia.org/wiki/Curse_of_dimensionality</a><a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/rstat/">rstat</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/curse-of-dimensinalityrmd/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/curse-of-dimensinalityrmd/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/curse-of-dimensinalityrmd/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/curse-of-dimensinalityrmd/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/curse-of-dimensinalityrmd/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/curse-of-dimensinalityrmd/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fcurse-of-dimensinalityrmd%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fcurse-of-dimensinalityrmd%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fcurse-of-dimensinalityrmd%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/curse-of-dimensinalityrmd/">
+                <h3 class="media-heading">Curse of Dimensionality</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/">
+                <h3 class="media-heading">Assessing Model Accuracy (Linear Models)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
+Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/we-have-a-blog/">
+                <h3 class="media-heading">We have a blog!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">It&rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
+When you’ve written the same code 3 times, write a function
+When you’ve given the same in-person advice 3 times, write a blog post
+&mdash; David Robinson (@drob) November 9, 2017  Yihui Xie, one of the Blogdown package authors tells that we should write a blog to ourselves, we write to us in the future, that writing something makes it more clear.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         3 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2018\/01\/curse-of-dimensinalityrmd\/';
+          
+            this.page.identifier = 'rstatcursedimensionality';
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+    <script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </body>
+</html>
+

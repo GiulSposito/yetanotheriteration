@@ -1,10 +1,11 @@
 ---
 title: We have a blog!
 author: Giuliano Sposito
-date: '2018-01-14'
+date: '2018-01-02'
 slug: we-have-a-blog
 thumbnailImagePosition: left
 thumbnailImage: images/hugo-creative-portfolio-theme.tn.png
+disqusIdentifier: blogwelcome
 ---
 
 It's just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.

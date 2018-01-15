@@ -6,15 +6,33 @@
     <description>Recent content in Posts on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Curse of Dimensionality</title>
+      <link>/2018/01/curse-of-dimensionality/</link>
+      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/curse-of-dimensionality/</guid>
+      <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
+    </item>
+    
+    <item>
+      <title>Curse of Dimensionality</title>
+      <link>/2018/01/curse-of-dimensionalityrmd/</link>
+      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
+      <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
+    </item>
+    
+    <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
       <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
-      <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
@@ -24,7 +42,7 @@ Measure the quality of fit (regression problems)In order to evaluate the perfor
     <item>
       <title>We have a blog!</title>
       <link>/2018/01/we-have-a-blog/</link>
-      <pubDate>Sun, 14 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 02 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/we-have-a-blog/</guid>
       <description>It&amp;rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
