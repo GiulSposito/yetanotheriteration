@@ -18,7 +18,9 @@
       
       <guid>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</guid>
       <description>It&amp;rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
-The same blog is an experience with R (my current favorite language), created using pages written in RMarkdown and converted to a site using Blogdown and Hugo, versioned in GitHub and published in Netlify.</description>
+When you’ve written the same code 3 times, write a function
+When you’ve given the same in-person advice 3 times, write a blog post
+&amp;mdash; David Robinson (@drob) November 9, 2017  Yihui Xie, one of the Blogdown package authors tells that we should write a blog to ourselves, we write to us in the future, that writing something makes it more clear.</description>
     </item>
     
   </channel>
