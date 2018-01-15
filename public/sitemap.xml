@@ -28,13 +28,13 @@
   </url>
   
   <url>
-    <loc>/tags/evalutation/</loc>
+    <loc>/categories/data-science/</loc>
     <lastmod>2018-01-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/model/</loc>
+    <loc>/tags/evalutation/</loc>
     <lastmod>2018-01-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -47,12 +47,6 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-01-15T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/rstat/</loc>
     <lastmod>2018-01-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

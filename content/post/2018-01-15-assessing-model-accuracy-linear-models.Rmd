@@ -3,20 +3,17 @@ title: Assessing Model Accuracy (Linear Models)
 author: Giuliano Sposito
 date: '2018-01-15'
 categories:
-  - rstat
-  - model
+  - data science
 tags:
-  - rstat
-  - model
   - evalutation
+  - model
+  - rstat
 slug: assessing-model-accuracy-linear-modelsRmd
 thumbnailImagePosition: left
 thumbnailImage: images/green_flames_digital_art_lines.png
 ---
 
-## Introduction
-
-This article talks about the use of **Mean Squared Error (MSE)** against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the [An Introduction to Statistical Learning in R](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370) book.
+This post talks about the use of **Mean Squared Error (MSE)** against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the [An Introduction to Statistical Learning in R](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370) book.
 
 ## Measure the quality of fit (regression problems)
 

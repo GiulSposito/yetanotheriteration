@@ -11,20 +11,11 @@
     
     
     <item>
-      <title>Model</title>
-      <link>/categories/model/</link>
+      <title>Data Science</title>
+      <link>/categories/data-science/</link>
       <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/model/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Rstat</title>
-      <link>/categories/rstat/</link>
-      <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/rstat/</guid>
+      <guid>/categories/data-science/</guid>
       <description></description>
     </item>
     
