@@ -10,6 +10,8 @@ tags:
   - model
   - evalutation
 slug: assessing-model-accuracy-linear-modelsRmd
+thumbnailImagePosition: left
+thumbnailImage: images/green_flames_digital_art_lines.png
 ---
 
 ## Introduction
@@ -42,7 +44,7 @@ library(ggplot2)
 library(tidyverse)
 library(reshape2)
 
-set.seed(1975)
+set.seed(42)
 ```
 
 
@@ -132,8 +134,8 @@ perf <- data_frame(
   MSE.ts = unlist(map(models, calcMSE, dt_ts))
 )
 
-# apply MSE on the measure
-MSE <- sum( (dt$y-mean(dt$y))^2 ) / nrow(dt)
+# "the real MSE" inputed by noise
+MSE <- sum( (dt$y-dt$f)^2 ) / nrow(dt)
 
 # plot the performances
 ggplot(perf,aes(x=degree)) +
@@ -145,7 +147,7 @@ ggplot(perf,aes(x=degree)) +
 
 ```
 
-We can see the behavior of MSE data, in the training data (Red) the increasing of the flexibility of the fit (degree in this case) will cause a continuous decreasing in the MSE value, but in the MSE of the test data we have a initial decreasing until some minimal value (the optimal fit) and then a increasing, showing that model overfitting the training set.
+We can see the behavior of MSE data, in the training data (Red) the increasing of the flexibility of the fit (degree in this case) will cause a continuous decreasing in the MSE value, but in the MSE of the test data we have a initial decreasing until some minimal value (the optimal fit) and then a increasing, showing that model over fitting the training set.
 
 
 
@@ -216,8 +218,10 @@ perf <- data_frame(
   MSE.ts = unlist(map(models, calcMSE, dt_ts))
 )
 
-MSE <- sum( (dt$y-mean(dt$y))^2 ) / nrow(dt)
+# "the real MSE" inputed by noise
+MSE <- sum( (dt$y-dt$f)^2 ) / nrow(dt)
 
+# plot the MSEs
 ggplot(perf,aes(x=degree)) +
   geom_line(aes(y=MSE.tr), colour="red") +
   geom_line(aes(y=MSE.ts), colour="blue") +
@@ -296,6 +300,6 @@ ggplot(perf,aes(x=degree)) +
 
 # Conclusion
 
-As we see, plotting the **cost function** (MSE in these cases) of fitted models against Training and Test data is helpful to check the sanity of your model to avoid the overfitting effect.
+As we see, plotting the **cost function** (MSE in these cases) of fitted models against Training and Test data is helpful to check the sanity of your model to avoid the over fitting effect.
 
-In these examples we study how the MSE vs Model Flexibility (degrees in the polynomial fitting) but we can study the cost function vs number of features, number of samples and others aspects of you problem domain, this is a know technique to check for overfitting in machine learning projects.
+In these examples we study how the MSE vs Model Flexibility (degrees in the polynomial fitting) but we can study the cost function vs number of features, number of samples and others aspects of you problem domain, this is a know technique to check for over fitting in machine learning projects.
