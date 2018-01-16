@@ -2,39 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 09 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Evalutation</title>
-      <link>https://yetanotheriteration.netlify.com/tags/evalutation/</link>
+      <link>/tags/evalutation/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/evalutation/</guid>
+      <guid>/tags/evalutation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fitbit</title>
+      <link>/tags/fitbit/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/fitbit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gps</title>
+      <link>/tags/gps/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gpx</title>
+      <link>/tags/gpx/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gpx/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Model</title>
-      <link>https://yetanotheriteration.netlify.com/tags/model/</link>
+      <link>/tags/model/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/model/</guid>
+      <guid>/tags/model/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rstat</title>
-      <link>https://yetanotheriteration.netlify.com/tags/rstat/</link>
-      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
+      <link>/tags/rstat/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/rstat/</guid>
+      <guid>/tags/rstat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Runtastic</title>
+      <link>/tags/runtastic/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/runtastic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Strava</title>
+      <link>/tags/strava/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/strava/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tcx</title>
+      <link>/tags/tcx/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tcx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workout</title>
+      <link>/tags/workout/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/workout/</guid>
       <description></description>
     </item>
     
