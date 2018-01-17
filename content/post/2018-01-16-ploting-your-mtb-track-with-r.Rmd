@@ -3,9 +3,9 @@ title: "Ploting your MTB track with R"
 author: "Giuliano Sposito"
 date: '2018-01-16'
 coverImage: /images/mtb_cover.jpg
-disqusIdentifier: rstatreadingtcxfiles
+disqusIdentifier: rstatplottcxtrack
 metaAlignment: center
-slug: reading-your-run-and-mtb-tracks-with-r
+slug: ploting-your-mtb-track-with-r
 tags:
 - gps
 - workout
