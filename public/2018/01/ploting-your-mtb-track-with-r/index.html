@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.32.4 with theme Tranquilpeak 0.4.3-BETA">
-    <title>Reading your run and MTB tracks with R</title>
+    <title>Ploting your MTB track with R</title>
     <meta name="author" content="Giuliano Sposito">
     <meta name="keywords" content="">
 
@@ -30,21 +30,18 @@
     
 
     
-    <meta name="description" content="In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.
-Tracking FilesThere are two popular file format to track workouts and routes through GPS devices: GPX and TCX.
-GPX is an XML format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema.">
-    <meta property="og:description" content="In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.
-Tracking FilesThere are two popular file format to track workouts and routes through GPS devices: GPX and TCX.
-GPX is an XML format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema.">
+    <meta name="description" content="In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.">
+    <meta property="og:description" content="In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Reading your run and MTB tracks with R">
-    <meta property="og:url" content="/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+    <meta property="og:title" content="Ploting your MTB track with R">
+    <meta property="og:url" content="/2018/01/ploting-your-mtb-track-with-r/">
     <meta property="og:site_name" content="Yet Another Iteration">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Yet Another Iteration">
-    <meta name="twitter:description" content="In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.
-Tracking FilesThere are two popular file format to track workouts and routes through GPS devices: GPX and TCX.
-GPX is an XML format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema.">
+    <meta name="twitter:description" content="In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.">
     
       <meta name="twitter:creator" content="@gsposito">
     
@@ -223,7 +220,7 @@ ga('send', 'pageview');
       <div class="post-header main-content-wrap text-center">
   
     <h1 class="post-title" itemprop="headline">
-      Reading your run and MTB tracks with R
+      Ploting your MTB track with R
     </h1>
   
   
@@ -260,12 +257,12 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a> we’ll read a <a href="https://en.wikipedia.org/wiki/Training_Center_XML">TCX</a> and <a href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a> files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.</p>
-<div id="tracking-files" class="section level2">
-<h2>Tracking Files</h2>
+              <p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a> we’ll read a <a href="https://en.wikipedia.org/wiki/Training_Center_XML">TCX</a> and <a href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a> files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.</p>
+<div id="tracking-files1" class="section level2">
+<h2>Tracking Files<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></h2>
 <p>There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</p>
 <p><strong>GPX</strong> is an <a href="https://en.wikipedia.org/wiki/XML">XML</a> format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema. More information can be found on the official <a href="http://www.topografix.com">GPX website</a>.</p>
-<p>The <strong>TCX</strong> format is also an <a href="https://en.wikipedia.org/wiki/XML">XML</a> format, but was created by <a href="http://www.garmin.com">Garmin</a> to include additional data with each track point (e.g. heart rate and cadence) as well as a user defined organizational structure. The format appears to be primarily used by Garmin’s fitness oriented GPS devices. The TCX schema is hosted by <a href="http://www.garmin.com">Garmin</a>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>The <strong>TCX</strong> format is also an <a href="https://en.wikipedia.org/wiki/XML">XML</a> format, but was created by <a href="http://www.garmin.com">Garmin</a> to include additional data with each track point (e.g. heart rate and cadence) as well as a user defined organizational structure. The format appears to be primarily used by Garmin’s fitness oriented GPS devices. The TCX schema is hosted by <a href="http://www.garmin.com">Garmin</a>.</p>
 <p>Many of the dozens of other formats can be converted into GPX or TCX formats using <a href="http://www.gpsbabel.org">GPSBabel</a>.</p>
 </div>
 <div id="reading-a-tcx-file" class="section level2">
@@ -378,14 +375,56 @@ print(track)</code></pre>
 
 ggplot(track, aes(x=dt, y=hbpm)) + 
   geom_line(colour=&quot;red&quot;) + theme_bw() + ylim(0,max(track$hbpm))</code></pre>
-<p><img src="/post/2018-01-16-reading-your-run-and-mtb-tracks-with-r_files/figure-html/hearBeatPlot-1.png" width="672" /></p>
+<p><img src="/post/2018-01-16-ploting-your-mtb-track-with-r_files/figure-html/hearBeatPlot-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(track) +
   geom_area(aes(x = dt, y = alt), fill=&quot;blue&quot;, stat=&quot;identity&quot;) +
   theme_bw() </code></pre>
-<p><img src="/post/2018-01-16-reading-your-run-and-mtb-tracks-with-r_files/figure-html/plotAlt-1.png" width="672" /></p>
+<p><img src="/post/2018-01-16-ploting-your-mtb-track-with-r_files/figure-html/plotAlt-1.png" width="672" /></p>
 </div>
-<div id="reading-a-gpx-file" class="section level2">
-<h2>Reading a GPX file</h2>
+<div id="ploting-the-track" class="section level2">
+<h2>Ploting the track</h2>
+<p>We can take the latitude and longitude coordenates extract from TCX and plot the path executed during this ride. This is pretty straighforward using <code>geom_path()</code>in <code>ggplot2</code>.</p>
+<pre class="r"><code># ploting latitude in N/S orietation and lon as E/L orientation
+ggplot(track, aes(x=lon, y=lat)) +
+  geom_path(aes(colour=alt), size=1.2) + # ploting alt as color reference
+  scale_colour_gradientn(colours = terrain.colors(10)) + # color scale
+  coord_fixed() + # to keep the aspect ratio
+  theme_void() # removint axis</code></pre>
+<p><img src="/post/2018-01-16-ploting-your-mtb-track-with-r_files/figure-html/plotTrack-1.png" width="672" /></p>
+<p>That’s cool, we extract the GPS path from TCX file and plot them with a couple of lines, just remaining plot over a map, and this is easy too, using <code>ggmap</code>package.</p>
+</div>
+<div id="ploting-over-a-map" class="section level2">
+<h2>Ploting over a map</h2>
+<p>The <a href="https://cran.r-project.org/web/packages/ggmap/index.html">ggmap R Package</a> is a collection of functions to visualize spatial data and models on top of static maps from various online sources (e.g Google Maps and Stamen Maps). It includes tools common to those tasks, including functions for geolocation and routing.</p>
+<p>The package uses some providers to get a “background” image to be used as base map, also maps the scale of the image to the appropriate lat/lon coordenates.</p>
+<pre class="r"><code>library(ggmap)
+
+# first we define a &quot;box&quot; based on lats and lons that will ploted over
+# the make_bbox build it.
+bbox &lt;- make_bbox(lon = track$lon, lat=track$lat, f=.1)
+
+# after that we ask for a map containing this box to one of the providers
+# in this case we&#39;ll ask for google maps a &#39;terrain map&#39;
+gmap &lt;- get_map( location=bbox, maptype = &quot;terrain&quot;, source=&quot;google&quot;)
+
+# we can see the map obtained
+ggmap(gmap)</code></pre>
+<p><img src="/post/2018-01-16-ploting-your-mtb-track-with-r_files/figure-html/mapBackground-1.png" width="672" /></p>
+<p>Once with the map background in hands, we just plot the track over it, changing the color scale to improve the contrast.</p>
+<pre class="r"><code># now the ggmap is the base o ggplot
+ggmap(gmap) +
+  # ploting the path using lon and lat as coordenates and alt as color
+  geom_path(data=track, aes(x=lon, y=lat, colour=alt), size=1.2) + 
+  scale_colour_gradientn(colours = topo.colors(10)) + # color scale
+  coord_fixed() + # to keep the aspect ratio
+  theme_void() # removint axis</code></pre>
+<p><img src="/post/2018-01-16-ploting-your-mtb-track-with-r_files/figure-html/plotOverMap-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>As we saw, it’s pretty straightforward to get the data in the XML and transform them in a useful R data frame. Obviously if the XML was more complicated, with several activities and laps, we should handle this info if we want keep these informations before read the <code>trackpoints</code>. The data frame with track points would gain <code>activity.id</code> and <code>lap.id</code> columns. The use of <code>ggmap</code> is very helpful to use maps and gglot together.</p>
+<div id="appendix-reading-a-gpx-file" class="section level3">
+<h3>Appendix: Reading a GPX file</h3>
 <p>Basically, as we using XPath to get the data points, reading a GPX file is pretty the same, let’s look the structure of one file exported from <a href="http://www.runtastic.com">Runtastic website</a></p>
 <pre class="xml"><code>
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -426,7 +465,7 @@ ggplot(track, aes(x=dt, y=hbpm)) +
   &lt;/trk&gt;
 &lt;/gpx&gt;
 </code></pre>
-<p>Basically same metadata in the beginning and the <code>track points</code> are in the nodes <code>trkpt</code> but the struct is different, the GPS coords are <code>attributes</code> of these nodes while <code>elevation</code> and <code>time</code> are sub-nodes in the value. We’ll have to use XPath different to get the value and the attributes.</p>
+<p>Basically it’s about same, with a metadata in the beginning and the <code>track points</code> are in the nodes <code>trkpt</code>, but the struct is different. The GPS coords are <code>attributes</code> of these nodes while <code>elevation</code> and <code>time</code> are sub-nodes in the value. We’ll have to use XPath different to get the value and the attributes.</p>
 <pre class="r"><code># reading the xml file download from runtastic
 file &lt;- htmlTreeParse(file = &quot;runtastic_20170611_1134_Cycling.gpx&quot;,
                       error = function (...) {},
@@ -450,9 +489,9 @@ data_frame(
 ) %&gt;% mutate(
   tm.prev.s = c(0, diff(dt)), # time (s) from previous track point
   tm.cum.min  = round(cumsum(tm.prev.s)/60,1) # cumulative time (min)
-) -&gt; track
+) -&gt; gpx.track
 
-print(track)</code></pre>
+print(gpx.track)</code></pre>
 <pre><code>## # A tibble: 3,625 x 6
 ##    dt                    lat   lon   alt tm.prev.s tm.cum.min
 ##    &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
@@ -468,12 +507,9 @@ print(track)</code></pre>
 ## 10 2017-06-11 11:45:24 -22.7 -46.8   674      3.00      0.400
 ## # ... with 3,615 more rows</code></pre>
 </div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<p>As we saw, it’s pretty straightforward to get the data in the XML and transform them in a useful R data frame. Obviously if the XML was more complicated, with several activities and laps, we should handle this info if we want keep these informations before read the <code>trackpoints</code>. The data frame with track points would gain <code>activity.id</code> and <code>lap.id</code> columns.</p>
+<div id="references" class="section level3">
+<h3>References</h3>
 </div>
-<div id="references" class="section level2">
-<h2>References</h2>
 </div>
 <div class="footnotes">
 <hr />
@@ -493,21 +529,21 @@ print(track)</code></pre>
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">TAGGED IN</span><br/>
                     
+  <a class="tag tag--primary tag--small" href="/tags/fitbit/">fitbit</a>
+
   <a class="tag tag--primary tag--small" href="/tags/gps/">gps</a>
-
-  <a class="tag tag--primary tag--small" href="/tags/workout/">workout</a>
-
-  <a class="tag tag--primary tag--small" href="/tags/rstat/">rstat</a>
 
   <a class="tag tag--primary tag--small" href="/tags/gpx/">gpx</a>
 
-  <a class="tag tag--primary tag--small" href="/tags/tcx/">tcx</a>
+  <a class="tag tag--primary tag--small" href="/tags/rstat/">rstat</a>
 
   <a class="tag tag--primary tag--small" href="/tags/runtastic/">runtastic</a>
 
   <a class="tag tag--primary tag--small" href="/tags/strava/">strava</a>
 
-  <a class="tag tag--primary tag--small" href="/tags/fitbit/">fitbit</a>
+  <a class="tag tag--primary tag--small" href="/tags/tcx/">tcx</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/workout/">workout</a>
 
                   </div>
                 
@@ -546,19 +582,19 @@ print(track)</code></pre>
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/ploting-your-mtb-track-with-r/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/ploting-your-mtb-track-with-r/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/ploting-your-mtb-track-with-r/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -632,19 +668,19 @@ print(track)</code></pre>
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/ploting-your-mtb-track-with-r/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/ploting-your-mtb-track-with-r/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/reading-your-run-and-mtb-tracks-with-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/ploting-your-mtb-track-with-r/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -674,19 +710,19 @@ print(track)</code></pre>
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Freading-your-run-and-mtb-tracks-with-r%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fploting-your-mtb-track-with-r%2F">
           <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Freading-your-run-and-mtb-tracks-with-r%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fploting-your-mtb-track-with-r%2F">
           <i class="fa fa-twitter"></i><span>Share on Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Freading-your-run-and-mtb-tracks-with-r%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fploting-your-mtb-track-with-r%2F">
           <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
         </a>
       </li>
@@ -747,17 +783,16 @@ print(track)</code></pre>
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="/2018/01/reading-your-run-and-mtb-tracks-with-r/">
-                <h3 class="media-heading">Reading your run and MTB tracks with R</h3>
+              <a class="link-unstyled" href="/2018/01/ploting-your-mtb-track-with-r/">
+                <h3 class="media-heading">Ploting your MTB track with R</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
                   Jan 1, 2018
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.
-Tracking FilesThere are two popular file format to track workouts and routes through GPS devices: GPX and TCX.
-GPX is an XML format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema.</div>
+              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -866,9 +901,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = '\/2018\/01\/reading-your-run-and-mtb-tracks-with-r\/';
+          this.page.url = '\/2018\/01\/ploting-your-mtb-track-with-r\/';
           
-            this.page.identifier = 'rstatreadingtcxfiles';
+            this.page.identifier = 'rstatplottcxtrack';
           
         };
         (function() {

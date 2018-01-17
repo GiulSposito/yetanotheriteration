@@ -1,23 +1,24 @@
 ---
-title: "Ploting your MTB track with R"
-author: "Giuliano Sposito"
+title: Ploting your MTB track with R
+author: Giuliano Sposito
 date: '2018-01-16'
+categories:
+  - data science
+tags:
+  - fitbit
+  - gps
+  - gpx
+  - rstat
+  - runtastic
+  - strava
+  - tcx
+  - workout
 coverImage: /images/mtb_cover.jpg
 disqusIdentifier: rstatplottcxtrack
 metaAlignment: center
 slug: ploting-your-mtb-track-with-r
-tags:
-- gps
-- workout
-- rstat
-- gpx
-- tcx
-- runtastic
-- strava
-- fitbit
 thumbnailImage: images/fitbit_tn.jpg
 thumbnailImagePosition: left
-categories: data science
 ---
 
 In this [RNotebook](http://rmarkdown.rstudio.com/r_notebooks.html) we'll read a [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) and [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we'll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.

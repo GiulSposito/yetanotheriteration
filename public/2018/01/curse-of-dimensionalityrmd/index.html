@@ -273,7 +273,7 @@ ggplot(dt, aes(x=x, y=y)) + geom_point() + coord_fixed(ratio = 1) + theme_bw()</
 <pre class="r"><code>x_dist &lt;- quantile(x=dt$x,probs = .1)
 x_dist</code></pre>
 <pre><code>##      10% 
-## 10.69855</code></pre>
+## 8.650832</code></pre>
 <p>We can see that in one dimension the size of the range necessary to get 10% of the data points are around 10% of this dimensions (uniform distributed)</p>
 <pre class="r"><code># mark the points in this range
 dt %&gt;%
@@ -295,11 +295,11 @@ ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
 dt %&gt;%
   filter(in_interval==T) %&gt;%
   nrow()</code></pre>
-<pre><code>## [1] 122</code></pre>
+<pre><code>## [1] 94</code></pre>
 </div>
 <div id="two-dimension" class="section level2">
 <h2>Two Dimension</h2>
-<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 10.6985488, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
+<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 8.650832, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
 <pre class="r"><code>dt %&gt;%
   mutate(
     in_interval = case_when(
@@ -321,8 +321,8 @@ dt %&gt;%
 sel_points_pct &lt;- sel_points/total_points
 
 sel_points</code></pre>
-<pre><code>## [1] 40</code></pre>
-<p>In fact, with the new distance, we can only reach 4 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
+<pre><code>## [1] 20</code></pre>
+<p>In fact, with the new distance, we can only reach 2 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
 <pre class="r"><code># percents 
 dists &lt;- 1:100
 
@@ -352,7 +352,7 @@ print(twoDim10pct)</code></pre>
 <pre><code>## # A tibble: 1 x 3
 ##    dist points    pct
 ##   &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt;
-## 1    17     95 0.0950</code></pre>
+## 1    17     89 0.0890</code></pre>
 <p>The distance to get 10% of data points are 17 in size, about twice the original range in one dimension.</p>
 <pre class="r"><code>dt %&gt;%
   mutate(
@@ -409,11 +409,11 @@ multDimCases %&gt;%
 ## # Groups: dimensions [5]
 ##   dimensions  dist
 ##   &lt;fctr&gt;     &lt;int&gt;
-## 1 d1             3
+## 1 d1             4
 ## 2 d2            17
 ## 3 d3            29
-## 4 d4            38
-## 5 d5            45</code></pre>
+## 4 d4            36
+## 5 d5            44</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
@@ -450,7 +450,7 @@ multDimCases %&gt;%
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/reading-your-run-and-mtb-tracks-with-r/" data-tooltip="Reading your run and MTB tracks with R">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -536,7 +536,7 @@ multDimCases %&gt;%
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/reading-your-run-and-mtb-tracks-with-r/" data-tooltip="Reading your run and MTB tracks with R">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -677,17 +677,16 @@ multDimCases %&gt;%
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="/2018/01/reading-your-run-and-mtb-tracks-with-r/">
-                <h3 class="media-heading">Reading your run and MTB tracks with R</h3>
+              <a class="link-unstyled" href="/2018/01/ploting-your-mtb-track-with-r/">
+                <h3 class="media-heading">Ploting your MTB track with R</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
                   Jan 1, 2018
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.
-Tracking FilesThere are two popular file format to track workouts and routes through GPS devices: GPX and TCX.
-GPX is an XML format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema.</div>
+              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
