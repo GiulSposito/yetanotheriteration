@@ -1,34 +1,33 @@
 ---
-title: Reading your run and MTB tracks with R
-author: Giuliano Sposito
+title: "Ploting your MTB track with R"
+author: "Giuliano Sposito"
 date: '2018-01-16'
-categories:
-  - data science
-tags:
-  - gps
-  - workout
-  - rstat
-  - gpx
-  - tcx
-  - runtastic
-  - strava
-  - fitbit
-slug: reading-your-run-and-mtb-tracks-with-r
-thumbnailImagePosition: left
-thumbnailImage: images/fitbit_tn.jpg
 coverImage: /images/mtb_cover.jpg
-metaAlignment: center
 disqusIdentifier: rstatreadingtcxfiles
+metaAlignment: center
+slug: reading-your-run-and-mtb-tracks-with-r
+tags:
+- gps
+- workout
+- rstat
+- gpx
+- tcx
+- runtastic
+- strava
+- fitbit
+thumbnailImage: images/fitbit_tn.jpg
+thumbnailImagePosition: left
+categories: data science
 ---
 
 
 
-<p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a> we’ll read a <a href="https://en.wikipedia.org/wiki/Training_Center_XML">TCX</a> and <a href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a> files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices.</p>
-<div id="tracking-files" class="section level2">
-<h2>Tracking Files</h2>
+<p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a> we’ll read a <a href="https://en.wikipedia.org/wiki/Training_Center_XML">TCX</a> and <a href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a> files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.</p>
+<div id="tracking-files1" class="section level2">
+<h2>Tracking Files<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></h2>
 <p>There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</p>
 <p><strong>GPX</strong> is an <a href="https://en.wikipedia.org/wiki/XML">XML</a> format designed specifically for saving GPS track, way point and route data. It is increasingly used by GPS programs because of its flexibility as an XML schema. More information can be found on the official <a href="http://www.topografix.com">GPX website</a>.</p>
-<p>The <strong>TCX</strong> format is also an <a href="https://en.wikipedia.org/wiki/XML">XML</a> format, but was created by <a href="http://www.garmin.com">Garmin</a> to include additional data with each track point (e.g. heart rate and cadence) as well as a user defined organizational structure. The format appears to be primarily used by Garmin’s fitness oriented GPS devices. The TCX schema is hosted by <a href="http://www.garmin.com">Garmin</a>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>The <strong>TCX</strong> format is also an <a href="https://en.wikipedia.org/wiki/XML">XML</a> format, but was created by <a href="http://www.garmin.com">Garmin</a> to include additional data with each track point (e.g. heart rate and cadence) as well as a user defined organizational structure. The format appears to be primarily used by Garmin’s fitness oriented GPS devices. The TCX schema is hosted by <a href="http://www.garmin.com">Garmin</a>.</p>
 <p>Many of the dozens of other formats can be converted into GPX or TCX formats using <a href="http://www.gpsbabel.org">GPSBabel</a>.</p>
 </div>
 <div id="reading-a-tcx-file" class="section level2">
@@ -147,8 +146,50 @@ ggplot(track, aes(x=dt, y=hbpm)) +
   theme_bw() </code></pre>
 <p><img src="/post/2018-01-16-reading-your-run-and-mtb-tracks-with-r_files/figure-html/plotAlt-1.png" width="672" /></p>
 </div>
-<div id="reading-a-gpx-file" class="section level2">
-<h2>Reading a GPX file</h2>
+<div id="ploting-the-track" class="section level2">
+<h2>Ploting the track</h2>
+<p>We can take the latitude and longitude coordenates extract from TCX and plot the path executed during this ride. This is pretty straighforward using <code>geom_path()</code>in <code>ggplot2</code>.</p>
+<pre class="r"><code># ploting latitude in N/S orietation and lon as E/L orientation
+ggplot(track, aes(x=lon, y=lat)) +
+  geom_path(aes(colour=alt), size=1.2) + # ploting alt as color reference
+  scale_colour_gradientn(colours = terrain.colors(10)) + # color scale
+  coord_fixed() + # to keep the aspect ratio
+  theme_void() # removint axis</code></pre>
+<p><img src="/post/2018-01-16-reading-your-run-and-mtb-tracks-with-r_files/figure-html/plotTrack-1.png" width="672" /></p>
+<p>That’s cool, we extract the GPS path from TCX file and plot them with a couple of lines, just remaining plot over a map, and this is easy too, using <code>ggmap</code>package.</p>
+</div>
+<div id="ploting-over-a-map" class="section level2">
+<h2>Ploting over a map</h2>
+<p>The <a href="https://cran.r-project.org/web/packages/ggmap/index.html">ggmap R Package</a> is a collection of functions to visualize spatial data and models on top of static maps from various online sources (e.g Google Maps and Stamen Maps). It includes tools common to those tasks, including functions for geolocation and routing.</p>
+<p>The package uses some providers to get a “background” image to be used as base map, also maps the scale of the image to the appropriate lat/lon coordenates.</p>
+<pre class="r"><code>library(ggmap)
+
+# first we define a &quot;box&quot; based on lats and lons that will ploted over
+# the make_bbox build it.
+bbox &lt;- make_bbox(lon = track$lon, lat=track$lat, f=.1)
+
+# after that we ask for a map containing this box to one of the providers
+# in this case we&#39;ll ask for google maps a &#39;terrain map&#39;
+gmap &lt;- get_map( location=bbox, maptype = &quot;terrain&quot;, source=&quot;google&quot;)
+
+# we can see the map obtained
+ggmap(gmap)</code></pre>
+<p><img src="/post/2018-01-16-reading-your-run-and-mtb-tracks-with-r_files/figure-html/mapBackground-1.png" width="672" /></p>
+<p>Once with the map background in hands, we just plot the track over it, changing the color scale to improve the contrast.</p>
+<pre class="r"><code># now the ggmap is the base o ggplot
+ggmap(gmap) +
+  # ploting the path using lon and lat as coordenates and alt as color
+  geom_path(data=track, aes(x=lon, y=lat, colour=alt), size=1.2) + 
+  scale_colour_gradientn(colours = topo.colors(10)) + # color scale
+  coord_fixed() + # to keep the aspect ratio
+  theme_void() # removint axis</code></pre>
+<p><img src="/post/2018-01-16-reading-your-run-and-mtb-tracks-with-r_files/figure-html/plotOverMap-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>As we saw, it’s pretty straightforward to get the data in the XML and transform them in a useful R data frame. Obviously if the XML was more complicated, with several activities and laps, we should handle this info if we want keep these informations before read the <code>trackpoints</code>. The data frame with track points would gain <code>activity.id</code> and <code>lap.id</code> columns. The use of <code>ggmap</code> is very helpful to use maps and gglot together.</p>
+<div id="appendix-reading-a-gpx-file" class="section level3">
+<h3>Appendix: Reading a GPX file</h3>
 <p>Basically, as we using XPath to get the data points, reading a GPX file is pretty the same, let’s look the structure of one file exported from <a href="http://www.runtastic.com">Runtastic website</a></p>
 <pre class="xml"><code>
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -189,7 +230,7 @@ ggplot(track, aes(x=dt, y=hbpm)) +
   &lt;/trk&gt;
 &lt;/gpx&gt;
 </code></pre>
-<p>Basically same metadata in the beginning and the <code>track points</code> are in the nodes <code>trkpt</code> but the struct is different, the GPS coords are <code>attributes</code> of these nodes while <code>elevation</code> and <code>time</code> are sub-nodes in the value. We’ll have to use XPath different to get the value and the attributes.</p>
+<p>Basically it’s about same, with a metadata in the beginning and the <code>track points</code> are in the nodes <code>trkpt</code>, but the struct is different. The GPS coords are <code>attributes</code> of these nodes while <code>elevation</code> and <code>time</code> are sub-nodes in the value. We’ll have to use XPath different to get the value and the attributes.</p>
 <pre class="r"><code># reading the xml file download from runtastic
 file &lt;- htmlTreeParse(file = &quot;runtastic_20170611_1134_Cycling.gpx&quot;,
                       error = function (...) {},
@@ -213,9 +254,9 @@ data_frame(
 ) %&gt;% mutate(
   tm.prev.s = c(0, diff(dt)), # time (s) from previous track point
   tm.cum.min  = round(cumsum(tm.prev.s)/60,1) # cumulative time (min)
-) -&gt; track
+) -&gt; gpx.track
 
-print(track)</code></pre>
+print(gpx.track)</code></pre>
 <pre><code>## # A tibble: 3,625 x 6
 ##    dt                    lat   lon   alt tm.prev.s tm.cum.min
 ##    &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
@@ -231,12 +272,9 @@ print(track)</code></pre>
 ## 10 2017-06-11 11:45:24 -22.7 -46.8   674      3.00      0.400
 ## # ... with 3,615 more rows</code></pre>
 </div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<p>As we saw, it’s pretty straightforward to get the data in the XML and transform them in a useful R data frame. Obviously if the XML was more complicated, with several activities and laps, we should handle this info if we want keep these informations before read the <code>trackpoints</code>. The data frame with track points would gain <code>activity.id</code> and <code>lap.id</code> columns.</p>
+<div id="references" class="section level3">
+<h3>References</h3>
 </div>
-<div id="references" class="section level2">
-<h2>References</h2>
 </div>
 <div class="footnotes">
 <hr />
