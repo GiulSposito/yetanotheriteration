@@ -14,11 +14,11 @@ tags:
   - tcx
   - workout
 coverImage: /images/mtb_cover.jpg
-disqusIdentifier: rstatplottcxtrack
 metaAlignment: center
 slug: ploting-your-mtb-track-with-r
 thumbnailImage: images/fitbit_tn.jpg
 thumbnailImagePosition: left
+disqusIdentifier: rstatplottcxtrack
 ---
 
 In this [RNotebook](http://rmarkdown.rstudio.com/r_notebooks.html) we'll read a [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) and [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we'll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
