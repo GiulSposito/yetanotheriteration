@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,18 @@
     <item>
       <title>Evalutation</title>
       <link>/tags/evalutation/</link>
-      <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/evalutation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Feature Engineering</title>
+      <link>/tags/feature-engineering/</link>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/feature-engineering/</guid>
       <description></description>
     </item>
     
@@ -59,7 +68,7 @@
     <item>
       <title>Rstat</title>
       <link>/tags/rstat/</link>
-      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/rstat/</guid>
       <description></description>

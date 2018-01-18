@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.32.4 with theme Tranquilpeak 0.4.3-BETA">
-    <title>We have a blog!</title>
+    <title>High Collinearity Effect in Regressions</title>
     <meta name="author" content="Giuliano Sposito">
     <meta name="keywords" content="">
 
@@ -30,24 +30,21 @@
     
 
     
-    <meta name="description" content="It&rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
-When you’ve written the same code 3 times, write a function
-When you’ve given the same in-person advice 3 times, write a blog post
-&mdash; David Robinson (@drob) November 9, 2017  Yihui Xie, one of the Blogdown package authors tells that we should write a blog to ourselves, we write to us in the future, that writing something makes it more clear.">
-    <meta property="og:description" content="It&rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
-When you’ve written the same code 3 times, write a function
-When you’ve given the same in-person advice 3 times, write a blog post
-&mdash; David Robinson (@drob) November 9, 2017  Yihui Xie, one of the Blogdown package authors tells that we should write a blog to ourselves, we write to us in the future, that writing something makes it more clear.">
+    <meta name="description" content="Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.1
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.
+CollinearityThe concept of collinearity is illustrated in Figure below using the Credit data set in the ISLR Package.">
+    <meta property="og:description" content="Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.1
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.
+CollinearityThe concept of collinearity is illustrated in Figure below using the Credit data set in the ISLR Package.">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="We have a blog!">
-    <meta property="og:url" content="/2018/01/we-have-a-blog/">
+    <meta property="og:title" content="High Collinearity Effect in Regressions">
+    <meta property="og:url" content="/2018/01/high-collinearity-effect-in-regressions/">
     <meta property="og:site_name" content="Yet Another Iteration">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Yet Another Iteration">
-    <meta name="twitter:description" content="It&rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
-When you’ve written the same code 3 times, write a function
-When you’ve given the same in-person advice 3 times, write a blog post
-&mdash; David Robinson (@drob) November 9, 2017  Yihui Xie, one of the Blogdown package authors tells that we should write a blog to ourselves, we write to us in the future, that writing something makes it more clear.">
+    <meta name="twitter:description" content="Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.1
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.
+CollinearityThe concept of collinearity is illustrated in Figure below using the Credit data set in the ISLR Package.">
     
       <meta name="twitter:creator" content="@gsposito">
     
@@ -60,8 +57,6 @@ When you’ve given the same in-person advice 3 times, write a blog post
       <meta property="og:image" content="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
     
 
-    
-      <meta property="og:image" content="/images/hugo-creative-portfolio-theme.tn.png">
     
     
     
@@ -226,46 +221,156 @@ ga('send', 'pageview');
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      We have a blog!
+      High Collinearity Effect in Regressions
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-01-02T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-01-17T00:00:00Z">
         
-  January 2, 2018
+  January 17, 2018
 
       </time>
     
     
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
   </div>
 
 </div>
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>It&rsquo;s just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.</p>
+              <p>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>This <a href="http://rmarkdown.rstudio.com/r_notebooks.html">R Notebook</a> seeks to ilustrate some of the difficulties that can be result from a collinearity.</p>
+<div id="collinearity" class="section level2">
+<h2>Collinearity</h2>
+<p>The concept of collinearity is illustrated in Figure below using the <code>Credit</code> data set in the <code>ISLR Package</code>. In the left-hand panel of Figure the two predictors <code>limit</code> and <code>age</code> appear to have no obvious relationship. In contrast, in the right-hand panel the predictors <code>limit</code> and <code>rating</code> are very highly correlated with each other, and we say that they are collinear.</p>
+<pre class="r"><code># setup
+library(ISLR)
+library(tidyverse)
+library(ggplot2)
+library(grid)
+library(gridExtra)
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">When you’ve written the same code 3 times, write a function<br><br>When you’ve given the same in-person advice 3 times, write a blog post</p>&mdash; David Robinson (@drob) <a href="https://twitter.com/drob/status/928447584712253440?ref_src=twsrc%5Etfw">November 9, 2017</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+ggplot(Credit, aes(x=Limit, y=Age)) +
+  geom_point() +
+  theme_bw() -&gt; p1
+
+ggplot(Credit, aes(x=Limit, y=Rating)) +
+  geom_point() +
+  theme_bw() -&gt; p2
+
+marrangeGrob(list(p1,p2), nrow=1, ncol=2)</code></pre>
+<p><img src="/post/2018-01-17-high-collinearity-effect-in-regressions_files/figure-html/collinearity-1.png" width="672" /></p>
+</div>
+<div id="effect-on-a-model" class="section level2">
+<h2>Effect on a Model</h2>
+<p>Let’s fit two models using these pair of features (<code>age</code> x <code>limit</code> and <code>Rating</code> x <code>Limit</code>) to predict the <code>Balance</code> outcome and see what happen with the model performances</p>
+<pre class="r"><code># balance in function of Age and Limit
+fit_axl &lt;- lm(Balance~Age+Limit, Credit)
+summary(fit_axl)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Balance ~ Age + Limit, data = Credit)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -696.84 -150.78  -13.01  126.68  755.56 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.734e+02  4.383e+01  -3.957 9.01e-05 ***
+## Age         -2.291e+00  6.725e-01  -3.407 0.000723 ***
+## Limit        1.734e-01  5.026e-03  34.496  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 230.5 on 397 degrees of freedom
+## Multiple R-squared:  0.7498, Adjusted R-squared:  0.7486 
+## F-statistic:   595 on 2 and 397 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The first is a regression of <code>balance</code> on <code>age</code> and <code>limit</code>, here both <code>age</code> and <code>limit</code> are <strong>highly significant with very small <em>p-values</em></strong>.</p>
+<pre class="r"><code># balance in function of Rating and Limit
+fit_rxl &lt;- lm(Balance~Rating+Limit, Credit)
+summary(fit_rxl)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Balance ~ Rating + Limit, data = Credit)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -707.8 -135.9   -9.5  124.0  817.6 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -377.53680   45.25418  -8.343 1.21e-15 ***
+## Rating         2.20167    0.95229   2.312   0.0213 *  
+## Limit          0.02451    0.06383   0.384   0.7012    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 232.3 on 397 degrees of freedom
+## Multiple R-squared:  0.7459, Adjusted R-squared:  0.7447 
+## F-statistic: 582.8 on 2 and 397 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>In the second, the collinearity between <code>limit</code> and <code>rating</code> has caused the standard error for the limit coefficient estimate to increase by a factor of 12 and the <em>p-value</em> to increase to 0.701. In other words, <strong>the importance of the limit variable has been masked due to the presence of collinearity</strong>.</p>
+<p><em>Collinearity reduces the accuracy of the estimates of the regression coefficients</em>, it causes the standard error for ??^j to grow. Recall that the <code>t-statistic</code> for each predictor is calculated by dividing <span class="math inline">\(\hat{??}_j\)</span> by its standard error. Consequently, collinearity results in a decline in the <code>t-statistic</code>. As a result, in the presence of collinearity, we may fail to reject <code>H0 : ??j = 0</code>. This means that the power of the hypothesis test-the probability of correctly power detecting a non-zero coefficient-is reduced by collinearity.</p>
+</div>
+<div id="cost-surface" class="section level2">
+<h2>Cost Surface</h2>
+<p>Why the collinearity reduces the accuracy of the regression coefficients? What is the effect of it in the fitting model? To visualize the effect lets plot the <code>Cost Function</code> surface (RSS) in the space of the coefficents.</p>
+<pre class="r"><code>coef(fit_axl)</code></pre>
+<pre><code>## (Intercept)         Age       Limit 
+## -173.410901   -2.291486    0.173365</code></pre>
+<pre class="r"><code>cfit &lt;- confint(fit_axl)
+
+int &lt;- coef(fit_axl)[1]
+b1 &lt;- seq(cfit[2,1], cfit[2,2], abs((cfit[2,1]-cfit[2,2])/100) ) # age
+b2 &lt;- seq(cfit[3,1], cfit[3,2], abs((cfit[3,1]-cfit[3,2])/100) ) # limit
+coefs &lt;- expand.grid(b1,b2)
 
 
-<p><a href="http://www.twitter.com/">Yihui Xie</a>, one of the <a href="https://bookdown.org/yihui/blogdown/">Blogdown</a> package authors tells that we should write a blog to ourselves, we write to us in the future, that writing something makes it more clear. I agree with the last part.</p>
-
-<p>And we don&rsquo;t have to bother about the quality of every post, because we&rsquo;ll wrote a lot of crap text, but in the middle of that we can find a pearl once in while, and that post will teach something to someone, and the blog will worth.</p>
-
-<p>I&rsquo;ve learning a lot about R and Data Science, reading other&rsquo;s blog, I think that is time to share some too, maybe I make someone&rsquo;s life easly.</p>
-
-<p>The blog itself is an experience with <a href="https://www.r-project.org/">R</a> (my current favorite language), created using pages written in <a href="http://rmarkdown.rstudio.com/">RMarkdown</a> and converted to a site using <a href="https://bookdown.org/yihui/blogdown/">Blogdown</a> and <a href="https://gohugo.io/">Hugo</a>, versioned in <a href="https://github.com/GiulSposito/yetanotheriteration">GitHub</a> and published in <a href="http://www.netlify.com">Netlify</a>.</p>
-
-<p>Hope you enjoy and have fun!</p>
+rss_grid &lt;- map(coefs,function(coef,dt=Credit,inter=int){
+  y_hat &lt;- inter + coef[[1]] * Credit$Age + coef[[2]] * Credit$Limit
+  sum((Credit$Balance - y_hat)^2)
+}) </code></pre>
+<div id="references" class="section level3">
+<h3>References</h3>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Introduction to Statistical Learning in R<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
 
               
             </div>
           </div>
           <div id="post-footer" class="post-footer main-content-wrap">
             
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/rstat/">rstat</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/feature-engineering/">feature engineering</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/evalutation/">evalutation</a>
+
+                  </div>
+                
               
             
             
@@ -275,7 +380,7 @@ ga('send', 'pageview');
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -283,7 +388,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--disabled">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -301,19 +406,19 @@ ga('send', 'pageview');
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/we-have-a-blog/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/high-collinearity-effect-in-regressions/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/we-have-a-blog/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/high-collinearity-effect-in-regressions/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/we-have-a-blog/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/high-collinearity-effect-in-regressions/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -361,7 +466,7 @@ ga('send', 'pageview');
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -369,7 +474,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--disabled">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -387,19 +492,19 @@ ga('send', 'pageview');
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/we-have-a-blog/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/high-collinearity-effect-in-regressions/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/we-have-a-blog/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/high-collinearity-effect-in-regressions/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/we-have-a-blog/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/high-collinearity-effect-in-regressions/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -429,19 +534,19 @@ ga('send', 'pageview');
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fwe-have-a-blog%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fhigh-collinearity-effect-in-regressions%2F">
           <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fwe-have-a-blog%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fhigh-collinearity-effect-in-regressions%2F">
           <i class="fa fa-twitter"></i><span>Share on Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fwe-have-a-blog%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fhigh-collinearity-effect-in-regressions%2F">
           <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
         </a>
       </li>
@@ -639,9 +744,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = '\/2018\/01\/we-have-a-blog\/';
+          this.page.url = '\/2018\/01\/high-collinearity-effect-in-regressions\/';
           
-            this.page.identifier = 'blogwelcome';
+            this.page.identifier = 'high-collinearity-effect-in-regressions';
           
         };
         (function() {

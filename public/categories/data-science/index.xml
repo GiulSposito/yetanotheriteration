@@ -6,10 +6,21 @@
     <description>Recent content in Data Science on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>High Collinearity Effect in Regressions</title>
+      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.1
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.
+CollinearityThe concept of collinearity is illustrated in Figure below using the Credit data set in the ISLR Package.</description>
+    </item>
     
     <item>
       <title>Ploting your MTB track with R</title>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Evalutation on Yet Another Iteration</title>
-    <link>/tags/evalutation/</link>
-    <description>Recent content in Evalutation on Yet Another Iteration</description>
+    <title>Feature Engineering on Yet Another Iteration</title>
+    <link>/tags/feature-engineering/</link>
+    <description>Recent content in Feature Engineering on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 17 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/evalutation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/feature-engineering/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,16 +20,6 @@
       <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.1
 This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.
 CollinearityThe concept of collinearity is illustrated in Figure below using the Credit data set in the ISLR Package.</description>
-    </item>
-    
-    <item>
-      <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
-      <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
-      <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
-Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
     </item>
     
   </channel>

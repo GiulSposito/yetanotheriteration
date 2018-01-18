@@ -1,0 +1,95 @@
+---
+title: High Collinearity Effect in Regressions
+author: Giuliano Sposito
+date: '2018-01-17'
+categories:
+  - data science
+tags:
+  - rstat
+  - feature engineering
+  - evalutation
+draft: true
+slug: high-collinearity-effect-in-regressions
+disqusIdentifier: high-collinearity-effect-in-regressions
+---
+
+Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.[^1]
+
+This [R Notebook](http://rmarkdown.rstudio.com/r_notebooks.html) seeks to ilustrate some of the difficulties that can be result from a collinearity.
+
+## Collinearity
+
+The concept of collinearity is illustrated in Figure below using the `Credit` data set in the `ISLR Package`. In the left-hand panel of Figure the two predictors `limit` and `age` appear to have no obvious relationship. In contrast, in the right-hand panel the predictors `limit` and `rating` are very highly correlated with each other, and we say that they are collinear.
+
+```{r collinearity, message=FALSE, warning=FALSE}
+# setup
+library(ISLR)
+library(tidyverse)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+
+ggplot(Credit, aes(x=Limit, y=Age)) +
+  geom_point() +
+  theme_bw() -> p1
+
+ggplot(Credit, aes(x=Limit, y=Rating)) +
+  geom_point() +
+  theme_bw() -> p2
+
+marrangeGrob(list(p1,p2), nrow=1, ncol=2)
+```
+
+## Effect on a Model
+
+Let's fit two models using these pair of features (`age` x `limit` and `Rating` x `Limit`) to predict the `Balance` outcome and see what happen with the model performances
+
+```{r fitModel1}
+
+# balance in function of Age and Limit
+fit_axl <- lm(Balance~Age+Limit, Credit)
+summary(fit_axl)
+
+```
+
+The first is a regression of `balance` on `age` and `limit`, here both `age` and `limit` are **highly significant with very small _p-values_**.
+
+```{r fitModel2}
+# balance in function of Rating and Limit
+fit_rxl <- lm(Balance~Rating+Limit, Credit)
+summary(fit_rxl)
+```
+
+In the second, the collinearity between `limit` and `rating` has caused the standard error for the limit coefficient estimate to increase by a factor of 12 and the _p-value_ to increase to 0.701. In other words, **the importance of the limit variable has been masked due to the presence of collinearity**.
+
+*Collinearity reduces the accuracy of the estimates of the regression coefficients*, it causes the standard error for ??^j to grow. Recall that the `t-statistic` for each predictor is calculated by dividing $\hat{??}_j$ by its standard error. Consequently, collinearity results in a decline in the `t-statistic`. As a result, in the presence of collinearity, we may fail to reject `H0 : ??j = 0`. This means that the power of the hypothesis test-the probability of correctly power detecting a non-zero coefficient-is reduced by collinearity.
+
+## Cost Surface
+
+Why the collinearity reduces the accuracy of the regression coefficients? What is the effect of it in the fitting model? To visualize the effect lets plot the `Cost Function` surface (RSS) in the space of the coefficents.
+
+```{r costSurface}
+
+coef(fit_axl)
+cfit <- confint(fit_axl)
+
+int <- coef(fit_axl)[1]
+b1 <- seq(cfit[2,1], cfit[2,2], abs((cfit[2,1]-cfit[2,2])/100) ) # age
+b2 <- seq(cfit[3,1], cfit[3,2], abs((cfit[3,1]-cfit[3,2])/100) ) # limit
+coefs <- expand.grid(b1,b2)
+
+
+rss_grid <- map(coefs,function(coef,dt=Credit,inter=int){
+  y_hat <- inter + coef[[1]] * Credit$Age + coef[[2]] * Credit$Limit
+  sum((Credit$Balance - y_hat)^2)
+}) 
+
+```
+
+
+### References
+
+[^1]: Introduction to Statistical Learning in R
+
+
