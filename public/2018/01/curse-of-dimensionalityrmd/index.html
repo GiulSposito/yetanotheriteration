@@ -26,7 +26,7 @@
     <meta name="author" content="Giuliano Sposito">
     <meta name="keywords" content="">
 
-    <link rel="icon" href="https://yetanotheriteration.netlify.com/favicon.png">
+    <link rel="icon" href="/favicon.png">
     
 
     
@@ -52,7 +52,7 @@
     
 
     
-      <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/lines-shapes-digital-art-abstract.png">
+      <meta property="og:image" content="/images/lines-shapes-digital-art-abstract.png">
     
     
     
@@ -65,7 +65,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
     
     
-    <link rel="stylesheet" href="https://yetanotheriteration.netlify.com/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
     
     
 
@@ -90,12 +90,12 @@ ga('send', 'pageview');
       <header id="header" data-behavior="5">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
-    <a class="header-title-link" href="https://yetanotheriteration.netlify.com/">Yet Another Iteration</a>
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
   </div>
   
     
       <a class="header-right-picture "
-         href="https://yetanotheriteration.netlify.com/#about">
+         href="/#about">
     
     
     
@@ -111,7 +111,7 @@ ga('send', 'pageview');
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
-        <a href="https://yetanotheriteration.netlify.com/#about">
+        <a href="/#about">
           <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
         </a>
         <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
@@ -124,7 +124,7 @@ ga('send', 'pageview');
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/">
+      <a class="sidebar-button-link " href="/">
     
       <i class="sidebar-button-icon fa fa-lg fa-home"></i>
       
@@ -134,7 +134,7 @@ ga('send', 'pageview');
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/categories">
+      <a class="sidebar-button-link " href="/categories">
     
       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
       
@@ -144,7 +144,7 @@ ga('send', 'pageview');
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/tags">
+      <a class="sidebar-button-link " href="/tags">
     
       <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
       
@@ -154,7 +154,7 @@ ga('send', 'pageview');
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/about">
+      <a class="sidebar-button-link " href="/about">
     
       <i class="sidebar-button-icon fa fa-lg fa-question"></i>
       
@@ -168,7 +168,7 @@ ga('send', 'pageview');
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://github.com/giulsposito" target="_blank" rel="noopener">
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
     
       <i class="sidebar-button-icon fa fa-lg fa-github"></i>
       
@@ -178,7 +178,7 @@ ga('send', 'pageview');
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://twitter.com/gsposito" target="_blank" rel="noopener">
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
     
       <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
       
@@ -192,7 +192,7 @@ ga('send', 'pageview');
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/index.xml">
+      <a class="sidebar-button-link " href="/index.xml">
     
       <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
       
@@ -234,7 +234,7 @@ ga('send', 'pageview');
   
     <span>in</span>
     
-      <a class="category-link" href="https://yetanotheriteration.netlify.com/categories/data-science">data science</a>
+      <a class="category-link" href="/categories/data-science">data science</a>
     
   
 
@@ -268,7 +268,7 @@ dt &lt;- data_frame(
 
 # let&#39;s see them
 ggplot(dt, aes(x=x, y=y)) + geom_point() + coord_fixed(ratio = 1) + theme_bw()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-15-curse-of-dimensionality_files/figure-html/one_dim-1.png" width="672" /></p>
+<p><img src="/post/2018-01-15-curse-of-dimensionality_files/figure-html/one_dim-1.png" width="672" /></p>
 <p>Let’s suppose that we need to get 10% of points around <code>x=50</code> (100 points), what is the size of interval necessary to get these points?</p>
 <pre class="r"><code>x_dist &lt;- quantile(x=dt$x,probs = .1)
 x_dist</code></pre>
@@ -290,7 +290,7 @@ ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
   geom_vline(xintercept = 50-(x_dist/2), linetype=&quot;dotted&quot;) +
   geom_vline(xintercept = 50+(x_dist/2), linetype=&quot;dotted&quot;) +
   coord_fixed(ratio = 1) + theme_bw()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-15-curse-of-dimensionality_files/figure-html/get10pct-1.png" width="672" /></p>
+<p><img src="/post/2018-01-15-curse-of-dimensionality_files/figure-html/get10pct-1.png" width="672" /></p>
 <pre class="r"><code># how much points?
 dt %&gt;%
   filter(in_interval==T) %&gt;%
@@ -311,7 +311,7 @@ dt %&gt;%
 
 ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
   geom_point() + coord_fixed(ratio = 1) + theme_bw()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-15-curse-of-dimensionality_files/figure-html/twodim-1.png" width="672" /></p>
+<p><img src="/post/2018-01-15-curse-of-dimensionality_files/figure-html/twodim-1.png" width="672" /></p>
 <p>Now wee see that the number of point get in this range is significantly lower than previous case.</p>
 <pre class="r"><code># how much points?
 dt %&gt;%
@@ -343,7 +343,7 @@ ggplot(distCases, aes(x=dist, y=pct)) +
   geom_line() +
   geom_hline(yintercept = 0.1, linetype=&quot;dotted&quot;) + 
   theme_bw()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-15-curse-of-dimensionality_files/figure-html/coverageTwoDim-1.png" width="672" /></p>
+<p><img src="/post/2018-01-15-curse-of-dimensionality_files/figure-html/coverageTwoDim-1.png" width="672" /></p>
 <pre class="r"><code>distCases %&gt;%
   filter( pct &lt;= .1 ) %&gt;%
   filter( pct == max(pct) ) -&gt; twoDim10pct
@@ -365,7 +365,7 @@ print(twoDim10pct)</code></pre>
 ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
   geom_point() + coord_fixed(ratio = 1) +
   theme_bw()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-15-curse-of-dimensionality_files/figure-html/twoDim20Pct-1.png" width="672" /></p>
+<p><img src="/post/2018-01-15-curse-of-dimensionality_files/figure-html/twoDim20Pct-1.png" width="672" /></p>
 </div>
 <div id="more-dimentions" class="section level2">
 <h2>More dimentions</h2>
@@ -398,7 +398,7 @@ multDimCases %&gt;%
   geom_line() +
   geom_hline(yintercept = 0.1, linetype=&quot;dotted&quot;) + 
   theme_bw() </code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-15-curse-of-dimensionality_files/figure-html/aditionalDim-1.png" width="672" /></p>
+<p><img src="/post/2018-01-15-curse-of-dimensionality_files/figure-html/aditionalDim-1.png" width="672" /></p>
 <p>The distances to capture 10% of data points along the 5 dimension.</p>
 <pre class="r"><code>multDimCases %&gt;% 
   group_by(dimensions) %&gt;%
@@ -437,7 +437,7 @@ multDimCases %&gt;%
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">TAGGED IN</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/rstat/">rstat</a>
+  <a class="tag tag--primary tag--small" href="/tags/rstat/">rstat</a>
 
                   </div>
                 
@@ -450,7 +450,7 @@ multDimCases %&gt;%
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -458,7 +458,7 @@ multDimCases %&gt;%
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -476,19 +476,19 @@ multDimCases %&gt;%
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/curse-of-dimensionalityrmd/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/curse-of-dimensionalityrmd/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/curse-of-dimensionalityrmd/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -536,7 +536,7 @@ multDimCases %&gt;%
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/ploting-your-mtb-track-with-r/" data-tooltip="Ploting your MTB track with R">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -544,7 +544,7 @@ multDimCases %&gt;%
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/" data-tooltip="Assessing Model Accuracy (Linear Models)">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -562,19 +562,19 @@ multDimCases %&gt;%
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/curse-of-dimensionalityrmd/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/curse-of-dimensionalityrmd/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/curse-of-dimensionalityrmd/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -604,19 +604,19 @@ multDimCases %&gt;%
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F01%2Fcurse-of-dimensionalityrmd%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fcurse-of-dimensionalityrmd%2F">
           <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F01%2Fcurse-of-dimensionalityrmd%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fcurse-of-dimensionalityrmd%2F">
           <i class="fa fa-twitter"></i><span>Share on Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F01%2Fcurse-of-dimensionalityrmd%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fcurse-of-dimensionalityrmd%2F">
           <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
         </a>
       </li>
@@ -677,7 +677,26 @@ multDimCases %&gt;%
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/">
+              <a class="link-unstyled" href="/2018/01/putting-your-workout-to-move/">
+                <h3 class="media-heading">Putting your workout to move</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
+Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
+library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &lt;- &quot;11654237848.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/high-collinearity-effect-in-regressions/">
                 <h3 class="media-heading">High Collinearity Effect in Regressions</h3>
               </a>
               <span class="media-meta">
@@ -695,7 +714,7 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/">
+              <a class="link-unstyled" href="/2018/01/ploting-your-mtb-track-with-r/">
                 <h3 class="media-heading">Ploting your MTB track with R</h3>
               </a>
               <span class="media-meta">
@@ -713,7 +732,7 @@ Tracking Files1There are two popular file format to track workouts and routes t
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+              <a class="link-unstyled" href="/2018/01/curse-of-dimensionalityrmd/">
                 <h3 class="media-heading">Curse of Dimensionality</h3>
               </a>
               <span class="media-meta">
@@ -730,7 +749,7 @@ Tracking Files1There are two popular file format to track workouts and routes t
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/">
+              <a class="link-unstyled" href="/2018/01/assessing-model-accuracy-linear-modelsrmd/">
                 <h3 class="media-heading">Assessing Model Accuracy (Linear Models)</h3>
               </a>
               <span class="media-meta">
@@ -748,7 +767,7 @@ Measure the quality of fit (regression problems)In order to evaluate the perfor
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/">
+              <a class="link-unstyled" href="/2018/01/we-have-a-blog/">
                 <h3 class="media-heading">We have a blog!</h3>
               </a>
               <span class="media-meta">
@@ -772,7 +791,7 @@ When you’ve given the same in-person advice 3 times, write a blog post
          data-message-zero="no post found"
          data-message-one="1 post found"
          data-message-other="{n} posts found">
-         5 posts found
+         6 posts found
       </p>
     </div>
   </div>
@@ -780,7 +799,7 @@ When you’ve given the same in-person advice 3 times, write a blog post
     
   
     
-    <div id="cover" style="background-image:url('https://yetanotheriteration.netlify.com/images/new_cover_emboss.jpg');"></div>
+    <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
   
 
 
@@ -792,7 +811,7 @@ When you’ve given the same in-person advice 3 times, write a blog post
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
 
 
-<script src="https://yetanotheriteration.netlify.com/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
 
 
 
@@ -813,7 +832,7 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/yetanotheriteration.netlify.com\/2018\/01\/curse-of-dimensionalityrmd\/';
+          this.page.url = '\/2018\/01\/curse-of-dimensionalityrmd\/';
           
             this.page.identifier = 'rstatcursedimensionality';
           
