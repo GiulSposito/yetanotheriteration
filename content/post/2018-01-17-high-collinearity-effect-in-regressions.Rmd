@@ -1,25 +1,26 @@
 ---
 title: High Collinearity Effect in Regressions
 author: Giuliano Sposito
-date: '2018-01-17'
+date: '2018-01-19'
 categories:
   - data science
 tags:
-  - rstat
-  - feature engineering
   - evalutation
-draft: true
-slug: high-collinearity-effect-in-regressions
+  - feature engineering
+  - rstat
 disqusIdentifier: high-collinearity-effect-in-regressions
+slug: high-collinearity-effect-in-regressions
+thumbnailImage: images/cost_surface_tn.png
+thumbnailImagePosition: left
 ---
 
-Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.[^1]
+Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
 
 This [R Notebook](http://rmarkdown.rstudio.com/r_notebooks.html) seeks to ilustrate some of the difficulties that can be result from a collinearity.
 
 ## Collinearity
 
-The concept of collinearity is illustrated in Figure below using the `Credit` data set in the `ISLR Package`. In the left-hand panel of Figure the two predictors `limit` and `age` appear to have no obvious relationship. In contrast, in the right-hand panel the predictors `limit` and `rating` are very highly correlated with each other, and we say that they are collinear.
+The concept of collinearity is illustrated in Figure below using the `Credit` data set in the `ISLR Package`. In the left-hand panel of Figure the two predictors `limit` and `age` appear to have no obvious relationship. In contrast, in the right-hand panel the predictors `limit` and `rating` are very highly correlated with each other, and we say that they are collinear.[^1]
 
 ```{r collinearity, message=FALSE, warning=FALSE}
 # setup
@@ -28,22 +29,27 @@ library(tidyverse)
 library(ggplot2)
 library(grid)
 library(gridExtra)
+library(plotly)
 
-
+# ploting Limit by Age
 ggplot(Credit, aes(x=Limit, y=Age)) +
   geom_point() +
   theme_bw() -> p1
 
+# ploting Limit by Rating
 ggplot(Credit, aes(x=Limit, y=Rating)) +
   geom_point() +
   theme_bw() -> p2
 
-marrangeGrob(list(p1,p2), nrow=1, ncol=2)
+# Ploting side-by-side
+marrangeGrob(list(p1,p2), nrow=1, ncol=2, top=NULL)
 ```
+
 
 ## Effect on a Model
 
 Let's fit two models using these pair of features (`age` x `limit` and `Rating` x `Limit`) to predict the `Balance` outcome and see what happen with the model performances
+
 
 ```{r fitModel1}
 
@@ -61,35 +67,153 @@ fit_rxl <- lm(Balance~Rating+Limit, Credit)
 summary(fit_rxl)
 ```
 
+
 In the second, the collinearity between `limit` and `rating` has caused the standard error for the limit coefficient estimate to increase by a factor of 12 and the _p-value_ to increase to 0.701. In other words, **the importance of the limit variable has been masked due to the presence of collinearity**.
 
-*Collinearity reduces the accuracy of the estimates of the regression coefficients*, it causes the standard error for ??^j to grow. Recall that the `t-statistic` for each predictor is calculated by dividing $\hat{??}_j$ by its standard error. Consequently, collinearity results in a decline in the `t-statistic`. As a result, in the presence of collinearity, we may fail to reject `H0 : ??j = 0`. This means that the power of the hypothesis test-the probability of correctly power detecting a non-zero coefficient-is reduced by collinearity.
+
+*Collinearity reduces the accuracy of the estimates of the regression coefficients*, it causes the standard error for $\hat{\beta}_j$ to grow. Recall that the `t-statistic` for each predictor is calculated by dividing $\hat{\beta}_j$ by its standard error. Consequently, collinearity results in a decline in the `t-statistic`. As a result, in the presence of collinearity, we may fail to reject $H0 : \beta_j = 0$. This means that the power of the hypothesis test-the probability of correctly power detecting a non-zero coefficient-is reduced by collinearity.
+
 
 ## Cost Surface
 
+
 Why the collinearity reduces the accuracy of the regression coefficients? What is the effect of it in the fitting model? To visualize the effect lets plot the `Cost Function` surface (RSS) in the space of the coefficents.
 
-```{r costSurface}
 
-coef(fit_axl)
-cfit <- confint(fit_axl)
+#### Age x Limit
 
-int <- coef(fit_axl)[1]
-b1 <- seq(cfit[2,1], cfit[2,2], abs((cfit[2,1]-cfit[2,2])/100) ) # age
-b2 <- seq(cfit[3,1], cfit[3,2], abs((cfit[3,1]-cfit[3,2])/100) ) # limit
-coefs <- expand.grid(b1,b2)
+```{r costSurfaceAge}
+
+# generate variations of parameters around 95% interval
+# to build the parameters variation scenario.
+getConfInterval95 <- function(model, res){
+  intercept <- coef(model)[1]
+  cfit <- confint(model)
+  b1_range <- seq(cfit[2,1], cfit[2,2], abs((cfit[2,1]-cfit[2,2])/res))
+  b2_range <- seq(cfit[3,1], cfit[3,2], abs((cfit[3,1]-cfit[3,2])/res))
+  expand.grid(int=intercept,
+              b1=b1_range,
+              b2=b2_range)
+}
 
 
-rss_grid <- map(coefs,function(coef,dt=Credit,inter=int){
-  y_hat <- inter + coef[[1]] * Credit$Age + coef[[2]] * Credit$Limit
-  sum((Credit$Balance - y_hat)^2)
-}) 
+# calc RSS from target and prediction
+rss <- function(y,y_hat){
+  sum((y - y_hat)^2)
+}
+
+# apply X to Theta parameters and calc the RSS from a target Y
+calcRSS <- function(X,Th,Y){
+  Y_hat <- cbind(1,X) %*% t(Th)
+  rss(Y,Y_hat)
+}
+
+# get range variations for the parameters in the Age x Limit model
+axl_var <- getConfInterval95(fit_axl, 100)
+
+# calc the RSS for each parameter variation
+axl_var$rss <- apply(
+  axl_var,
+  1,
+  function(th){
+    calcRSS( X = as.matrix(Credit[,c("Age","Limit")]),
+              Th = t(th),
+              Y = as.matrix(Credit[,"Balance"]) )
+  }
+)
+
+# plot them in a 'level chart'
+plot_ly(data=axl_var,
+        x = ~b1, 
+        y = ~b2, 
+        z = ~rss, 
+        type = "contour" 
+) %>% layout(
+  xaxis = list( title = "Limit" ),
+  yaxis = list( title = "Age" )
+)
+```
+
+
+#### Rating x Limit
+
+
+```{r costSurfaceRating}
+# get range variations for the parameters in the Rating x Limit model
+rxl_var <- getConfInterval95(fit_rxl, 100)
+
+# calc the RSS for each parameter variation
+rxl_var$rss <- apply(
+  rxl_var,
+  1,
+  function(th){
+    calcRSS( X = as.matrix(Credit[,c("Rating","Limit")]),
+              Th = t(th),
+              Y = as.matrix(Credit[,"Balance"]) )
+  }
+)
+
+# plot them in a 'level chart'
+plot_ly(data=rxl_var,
+        x = ~b1, 
+        y = ~b2, 
+        z = ~rss, 
+        type = "contour" 
+) %>% layout(
+  xaxis = list( title = "Limit" ),
+  yaxis = list( title = "Rating" )
+)
+```
+
+
+Interestingly, even though the `limit` and `rating` coefficients now have much more individual uncertainty, they will almost certainly lie somewhere in this contour valley. For example, we would not expect the true value of the `limit` and `rating` coefficients to be ???0.1 and 1 respectively, even though such a value is plausible for each coefficient individually.
+
+
+## Correlation Matrix
+
+A simple way to detect collinearity is to look at the correlation matrix of the predictors. An element of this matrix that is large in absolute value indicates a pair of highly correlated variables, and therefore a collinearity problem in the data. Unfortunately, not all collinearity problems can be detected by inspection of the correlation matrix: it is possible for collinearity to exist between three or more variables even if no pair of variables has a particularly high correlation. We call this situation multicollinearity.[^2]
+
+```{r corMatrix, message=FALSE, warning=FALSE}
+# calc the correlation between the features
+Credit %>%
+  select(-ID, -Balance) %>% # remove "ID" and "Target" Column
+  mutate_if(is.factor, as.numeric) %>% # converting factors to num
+  as.matrix() -> creditMatrix 
+  
+# we can computhe the correlation matrix fom 'cor' function
+corCredMtx <- cor(creditMatrix)
+
+# rendering
+library(knitr)
+kable(round(corCredMtx,2))
 
 ```
+
+```{r corMatrixPlot, message=FALSE, warning=FALSE}
+
+# the corrPlot package has a good way to plot a correlation matrix
+library(corrplot)
+corrplot(corCredMtx, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+
+We see in the chart that `income`, `limit` and `rating` are highly correlated between, what is expected in term of finalcial credit.
+
+
+## Conclusion
+
+When faced with the problem of collinearity, there are two simple solutions.
+The first is to drop one of the problematic variables from the regression.
+This can usually be done without much compromise to the regression
+fit, since the presence of collinearity implies that the information that this
+variable provides about the response is redundant in the presence of the
+other variables.
+
+The second solution is to combine the collinear variables together into a single predictor. For instance, we might take the average of standardized versions of `limit` and `rating` in order to create a new variable that measures credit worthiness.
 
 
 ### References
 
-[^1]: Introduction to Statistical Learning in R
-
+[^1]: Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. [Introduction to Statistical Learning in R](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370), p.99 
+[^2]: Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. [Introduction to Statistical Learning in R](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370), p.101
 

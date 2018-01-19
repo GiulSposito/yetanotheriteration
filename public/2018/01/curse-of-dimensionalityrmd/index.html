@@ -273,7 +273,7 @@ ggplot(dt, aes(x=x, y=y)) + geom_point() + coord_fixed(ratio = 1) + theme_bw()</
 <pre class="r"><code>x_dist &lt;- quantile(x=dt$x,probs = .1)
 x_dist</code></pre>
 <pre><code>##      10% 
-## 9.170853</code></pre>
+## 10.18498</code></pre>
 <p>We can see that in one dimension the size of the range necessary to get 10% of the data points are around 10% of this dimensions (uniform distributed)</p>
 <pre class="r"><code># mark the points in this range
 dt %&gt;%
@@ -295,11 +295,11 @@ ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
 dt %&gt;%
   filter(in_interval==T) %&gt;%
   nrow()</code></pre>
-<pre><code>## [1] 89</code></pre>
+<pre><code>## [1] 109</code></pre>
 </div>
 <div id="two-dimension" class="section level2">
 <h2>Two Dimension</h2>
-<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 9.1708529, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
+<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 10.1849817, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
 <pre class="r"><code>dt %&gt;%
   mutate(
     in_interval = case_when(
@@ -321,8 +321,8 @@ dt %&gt;%
 sel_points_pct &lt;- sel_points/total_points
 
 sel_points</code></pre>
-<pre><code>## [1] 34</code></pre>
-<p>In fact, with the new distance, we can only reach 3.4 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
+<pre><code>## [1] 30</code></pre>
+<p>In fact, with the new distance, we can only reach 3 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
 <pre class="r"><code># percents 
 dists &lt;- 1:100
 
@@ -350,10 +350,10 @@ ggplot(distCases, aes(x=dist, y=pct)) +
 
 print(twoDim10pct)</code></pre>
 <pre><code>## # A tibble: 1 x 3
-##    dist points    pct
-##   &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt;
-## 1    17     94 0.0940</code></pre>
-<p>The distance to get 10% of data points are 17 in size, about twice the original range in one dimension.</p>
+##    dist points   pct
+##   &lt;int&gt;  &lt;int&gt; &lt;dbl&gt;
+## 1    18    100 0.100</code></pre>
+<p>The distance to get 10% of data points are 18 in size, about twice the original range in one dimension.</p>
 <pre class="r"><code>dt %&gt;%
   mutate(
     in_interval = case_when(
@@ -410,9 +410,9 @@ multDimCases %&gt;%
 ##   dimensions  dist
 ##   &lt;fctr&gt;     &lt;int&gt;
 ## 1 d1             4
-## 2 d2            17
-## 3 d3            30
-## 4 d4            38
+## 2 d2            18
+## 3 d3            28
+## 4 d4            37
 ## 5 d5            45</code></pre>
 </div>
 <div id="conclusion" class="section level2">
@@ -685,9 +685,8 @@ multDimCases %&gt;%
                   Jan 1, 2018
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.1
-This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.
-CollinearityThe concept of collinearity is illustrated in Figure below using the Credit data set in the ISLR Package.</div>
+              <div class="media-content hide-xs font-merryweather">Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
