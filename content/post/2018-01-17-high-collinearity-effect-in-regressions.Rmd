@@ -8,7 +8,6 @@ tags:
   - evalutation
   - feature engineering
   - rstat
-disqusIdentifier: high-collinearity-effect-in-regressions
 slug: high-collinearity-effect-in-regressions
 thumbnailImage: images/cost_surface_tn.png
 thumbnailImagePosition: left
