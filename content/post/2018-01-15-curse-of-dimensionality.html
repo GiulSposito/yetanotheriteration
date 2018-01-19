@@ -43,7 +43,7 @@ ggplot(dt, aes(x=x, y=y)) + geom_point() + coord_fixed(ratio = 1) + theme_bw()</
 <pre class="r"><code>x_dist &lt;- quantile(x=dt$x,probs = .1)
 x_dist</code></pre>
 <pre><code>##      10% 
-## 9.145013</code></pre>
+## 9.007316</code></pre>
 <p>We can see that in one dimension the size of the range necessary to get 10% of the data points are around 10% of this dimensions (uniform distributed)</p>
 <pre class="r"><code># mark the points in this range
 dt %&gt;%
@@ -65,11 +65,11 @@ ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
 dt %&gt;%
   filter(in_interval==T) %&gt;%
   nrow()</code></pre>
-<pre><code>## [1] 109</code></pre>
+<pre><code>## [1] 89</code></pre>
 </div>
 <div id="two-dimension" class="section level2">
 <h2>Two Dimension</h2>
-<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 9.1450128, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
+<p>Now, lets see the case in two dimensions, first we’ll use the same interval found in one dimension case: 9.0073164, but in this case, we need to check points around <code>(x=50, y=50)</code>.</p>
 <pre class="r"><code>dt %&gt;%
   mutate(
     in_interval = case_when(
@@ -91,8 +91,8 @@ dt %&gt;%
 sel_points_pct &lt;- sel_points/total_points
 
 sel_points</code></pre>
-<pre><code>## [1] 27</code></pre>
-<p>In fact, with the new distance, we can only reach 2.7 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
+<pre><code>## [1] 23</code></pre>
+<p>In fact, with the new distance, we can only reach 2.3 % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?</p>
 <pre class="r"><code># percents 
 dists &lt;- 1:100
 
@@ -122,8 +122,8 @@ print(twoDim10pct)</code></pre>
 <pre><code>## # A tibble: 1 x 3
 ##    dist points    pct
 ##   &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt;
-## 1    17     96 0.0960</code></pre>
-<p>The distance to get 10% of data points are 17 in size, about twice the original range in one dimension.</p>
+## 1    19     94 0.0940</code></pre>
+<p>The distance to get 10% of data points are 19 in size, about twice the original range in one dimension.</p>
 <pre class="r"><code>dt %&gt;%
   mutate(
     in_interval = case_when(
@@ -179,11 +179,11 @@ multDimCases %&gt;%
 ## # Groups: dimensions [5]
 ##   dimensions  dist
 ##   &lt;fctr&gt;     &lt;int&gt;
-## 1 d1             4
-## 2 d2            17
-## 3 d3            28
-## 4 d4            38
-## 5 d5            45</code></pre>
+## 1 d1             5
+## 2 d2            19
+## 3 d3            30
+## 4 d4            39
+## 5 d5            46</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>

@@ -1,0 +1,220 @@
+---
+title: "Putting your workout to move"
+author: "Giuliano Sposito"
+date: '2018-01-19'
+slug: putting-your-workout-to-move
+tags:
+- rstat
+- runtastic
+- strava
+- workout
+- fitbit
+- animation
+- gganimate
+thumbnailImage: images/citymap_tn.png
+thumbnailImagePosition: left
+categories: data science
+---
+
+
+
+<p>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using <code>gganimate</code> Package and using the same code we learned, we can animate the map with few words.</p>
+<div id="reading-tcx-file" class="section level2">
+<h2>Reading TCX File</h2>
+<p>In [this post]({{&lt; ref “2018-01-16-ploting-your-mtb-track-with-r.Rmd” &gt;}}) we saw to read and GPS track information stored in a TXC/GPX file, once it’s just an <code>XML File</code>.</p>
+<pre class="r"><code>library(XML)
+library(lubridate)
+library(tidyverse)
+library(ggplot2)
+library(ggmap)
+library(gganimate)
+library(knitr)
+
+file &lt;- &quot;11654237848.tcx&quot;
+
+pfile &lt;- htmlTreeParse(file = file,
+                       error = function (...) {},
+                       useInternalNodes = TRUE)
+
+features &lt;- c(&quot;time&quot;, &quot;position/latitudedegrees&quot;, &quot;position/longitudedegrees&quot;,
+              &quot;altitudemeters&quot;, &quot;distancemeters&quot;, &quot;heartratebpm/value&quot;)
+
+fnames &lt;- c(&quot;dt&quot;, &quot;lat&quot;, &quot;lon&quot;, &quot;alt&quot;, &quot;dist&quot;, &quot;hbpm&quot;)
+
+&quot;//trackpoint/&quot; %&gt;%
+  paste0(features) %&gt;%
+  map(function(p){xpathSApply(pfile, path = p, xmlValue)}) %&gt;%
+  setNames(fnames) %&gt;%
+  as_data_frame() %&gt;% 
+  mutate_at(vars(lat:dist), as.numeric) %&gt;%
+  mutate(
+    dt = lubridate::as_datetime(dt),
+    hbpm  = as.integer(hbpm),
+    tm.prev.s = c(0, diff(dt)),
+    tm.cum.min  = round(cumsum(tm.prev.s)/60,1)
+  ) -&gt; track
+
+kable(head(track,10))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">dt</th>
+<th align="right">lat</th>
+<th align="right">lon</th>
+<th align="right">alt</th>
+<th align="right">dist</th>
+<th align="right">hbpm</th>
+<th align="right">tm.prev.s</th>
+<th align="right">tm.cum.min</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-01-06 10:34:08</td>
+<td align="right">-22.70375</td>
+<td align="right">-46.75608</td>
+<td align="right">683.59</td>
+<td align="right">0.00</td>
+<td align="right">111</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">2018-01-06 10:34:12</td>
+<td align="right">-22.70375</td>
+<td align="right">-46.75608</td>
+<td align="right">683.59</td>
+<td align="right">0.02</td>
+<td align="right">111</td>
+<td align="right">4</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-01-06 10:34:13</td>
+<td align="right">-22.70375</td>
+<td align="right">-46.75608</td>
+<td align="right">683.30</td>
+<td align="right">0.05</td>
+<td align="right">111</td>
+<td align="right">1</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">2018-01-06 10:34:14</td>
+<td align="right">-22.70375</td>
+<td align="right">-46.75609</td>
+<td align="right">683.59</td>
+<td align="right">0.11</td>
+<td align="right">111</td>
+<td align="right">1</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-01-06 10:34:15</td>
+<td align="right">-22.70374</td>
+<td align="right">-46.75610</td>
+<td align="right">684.09</td>
+<td align="right">0.79</td>
+<td align="right">111</td>
+<td align="right">1</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">2018-01-06 10:34:16</td>
+<td align="right">-22.70373</td>
+<td align="right">-46.75611</td>
+<td align="right">684.09</td>
+<td align="right">2.37</td>
+<td align="right">111</td>
+<td align="right">1</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-01-06 10:34:17</td>
+<td align="right">-22.70372</td>
+<td align="right">-46.75611</td>
+<td align="right">684.59</td>
+<td align="right">4.08</td>
+<td align="right">111</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">2018-01-06 10:34:18</td>
+<td align="right">-22.70371</td>
+<td align="right">-46.75609</td>
+<td align="right">685.20</td>
+<td align="right">5.94</td>
+<td align="right">110</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-01-06 10:34:19</td>
+<td align="right">-22.70369</td>
+<td align="right">-46.75608</td>
+<td align="right">685.50</td>
+<td align="right">7.83</td>
+<td align="right">110</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">2018-01-06 10:34:20</td>
+<td align="right">-22.70367</td>
+<td align="right">-46.75607</td>
+<td align="right">685.10</td>
+<td align="right">9.80</td>
+<td align="right">110</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="plot-the-map" class="section level2">
+<h2>Plot the map</h2>
+<p>Also we saw how is easy to plot the track over a map using <code>ggmap</code> package.</p>
+<pre class="r"><code># getting the map backgroubd 
+bbox &lt;- make_bbox(lon = track$lon, lat=track$lat, f=.1)
+gmap &lt;- get_map( location=bbox, maptype = &quot;hybrid&quot;, source=&quot;google&quot;)
+
+# base plot
+ggmap(gmap) + 
+  geom_path(data=track, mapping=aes(lon, lat),
+            color=&quot;yellow&quot;, alpha = 1, size = 0.8, lineend = &quot;round&quot;) +
+  coord_fixed() +
+  theme_void() +
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="/post/2018-01-19-putting-your-workout-to-move_files/figure-html/plot-1.png" width="672" /></p>
+</div>
+<div id="animating-the-map" class="section level2">
+<h2>Animating the Map</h2>
+<p>Now, with a little more code, we can use the <code>[gganimate](https://github.com/dgrtwo/gganimate)</code> Package to create a animated gif version of this plot.</p>
+<p><code>gganimate</code> plotting a series of <code>ggplots</code> and put them together in a <code>gif</code> (or other format) using <code>[ImageMagick](https://www.imagemagick.org/)</code>. Two <code>aesthetics</code> keywords in the <code>ggplot2</code> grammar are in charge to control how the individual charts will be gerated: <code>frame</code> and <code>cumulative</code>. The first indicate which feature in the data frame is the “time dimention” and the other controls if the plot will be incremental (from a “frame” to “frame”) or cumulative (from “beginning” to the “current frame”).</p>
+<pre class="r"><code># lets make a frame each 3 minutes
+# to not destroy the track info, we collapse the data on each 3 minutes
+track %&gt;%
+  mutate(
+    dt = floor_date(dt, &quot;3 minutes&quot;)
+  ) -&gt; track
+
+# base plot
+ggmap(gmap) + 
+  # cumulative layer, the &quot;whole path&quot; along the time (dt)
+  geom_path(data=track, mapping=aes(lon, lat, frame=dt, cumulative=T),
+            color=&quot;yellow&quot;, alpha = 1, size = 0.8, lineend = &quot;round&quot;) +
+  # the &quot;instant&quot; plot, the 3 minutes path in the frame (dt)
+  geom_path(data=track, mapping=aes(lon, lat, frame=dt, cumulative=F),
+            size=1.2, lineend = &quot;round&quot;, color=&quot;red&quot;) +
+  coord_fixed() +
+  theme_void() +
+  theme( legend.position = &quot;none&quot; ) -&gt; p
+
+p &lt;- gganimate(p, interval=0.01, ani.width=600,
+               ani.height=600, filename = &quot;11654237848.gif&quot; )</code></pre>
+<div class="figure">
+<img src="11654237848.gif" alt="Animated MTB Track" />
+<p class="caption">Animated MTB Track</p>
+</div>
+</div>
