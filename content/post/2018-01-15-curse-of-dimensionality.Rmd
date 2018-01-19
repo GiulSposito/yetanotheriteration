@@ -24,13 +24,13 @@ With lower dimensionality (around 4) and a great number of sample this is a grea
 
 Let's build a 5 dimensional data set 
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r setup, message=FALSE, warning=FALSE, cache=TRUE}
 library(ggplot2)
 library(tidyverse)
 library(reshape2)
 ```
 
-```{r one_dim}
+```{r one_dim, cache=TRUE}
 # five dimentional datapoints
 total_points <- 1000
 dt <- data_frame(
@@ -48,14 +48,14 @@ ggplot(dt, aes(x=x, y=y)) + geom_point() + coord_fixed(ratio = 1) + theme_bw()
 
 Let's suppose that we need to get 10% of points around `x=50` (100 points), what is the size of interval necessary to get these points?
 
-```{r find_10pct}
+```{r find_10pct, cache=TRUE}
 x_dist <- quantile(x=dt$x,probs = .1)
 x_dist
 ```
 
 We can see that in one dimension the size of the range necessary to get 10% of the data points are around 10% of this dimensions (uniform distributed)
 
-```{r get10pct}
+```{r get10pct, cache=TRUE}
 
 # mark the points in this range
 dt %>%
@@ -84,7 +84,7 @@ dt %>%
 
 Now, lets see the case in two dimensions, first we'll use the same interval found in one dimension case: `r x_dist`, but in this case, we need to check points around `(x=50, y=50)`.
 
-```{r twodim}
+```{r twodim, cache=TRUE}
 
 dt %>%
   mutate(
@@ -101,7 +101,7 @@ ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
 
 Now wee see that the number of point get in this range is significantly lower than previous case.
 
-```{r counttwodim}
+```{r counttwodim, cache=TRUE}
 # how much points?
 dt %>%
   filter(in_interval==T) %>%
@@ -115,7 +115,7 @@ sel_points
 
 In fact, with the new distance, we can only reach `r round(sel_points_pct*100,1)` % of the data points adding one dimension. Can we find how much be the size of the radius to get 10% of the points?
 
-```{r coverageTwoDim}
+```{r coverageTwoDim, cache=TRUE}
 
 # percents 
 dists <- 1:100
@@ -148,7 +148,7 @@ print(twoDim10pct)
 
 The distance to get 10% of data points are `r twoDim10pct$dist` in size, about twice the original range in one dimension.
 
-```{r twoDim20Pct}
+```{r twoDim20Pct, cache=TRUE}
 dt %>%
   mutate(
     in_interval = case_when(
@@ -167,7 +167,7 @@ ggplot(dt, aes(x=x, y=y, colour=in_interval)) +
 
 We can generalize and see the impact in the size of range along the additional dimension?
 
-```{r aditionalDim}
+```{r aditionalDim, cache=TRUE}
 # percents 
 dists <- 1:100
 
@@ -200,7 +200,7 @@ multDimCases %>%
 
 The distances to capture 10% of data points along the 5 dimension.
 
-```{r distAt10}
+```{r distAt10, cache=TRUE}
 multDimCases %>% 
   group_by(dimensions) %>%
   filter( cover_pct <= 0.1 ) %>%

@@ -1,0 +1,16 @@
+base
+XML
+lubridate
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+ggmap
+gganimate
+knitr
+bindrcpp

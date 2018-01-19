@@ -1,28 +1,29 @@
 ---
-title: "Putting your workout to move"
-author: "Giuliano Sposito"
-date: '2018-01-19'
-slug: putting-your-workout-to-move
+title: Putting your workout to move
+author: Giuliano Sposito
+date: '2018-01-20'
+categories:
+  - data science
 tags:
-- rstat
-- runtastic
-- strava
-- workout
-- fitbit
-- animation
-- gganimate
+  - animation
+  - fitbit
+  - gganimate
+  - rstat
+  - runtastic
+  - strava
+  - workout
+slug: putting-your-workout-to-move
 thumbnailImage: images/citymap_tn.png
 thumbnailImagePosition: left
-categories: data science
 ---
 
 In this quick post, we'll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using `gganimate` Package and using the same code we learned, we can animate the map with few words. 
 
 ## Reading TCX File
 
-In [this post]({{< ref "2018-01-16-ploting-your-mtb-track-with-r.Rmd" >}}) we saw to read and GPS track information stored in a TXC/GPX file, once it's just an `XML File`.
+[We already saw](/2018/01/ploting-your-mtb-track-with-r/) to how read and GPS track information stored in a TXC/GPX file, once it's just an `XML File`.
 
-```{r readTCX, warning=FALSE, message=FALSE}
+```{r readTCX, warning=FALSE, message=FALSE, cache=TRUE}
 library(XML)
 library(lubridate)
 library(tidyverse)
@@ -62,7 +63,7 @@ kable(head(track,10))
 
 Also we saw how is easy to plot the track over a map using `ggmap` package.
 
-```{r plot, warning=FALSE, message=FALSE}
+```{r plot, warning=FALSE, message=FALSE, cache=TRUE}
 
 # getting the map backgroubd 
 bbox <- make_bbox(lon = track$lon, lat=track$lat, f=.1)
@@ -79,11 +80,11 @@ ggmap(gmap) +
 
 ## Animating the Map
 
-Now, with a little more code, we can use the `[gganimate](https://github.com/dgrtwo/gganimate)` Package to create a animated gif version of this plot.
+Now, with a little more code, we can use the [gganimate](https://github.com/dgrtwo/gganimate) Package to create a animated gif version of this plot.
 
-`gganimate` plotting a series of `ggplots` and put them together in a `gif` (or other format) using `[ImageMagick](https://www.imagemagick.org/)`. Two `aesthetics` keywords in the `ggplot2` grammar are in charge to control how the individual charts will be gerated: `frame` and `cumulative`. The first indicate which feature in the data frame is the "time dimention" and the other controls if the plot will be incremental (from a "frame" to "frame") or cumulative (from "beginning" to the "current frame").
+`gganimate` plotting a series of `ggplots` and put them together in a `gif` (or other format) using [ImageMagick](https://www.imagemagick.org/). Two `aesthetics` keywords in the `ggplot2` grammar are in charge to control how the individual charts will be gerated: `frame` and `cumulative`. The first indicate which feature in the data frame is the "time dimention" and the other controls if the plot will be incremental (from a "frame" to "frame") or cumulative (from "beginning" to the "current frame").
 
-```{r animate, warning=FALSE, message=FALSE}
+```{r animate, warning=FALSE, message=FALSE, cache=TRUE}
 # lets make a frame each 3 minutes
 # to not destroy the track info, we collapse the data on each 3 minutes
 track %>%
@@ -107,4 +108,4 @@ p <- gganimate(p, interval=0.01, ani.width=600,
                ani.height=600, filename = "11654237848.gif" )
 ```
 
-![Animated MTB Track](11654237848.gif)
+![Animated MTB Track](/images/11654237848.gif)

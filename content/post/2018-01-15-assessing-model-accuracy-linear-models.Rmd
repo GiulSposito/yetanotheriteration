@@ -36,7 +36,7 @@ Let's simulate some situations to see how MSE~tr~ and MSE~ts against different f
 
 ### Curve 1
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r setup, message=FALSE, warning=FALSE, cache=TRUE}
 # setup
 library(ggplot2)
 library(tidyverse)
@@ -46,7 +46,7 @@ set.seed(42)
 ```
 
 
-```{r caseOne}
+```{r caseOne, cache=TRUE}
 # full domain of points (continuous from 0 to 100)
 DOMAIN <- 0:100
 
@@ -80,7 +80,7 @@ ggplot(dt_tr, aes(x=x)) +
 Let's fit some cases in these data sets, we will use an linear regression, and some polynomial data.
 
 
-```{r fitCaseOne}
+```{r fitCaseOne, cache=TRUE}
 # lets fit linear model and polynomials with degree 2, 3, e 10
 degrees <- c(1,2,3,5,10)
 
@@ -113,7 +113,7 @@ ggplot(dt_tr_long) +
 
 We see in this chart, the real data points (points), the real function (continuous black line) and different fitting curves (colored lines) from 1 degree to 50 degree. Now let's see the performances of these models, calculating and plotting MSE on training and testing sets.
 
-```{r perfCaseOne, warning=FALSE}
+```{r perfCaseOne, warning=FALSE, cache=TRUE}
 
 # calc MSE from the residuals of the model
 getMSE <- function(lm.model) sum(lm.model$residuals^2)/length(lm.model$residuals)
@@ -153,7 +153,7 @@ We can see the behavior of MSE data, in the training data (Red) the increasing o
 
 Another example.
 
-```{r caseTwo}
+```{r caseTwo, cache=TRUE}
 # now the domains is 100 random
 DOMAIN <- 0:100
 
@@ -183,7 +183,7 @@ ggplot(dt_tr, aes(x=x)) +
   theme_bw()
 ```
 
-```{r fitCaseTwo}
+```{r fitCaseTwo, cache=TRUE}
 # degress to fit
 degrees <- c(1,2,3,5,10)
 
@@ -208,7 +208,7 @@ ggplot(dt_tr_long) +
   theme_bw()
 ```
 
-```{r perfCaseTwo}
+```{r perfCaseTwo, cache=TRUE}
 # performances
 perf <- data_frame(
   degree = degrees,
@@ -230,7 +230,7 @@ ggplot(perf,aes(x=degree)) +
 
 # Curve 3
 
-```{r caseThree}
+```{r caseThree, cache=TRUE}
 DOMAIN <- runif(100, 1, 100)
 
 # function linear gausian noise sd=1
@@ -258,7 +258,7 @@ ggplot(dt_tr, aes(x=x)) +
   theme_bw()
 ```
 
-```{r  fittCaseThree}
+```{r  fittCaseThree, cache=TRUE}
 degrees <- c(1,2,3,5,10)
 
 models <- map(degrees, fitPoly, data=dt_tr)
@@ -278,7 +278,7 @@ ggplot(dt_tr_long) +
   theme_bw()
 ```
 
-```{r perfCaseThree}
+```{r perfCaseThree, cache=TRUE}
 # performances
 perf <- data_frame(
   degree = degrees,

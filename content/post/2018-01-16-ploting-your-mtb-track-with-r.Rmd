@@ -96,7 +96,7 @@ As we see, it's a time-date indexed XML file with some structuring to define `ac
 Let's extract the available tracking data (date-time, latitude and longitude coords, altitude and heart beat) from this file, using the [XML Package](https://cran.r-project.org/web/packages/XML/index.html). Because with are just interested in the GPS data we can use [XPath Query](https://www.w3schools.com/xml/xpath_intro.asp) directly to take the track points data through all the XML file. 
 
 
-```{r readingTCX, warning=FALSE, message=FALSE}
+```{r readingTCX, warning=FALSE, message=FALSE, cache=TRUE}
 # setup
 library(XML)
 library(lubridate)
@@ -137,7 +137,7 @@ print(track)
 
 With the data set in hand, we can use the info, for examplar to plot the _heart beat_ and _altitude_.
 
-```{r hearBeatPlot}
+```{r hearBeatPlot, cache=TRUE}
 library(ggplot2)
 
 ggplot(track, aes(x=dt, y=hbpm)) + 
@@ -145,7 +145,7 @@ ggplot(track, aes(x=dt, y=hbpm)) +
 ```
 
 
-```{r plotAlt}
+```{r plotAlt, cache=TRUE}
 ggplot(track) +
   geom_area(aes(x = dt, y = alt), fill="blue", stat="identity") +
   theme_bw() 
@@ -157,7 +157,7 @@ ggplot(track) +
 We can take the latitude and longitude coordenates extract from TCX and plot the path executed during this ride. This is pretty straighforward using `geom_path()`in `ggplot2`.
 
 
-```{r plotTrack}
+```{r plotTrack, cache=TRUE}
 # ploting latitude in N/S orietation and lon as E/L orientation
 ggplot(track, aes(x=lon, y=lat)) +
   geom_path(aes(colour=alt), size=1.2) + # ploting alt as color reference
@@ -177,7 +177,7 @@ The [ggmap R Package](https://cran.r-project.org/web/packages/ggmap/index.html) 
 The package uses some providers to get a "background" image to be used as base map, also maps the scale of the image to the appropriate lat/lon coordenates.
 
 
-```{r mapBackground, warning=FALSE, message=FALSE}
+```{r mapBackground, warning=FALSE, message=FALSE, cache=TRUE}
 library(ggmap)
 
 # first we define a "box" based on lats and lons that will ploted over
@@ -197,7 +197,7 @@ ggmap(gmap)
 Once with the map background in hands, we just plot the track over it, changing the color scale to improve the contrast.
 
 
-```{r plotOverMap, warning=FALSE, message=FALSE}
+```{r plotOverMap, warning=FALSE, message=FALSE, cache=TRUE}
 # now the ggmap is the base o ggplot
 ggmap(gmap) +
   # ploting the path using lon and lat as coordenates and alt as color
@@ -260,7 +260,7 @@ Basically, as we using XPath to get the data points, reading a GPX file is prett
 Basically it's about same, with a metadata in the beginning and the `track points` are in the nodes `trkpt`, but the struct is different. The GPS coords are `attributes` of these nodes while `elevation` and `time` are sub-nodes in the value. We'll have to use XPath different to get the value and the attributes.
 
 
-```{r readGPX}
+```{r readGPX, cache=TRUE}
 
 # reading the xml file download from runtastic
 file <- htmlTreeParse(file = "runtastic_20170611_1134_Cycling.gpx",

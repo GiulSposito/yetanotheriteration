@@ -21,7 +21,7 @@ This [R Notebook](http://rmarkdown.rstudio.com/r_notebooks.html) seeks to ilustr
 
 The concept of collinearity is illustrated in Figure below using the `Credit` data set in the `ISLR Package`. In the left-hand panel of Figure the two predictors `limit` and `age` appear to have no obvious relationship. In contrast, in the right-hand panel the predictors `limit` and `rating` are very highly correlated with each other, and we say that they are collinear.[^1]
 
-```{r collinearity, message=FALSE, warning=FALSE}
+```{r collinearity, message=FALSE, warning=FALSE, cache=TRUE}
 # setup
 library(ISLR)
 library(tidyverse)
@@ -50,7 +50,7 @@ marrangeGrob(list(p1,p2), nrow=1, ncol=2, top=NULL)
 Let's fit two models using these pair of features (`age` x `limit` and `Rating` x `Limit`) to predict the `Balance` outcome and see what happen with the model performances
 
 
-```{r fitModel1}
+```{r fitModel1, cache=TRUE}
 
 # balance in function of Age and Limit
 fit_axl <- lm(Balance~Age+Limit, Credit)
@@ -60,7 +60,7 @@ summary(fit_axl)
 
 The first is a regression of `balance` on `age` and `limit`, here both `age` and `limit` are **highly significant with very small _p-values_**.
 
-```{r fitModel2}
+```{r fitModel2, cache=TRUE}
 # balance in function of Rating and Limit
 fit_rxl <- lm(Balance~Rating+Limit, Credit)
 summary(fit_rxl)
@@ -81,7 +81,7 @@ Why the collinearity reduces the accuracy of the regression coefficients? What i
 
 #### Age x Limit
 
-```{r costSurfaceAge}
+```{r costSurfaceAge, cache=TRUE}
 
 # generate variations of parameters around 95% interval
 # to build the parameters variation scenario.
@@ -137,7 +137,7 @@ plot_ly(data=axl_var,
 #### Rating x Limit
 
 
-```{r costSurfaceRating}
+```{r costSurfaceRating, cache=TRUE}
 # get range variations for the parameters in the Rating x Limit model
 rxl_var <- getConfInterval95(fit_rxl, 100)
 
@@ -172,7 +172,7 @@ Interestingly, even though the `limit` and `rating` coefficients now have much m
 
 A simple way to detect collinearity is to look at the correlation matrix of the predictors. An element of this matrix that is large in absolute value indicates a pair of highly correlated variables, and therefore a collinearity problem in the data. Unfortunately, not all collinearity problems can be detected by inspection of the correlation matrix: it is possible for collinearity to exist between three or more variables even if no pair of variables has a particularly high correlation. We call this situation multicollinearity.[^2]
 
-```{r corMatrix, message=FALSE, warning=FALSE}
+```{r corMatrix, message=FALSE, warning=FALSE, cache=TRUE}
 # calc the correlation between the features
 Credit %>%
   select(-ID, -Balance) %>% # remove "ID" and "Target" Column
@@ -188,7 +188,7 @@ kable(round(corCredMtx,2))
 
 ```
 
-```{r corMatrixPlot, message=FALSE, warning=FALSE}
+```{r corMatrixPlot, message=FALSE, warning=FALSE, cache=TRUE}
 
 # the corrPlot package has a good way to plot a correlation matrix
 library(corrplot)
