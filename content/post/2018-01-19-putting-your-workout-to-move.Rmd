@@ -104,8 +104,8 @@ ggmap(gmap) +
   theme_void() +
   theme( legend.position = "none" ) -> p
 
-p <- gganimate(p, interval=0.01, ani.width=600,
-               ani.height=600, filename = "11654237848.gif" )
+p <- gganimate(p, interval=0.01, ani.width=400,
+               ani.height=400, filename = "11654237848.gif" )
 ```
 
 ![Animated MTB Track](/images/11654237848.gif)
