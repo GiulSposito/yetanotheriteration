@@ -14,24 +14,6 @@ thumbnailImage: images/network_tn.png
 thumbnailImagePosition: left
 ---
 
-```{r setup, include=FALSE, cache=TRUE}
-# default behavior of document chunks
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-
-# library setup
-library(needs)
-needs(data.table)
-needs(stringr)   # limpeza e tratamento de strings
-needs(tidyverse) # pipeline e manipulacao de dados
-needs(igraph)    # manipulacao de grafos
-needs(tidygraph) # visualizacoes de redes
-needs(ggraph)    # visualizacoes de redes
-
-# default nudge
-NUDGE_Y = 0.3
-
-```
-
 Este artigo ([RNotebook](http://rmarkdown.rstudio.com/r_notebooks.html)) explora técnicas de *Análise de Redes Sociais* ([SNA](https://en.wikipedia.org/wiki/Social_network_analysis)) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R[^1] publicados no repositório CRAN[^2].
 
 ## Introdução
@@ -77,6 +59,25 @@ O uso primário da teoria de grafos na análise de rede é buscar identificar "i
 A *teoria de grafos*, campo da da matemática que estuda as relações entre os objetos de um determinado conjunto, fornece os mecanismos matemáticos que são base para a análise das estruturas da rede. Através do entendimento da estrutura de uma rede é possível ter _insights_ sobre seus padrões, propriedades e indivíduos. 
 
 Um grafo é uma representação matemática de uma rede social, onde os elementos (empresas, pessoas, etc.) são representados por vértices e a relação entre os elementos são representados como arestas entre dois vértices. A ligação (aresta) pode ser direcional ou não direcional. Pode-se associar valores tanto aos nós como arestas.
+
+```{r setup, include=TRUE, cache=TRUE}
+# default behavior of document chunks
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# library setup
+library(needs)
+needs(data.table)
+needs(stringr)   # limpeza e tratamento de strings
+needs(tidyverse) # pipeline e manipulacao de dados
+needs(igraph)    # manipulacao de grafos
+needs(tidygraph) # visualizacoes de redes
+needs(ggraph)    # visualizacoes de redes
+
+# default nudge
+NUDGE_Y = 0.3
+
+```
+
 
 
 ```{r network, cache=TRUE}
@@ -415,7 +416,7 @@ CRAN[^2] é o repositório oficial de pacotes de R, [listando](https://cran.r-pr
 
 Qualquer pessoa pode desenvolver e disponibilizar pacotes, porém é mais comum que os pacotes sejam desenvolvidos por equipes de pesquisa e grupos de programadores dentro de empresas ou universidades ou que sejam um desenvolvimento que segue a dinâmica de software _open source_, quando o código do pacote está público e recebe contribuição de vários desenvolvedores espalhados pelo mundo.
 
-![Autores de um pacote R](./images/xgb_package.png)
+![Autores de um pacote R](/images/xgb_package.png)
 
 O pacote publicado contém uma lista de autores, que contribuíram para construir e publicar o pacote. O objetivo desta análise entender como se organiza a rede de colaboração de autores, para isso usaremos os dados de publicação para construir uma rede, onde cada vértice da rede é um ator e uma aresta identifica um pacote em que dois (ou mais autores) colaboraram juntos.
 

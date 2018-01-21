@@ -282,6 +282,20 @@ ga('send', 'pageview');
 <p>O uso primário da teoria de grafos na análise de rede é buscar identificar “importante” atores. O conceito de prestígio e centralidade busca quantificar ideias teóricas sobre a proeminência de um ator em uma rede, sumarizando as relações estruturais com os demais atores. Além disso, fornece indicadores no nível de grupo, que permite avaliar a dispersão ou desigualdade (de recursos e/ou informações) entre todos os atores da rede.</p>
 <p>A <em>teoria de grafos</em>, campo da da matemática que estuda as relações entre os objetos de um determinado conjunto, fornece os mecanismos matemáticos que são base para a análise das estruturas da rede. Através do entendimento da estrutura de uma rede é possível ter <em>insights</em> sobre seus padrões, propriedades e indivíduos.</p>
 <p>Um grafo é uma representação matemática de uma rede social, onde os elementos (empresas, pessoas, etc.) são representados por vértices e a relação entre os elementos são representados como arestas entre dois vértices. A ligação (aresta) pode ser direcional ou não direcional. Pode-se associar valores tanto aos nós como arestas.</p>
+<pre class="r"><code># default behavior of document chunks
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# library setup
+library(needs)
+needs(data.table)
+needs(stringr)   # limpeza e tratamento de strings
+needs(tidyverse) # pipeline e manipulacao de dados
+needs(igraph)    # manipulacao de grafos
+needs(tidygraph) # visualizacoes de redes
+needs(ggraph)    # visualizacoes de redes
+
+# default nudge
+NUDGE_Y = 0.3</code></pre>
 <pre class="r"><code># Lista de arestas, os números são identificadores dos nós
 g_edgelist &lt;- data.frame(
   from = c( 1,1,2,2,3,3,5,5),
@@ -648,7 +662,7 @@ ggraph(h, layout=&quot;kk&quot;) +
 <p>CRAN<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> é o repositório oficial de pacotes de R, <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">listando</a> todos os pacotes produzido e disponibilizado gratuitamente pela comunidade de usuário e programadores. Os pacotes fornece funcionalidades adicionais ou específicas para o R e para serem utilizados devem ser copiados, instalados e carregados.</p>
 <p>Qualquer pessoa pode desenvolver e disponibilizar pacotes, porém é mais comum que os pacotes sejam desenvolvidos por equipes de pesquisa e grupos de programadores dentro de empresas ou universidades ou que sejam um desenvolvimento que segue a dinâmica de software <em>open source</em>, quando o código do pacote está público e recebe contribuição de vários desenvolvedores espalhados pelo mundo.</p>
 <div class="figure">
-<img src="images/xgb_package.png" alt="Autores de um pacote R" />
+<img src="https://yetanotheriteration.netlify.com/images/xgb_package.png" alt="Autores de um pacote R" />
 <p class="caption">Autores de um pacote R</p>
 </div>
 <p>O pacote publicado contém uma lista de autores, que contribuíram para construir e publicar o pacote. O objetivo desta análise entender como se organiza a rede de colaboração de autores, para isso usaremos os dados de publicação para construir uma rede, onde cada vértice da rede é um ator e uma aresta identifica um pacote em que dois (ou mais autores) colaboraram juntos.</p>
