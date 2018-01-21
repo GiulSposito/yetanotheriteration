@@ -1,0 +1,16 @@
+base
+needs
+data.table
+stringr
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+forcats
+igraph
+tidygraph
+ggraph
+bindrcpp

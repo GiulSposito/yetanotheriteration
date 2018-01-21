@@ -84,7 +84,7 @@ Now, with a little more code, we can use the [gganimate](https://github.com/dgrt
 
 `gganimate` plotting a series of `ggplots` and put them together in a `gif` (or other format) using [ImageMagick](https://www.imagemagick.org/). Two `aesthetics` keywords in the `ggplot2` grammar are in charge to control how the individual charts will be gerated: `frame` and `cumulative`. The first indicate which feature in the data frame is the "time dimention" and the other controls if the plot will be incremental (from a "frame" to "frame") or cumulative (from "beginning" to the "current frame").
 
-```{r animate, warning=FALSE, message=FALSE, cache=TRUE}
+```{r animate, warning=FALSE, message=FALSE, cache=TRUE, eval=FALSE}
 # lets make a frame each 3 minutes
 # to not destroy the track info, we collapse the data on each 3 minutes
 track %>%

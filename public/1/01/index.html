@@ -1,0 +1,1385 @@
+<p>Este artigo (<a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a>) explora técnicas de <em>Análise de Redes Sociais</em> (<a href="https://en.wikipedia.org/wiki/Social_network_analysis">SNA</a>) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> publicados no repositório CRAN<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<div id="introducao" class="section level2">
+<h2>Introdução</h2>
+<div id="redes-sociais" class="section level3">
+<h3>Redes Sociais</h3>
+<p>O trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “<em>Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes</em>”. (MARTELETO 2001)</p>
+<p>A dinâmica das redes funciona por meio de atividades relacionadas ao compartilhamento de valores e de idéias em comunidades, e em sua representação gráfica em que cada ator é representada por um nó, e as relações são representadas por linhas que conectam os nós. (STORCH 2008)</p>
+<p>Analisar estas redes resume-se em estudar as ligações relacionais entre atores sociais. Estes atores, tanto podem ser pessoas e empresas individualmente ou coletivamente analisadas em unidades sociais, como por exemplo, departamento de uma organização, prestadoras de serviço público em um município ou estados-nação em um continente. (WASSERMAN 1994)</p>
+</div>
+<div id="vantagens-competitivas-da-rede" class="section level3">
+<h3>Vantagens Competitivas da Rede</h3>
+<p>O acesso à informação é um elemento-chave para o desenvolvimento econômico e social de comunidades, grupos sociais e indivíduos. A capacidade de obter informações, além dos contornos restritos da própria localidade, é parte do capital relacional dos indivíduos e grupos. (MARTELETO 2004)</p>
+<p>O capital social, definido como o conjunto de vantagens obtida da rede de relacionamento, pode ser considerado como capital humano ou financeiro, investimentos para sua ampliação devem permitir retornos ou benefícios, servindo de base para o desenvolvimento. (BURT 2001)</p>
+<p>Com efeito, a rede não é conseqüência, apenas, das relações que de fato existem entre os atores; ela é também o resultado da ausência de relações, da falta de laços diretos entre dois atores, do que BURT (1992) chama de “buracos estruturais”. O “desenho” do tecido social apresenta-se, desse modo, como algo semelhante a um queijo suíço. Para os analistas que salientam o “fechamento da rede”, o capital social guarda relação direta e proporcional com a quantidade de cliques (ou núcleos de tríades sobrepostas) e com a intensidade dos laços fortes (ENGLE 1999).</p>
+</div>
+<div id="importancia-da-analise-de-redes-sociais" class="section level3">
+<h3>Importancia da Análise de Redes Sociais</h3>
+<p>Análise das métricas de rede possibilitaria então apontar intervenções necessárias para otimizar as interações entre os atores das redes.</p>
+<p>Análise de Redes Sociais possibilitam, dentre outros, os seguintes benefícios para as organizações: promoção da integração da rede de pessoas participantes em atividades de negociações da empresa, identificação dos indivíduos que não compartilham seus conhecimentos; a avaliação do desempenho de um grupo de pessoas que trabalham de forma integrada, dentre outros.</p>
+<p>Muitas práticas gerenciais habituais no cotidiano das empresas e corporações podem explorar os conceitos e mecanismos da organização em rede, melhorando a sua efetividade:</p>
+<ul>
+<li><strong>Gestão de Talentos</strong>: Encontrar os líderes naturais na organização;</li>
+<li><strong>Inovação</strong>: Identificar fronteiras. Garantir que a organização tenha acesso a novas idéias;</li>
+<li><strong>Colaboração</strong>: Encontrar lacunas no conhecimento dentro de grupos, ou entre organizações ou geografias. Monitorar ou medir mudanças;</li>
+<li><strong>Gestão do conhecimento</strong>: Identificar e manter conhecimentos vitais. Monitorar ou medir mudanças no conhecimento ou na troca de conhecimento;</li>
+<li><strong>Mudança Organizacional e Desenvolvimento</strong>: Encontrar líderes de opinião para iniciativas de gerenciamento de mudanças ou durante a integração após fusões e aquisições;</li>
+<li><strong>Desempenho Organizacional</strong>: Diagnosticar a coesão entre os membros da equipe e identificar conexões críticas para a melhoria.</li>
+</ul>
+</div>
+</div>
+<div id="conceitos-chaves-para-analise-de-redes" class="section level2">
+<h2>Conceitos Chaves para Análise de Redes</h2>
+<p>O uso primário da teoria de grafos na análise de rede é buscar identificar “importante” atores. O conceito de prestígio e centralidade busca quantificar ideias teóricas sobre a proeminência de um ator em uma rede, sumarizando as relações estruturais com os demais atores. Além disso, fornece indicadores no nível de grupo, que permite avaliar a dispersão ou desigualdade (de recursos e/ou informações) entre todos os atores da rede.</p>
+<p>A <em>teoria de grafos</em>, campo da da matemática que estuda as relações entre os objetos de um determinado conjunto, fornece os mecanismos matemáticos que são base para a análise das estruturas da rede. Através do entendimento da estrutura de uma rede é possível ter <em>insights</em> sobre seus padrões, propriedades e indivíduos.</p>
+<p>Um grafo é uma representação matemática de uma rede social, onde os elementos (empresas, pessoas, etc.) são representados por vértices e a relação entre os elementos são representados como arestas entre dois vértices. A ligação (aresta) pode ser direcional ou não direcional. Pode-se associar valores tanto aos nós como arestas.</p>
+<pre class="r"><code># Lista de arestas, os números são identificadores dos nós
+g_edgelist &lt;- data.frame(
+  from = c( 1,1,2,2,3,3,5,5),
+  to   = c( 2,3,3,5,4,5,6,7)
+) 
+
+# construindo a rede a partir da lista de arestas
+g &lt;- g_edgelist %&gt;%
+  as.matrix() %&gt;%
+  graph.edgelist(directed = FALSE) %&gt;% # usando igraph 
+  as_tbl_graph() %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate( name = LETTERS[1:7] ) # nomeando os nós
+
+# calculando previamente as métricas
+g &lt;- g %&gt;% 
+  mutate( degree = centrality_degree(), 
+          btwn   = round( centrality_betweenness(),2 ),
+          clsn   = round( centrality_closeness(normalized = T),2 ),
+          eign   = round( centrality_eigen(scale = F), 2 ))
+
+# fixando o layout previamente para todos os plots terem a mesma disposicao
+g_layout &lt;- create_layout(g, layout = &quot;kk&quot;)
+
+# plotando o graph
+ggraph(g_layout) +
+  geom_edge_fan(alpha=0.3) +
+  geom_node_point(color=&quot;blue&quot;,alpha=0.8, size=8) +
+  geom_node_text(aes(label=name), color=&quot;white&quot;) +
+  theme_void() +
+  ggtitle( &quot;Exemplo de Rede&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/network-1.png" width="672" /></p>
+<p>Há uma série de métricas e propriedades (Newmann, 2010) de um grafo que podem fornecer informações relevantes sobre a relação (arestas) entre os indivíduos (vértices) e os próprios indivíduos quando esse representa uma rede social. Iremos explorar algumas propriedades que podem estar ligadas a identificação de capital social, são elas:</p>
+<ul>
+<li>Degree Centrality</li>
+<li>Betweenness Centrality</li>
+<li>Closeness Centrality</li>
+<li>Eigenvector Centrality</li>
+<li>Components</li>
+<li>Density</li>
+<li>Diameter</li>
+<li>Eccentricy</li>
+</ul>
+<div id="degree-centrality-grau" class="section level4">
+<h4>Degree Centrality (Grau)</h4>
+<p>O Grau (<em>Degree</em>) é o número de arestas (ou links) que levam para dentro ou para fora de um vértice. Freqüentemente usado como medida de conexão de um nó para outros nós imediatos. Podendo assim representar influencia e/ou popularidade de um nó juntos aos demais. Útil na avaliação de quais nós são fundamentais em relação à disseminação de informações e na capacidade influenciar outros nós na localidade imediata.</p>
+<p>Exemplos:</p>
+<ul>
+<li>Quantas pessoas essa pessoa pode alcançar diretamente?</li>
+<li>Em uma rede de músicos: com quantas pessoas essa pessoa já colaborou/tocou junto?</li>
+</ul>
+<pre class="r"><code># plot da rede evidenciando o degree
+ggraph(g_layout) +
+  geom_edge_fan(alpha=0.4) +
+  geom_node_point(aes(color = degree), size=8) + 
+  geom_node_text(aes(label=name),color=&quot;white&quot;) +
+  geom_node_text(aes(label=degree, color=degree), nudge_y = NUDGE_Y ) +
+  theme_graph() +
+  # ggtitle( &quot;Degree&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/degree-1.png" width="672" /></p>
+</div>
+<div id="betweenness-centrality-intermediacao" class="section level4">
+<h4>Betweenness Centrality (Intermediação)</h4>
+<p>A <em>Betweenness Centrality</em> é uma métrica que representa quantos caminhos curtos (<em>shortest path</em>) que ligam outros nó da rede, passam pelo nó em questão. Para calcular o valor para um determinado nó <strong>v</strong>, calcule o número de caminhos mais curtos entre os nós <strong>i</strong> e <strong>j</strong> que passam através de <strong>v</strong> e divida por todos os caminhos mais curtos entre <strong>i</strong> e <strong>j</strong>. Repita para todo os nós.</p>
+<p>É uma medida importante, pois representa “o quanto” um nó, ou vértice, está dentro dos fluxos de informações possíveis entre os outros nós. Quanto mais alto o valor, maior a importância do nó, como um elo de comunicação entre os demais nós.</p>
+<p>Esta métrica também pode ser calculada com respeito a uma aresta, assim estaríamos medindo o quanto um link entre dos nós participa dos caminhos mais curtos entre os nós da rede.</p>
+<p>Exemplos:</p>
+<ul>
+<li>Qual a probabilidade de esta pessoa ser a rota mais direta entre duas pessoas na rede?</li>
+<li>Me uma rede de espiões: quem é o espião pela qual a maioria das informações confidenciais pode fluir?</li>
+</ul>
+<pre class="r"><code># plot da rede evidenciando o betweenness
+ggraph(g_layout) +
+  geom_edge_fan(alpha=0.4) +
+  geom_node_point(aes(color = btwn), size=8) + 
+  geom_node_text(aes(label=name),color=&quot;white&quot;) +
+  geom_node_text(aes(label=btwn, color=btwn), nudge_y = NUDGE_Y ) +
+  theme_graph() +
+  # ggtitle( &quot;Betweenness Centrality&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/Betweenness-1.png" width="672" /></p>
+</div>
+<div id="closeness-centrality-proximidade" class="section level4">
+<h4>Closeness Centrality (Proximidade)</h4>
+<p>Representa o quão perto um nó está dos demais, pode ser uma medida direta da contagem de arestas ou da soma dos pesos dela. Para obtê-la calcule o comprimento médio de todos os caminhos mais curtos de um nó para todos os outros nós da rede.</p>
+<p>É uma medida de <em>alcance</em>, mediria por exemplo a velocidade com informações pode alcançar outros nós a partir de um determinado nó inicial, quanto mais próximo um nó dos demais, mais rápido este nó influenciaria outros.</p>
+<p>Exemplos:</p>
+<ul>
+<li>Quão rápido essa pessoa pode alcançar todos na rede?</li>
+<li>Em rede de relações sexuais: quão rápido uma DST se espalhará dessa pessoa para o resto da rede?</li>
+</ul>
+<pre class="r"><code>ggraph(g_layout) +
+  geom_edge_fan(alpha=0.4) +
+  geom_node_point(aes(color = clsn), size=8) + 
+  geom_node_text(aes(label=name),color=&quot;white&quot;) +
+  geom_node_text(aes(label=clsn, color=clsn), nudge_y = NUDGE_Y ) +
+  theme_graph() +
+  # ggtitle( &quot;Closeness&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/closeness-1.png" width="672" /></p>
+</div>
+<div id="eigenvector-centrality-autovetor" class="section level4">
+<h4>Eigenvector Centrality (Autovetor)</h4>
+<p>A centralidade do <em>autovetores</em> de um nó é proporcional à soma das centralidades de _autovetores de todos os nós diretamente conectados a ele. A métrica é obtida através da fatoração e calculo de autovetores da <em>matriz de adjacência</em><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> que representa a rede.</p>
+<p>Está associado a reputação e um vértice com respeito às suas ligações.</p>
+<p>Exemplos:</p>
+<ul>
+<li>Quão bem esta pessoa está conectada a outras pessoas bem conectadas?</li>
+<li>Na rede de citações de artigos: quem é o autor mais citado por outros autores bem citados?</li>
+</ul>
+<pre class="r"><code>ggraph(g_layout) +
+  geom_edge_fan(alpha=0.4) +
+  geom_node_point(aes(color = eign), size=8) + 
+  geom_node_text(aes(label=name),color=&quot;white&quot;) +
+  geom_node_text(aes(label=eign, color=eign), nudge_y = NUDGE_Y ) +
+  theme_graph() +
+  # ggtitle( &quot;Eigenvector&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/eigenvector-1.png" width="672" /></p>
+</div>
+<div id="componentes" class="section level4">
+<h4>Componentes</h4>
+<p>Um rede pode ter ser segmentada, ou seja, nós formam sub-redes não conectadas entre si, tais sub-redes são chamadas de componentes.</p>
+<pre class="r"><code># montando uma lista de arestas (os números identificam o vértice)
+edgelist &lt;- data.frame(
+  from = c(1,1,2,4,2,3,4,5,6,6,7,7,8,8,9,10),
+  to   = c(2,3,4,3,5,4,5,1,7,8,9,8,9,10,10,7)
+)
+
+# construindo o grafo a partid da lista de aresta
+edgelist %&gt;%
+  as.matrix() %&gt;%
+  graph.edgelist(directed = T) %&gt;%
+  as_tbl_graph() %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate( name = LETTERS[1:10],
+          component = as.factor(group_components())) -&gt; g
+
+
+ggraph(g, layout=&quot;kk&quot;) +
+  geom_edge_fan(alpha=0.2, arrow = arrow(type=&quot;closed&quot;, angle=10, length = unit(5,units = &quot;mm&quot;) ))+
+  geom_node_point(aes(color=component),alpha=0.8, size=8) +
+  geom_node_text(aes(label=name), color=&quot;white&quot;) +
+  theme_void() +
+  ggtitle( &quot;Components&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/components-1.png" width="672" /></p>
+</div>
+<div id="identificando-atores-e-padroes" class="section level3">
+<h3>Identificando Atores e Padrões</h3>
+<p>Usando as métricas listadas acima é possível identificar e classificar a atuação e importância dos atores em uma rede.</p>
+<p>Tome-se como exemplo esta rede:</p>
+<pre class="r"><code># lista de ligacoes
+h_edgelist &lt;- data.frame(
+  from = c( 0,  1, 1,  2, 2, 3, 3,  3,  4, 5, 5, 5, 8),
+  to   = c(10, 10, 2, 10, 3, 4, 5, 10, 10, 6, 7, 8, 9)
+) + 1
+
+# construcao da rede
+h &lt;- h_edgelist %&gt;%
+  as.matrix() %&gt;%
+  graph.edgelist(directed = FALSE) %&gt;%
+  as_tbl_graph() %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate( name = LETTERS[1:11] ) # nomeando nos
+
+# plot
+ggraph(h, layout=&quot;kk&quot;) +
+  geom_edge_fan(alpha=0.2) +
+  geom_node_point(color=&quot;red&quot;,alpha=0.9, size=8) +
+  geom_node_text(aes(label=name), color=&quot;white&quot;) +
+  theme_void() +
+  ggtitle( &quot;Exemplo&quot; ) + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/kpnetwork-1.png" width="672" /></p>
+<p>Vamos combinar as medidas de centralidade para exibir importantes atores na estrutura.</p>
+<pre class="r"><code># calculando métricas de centralidade 
+h &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate (
+    degree = as.factor(centrality_degree()),
+    btwn = round(centrality_betweenness(), 2),
+    clsn = round(centrality_closeness(normalized = T), 2),
+    eign = round(centrality_eigen(scale = T), 2),
+    clst = as.factor(group_edge_betweenness())) %&gt;% 
+  
+  # centrality das arestas
+  activate(&quot;edges&quot;) %&gt;%
+  mutate( ebtwn = centrality_edge_betweenness() )
+
+ggraph(h, layout=&quot;kk&quot;) +
+  geom_edge_fan2(alpha=0.4, aes(edge_colour = ebtwn, label=ebtwn), label_size=3) +
+  geom_node_point(aes(color=degree, size=clsn),alpha=0.5) +
+  geom_node_text(aes(label=name), color=&quot;black&quot;) +
+  geom_node_text(aes(label=eign, color=degree), nudge_y = -NUDGE_Y/2, size=2) +
+  theme_void() +
+  ggtitle( &quot;Combinando Métricas&quot; ) + 
+  scale_color_manual(breaks = c(&quot;1&quot;, &quot;2&quot;,&quot;3&quot;, &quot;5&quot;, &quot;10&quot;),
+                     values=c(&quot;red&quot;,&quot;red&quot;,&quot;lightskyblue&quot;,&quot;lightskyblue&quot;,&quot;darkblue&quot;))</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/kpcentralities-1.png" width="672" /></p>
+<p>As várias medidas de centralidade são mostradas acima e são representadas:</p>
+<ul>
+<li>Cor do vértice: Degree Centrality</li>
+<li>Tamanho do vértice: Closeness Centrality</li>
+<li>Número abaixo do vértice: Eigenvetor Centrality</li>
+<li>Cor e valor na aresta: Edge Betweenness Centrality</li>
+</ul>
+<pre class="r"><code>h %&gt;% activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  select(-clst) %&gt;%
+  knitr::kable(caption=&quot;Métricas de Centralidade dos Nós&quot;)</code></pre>
+<table>
+<caption><span id="tab:kptable">Table 1: </span>Métricas de Centralidade dos Nós</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">degree</th>
+<th align="right">btwn</th>
+<th align="right">clsn</th>
+<th align="right">eign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A</td>
+<td align="left">1</td>
+<td align="right">0.0</td>
+<td align="right">0.34</td>
+<td align="right">0.32</td>
+</tr>
+<tr class="even">
+<td align="left">B</td>
+<td align="left">2</td>
+<td align="right">0.0</td>
+<td align="right">0.36</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="odd">
+<td align="left">C</td>
+<td align="left">3</td>
+<td align="right">3.0</td>
+<td align="right">0.45</td>
+<td align="right">0.78</td>
+</tr>
+<tr class="even">
+<td align="left">D</td>
+<td align="left">4</td>
+<td align="right">25.5</td>
+<td align="right">0.59</td>
+<td align="right">0.89</td>
+</tr>
+<tr class="odd">
+<td align="left">E</td>
+<td align="left">2</td>
+<td align="right">0.0</td>
+<td align="right">0.43</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">4</td>
+<td align="right">29.0</td>
+<td align="right">0.56</td>
+<td align="right">0.41</td>
+</tr>
+<tr class="odd">
+<td align="left">G</td>
+<td align="left">1</td>
+<td align="right">0.0</td>
+<td align="right">0.37</td>
+<td align="right">0.13</td>
+</tr>
+<tr class="even">
+<td align="left">H</td>
+<td align="left">1</td>
+<td align="right">0.0</td>
+<td align="right">0.37</td>
+<td align="right">0.13</td>
+</tr>
+<tr class="odd">
+<td align="left">I</td>
+<td align="left">2</td>
+<td align="right">9.0</td>
+<td align="right">0.40</td>
+<td align="right">0.15</td>
+</tr>
+<tr class="even">
+<td align="left">J</td>
+<td align="left">1</td>
+<td align="right">0.0</td>
+<td align="right">0.29</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="odd">
+<td align="left">K</td>
+<td align="left">5</td>
+<td align="right">13.5</td>
+<td align="right">0.50</td>
+<td align="right">1.00</td>
+</tr>
+</tbody>
+</table>
+<p>Através das relações entre as centralidades é possível identificar os seguintes aspectos</p>
+<ul>
+<li>Nós mais conectados: <strong>K</strong> com mais conexões seguidas de <strong>D</strong> e <strong>F</strong>;</li>
+<li>A ligação entre a <strong>F</strong> e <strong>D</strong> é a de maior <em>intermediação</em>, além disso se removida desconecta o gráfico;</li>
+<li>O nó <strong>D</strong> é o mais próximo aos demais e</li>
+<li>O nó <strong>K</strong> é no mais referenciado por nós mais referenciados (maior <em>eigenvector</em>), seguido logo por <strong>D</strong>, mais uma vez mostrando a importância do no <strong>D</strong> na estrutura da rede.</li>
+</ul>
+<div id="gatekeepers-accessors" class="section level4">
+<h4>Gatekeepers &amp; Accessors</h4>
+<p>Combinando duas métricas de centralidade, autovetores e intermediação, é possível evidenciar dois tipos de atores específicos numa rede.</p>
+<ul>
+<li>Um ator com <strong>alta intermediação</strong> (<em>betweenness</em>) e <strong>baixo autovetor</strong> (<em>eigenvector</em>) pode ser um porteiro (<em>Gatekeeper</em>) importante para um ator central ou atores importantes.</li>
+<li>Um ator com <strong>baixa intermediação</strong> e <strong>alto autovetor</strong> pode ter acesso exclusivo a atores centrais.</li>
+</ul>
+<pre class="r"><code>h %&gt;% activate(&quot;nodes&quot;) %&gt;% as_tibble() %&gt;% 
+  ggplot(aes(x=btwn, y=eign)) + 
+  geom_point() + geom_label(aes(label=name)) +
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/keysplayer-1.png" width="672" /></p>
+<p>Observando a distribuição de como <em>eigenvector</em> fica em função <em>betweenness</em>, é possível observar então que o nó <strong>F</strong> atua como um <em>Gatekeeper</em> e o nó <strong>C</strong> como um nó de acesso a atores importantes (<em>accessor</em>).</p>
+<pre class="r"><code># key actors type
+h &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate( type = as.factor(case_when(
+    name == &quot;F&quot; ~ &quot;gatekeeper&quot;,
+    name == &quot;C&quot; ~ &quot;access to central actors&quot;,
+    TRUE ~ &quot;others&quot;
+  )))
+
+# plot
+ggraph(h, layout=&quot;kk&quot;) +
+  geom_edge_fan2(alpha=0.4, aes(edge_colour = ebtwn), label_size=3) +
+  geom_node_point(aes(color=type),alpha=0.9, size=8) +
+  geom_node_text(aes(label=name), color=&quot;white&quot;) +
+  geom_node_text(aes(label=eign), nudge_y = NUDGE_Y, size=3) +
+  theme_void() +
+  # ggtitle( &quot;Gatekeeper and Accessor&quot; ) + 
+  scale_color_manual(breaks = c(&quot;others&quot;,&quot;gatekeeper&quot;,&quot;access to central actors&quot;),
+                     values=c(&quot;red&quot;,&quot;lightskyblue&quot;,&quot;darkblue&quot;))</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/nodetypes-1.png" width="672" /></p>
+<p>Podemos perceber que o nó <strong>C</strong> é o nó que “dá acesso” a nós de alta reputação (<em>eigenvector</em>) enquanto o nó <strong>F</strong>, é um nó de relativa baixa reputação que atua de porteiro para os nós de atua relevância (D, K, E e C).</p>
+</div>
+<div id="comunidades-clusters" class="section level4">
+<h4>Comunidades (<em>clusters</em>)</h4>
+<p>Muitas redes consistem em módulos que estão densamente conectados, mas que estão escassamente conectados a outros módulos, a esses módulos é dado o nome de <em>comunidade</em>. A ideia da detecção de estrutura de comunidade é descobrir “bordas” e detectar arestas quem ligam módulos separados.</p>
+<p>Uma estratégia é calcular a centralidade de betweenness das arestas e ir removendo gradualmente as arestas de maior pontuação, desconectando o gráfico, identificando assim as comunidades.</p>
+<pre class="r"><code>ggraph(h, layout=&quot;kk&quot;) +
+   geom_edge_fan2(alpha=0.5, aes(edge_colour = ebtwn)) +
+  geom_node_point(aes(color=clst),alpha=0.9, size=8) +
+  geom_node_text(aes(label=name), color=&quot;white&quot;) +
+  # ggtitle( &quot;Community / Clusters&quot; ) + 
+  theme_void() + 
+  theme( legend.position = &quot;none&quot; )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/community-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="rede-de-colaboracao-de-autores-no-cran" class="section level2">
+<h2>Rede de Colaboração de Autores no CRAN</h2>
+<p>CRAN<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> é o repositório oficial de pacotes de R, <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">listando</a> todos os pacotes produzido e disponibilizado gratuitamente pela comunidade de usuário e programadores. Os pacotes fornece funcionalidades adicionais ou específicas para o R e para serem utilizados devem ser copiados, instalados e carregados.</p>
+<p>Qualquer pessoa pode desenvolver e disponibilizar pacotes, porém é mais comum que os pacotes sejam desenvolvidos por equipes de pesquisa e grupos de programadores dentro de empresas ou universidades ou que sejam um desenvolvimento que segue a dinâmica de software <em>open source</em>, quando o código do pacote está público e recebe contribuição de vários desenvolvedores espalhados pelo mundo.</p>
+<div class="figure">
+<img src="images/xgb_package.png" alt="Autores de um pacote R" />
+<p class="caption">Autores de um pacote R</p>
+</div>
+<p>O pacote publicado contém uma lista de autores, que contribuíram para construir e publicar o pacote. O objetivo desta análise entender como se organiza a rede de colaboração de autores, para isso usaremos os dados de publicação para construir uma rede, onde cada vértice da rede é um ator e uma aresta identifica um pacote em que dois (ou mais autores) colaboraram juntos.</p>
+<div id="construindo-a-rede" class="section level3">
+<h3>Construindo a Rede</h3>
+<pre class="r"><code># dados de publicacao de pacotes
+pdb &lt;- tools::CRAN_package_db()
+
+# campo de autores dos pacotes
+pbaut &lt;- pdb$Author 
+
+# campo de autores dos pacotes
+aut &lt;- pdb$Author %&gt;%
+  iconv(to = &quot;ASCII//TRANSLIT&quot;) %&gt;%
+  map(function(x) format(as.person(x),include = c(&quot;given&quot;, &quot;family&quot; ))) %&gt;%
+  set_names(pdb$Package)%&gt;%
+  map(function(v) keep(v,~.x!=&quot;&quot;)) %&gt;%
+  magrittr::extract(map_lgl(., function(x) length(x) &gt; 1))
+
+# conta autores por pacote
+aut_list &lt;- aut %&gt;%
+  unlist() %&gt;%
+  dplyr::as_data_frame() %&gt;%
+  count(value) %&gt;%
+  rename(name = value, packages = n) %&gt;%
+  filter( name!=&quot;&quot; | is.na(name) )
+
+# transforma a lista &quot;pacote&quot; -&gt; [autores] em uma edge list
+edge_list &lt;- aut %&gt;%
+  map(combn, m = 2) %&gt;%    # em cada pacote (map) gera uma combinacao do array de autores dois a dois
+  do.call(&quot;cbind&quot;, .) %&gt;%  
+  t() %&gt;%
+  dplyr::as_data_frame() %&gt;%
+  arrange(V1, V2) %&gt;%
+  count(V1, V2) 
+
+# controi a rede a partir da lista de arestas
+authors_network &lt;- edge_list %&gt;%
+  select(V1, V2) %&gt;%
+  as.matrix() %&gt;%
+  graph.edgelist(directed = FALSE) %&gt;%
+  as_tbl_graph() %&gt;%    # wrapper tidygraph para o objeto igraph
+  activate(&quot;edges&quot;) %&gt;% 
+  mutate(weight = edge_list$n) %&gt;% # resgata o peso das arestas (# de pacotes)
+  activate(&quot;nodes&quot;) %&gt;%
+  left_join(aut_list, by=&quot;name&quot;) # nomeia os nós com os nomes dos autores
+
+# dados de autores e arestas
+total_authors &lt;- authors_network %&gt;% activate(&quot;nodes&quot;) %&gt;% as.tibble() %&gt;% nrow()
+total_edges &lt;- authors_network %&gt;% activate(&quot;edges&quot;) %&gt;% as.tibble() %&gt;% nrow()</code></pre>
+</div>
+<div id="selecionando-components" class="section level3">
+<h3>Selecionando Components</h3>
+<p>A rede construída é composta de 14425 autores que se relacionam através 55944 arestas. Dado a natureza do objeto estudado espera-se que essa rede não seja conecta integralmente, formando então <strong>componentes</strong> de colaboração entre grupos de autores distintos, vamos analisar esse aspecto.</p>
+<pre class="r"><code># identifica os components
+set.seed(1975)
+g &lt;- authors_network %&gt;% 
+  activate(&quot;nodes&quot;) %&gt;%  
+  mutate(component = as.factor(group_components()))
+
+# tabela components por número de autores
+authors.by.components &lt;- g %&gt;% 
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  group_by(component) %&gt;%
+  summarise( authors=n() ) %&gt;%
+  arrange( desc(authors) )
+
+# top 10 maiores components
+knitr::kable(head(authors.by.components,10), caption = &quot;Maiores componentes (top 10)&quot;)</code></pre>
+<table>
+<caption><span id="tab:whichcomponents">Table 2: </span>Maiores componentes (top 10)</caption>
+<thead>
+<tr class="header">
+<th align="left">component</th>
+<th align="right">authors</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">6784</td>
+</tr>
+<tr class="even">
+<td align="left">35</td>
+<td align="right">68</td>
+</tr>
+<tr class="odd">
+<td align="left">38</td>
+<td align="right">51</td>
+</tr>
+<tr class="even">
+<td align="left">428</td>
+<td align="right">29</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">28</td>
+</tr>
+<tr class="even">
+<td align="left">265</td>
+<td align="right">28</td>
+</tr>
+<tr class="odd">
+<td align="left">750</td>
+<td align="right">25</td>
+</tr>
+<tr class="even">
+<td align="left">34</td>
+<td align="right">23</td>
+</tr>
+<tr class="odd">
+<td align="left">50</td>
+<td align="right">23</td>
+</tr>
+<tr class="even">
+<td align="left">51</td>
+<td align="right">23</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># selecionando os componentes para comparacao
+sel_components &lt;- c(35,38,265)</code></pre>
+<p>Vamos selecionar três destes componentes para caracterizá-los: 35, 38, 265 <a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>.</p>
+</div>
+<div id="comparando-os-tres-components" class="section level3">
+<h3>Comparando os três components</h3>
+<pre class="r"><code># plotando os components
+g %&gt;%
+  filter( component %in% sel_components ) %&gt;%
+  ggraph(layout=&quot;auto&quot;) +
+  geom_edge_fan(alpha=0.2)+
+  geom_node_point(aes(color=component),alpha=0.8, size=2) +
+  theme_void()</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/plotcomponents-1.png" width="672" /></p>
+<p>Nota-se que os componentes possuem estruturas distintas umas das outras, vamos caracterizá-las com métricas de rede.</p>
+<pre class="r"><code># para cada um do componentes escolhidos
+net_metrics &lt;- rbindlist(lapply( sel_components, function(comp){
+  # filtra pelo component
+  h &lt;- g %&gt;% filter( component == comp )
+  # calcula metricas de rede
+  res &lt;- data.frame(
+    component = comp,
+    nodes     = h %&gt;% activate(&quot;nodes&quot;) %&gt;% as.tibble() %&gt;% nrow(),
+    density   = round(graph.density(h, loops = F),4),
+    diameter  = diameter(h, directed = F, unconnected = F, weights = NULL),
+    eccentricity = max(eccentricity(h, mode=&quot;all&quot;))/min(eccentricity(h, mode=&quot;all&quot;))
+  )
+  return(res)
+}))
+
+# tabela
+knitr::kable(net_metrics)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">component</th>
+<th align="right">nodes</th>
+<th align="right">density</th>
+<th align="right">diameter</th>
+<th align="right">eccentricity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">35</td>
+<td align="right">68</td>
+<td align="right">1.0000</td>
+<td align="right">1</td>
+<td align="right">1.000000</td>
+</tr>
+<tr class="even">
+<td align="right">38</td>
+<td align="right">51</td>
+<td align="right">0.0949</td>
+<td align="right">10</td>
+<td align="right">1.800000</td>
+</tr>
+<tr class="odd">
+<td align="right">265</td>
+<td align="right">28</td>
+<td align="right">0.2751</td>
+<td align="right">6</td>
+<td align="right">1.666667</td>
+</tr>
+</tbody>
+</table>
+<p>Para cada um dos componentes calculamos:</p>
+<ul>
+<li><strong>densidade</strong>: número de arestas da rede dividido pelo número de arestas possíveis;</li>
+<li><strong>diâmetro</strong>: maior menor caminho (<em>shortest path</em>) existente na rede e</li>
+<li><strong>excentricidade</strong>: aqui definida como o diâmetro dividido pelo menor caminho (<em>shortest path</em>).</li>
+</ul>
+<p>Nota-se nos valores que as redes de fato são distintas nessas dimensões.</p>
+</div>
+<div id="analise-de-atores" class="section level3">
+<h3>analise de atores</h3>
+<pre class="r"><code># calcula centralidades para uma rede
+calcNodeMetrics &lt;- function(net, comp){
+  net %&gt;%
+    activate(&quot;nodes&quot;) %&gt;%
+    filter( component==comp ) %&gt;%
+    mutate(
+      degree = centrality_degree(),
+      btwn = round(centrality_betweenness(), 2),
+      clsn = round(centrality_closeness(normalized = T), 2),
+      eign = round(centrality_eigen(scale = T), 2),
+      clst = as.factor(group_edge_betweenness())
+    ) %&gt;%
+    activate(&quot;edges&quot;) %&gt;%
+    mutate( ebtwn = centrality_edge_betweenness() ) %&gt;%
+    return()
+}
+
+# para cada um dos componentes, faz o calculo de centralidades
+netMetrics &lt;- lapply(sel_components, function(comp) calcNodeMetrics(g,comp) )
+netMetrics &lt;- setNames(netMetrics, sel_components)</code></pre>
+<div id="component-35" class="section level4">
+<h4>Component 35</h4>
+<pre class="r"><code>ggraph(netMetrics[1][[1]], layout=&quot;kk&quot;) +
+  geom_edge_fan2(alpha=0.2, aes(edge_colour = ebtwn)) +
+  geom_node_point(aes(color=btwn, size=degree),alpha=0.9) +
+  theme_void() %&gt;% +
+  theme( legend.position = &quot;none&quot; ) + 
+  ggtitle( paste0(&quot;Componente &quot;,names(netMetrics[1]) ) )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/compSel01-1.png" width="672" /></p>
+<p>Numa rede totalmente conectada (densidade = 1), todos os nós e arestas tem as mesmas métricas, não é possível selecionar um (ou mais autores) como mais influente ou relação mais importante, a rede é homogênea. Este componente é composto de autores de um só pacote (<a href="https://cran.r-project.org/web/packages/rcorpora/index.html">rcorpora</a>), cujo os autores não trabalharam com nenhum outro conjunto de autores.</p>
+</div>
+<div id="componente-38" class="section level4">
+<h4>Componente 38</h4>
+<pre class="r"><code>  ggraph(netMetrics[2][[1]], layout=&quot;kk&quot;) +
+    geom_edge_fan2(alpha=0.4, aes(edge_colour = ebtwn)) +
+    geom_node_point(aes(color=btwn, size=btwn),alpha=0.9) +
+    theme_void() + 
+    theme( legend.position = &quot;none&quot; ) + 
+    ggtitle( paste0(&quot;Componente &quot;, names(netMetrics[2])) )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/compSel2plot1-1.png" width="672" /></p>
+<pre class="r"><code>netMetrics[2][[1]] %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  arrange( desc(btwn), desc(degree), desc(eign), desc(clsn) ) %&gt;%
+  select(-component, -clst) %&gt;%
+  head(10) %&gt;%
+  knitr::kable(caption = &quot;Autores por Betweeness (10 mais)&quot;)</code></pre>
+<table>
+<caption>Autores por Betweeness (10 mais)</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">packages</th>
+<th align="right">degree</th>
+<th align="right">btwn</th>
+<th align="right">clsn</th>
+<th align="right">eign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Min Zhang</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">733.0</td>
+<td align="right">0.34</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="even">
+<td align="left">Bhramar Mukherjee</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">525.0</td>
+<td align="right">0.33</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Victor Moreno</td>
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">493.0</td>
+<td align="right">0.29</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">Seunggeun Lee</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">409.0</td>
+<td align="right">0.32</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Michal Juraska</td>
+<td align="right">3</td>
+<td align="right">13</td>
+<td align="right">341.0</td>
+<td align="right">0.29</td>
+<td align="right">0.01</td>
+</tr>
+<tr class="even">
+<td align="left">Juan R Gonzalez</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">336.0</td>
+<td align="right">0.24</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Isaac Subirana</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">311.0</td>
+<td align="right">0.18</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">Michael Wu</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">301.0</td>
+<td align="right">0.26</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Dabao Zhang</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">301.0</td>
+<td align="right">0.28</td>
+<td align="right">0.07</td>
+</tr>
+<tr class="even">
+<td align="left">Chen Chen</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">265.5</td>
+<td align="right">0.23</td>
+<td align="right">0.53</td>
+</tr>
+</tbody>
+</table>
+<p>A rede do componente 6 já é bem menos acoplada, portanto de menor densidade, é possível visualizar os autores mais bem “relacionados” e os autores que atuam com “pontes” entre os diversos nós na estrutura. Isso é reflexo de quando o autor trabalha em momentos diferentes com outros grupos de autores em pacotes diferentes.</p>
+<pre class="r"><code>ggraph(netMetrics[2][[1]], layout=&quot;kk&quot;) +
+  geom_edge_fan2(alpha=0.4, aes(edge_colour = ebtwn)) +
+  geom_node_point(aes(color=eign, size=eign),alpha=0.9) +
+  theme_void() + 
+  theme( legend.position = &quot;none&quot; ) + 
+  ggtitle( paste0(&quot;Componente &quot;,names(netMetrics[2]),&quot; - Eigenvector Centrality&quot;) )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/compSel2plot2-1.png" width="672" /></p>
+<pre class="r"><code>netMetrics[2][[1]] %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  arrange( desc(eign), desc(degree), desc(btwn), desc(clsn) ) %&gt;%
+  select(-packages, -component, -clst) %&gt;%
+  head(10) %&gt;%
+  knitr::kable( caption=&quot;Autores por Eigenvector (10 mais)&quot;)</code></pre>
+<table>
+<caption>Autores por Eigenvector (10 mais)</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">degree</th>
+<th align="right">btwn</th>
+<th align="right">clsn</th>
+<th align="right">eign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Brenda McCowan</td>
+<td align="right">6</td>
+<td align="right">22.5</td>
+<td align="right">0.19</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">Brianne Beisner</td>
+<td align="right">6</td>
+<td align="right">22.5</td>
+<td align="right">0.19</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Hsieh Fushing</td>
+<td align="right">6</td>
+<td align="right">22.5</td>
+<td align="right">0.19</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">Jian Jin</td>
+<td align="right">6</td>
+<td align="right">22.5</td>
+<td align="right">0.19</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Aaron Shev</td>
+<td align="right">5</td>
+<td align="right">1.5</td>
+<td align="right">0.16</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="even">
+<td align="left">Kevin Fujii</td>
+<td align="right">5</td>
+<td align="right">1.5</td>
+<td align="right">0.16</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="odd">
+<td align="left">Chen Chen</td>
+<td align="right">5</td>
+<td align="right">265.5</td>
+<td align="right">0.23</td>
+<td align="right">0.53</td>
+</tr>
+<tr class="even">
+<td align="left">Dabao Zhang</td>
+<td align="right">3</td>
+<td align="right">301.0</td>
+<td align="right">0.28</td>
+<td align="right">0.07</td>
+</tr>
+<tr class="odd">
+<td align="left">Min Zhang</td>
+<td align="right">10</td>
+<td align="right">733.0</td>
+<td align="right">0.34</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="even">
+<td align="left">Michal Juraska</td>
+<td align="right">13</td>
+<td align="right">341.0</td>
+<td align="right">0.29</td>
+<td align="right">0.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="componente-265" class="section level4">
+<h4>Componente 265</h4>
+<p>O componente 265 tem uma estrutura mais acoplada, com uma densidade de 1, 0.0949, 0.2751, intermediária entre a 35 e 38, é possível observar grupos que trabalham juntos e grande autor central conectando os subgrupos.</p>
+<pre class="r"><code>  ggraph(netMetrics[3][[1]], layout=&quot;kk&quot;) +
+    geom_edge_fan2(alpha=0.4, aes(edge_colour = ebtwn)) +
+    geom_node_point(aes(color=btwn, size=btwn),alpha=0.9) +
+    theme_void() + 
+    theme( legend.position = &quot;none&quot; ) + 
+    ggtitle( paste0(&quot;Componente &quot;,names(netMetrics[3]),&quot; - Betweenness&quot;) )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/compSel3plot1-1.png" width="672" /></p>
+<pre class="r"><code>netMetrics[3][[1]] %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  arrange( desc(btwn), desc(degree), desc(eign), desc(clsn) ) %&gt;%
+  select(-component, -clst) %&gt;%
+  head(10) %&gt;%
+  knitr::kable(caption = &quot;Autores por Betweeness (10 mais)&quot;)</code></pre>
+<table>
+<caption>Autores por Betweeness (10 mais)</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">packages</th>
+<th align="right">degree</th>
+<th align="right">btwn</th>
+<th align="right">clsn</th>
+<th align="right">eign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Kim-Anh Le Cao</td>
+<td align="right">5</td>
+<td align="right">17</td>
+<td align="right">199.83</td>
+<td align="right">0.46</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">Emma Huang</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">170.33</td>
+<td align="right">0.42</td>
+<td align="right">0.34</td>
+</tr>
+<tr class="odd">
+<td align="left">Andrew George</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">162.00</td>
+<td align="right">0.37</td>
+<td align="right">0.16</td>
+</tr>
+<tr class="even">
+<td align="left">Anne Bernard</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">59.67</td>
+<td align="right">0.44</td>
+<td align="right">0.18</td>
+</tr>
+<tr class="odd">
+<td align="left">Dominique Gorse</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">59.67</td>
+<td align="right">0.44</td>
+<td align="right">0.18</td>
+</tr>
+<tr class="even">
+<td align="left">Ignacio Gonzalez</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">26.00</td>
+<td align="right">0.36</td>
+<td align="right">0.58</td>
+</tr>
+<tr class="odd">
+<td align="left">Florian Rohart</td>
+<td align="right">3</td>
+<td align="right">13</td>
+<td align="right">17.50</td>
+<td align="right">0.37</td>
+<td align="right">0.86</td>
+</tr>
+<tr class="even">
+<td align="left">Jasmin Straube</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">0.33</td>
+<td align="right">0.32</td>
+<td align="right">0.33</td>
+</tr>
+<tr class="odd">
+<td align="left">Andrew Kirby</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">0.00</td>
+<td align="right">0.30</td>
+<td align="right">0.13</td>
+</tr>
+<tr class="even">
+<td align="left">Claire Wade</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">0.00</td>
+<td align="right">0.30</td>
+<td align="right">0.13</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ggraph(netMetrics[3][[1]], layout=&quot;kk&quot;) +
+  geom_edge_fan2(alpha=0.4, aes(edge_colour = ebtwn)) +
+  geom_node_point(aes(color=eign, size=eign),alpha=0.9) +
+  theme_void() + 
+  theme( legend.position = &quot;none&quot; ) + 
+  ggtitle( paste0(&quot;Componente &quot;,names(netMetrics[3]),&quot; - Eigenvector Centrality&quot;) )</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/comp717Sel3plot2-1.png" width="672" /></p>
+<pre class="r"><code>netMetrics[3][[1]] %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  arrange( desc(eign), desc(degree), desc(btwn), desc(clsn) ) %&gt;%
+  select(-packages, -component, -clst) %&gt;%
+  head(10) %&gt;%
+  knitr::kable( caption=&quot;Autores por Eigenvector (10 mais)&quot;)</code></pre>
+<table>
+<caption>Autores por Eigenvector (10 mais)</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">degree</th>
+<th align="right">btwn</th>
+<th align="right">clsn</th>
+<th align="right">eign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Kim-Anh Le Cao</td>
+<td align="right">17</td>
+<td align="right">199.83</td>
+<td align="right">0.46</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">Florian Rohart</td>
+<td align="right">13</td>
+<td align="right">17.50</td>
+<td align="right">0.37</td>
+<td align="right">0.86</td>
+</tr>
+<tr class="odd">
+<td align="left">Ignacio Gonzalez</td>
+<td align="right">9</td>
+<td align="right">26.00</td>
+<td align="right">0.36</td>
+<td align="right">0.58</td>
+</tr>
+<tr class="even">
+<td align="left">contributions from Pierre Monget</td>
+<td align="right">8</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Benoit Liquet.</td>
+<td align="right">8</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="even">
+<td align="left">FangZou Yao</td>
+<td align="right">8</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Jeff Coquery</td>
+<td align="right">8</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="even">
+<td align="left">Francois Bartolo</td>
+<td align="right">8</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Sebastien Dejean with key contributors Benoit Gautier</td>
+<td align="right">8</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.57</td>
+</tr>
+<tr class="even">
+<td align="left">Emma Huang</td>
+<td align="right">5</td>
+<td align="right">170.33</td>
+<td align="right">0.42</td>
+<td align="right">0.34</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="analisando-colaboracao-recorrente" class="section level3">
+<h3>Analisando colaboração recorrente</h3>
+<p>Vamos analisar frequência de publicação por autores, excluindo autores que contribuíram apenas uma vez.</p>
+<pre class="r"><code>aut_list %&gt;% 
+  select(packages) %&gt;%
+  unlist() %&gt;%
+  summary()</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   1.000   1.000   1.553   1.000 108.000</code></pre>
+<p>Observa-se que mais de 75% (3rd Quarter) dos autores contribuíram apenas 1 vez com outros autores, para estabelecer uma rede de colaboração mais efetiva (e não apenas momentânea), vamos filtrar na rede autores que pelo menos 5 pacotes.</p>
+<pre class="r"><code># obtendo a rede de colaboradores com mais de 5 publicações
+h &lt;- authors_network %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  filter( packages &gt; 5 ) %&gt;%
+  mutate( component = group_components() ) %&gt;%
+  # escolhendo o maior component
+  filter( component == names(table(component))[which.max(table(component))] ) 
+
+# dados de autores e arestas
+total_authors &lt;- h  %&gt;% activate(&quot;nodes&quot;) %&gt;% as.tibble() %&gt;% nrow()
+total_edges &lt;- h  %&gt;% activate(&quot;edges&quot;) %&gt;% as.tibble() %&gt;% nrow()
+
+ggraph(h, layout=&quot;lgl&quot;) +
+  geom_edge_fan(alpha=0.1)+
+  geom_node_point(alpha=0.2, size=0.2) +
+  theme_void()</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/majorcomp-1.png" width="672" /></p>
+<p>Temos então o maior componente da rede de colaboração de autores que publicaram mais de 5 pacotes com as características:</p>
+<pre class="r"><code>knitr::kable( data.frame(
+    nodes     = h %&gt;% activate(&quot;nodes&quot;) %&gt;% as.tibble() %&gt;% nrow(),
+    edges     = h %&gt;% activate(&quot;edges&quot;) %&gt;% as.tibble() %&gt;% nrow(),
+    density   = round(graph.density(h, loops = F),4),
+    diameter  = diameter(h, directed = F, unconnected = F, weights = NULL),
+    eccentricity = max(eccentricity(h, mode=&quot;all&quot;))/min(eccentricity(h, mode=&quot;all&quot;))
+), caption = &quot;Dados do Componente de Autores&quot;)</code></pre>
+<table>
+<caption>Dados do Componente de Autores</caption>
+<thead>
+<tr class="header">
+<th align="right">nodes</th>
+<th align="right">edges</th>
+<th align="right">density</th>
+<th align="right">diameter</th>
+<th align="right">eccentricity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">247</td>
+<td align="right">2137</td>
+<td align="right">0.0703</td>
+<td align="right">22</td>
+<td align="right">1.8</td>
+</tr>
+</tbody>
+</table>
+<div id="autores-chaves" class="section level4">
+<h4>Autores Chaves</h4>
+<p>Nesta rede, vamos então localizar e analisar os principais autores chave, usando as métricas de centralidade.</p>
+<pre class="r"><code>h &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate(
+    degree = centrality_degree(),
+    btwn = round(centrality_betweenness(), 2),
+    clsn = round(centrality_closeness(normalized = T), 2),
+    eign = round(centrality_eigen(scale = T), 2)
+  ) %&gt;%
+  activate(&quot;edges&quot;) %&gt;%
+  mutate( ebtwn = centrality_edge_betweenness() )
+
+authors &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  arrange(desc(btwn))
+
+knitr::kable( head(authors, 10), caption = &quot;Principais Autores, pelo critério de betweeness. (top 10)&quot;)</code></pre>
+<table>
+<caption><span id="tab:mccentrality">Table 3: </span>Principais Autores, pelo critério de betweeness. (top 10)</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">packages</th>
+<th align="right">component</th>
+<th align="right">degree</th>
+<th align="right">btwn</th>
+<th align="right">clsn</th>
+<th align="right">eign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Hadley Wickham</td>
+<td align="right">104</td>
+<td align="right">1</td>
+<td align="right">128</td>
+<td align="right">4381.65</td>
+<td align="right">0.47</td>
+<td align="right">0.90</td>
+</tr>
+<tr class="even">
+<td align="left">Martin Maechler</td>
+<td align="right">46</td>
+<td align="right">1</td>
+<td align="right">83</td>
+<td align="right">3060.23</td>
+<td align="right">0.44</td>
+<td align="right">0.06</td>
+</tr>
+<tr class="odd">
+<td align="left">Jeffrey Horner</td>
+<td align="right">11</td>
+<td align="right">1</td>
+<td align="right">24</td>
+<td align="right">2154.01</td>
+<td align="right">0.36</td>
+<td align="right">0.08</td>
+</tr>
+<tr class="even">
+<td align="left">Michael Friendly</td>
+<td align="right">21</td>
+<td align="right">1</td>
+<td align="right">87</td>
+<td align="right">1933.51</td>
+<td align="right">0.45</td>
+<td align="right">0.09</td>
+</tr>
+<tr class="odd">
+<td align="left">Brian Ripley</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">34</td>
+<td align="right">1836.63</td>
+<td align="right">0.37</td>
+<td align="right">0.01</td>
+</tr>
+<tr class="even">
+<td align="left">Inc.</td>
+<td align="right">27</td>
+<td align="right">1</td>
+<td align="right">50</td>
+<td align="right">1522.60</td>
+<td align="right">0.40</td>
+<td align="right">0.26</td>
+</tr>
+<tr class="odd">
+<td align="left">Dirk Eddelbuettel</td>
+<td align="right">41</td>
+<td align="right">1</td>
+<td align="right">69</td>
+<td align="right">1461.86</td>
+<td align="right">0.43</td>
+<td align="right">0.12</td>
+</tr>
+<tr class="even">
+<td align="left">JJ Allaire</td>
+<td align="right">31</td>
+<td align="right">1</td>
+<td align="right">66</td>
+<td align="right">1426.99</td>
+<td align="right">0.41</td>
+<td align="right">0.47</td>
+</tr>
+<tr class="odd">
+<td align="left">Thomas Lumley</td>
+<td align="right">23</td>
+<td align="right">1</td>
+<td align="right">27</td>
+<td align="right">1407.31</td>
+<td align="right">0.38</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="even">
+<td align="left">Achim Zeileis</td>
+<td align="right">47</td>
+<td align="right">1</td>
+<td align="right">74</td>
+<td align="right">1338.60</td>
+<td align="right">0.43</td>
+<td align="right">0.05</td>
+</tr>
+</tbody>
+</table>
+<p>Podemos notar que a lista trás de fato, autores influentes na comunidade de desenvolvimento R, como <a href="http://hadley.nz/">Hadley Wickham</a> (cientista Chefe na empresa RStudio), <a href="https://stat.ethz.ch/~maechler/">Martin Maechler</a> (estatístico suíço na ETH) e <a href="http://biostat.mc.vanderbilt.edu/wiki/Main/JeffreyHorner">Jeffrey Horner</a> (Developer no departamento de bio estatística da universidade Vanderbuilt). Importante notar que este último, possui alto **betweeness* mas relativamente pouco grau (<em>degree</em>) comparado aos autores da lista.</p>
+<p>Vamos visualizar os autores na rede.</p>
+<pre class="r"><code>authors_top10 &lt;- authors[1:10,]$name
+authors_top20 &lt;- authors[11:20,]$name
+
+h &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate ( 
+    rank = as.factor(
+      case_when(
+        name %in% authors_top10 ~ &quot;top 10&quot;,
+        name %in% authors_top20 ~ &quot;top 20&quot;,
+        TRUE ~ &quot;others&quot;
+      )
+    )
+  )
+
+ggraph(h, layout=&quot;lgl&quot;) +
+  geom_edge_fan(alpha=0.1)+
+  geom_node_point(aes(color=rank, size=packages),alpha=0.8) +
+  theme_void() +
+  scale_color_manual(breaks = c(&quot;others&quot;,&quot;top 10&quot;,&quot;top 20&quot;),
+                     values=c(&quot;grey&quot;,&quot;red&quot;,&quot;orange&quot;))</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/plottopauthors-1.png" width="672" /></p>
+<p>Embora a visualização com todos os nós seja complicada é possível visualizar que alguns dos autores no grupo selecionado realmente atuam como “pontes” (<em>bridges</em>) concentrado arestas entre grupos distintos.</p>
+</div>
+<div id="comunidades" class="section level4">
+<h4>Comunidades</h4>
+<p>Uma outra análise que podemos fazer, diz respeito a identificar e avaliar os diversos clusters (<em>comunidades</em>) dentro da rede, ou seja, grupos de autores fortemente conectados entre si, e fracamente conectados com outros grupo de autores, podemos identificar agrupando de acordo com a centralidade de <em>betweenness</em> das arestas.</p>
+<pre class="r"><code>h &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate(
+    clst = as.factor(group_edge_betweenness())
+  )
+
+clusters &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  as.tibble() %&gt;%
+  group_by( clst ) %&gt;%
+  summarise( authors = n() ) %&gt;%
+  arrange( desc(authors) )
+
+total_clusters &lt;- nrow(clusters)
+
+knitr::kable( head(clusters, 10), caption = &quot;Comunidades de Autores dentro da Rede&quot; )</code></pre>
+<table>
+<caption>Comunidades de Autores dentro da Rede</caption>
+<thead>
+<tr class="header">
+<th align="left">clst</th>
+<th align="right">authors</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">55</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">54</td>
+</tr>
+<tr class="odd">
+<td align="left">42</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">23</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">54</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">12</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<p>Encontramos 71 comunidades dentro da rede, dos quais duas se destacam pelo número de colaboradores bem acima dos demais. Vamos visualizar algumas comunidades sobre a estrutura da rede.</p>
+<pre class="r"><code>h &lt;- h %&gt;%
+  activate(&quot;nodes&quot;) %&gt;%
+  mutate ( 
+    community = as.factor(
+      case_when(
+        clst == 3 ~ &quot;Comunidade 3&quot;,
+        clst == 1 ~ &quot;Comunidade 1&quot;,
+        clst == 42 ~ &quot;Comunidade 42&quot;,
+        clst == 23 ~ &quot;Comunidade 23&quot;,
+        TRUE ~ &quot;Others&quot;
+      )
+    )
+  )
+
+
+ggraph(h, layout=&quot;lgl&quot;) +
+  geom_edge_fan(alpha=0.1)+
+  geom_node_point(aes(color=community, size=packages),alpha=0.8) +
+  theme_void() +
+  scale_color_manual(breaks = c(&quot;Comunidade 3&quot;,&quot;Comunidade 1&quot;,&quot;Comunidade 42&quot;,&quot;Comunidade 23&quot; ,&quot;Others&quot;),
+                     values=c(&quot;red&quot;,&quot;blue&quot;,&quot;green&quot;,&quot;orange&quot;,&quot;grey&quot;))</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-21-social-network-analysis-on-cran-authors_files/figure-html/mcplotcommunities-1.png" width="672" /></p>
+<p>Claramente podemos observar a organização dos clusters dentro da estrutura. Cada um dos clusters poderiam ser separados da estrutura e analisados à parte, aplicando novamente as métricas de centralidade para evidenciar os seus atores principais e sua dinâmica de integração.</p>
+</div>
+</div>
+</div>
+<div id="conclusao" class="section level2">
+<h2>Conclusão</h2>
+<p>Vimos que as técnicas de análise de rede usando métricas de centralidade são relevante para identificar os principais autores de uma rede, analisar a estrutura e identificar padrões. Particularmente em estruturas muito complexas e com muitos atores, as métricas conseguem expor à luz, padrões e comportamento embutidos na estrutura.</p>
+<p>Além disso o carácter <em>reproduzível da análise</em><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> feita em R permite refinar continuamente a análise, eliminando resíduos e apurando os resultados</p>
+</div>
+<div id="referencias" class="section level2">
+<h2>Referências</h2>
+<p>BURT, R. Structural Holes. University of Chicago Press, Chicago, 1992.</p>
+<p>BURT, R. S. (. Structural holes versus network closure as social capital. (Cap. 2, pp. 31-56). New York: Aldine de Gruyter. 2001</p>
+<p>ENGLE, S. Structural Holes and Simmelian Ties: Exploring Social Capital, Task Interdependence and Individual Effectiveness. Phd Thesis, University of North Texas, 1999.</p>
+<p>MARTELETO, R. M. Análise de redes sociais - aplicação nos estudos de transferência da informação. Ciência da Informação, Brasília, v.30, n. 1, p. 71-81, jan./abr. 2001.</p>
+<p>MARTELETO, Regina Maria and SILVA, Antonio Braz de Oliveira e. Redes e capital social: o enfoque da informação para o desenvolvimento local. Ci. Inf. 2004, vol.33, n.3, pp.41-49.</p>
+<p>NEWMANN, M. Networks. Oxford University Press. April 2010.</p>
+<p>STORCH, S.. As redes sociais já fazem parte de nosso jeito de pensar. Disponível em: <a href="http://www.intranetportal.com.br/e-gov/redessociais" class="uri">http://www.intranetportal.com.br/e-gov/redessociais</a> - Acesso em: 15 set. 2008.</p>
+<p>WASSERMAN, S.; FAUST, K. Social network analysis: methods and applications. Cambridge: Cambridge University Press, 1994</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://www.r-project.org/">R</a> é uma linguagem de programação e ambiente para computação e análise estatística, de uso gratuito e que que fornece uma ampla variedade de técnicas para: modelagem linear e não-linear, testes estatísticos, análise de séries temporais, classificação, agrupamento.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p><a href="https://cran.r-project.org/">CRAN</a> ou <em>Comprehensive R Archive Network</em> é uma rede de FTP e servidores web ao redor do mundo que armazenam versões de código e documentação atualizadas para pacotes e bibliotecas para R.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Matriz de vértices contra vértices cuja as células indica o peso ou a ligação entre os vértices.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p><a href="https://cran.r-project.org/">CRAN</a> ou <em>Comprehensive R Archive Network</em> é uma rede de FTP e servidores web ao redor do mundo que armazenam versões de código e documentação atualizadas para pacotes e bibliotecas para R.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Escolhido com base no formato dos componentes e escolhendo três casos distintos.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p><em>Reproducible Research</em> ou <strong>pesquisa reproduzível</strong> é a ideia de que a análise de dados e, em geral, as alegações científicas, são publicados com seus dados e código de software para que outros possam verificar as descobertas e construir sobre elas.<a href="#fnref6">↩</a></p></li>
+</ol>
+</div>

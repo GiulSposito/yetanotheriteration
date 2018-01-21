@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Animation on Yet Another Iteration</title>
-    <link>/tags/animation/</link>
+    <link>https://yetanotheriteration.netlify.com/tags/animation/</link>
     <description>Recent content in Animation on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 20 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/animation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/animation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Putting your workout to move</title>
-      <link>/2018/01/putting-your-workout-to-move/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/putting-your-workout-to-move/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
       <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
 Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
 library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
