@@ -1,0 +1,1349 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.32.4 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Implementing LeNet with MXNET in R</title>
+    <meta name="author" content="Giuliano Sposito">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="https://yetanotheriteration.netlify.com/favicon.png">
+    
+
+    
+    <meta name="description" content="In this R Notebook I implement an Convolutional Neural Network (CNN) using the MNIST Database for handwritten digits recognition using mxnet framework for R.
+
+">
+    <meta property="og:description" content="In this R Notebook I implement an Convolutional Neural Network (CNN) using the MNIST Database for handwritten digits recognition using mxnet framework for R.
+
+">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Implementing LeNet with MXNET in R">
+    <meta property="og:url" content="/2018/01/implementing-lenet-with-mxnet-in-r/">
+    <meta property="og:site_name" content="Yet Another Iteration">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Yet Another Iteration">
+    <meta name="twitter:description" content="In this R Notebook I implement an Convolutional Neural Network (CNN) using the MNIST Database for handwritten digits recognition using mxnet framework for R.
+
+">
+    
+      <meta name="twitter:creator" content="@gsposito">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+    
+
+    
+      <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/mnist_tn.png">
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yetanotheriteration.netlify.com/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-112393378-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yetanotheriteration.netlify.com/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yetanotheriteration.netlify.com/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yetanotheriteration.netlify.com/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Implementing LeNet with MXNET in R
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-01-22T00:00:00Z">
+        
+  January 22, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yetanotheriteration.netlify.com/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">R Notebook</a> I implement an <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">Convolutional Neural Network (CNN)</a> using the <a href="http://yann.lecun.com/exdb/mnist/">MNIST Database</a> for handwritten digits recognition using <a href="http://mxnet.io/">mxnet</a> framework for <a href="https://www.r-project.org/">R</a>.</p>
+
+<p></p>
+
+<h2 id="setup">Setup</h2>
+
+<p>You will need to install the <a href="http://mxnet.io/get_started/windows_setup.html">mxnet for R</a> and, if you intent to use your GPU card, the <a href="http://www.nvidia.com/object/cuda_home_new.html">NVidia CUDA Drivers</a>.</p>
+
+<p>Download all four dataset files from <a href="http://yann.lecun.com/exdb/mnist/">MNIST site</a> and gunzip them in the project directory.</p>
+
+<p>Finally, load the libraries.</p>
+
+<pre><code class="language-r">library(mxnet)    # ann framework
+library(magrittr) # to use modeling the framework
+library(caret)    # to use to check the performace
+</code></pre>
+
+<h2 id="loading-dataset">Loading dataset</h2>
+
+<p>We&rsquo;ll use an adaptation of <a href="http://gist.github.com/39760">gist from Brendan o&rsquo;Connor</a> to read the files transforming them in a structure simple to use and access.</p>
+
+<pre><code class="language-r"># read function returns a list of datasets
+load_mnist &lt;- function() {
+  load_image_file &lt;- function(filename) {
+    ret = list()
+    f = file(filename,'rb')
+    readBin(f,'integer',n=1,size=4,endian='big')
+    ret$n = readBin(f,'integer',n=1,size=4,endian='big')
+    nrow = readBin(f,'integer',n=1,size=4,endian='big')
+    ncol = readBin(f,'integer',n=1,size=4,endian='big')
+    x = readBin(f,'integer',n=ret$n*nrow*ncol,size=1,signed=F)
+    ret$x = matrix(x, ncol=nrow*ncol, byrow=T)
+    close(f)
+    ret
+  }
+  load_label_file &lt;- function(filename) {
+    f = file(filename,'rb')
+    readBin(f,'integer',n=1,size=4,endian='big')
+    n = readBin(f,'integer',n=1,size=4,endian='big')
+    y = readBin(f,'integer',n=n,size=1,signed=F)
+    close(f)
+    y
+  }
+  train &lt;- load_image_file('./data/train-images.idx3-ubyte')
+  test &lt;- load_image_file('./data/t10k-images.idx3-ubyte')
+  
+  train$y &lt;- load_label_file('./data/train-labels.idx1-ubyte')
+  test$y &lt;- load_label_file('./data/t10k-labels.idx1-ubyte')  
+  
+  return(
+    list(
+      train = train,
+      test = test
+    )
+  )
+}
+
+# plot one case
+show_digit &lt;- function(arr784, col=gray(12:1/12), ...) {
+  image(matrix(arr784, nrow=28)[,28:1], col=col, ...)
+}
+
+# load
+mnist &lt;- load_mnist()
+</code></pre>
+
+<p>Let&rsquo;s check the dataset loaded.</p>
+
+<pre><code class="language-r">labels &lt;- paste(mnist$train$y[1:5],collapse = &quot;, &quot;)
+par(mfrow=c(1,5), mar=c(0.1,0.1,0.1,0.1))
+for(i in 1:5) show_digit(mnist$train$x[i,])
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/check_dataset-1.png" alt="" /></p>
+
+<p>Labels: 5, 0, 4, 1, 9</p>
+
+<h2 id="convolutional-neural-network">Convolutional Neural Network</h2>
+
+<h3 id="lenet">LeNet</h3>
+
+<p>In this exercise I&rsquo;ll use one of the LeNet archictecutre for the neural network, based in two sets of Convolutional filters and poolings and two fully connected layers, as show bellow.</p>
+
+<p><img src="http://www.pyimagesearch.com/wp-content/uploads/2016/06/lenet_architecture.png" alt="LeNet CNN Architecture" /></p>
+
+<h3 id="magrittr">Magrittr</h3>
+
+<p>I used the [R magrittr pipe operator]() to build the network in the mxnet, is easer to read the code. But, we&rsquo;ll check the output of each individual layer and to keep the link with intermediary symbols I declare an assign operator to work in the pipe.</p>
+
+<pre><code class="language-r"># pipe assign function
+# example:  rnorm(5,mean=5) %&gt;% sqrt() %=&gt;% &quot;varname&quot; %&gt;% mean()
+
+&quot;%=&gt;%&quot; &lt;- function(val,var) {
+  assign(substitute(var),val, envir = .GlobalEnv)
+  return(val)
+}
+</code></pre>
+
+<h3 id="neural-network">Neural Network</h3>
+
+<p>Finnally, lets model the Neural Network.</p>
+
+<pre><code class="language-r"># input data
+lenet &lt;- mx.symbol.Variable(&quot;data&quot;) %&gt;%
+  
+  # Convolutional Layer Set 1 ( Conv &gt; Tanh &gt; Pool )
+  mx.symbol.Convolution( kernel=c(5,5), num_filter=20, name=&quot;Conv1&quot; )  %=&gt;% &quot;Conv1&quot; %&gt;%
+  mx.symbol.Activation( act_type=&quot;tanh&quot;, name=&quot;Act1&quot; )                 %=&gt;% &quot;Act1&quot; %&gt;%
+  mx.symbol.Pooling( pool_type=&quot;max&quot;, kernel=c(2,2), 
+                     stride=c(2,2), name = &quot;Pool1&quot;)                    %=&gt;% &quot;Pool1&quot; %&gt;%
+  
+  # Convolutional Layer Set 1 ( Conv &gt; Tanh &gt; Pool )
+  mx.symbol.Convolution( kernel=c(5,5), num_filter=50 , name=&quot;Conv2&quot;)  %=&gt;% &quot;Conv2&quot; %&gt;%
+  mx.symbol.Activation( act_type=&quot;tanh&quot;, name=&quot;Act2&quot; )                 %=&gt;% &quot;Act2&quot; %&gt;%
+  mx.symbol.Pooling( pool_type=&quot;max&quot;, kernel=c(2,2),
+                     stride=c(2,2), name = &quot;Pool2&quot;)                    %=&gt;% &quot;Pool2&quot; %&gt;%
+  
+  # Flat representation 50 2D filters -&gt; 1D Array
+  mx.symbol.flatten( name=&quot;Flat&quot;)                                      %=&gt;% &quot;Flat1&quot; %&gt;%
+  
+  # Fully Connected Layer 1
+  mx.symbol.FullyConnected( num_hidden=500, name=&quot;Full1&quot; )             %=&gt;% &quot;Full1&quot; %&gt;%
+  mx.symbol.Activation( act_type=&quot;tanh&quot;, name=&quot;Act3&quot; )                 %=&gt;% &quot;Act3&quot; %&gt;%
+  
+  # Fully Connected Layer 1
+  mx.symbol.FullyConnected( num_hidden=10 , name=&quot;Full2&quot;)              %=&gt;% &quot;Full2&quot; %&gt;%
+  mx.symbol.SoftmaxOutput(name=&quot;SoftM&quot;)                                %=&gt;% &quot;SoftM&quot; 
+</code></pre>
+
+<p>Checking the model built</p>
+
+<pre><code class="language-r">graph.viz( lenet, direction = &quot;LR&quot; )
+</code></pre>
+
+<!--html_preserve-->
+
+<p><div id="htmlwidget-9a244dfcea0445744132" style="width:960px;height:96px;" class="grViz html-widget html-widget-static-bound"><!--?xml version="1.0" encoding="UTF-8" standalone="no"?--></p>
+
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+
+<!-- Title: %0 Pages: 1 -->
+
+<p><svg viewBox="0.00 0.00 1528.34 90.59" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 100%; height: 100%;">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 86.5901)">
+<title>%0</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-86.5901 1524.337,-86.5901 1524.337,4 -4,4"></polygon>
+<!-- 1 -->
+<g id="node1" class="node">
+<title>1</title>
+<ellipse fill="#8dd3c7" stroke="#8dd3c7" stroke-width="2" cx="27.8033" cy="-41.295" rx="27.608" ry="29.3315"></ellipse>
+<text text-anchor="middle" x="27.8033" y="-45.495" font-family="Times,serif" font-size="14.00" fill="#ffffff">data</text>
+<text text-anchor="middle" x="27.8033" y="-28.695" font-family="Times,serif" font-size="14.00" fill="#ffffff">data</text>
+</g>
+<!-- 2 -->
+<g id="node2" class="node">
+<title>2</title>
+<polygon fill="#fb8072" stroke="#fb8072" stroke-width="2" points="177.6192,-70.6964 91.6024,-70.6964 91.6024,-11.8937 177.6192,-11.8937 177.6192,-70.6964"></polygon>
+<text text-anchor="middle" x="134.6108" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Convolution</text>
+<text text-anchor="middle" x="134.6108" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Conv1</text>
+<text text-anchor="middle" x="134.6108" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">5X5 / , 20</text>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="1" class="edge">
+<title>1-&gt;2</title>
+<path fill="none" stroke="#000000" d="M55.8657,-41.295C63.6843,-41.295 72.4463,-41.295 81.2083,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="81.4375,-44.7951 91.4375,-41.295 81.4375,-37.7951 81.4375,-44.7951"></polygon>
+</g>
+<!-- 3 -->
+<g id="node3" class="node">
+<title>3</title>
+<polygon fill="#ffffb3" stroke="#ffffb3" stroke-width="2" points="288.7624,-70.6964 213.5658,-70.6964 213.5658,-11.8937 288.7624,-11.8937 288.7624,-70.6964"></polygon>
+<text text-anchor="middle" x="251.1641" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Activation</text>
+<text text-anchor="middle" x="251.1641" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Act1</text>
+<text text-anchor="middle" x="251.1641" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">tanh</text>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="2" class="edge">
+<title>2-&gt;3</title>
+<path fill="none" stroke="#000000" d="M177.6798,-41.295C185.9782,-41.295 194.7189,-41.295 203.1625,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="203.2647,-44.7951 213.2647,-41.295 203.2647,-37.7951 203.2647,-44.7951"></polygon>
+</g>
+<!-- 4 -->
+<g id="node4" class="node">
+<title>4</title>
+<ellipse fill="#80b1d3" stroke="#80b1d3" stroke-width="2" cx="394.8646" cy="-41.295" rx="70.303" ry="41.0911"></ellipse>
+<text text-anchor="middle" x="394.8646" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Pooling</text>
+<text text-anchor="middle" x="394.8646" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Pool1</text>
+<text text-anchor="middle" x="394.8646" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">max2X2 / 2X2</text>
+</g>
+<!-- 3&#45;&gt;4 -->
+<g id="3" class="edge">
+<title>3-&gt;4</title>
+<path fill="none" stroke="#000000" d="M288.9197,-41.295C296.8949,-41.295 305.5997,-41.295 314.4809,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="314.5535,-44.7951 324.5535,-41.295 314.5535,-37.7951 314.5535,-44.7951"></polygon>
+</g>
+<!-- 5 -->
+<g id="node5" class="node">
+<title>5</title>
+<polygon fill="#fb8072" stroke="#fb8072" stroke-width="2" points="587.0285,-70.6964 501.0117,-70.6964 501.0117,-11.8937 587.0285,-11.8937 587.0285,-70.6964"></polygon>
+<text text-anchor="middle" x="544.0201" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Convolution</text>
+<text text-anchor="middle" x="544.0201" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Conv2</text>
+<text text-anchor="middle" x="544.0201" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">5X5 / , 50</text>
+</g>
+<!-- 4&#45;&gt;5 -->
+<g id="4" class="edge">
+<title>4-&gt;5</title>
+<path fill="none" stroke="#000000" d="M465.0748,-41.295C473.6814,-41.295 482.366,-41.295 490.6677,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="490.9439,-44.7951 500.9438,-41.295 490.9438,-37.7951 490.9439,-44.7951"></polygon>
+</g>
+<!-- 6 -->
+<g id="node6" class="node">
+<title>6</title>
+<polygon fill="#ffffb3" stroke="#ffffb3" stroke-width="2" points="698.1717,-70.6964 622.9751,-70.6964 622.9751,-11.8937 698.1717,-11.8937 698.1717,-70.6964"></polygon>
+<text text-anchor="middle" x="660.5734" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Activation</text>
+<text text-anchor="middle" x="660.5734" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Act2</text>
+<text text-anchor="middle" x="660.5734" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">tanh</text>
+</g>
+<!-- 5&#45;&gt;6 -->
+<g id="5" class="edge">
+<title>5-&gt;6</title>
+<path fill="none" stroke="#000000" d="M587.0891,-41.295C595.3875,-41.295 604.1282,-41.295 612.5718,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="612.674,-44.7951 622.674,-41.295 612.674,-37.7951 612.674,-44.7951"></polygon>
+</g>
+<!-- 7 -->
+<g id="node7" class="node">
+<title>7</title>
+<ellipse fill="#80b1d3" stroke="#80b1d3" stroke-width="2" cx="804.2739" cy="-41.295" rx="70.303" ry="41.0911"></ellipse>
+<text text-anchor="middle" x="804.2739" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Pooling</text>
+<text text-anchor="middle" x="804.2739" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Pool2</text>
+<text text-anchor="middle" x="804.2739" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">max2X2 / 2X2</text>
+</g>
+<!-- 6&#45;&gt;7 -->
+<g id="6" class="edge">
+<title>6-&gt;7</title>
+<path fill="none" stroke="#000000" d="M698.329,-41.295C706.3042,-41.295 715.009,-41.295 723.8902,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="723.9628,-44.7951 733.9628,-41.295 723.9628,-37.7951 723.9628,-44.7951"></polygon>
+</g>
+<!-- 8 -->
+<g id="node8" class="node">
+<title>8</title>
+<ellipse fill="#fdb462" stroke="#fdb462" stroke-width="2" cx="949.2338" cy="-41.295" rx="38.6181" ry="29.3315"></ellipse>
+<text text-anchor="middle" x="949.2338" y="-45.495" font-family="Times,serif" font-size="14.00" fill="#ffffff">Flatten</text>
+<text text-anchor="middle" x="949.2338" y="-28.695" font-family="Times,serif" font-size="14.00" fill="#ffffff">Flat</text>
+</g>
+<!-- 7&#45;&gt;8 -->
+<g id="7" class="edge">
+<title>7-&gt;8</title>
+<path fill="none" stroke="#000000" d="M874.6307,-41.295C883.2532,-41.295 891.9158,-41.295 900.1298,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="900.2576,-44.7951 910.2576,-41.295 900.2576,-37.7951 900.2576,-44.7951"></polygon>
+</g>
+<!-- 9 -->
+<g id="node9" class="node">
+<title>9</title>
+<polygon fill="#fb8072" stroke="#fb8072" stroke-width="2" points="1129.6955,-70.6964 1023.8241,-70.6964 1023.8241,-11.8937 1129.6955,-11.8937 1129.6955,-70.6964"></polygon>
+<text text-anchor="middle" x="1076.7598" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">FullyConnected</text>
+<text text-anchor="middle" x="1076.7598" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Full1</text>
+<text text-anchor="middle" x="1076.7598" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">500</text>
+</g>
+<!-- 8&#45;&gt;9 -->
+<g id="8" class="edge">
+<title>8-&gt;9</title>
+<path fill="none" stroke="#000000" d="M988.1887,-41.295C996.2964,-41.295 1005.038,-41.295 1013.7606,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="1013.9523,-44.7951 1023.9522,-41.295 1013.9522,-37.7951 1013.9523,-44.7951"></polygon>
+</g>
+<!-- 10 -->
+<g id="node10" class="node">
+<title>10</title>
+<polygon fill="#ffffb3" stroke="#ffffb3" stroke-width="2" points="1240.6245,-70.6964 1165.428,-70.6964 1165.428,-11.8937 1240.6245,-11.8937 1240.6245,-70.6964"></polygon>
+<text text-anchor="middle" x="1203.0263" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">Activation</text>
+<text text-anchor="middle" x="1203.0263" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Act3</text>
+<text text-anchor="middle" x="1203.0263" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">tanh</text>
+</g>
+<!-- 9&#45;&gt;10 -->
+<g id="9" class="edge">
+<title>9-&gt;10</title>
+<path fill="none" stroke="#000000" d="M1129.5765,-41.295C1138.1284,-41.295 1146.9398,-41.295 1155.3601,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="1155.3933,-44.7951 1165.3933,-41.295 1155.3932,-37.7951 1155.3933,-44.7951"></polygon>
+</g>
+<!-- 11 -->
+<g id="node11" class="node">
+<title>11</title>
+<polygon fill="#fb8072" stroke="#fb8072" stroke-width="2" points="1382.2285,-70.6964 1276.3571,-70.6964 1276.3571,-11.8937 1382.2285,-11.8937 1382.2285,-70.6964"></polygon>
+<text text-anchor="middle" x="1329.2928" y="-53.895" font-family="Times,serif" font-size="14.00" fill="#ffffff">FullyConnected</text>
+<text text-anchor="middle" x="1329.2928" y="-37.095" font-family="Times,serif" font-size="14.00" fill="#ffffff">Full2</text>
+<text text-anchor="middle" x="1329.2928" y="-20.295" font-family="Times,serif" font-size="14.00" fill="#ffffff">10</text>
+</g>
+<!-- 10&#45;&gt;11 -->
+<g id="10" class="edge">
+<title>10-&gt;11</title>
+<path fill="none" stroke="#000000" d="M1240.9104,-41.295C1248.9509,-41.295 1257.6456,-41.295 1266.3359,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="1266.496,-44.7951 1276.496,-41.295 1266.496,-37.7951 1266.496,-44.7951"></polygon>
+</g>
+<!-- 12 -->
+<g id="node12" class="node">
+<title>12</title>
+<polygon fill="#b3de69" stroke="#b3de69" stroke-width="2" points="1520.5009,-61.8969 1417.8462,-61.8969 1417.8462,-20.6931 1520.5009,-20.6931 1520.5009,-61.8969"></polygon>
+<text text-anchor="middle" x="1469.1736" y="-45.495" font-family="Times,serif" font-size="14.00" fill="#ffffff">SoftmaxOutput</text>
+<text text-anchor="middle" x="1469.1736" y="-28.695" font-family="Times,serif" font-size="14.00" fill="#ffffff">SoftM</text>
+</g>
+<!-- 11&#45;&gt;12 -->
+<g id="11" class="edge">
+<title>11-&gt;12</title>
+<path fill="none" stroke="#000000" d="M1382.1757,-41.295C1390.4261,-41.295 1399.0138,-41.295 1407.4404,-41.295"></path>
+<polygon fill="#000000" stroke="#000000" points="1407.6055,-44.7951 1417.6055,-41.295 1407.6055,-37.7951 1407.6055,-44.7951"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<script type="application/json" data-for="htmlwidget-9a244dfcea0445744132">{&ldquo;x&rdquo;:{&ldquo;diagram&rdquo;:&ldquo;digraph {\n\ngraph [layout = \&ldquo;dot\&ldquo;,\n       rankdir = \&ldquo;LR\&ldquo;]\n\n\n  \&ldquo;1\&rdquo; [label = \&ldquo;data\ndata\&ldquo;, shape = \&ldquo;oval\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#8dd3c7\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#8DD3C7FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;2\&rdquo; [label = \&ldquo;Convolution\nConv1\n5X5 / , 20\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#fb8072\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FB8072FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;3\&rdquo; [label = \&ldquo;Activation\nAct1\ntanh\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#ffffb3\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FFFFB3FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;4\&rdquo; [label = \&ldquo;Pooling\nPool1\nmax2X2 / 2X2\&ldquo;, shape = \&ldquo;oval\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#80b1d3\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#80B1D3FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;5\&rdquo; [label = \&ldquo;Convolution\nConv2\n5X5 / , 50\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#fb8072\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FB8072FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;6\&rdquo; [label = \&ldquo;Activation\nAct2\ntanh\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#ffffb3\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FFFFB3FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;7\&rdquo; [label = \&ldquo;Pooling\nPool2\nmax2X2 / 2X2\&ldquo;, shape = \&ldquo;oval\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#80b1d3\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#80B1D3FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;8\&rdquo; [label = \&ldquo;Flatten\nFlat\&ldquo;, shape = \&ldquo;oval\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#fdb462\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FDB462FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;9\&rdquo; [label = \&ldquo;FullyConnected\nFull1\n500\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#fb8072\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FB8072FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;10\&rdquo; [label = \&ldquo;Activation\nAct3\ntanh\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#ffffb3\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FFFFB3FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;11\&rdquo; [label = \&ldquo;FullyConnected\nFull2\n10\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#fb8072\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#FB8072FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n  \&ldquo;12\&rdquo; [label = \&ldquo;SoftmaxOutput\nSoftM\&ldquo;, shape = \&ldquo;box\&ldquo;, penwidth = \&ldquo;2\&ldquo;, color = \&ldquo;#b3de69\&ldquo;, style = \&ldquo;filled\&ldquo;, fillcolor = \&ldquo;#B3DE69FF\&ldquo;, fontcolor = \&ldquo;#FFFFFF\&ldquo;] \n\&ldquo;1\&ldquo;-&gt;\&ldquo;2\&rdquo; [id = \&ldquo;1\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;2\&ldquo;-&gt;\&ldquo;3\&rdquo; [id = \&ldquo;2\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;3\&ldquo;-&gt;\&ldquo;4\&rdquo; [id = \&ldquo;3\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;4\&ldquo;-&gt;\&ldquo;5\&rdquo; [id = \&ldquo;4\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;5\&ldquo;-&gt;\&ldquo;6\&rdquo; [id = \&ldquo;5\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;6\&ldquo;-&gt;\&ldquo;7\&rdquo; [id = \&ldquo;6\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;7\&ldquo;-&gt;\&ldquo;8\&rdquo; [id = \&ldquo;7\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;8\&ldquo;-&gt;\&ldquo;9\&rdquo; [id = \&ldquo;8\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;9\&ldquo;-&gt;\&ldquo;10\&rdquo; [id = \&ldquo;9\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;10\&ldquo;-&gt;\&ldquo;11\&rdquo; [id = \&ldquo;10\&ldquo;, color = \&ldquo;black\&ldquo;] \n\&ldquo;11\&ldquo;-&gt;\&ldquo;12\&rdquo; [id = \&ldquo;11\&ldquo;, color = \&ldquo;black\&ldquo;] \n}&ldquo;,&ldquo;config&rdquo;:{&ldquo;engine&rdquo;:&ldquo;dot&rdquo;,&ldquo;options&rdquo;:null}},&ldquo;evals&rdquo;:[],&ldquo;jsHooks&rdquo;:[]}</script>
+<!--/html_preserve--></p>
+
+<h2 id="training">Training</h2>
+
+<p>We must resize the training and test sets to new archtecture: the training set is a 10000 records of 784 pixel, we must rebuild the 2D (784 -&gt; 28 x 28). Besides this, as we are using convolutional filters, where each image will generate N filter that will be stored in the 3rd dimension, and each case will be stored in the 4th dimension.</p>
+
+<p>So, our dataset will be 4D matrices: 28 x 28 x 1 x 10000.</p>
+
+<pre><code class="language-r"># Resizing the dataset from 10000 x 784 to (28 x 28) x 1 x 100000
+
+# train
+tr.x &lt;- t(mnist$train$x)
+dim(tr.x) &lt;- c(28,28,1,ncol(tr.x))
+
+# test
+ts.x &lt;- t(mnist$test$x)
+dim(ts.x) &lt;- c(28,28,1,ncol(ts.x))
+</code></pre>
+
+<p>Finally, traing the network.</p>
+
+<pre><code class="language-r"># training
+logger.epoc &lt;- mx.callback.log.train.metric(100)
+logger.batch &lt;- mx.metric.logger$new()
+mx.set.seed(42)  # the life, the universe and everything
+ti &lt;- proc.time()
+model &lt;- mx.model.FeedForward.create(lenet, 
+                                     X=tr.x, 
+                                     y=mnist$train$y,
+                                     eval.data=list(
+                                       data=ts.x, 
+                                       label=mnist$test$y),
+                                     ctx=mx.cpu(), 
+                                     num.round=20, 
+                                     array.batch.size=100,
+                                     learning.rate=0.05, 
+                                     momentum=0.9, 
+                                     wd=0.00001,
+                                     eval.metric=mx.metric.accuracy,
+                                     epoch.end.callback=logger.epoc,
+                                     batch.end.callback=mx.callback.log.train.metric(1, logger.batch))
+te &lt;- proc.time()
+print(te-ti)
+
+mx.model.save(model, &quot;mnistModel&quot;,1)
+</code></pre>
+
+<h2 id="evaluation">Evaluation</h2>
+
+<h3 id="confusion-matrix">Confusion Matrix</h3>
+
+<p>Checking the performance of trained CNN in the test set.</p>
+
+<pre><code class="language-r"># process the validation dataset
+outputs &lt;- predict(model,ts.x)
+
+# the output is a 10 x 10000 matrix
+# transpose to transform in a tidy dataset ( cases x result ) 
+t_outputs &lt;- t(outputs)
+
+# the last layer is a softmax agregator
+# so, each column of the dataset is de probability of a value from 0 to 9
+# lets get the biggest probability for each test case
+y_hat &lt;- max.col(t_outputs)-1 # base index is 1
+
+cm &lt;- confusionMatrix(y_hat,mnist$test$y)
+cm$table
+</code></pre>
+
+<pre><code>##           Reference
+## Prediction    0    1    2    3    4    5    6    7    8    9
+##          0  974    0    1    0    0    2    3    0    2    0
+##          1    1 1131    0    0    0    0    2    2    0    0
+##          2    0    0 1025    1    1    0    0    2    0    0
+##          3    0    0    0 1000    0    5    1    1    1    2
+##          4    0    0    1    0  970    0    0    1    0    6
+##          5    1    0    0    6    0  878    4    0    2    2
+##          6    3    2    1    0    1    2  947    0    0    1
+##          7    1    0    2    0    0    0    0 1016    0    3
+##          8    0    2    2    3    0    4    1    1  966    1
+##          9    0    0    0    0   10    1    0    5    3  994
+</code></pre>
+
+<h3 id="overal-performance">Overal Performance</h3>
+
+<pre><code class="language-r">cm$overall
+</code></pre>
+
+<pre><code>##       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull 
+##      0.9901000      0.9889958      0.9879601      0.9919467      0.1135000 
+## AccuracyPValue  McnemarPValue 
+##      0.0000000            NaN
+</code></pre>
+
+<h2 id="visualizing-the-worst-cases">Visualizing the worst cases</h2>
+
+<h3 id="worst-case">Worst Case</h3>
+
+<p>Let&rsquo;s find the worst case, where the CNN makes its most prediction errors. To do that, just take the greater value (not in the diagonal) in the confusion matrix.</p>
+
+<pre><code class="language-r"># found where the network most fail
+errors &lt;- cm$table
+diag(errors) &lt;- 0   
+
+worst &lt;- which( errors==max(errors), arr.ind = T) - 1
+
+worst
+</code></pre>
+
+<pre><code>##   Prediction Reference
+## 9          9         4
+</code></pre>
+
+<h3 id="finding-mismatching-cases">Finding mismatching cases</h3>
+
+<p>Let&rsquo;s see some of these cases were a image labeled as <strong>4</strong> is predicted as <strong>9</strong>:</p>
+
+<pre><code class="language-r">worst.idx &lt;- mnist$test$y == worst[1,&quot;Reference&quot;] &amp; y_hat == worst[1,&quot;Prediction&quot;]
+worstcases &lt;- mnist$test$x[worst.idx,]
+
+par(mfrow=c(2,5), mar=c(0.1,0.1,0.1,0.1))
+for(i in 1:10) show_digit(worstcases[i,])
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/worst_cases-1.png" alt="" /><!-- --></p>
+
+<p>Indeed some cases are remarkable difficult to identify as <strong>4</strong>, so how far the CNN predict the wrong value?</p>
+
+<pre><code class="language-r">wpred &lt;- t_outputs[ worst.idx, ]
+par(mfrow=c(2,5), mar=c(0.1,0.1,0.1,0.1))
+for(i in 1:10) barplot(wpred[i,])
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/worst_predictions-1.png" alt="" /><!-- --></p>
+
+<p>We see some &ldquo;residual&rdquo; classification of the number <strong>4</strong> (in the chart, x axis is from 0 to 9).</p>
+
+<h2 id="inspecting-the-network-layers">Inspecting the network layers</h2>
+
+<h3 id="binding-and-feed-forward">Binding and Feed Forward</h3>
+
+<p>To visualize the intermediary layers output, first we must &ldquo;bind&rdquo; some symbols to the CNN itself, and transfer the learning arguments and parameters.</p>
+
+<p>After that we can perform a feed forward activation and propagation and visualize some outputs in the layers.</p>
+
+<pre><code class="language-r"># use the layer's references to build a group symbol
+# create an executor to controls the network
+out &lt;- mx.symbol.Group(c(Conv1, Act1, Pool1, Conv2, Act2, Pool2, Flat1, Full1, Act3, Full2, SoftM))
+executor &lt;- mx.simple.bind(symbol = out,  data=dim(ts.x), ctx=mx.cpu())
+
+# transfer the arguments and parameters learned
+mx.exec.update.arg.arrays(executor, model$arg.params, match.name = T)
+mx.exec.update.aux.arrays(executor, model$aux.params, match.name = T)
+
+# prepare the input
+mx.exec.update.arg.arrays(executor, list(data=mx.nd.array(ts.x)), match.name=TRUE)
+
+# Feedforward: propagates the input to output throught the network
+mx.exec.forward(executor, is.train=FALSE)
+
+# list the output elements
+names(executor$ref.outputs)
+</code></pre>
+
+<pre><code>##  [1] &quot;Conv1_output&quot; &quot;Act1_output&quot;  &quot;Pool1_output&quot; &quot;Conv2_output&quot;
+##  [5] &quot;Act2_output&quot;  &quot;Pool2_output&quot; &quot;Flat_output&quot;  &quot;Full1_output&quot;
+##  [9] &quot;Act3_output&quot;  &quot;Full2_output&quot; &quot;SoftM_output&quot;
+</code></pre>
+
+<h3 id="convolution-layer-one">Convolution Layer One</h3>
+
+<h4 id="conv-filters">Conv Filters</h4>
+
+<pre><code class="language-r"># choosing the first worst case
+j &lt;- which( worst.idx==T )[1]
+
+# Conv1 Filters
+par(mfrow=c(4,5), mar=c(0.1,0.1,0.1,0.1))
+for (i in 1:20) {
+  outputData &lt;- as.array(executor$ref.outputs$Conv1_output)[,,i,j]
+  image(outputData[,24:1],
+        xaxt='n', yaxt='n')
+}
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-2-1.png" alt="" /><!-- --></p>
+
+<h4 id="activation">Activation</h4>
+
+<pre><code class="language-r">par(mfrow=c(4,5), mar=c(0.1,0.1,0.1,0.1))
+for (i in 1:20) {
+  outputData &lt;- as.array(executor$ref.outputs$Act1_output)[,,i,j]
+  image(outputData[,24:1],
+        xaxt='n', yaxt='n')
+}
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-3-1.png" alt="" /><!-- --></p>
+
+<h4 id="pooling">Pooling</h4>
+
+<pre><code class="language-r">par(mfrow=c(4,5), mar=c(0.1,0.1,0.1,0.1))
+for (i in 1:20) {
+  outputData &lt;- as.array(executor$ref.outputs$Pool1_output)[,,i,j]
+  image(outputData[,12:1],
+        xaxt='n', yaxt='n')
+}
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-4-1.png" alt="" /><!-- --></p>
+
+<h3 id="convolutional-layer-two">Convolutional Layer Two</h3>
+
+<h4 id="filters">Filters</h4>
+
+<pre><code class="language-r">par(mfrow=c(7,7), mar=c(0.1,0.1,0.1,0.1))
+for (i in 1:49) {
+  outputData &lt;- as.array(executor$ref.outputs$Conv2_output)[,,i,j]
+  image(outputData[,8:1],
+        xaxt='n', yaxt='n')
+}
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-5-1.png" alt="" /><!-- --></p>
+
+<h4 id="activations">Activations</h4>
+
+<pre><code class="language-r">par(mfrow=c(7,7), mar=c(0.1,0.1,0.1,0.1))
+for (i in 1:49) {
+  outputData &lt;- as.array(executor$ref.outputs$Act2_output)[,,i,j]
+  image(outputData[,8:1],
+        xaxt='n', yaxt='n')
+}
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-6-1.png" alt="" /><!-- --></p>
+
+<h4 id="pooling-1">Pooling</h4>
+
+<pre><code class="language-r">par(mfrow=c(7,7), mar=c(0.1,0.1,0.1,0.1))
+for (i in 1:49) {
+  outputData &lt;- as.array(executor$ref.outputs$Pool2_output)[,,i,j]
+  image(outputData[,4:1],
+        xaxt='n', yaxt='n')
+}
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-7-1.png" alt="" /><!-- --></p>
+
+<h3 id="flattering">Flattering</h3>
+
+<p>50 filter of 4 x 4 -&gt; 50 x 16 -&gt; 1 x 800</p>
+
+<pre><code class="language-r">par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
+outputData &lt;- as.array(executor$ref.outputs$Flat_output)
+image(t(matrix(outputData[,j],nrow = 1)), xaxt='n', yaxt='n')
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /></p>
+
+<h3 id="fully-connected-layer">Fully Connected Layer</h3>
+
+<p>800 -&gt; 500</p>
+
+<pre><code class="language-r">par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
+outputData &lt;- as.array(executor$ref.outputs$Full1_output)
+image( t(matrix(outputData[,j],nrow = 1)) , xaxt='n', yaxt='n')
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /></p>
+
+<h4 id="activation-1">Activation</h4>
+
+<pre><code class="language-r">par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
+outputData &lt;- as.array(executor$ref.outputs$Act3_output)
+image( t(matrix(outputData[,j],nrow = 1)) , xaxt='n', yaxt='n')
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /></p>
+
+<h4 id="full-connected-layer-2">Full Connected Layer 2</h4>
+
+<pre><code class="language-r">par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
+outputData &lt;- as.array(executor$ref.outputs$Full2_output)
+outputData &lt;- t(matrix(outputData[,j],nrow = 1))
+image( outputData, xaxt='n', yaxt='n')
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /></p>
+
+<pre><code class="language-r">barplot(t(outputData))
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-12-1.png" alt="" /><!-- --></p>
+
+<h4 id="activation-2">Activation</h4>
+
+<pre><code class="language-r">par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
+outputData &lt;- as.array(executor$ref.outputs$SoftM_output)
+outputData &lt;- t(matrix(outputData[,j],nrow = 1))
+image( outputData, xaxt='n', yaxt='n')
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /></p>
+
+<pre><code class="language-r">barplot(t(outputData))
+</code></pre>
+
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-01-22-implementing-lenet-with-mxnet-in-r_files/figure-html/unnamed-chunk-14-1.png" alt="" /><!-- --></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/neural-network/">neural network</a>
+
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/mnist/">mnist</a>
+
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/ia/">ia</a>
+
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/machine-learning/">machine learning</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/" data-tooltip="Social Network Analysis on CRAN Authors">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/" data-tooltip="Social Network Analysis on CRAN Authors">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F01%2Fimplementing-lenet-with-mxnet-in-r%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F01%2Fimplementing-lenet-with-mxnet-in-r%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F01%2Fimplementing-lenet-with-mxnet-in-r%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+                <h3 class="media-heading">Implementing LeNet with MXNET in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">R Notebook</a> I implement an <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">Convolutional Neural Network (CNN)</a> using the <a href="http://yann.lecun.com/exdb/mnist/">MNIST Database</a> for handwritten digits recognition using <a href="http://mxnet.io/">mxnet</a> framework for <a href="https://www.r-project.org/">R</a>.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/">
+                <h3 class="media-heading">Social Network Analysis on CRAN Authors</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
+IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/">
+                <h3 class="media-heading">Putting your workout to move</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
+Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
+library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &lt;- &quot;11654237848.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/">
+                <h3 class="media-heading">High Collinearity Effect in Regressions</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/">
+                <h3 class="media-heading">Ploting your MTB track with R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+                <h3 class="media-heading">Curse of Dimensionality</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/">
+                <h3 class="media-heading">Assessing Model Accuracy (Linear Models)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
+Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/">
+                <h3 class="media-heading">We have a blog!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         8 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://yetanotheriteration.netlify.com/images/new_cover_emboss.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yetanotheriteration.netlify.com/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yetanotheriteration.netlify.com\/2018\/01\/implementing-lenet-with-mxnet-in-r\/';
+          
+            this.page.identifier = '\/2018\/01\/implementing-lenet-with-mxnet-in-r\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+    <script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </body>
+</html>
+
