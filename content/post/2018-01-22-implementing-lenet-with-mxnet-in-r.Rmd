@@ -10,6 +10,8 @@ tags:
 - machine learning
 - mnist
 categories: data science
+thumbnailImage: images/mnist_tn.png
+thumbnailImagePosition: left
 ---
 
 In this [R Notebook](http://rmarkdown.rstudio.com/r_notebooks.html) I implement an [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) using the [MNIST Database](http://yann.lecun.com/exdb/mnist/) for handwritten digits recognition using [mxnet](http://mxnet.io/) framework for [R](https://www.r-project.org/).
