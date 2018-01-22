@@ -21,7 +21,7 @@ disqusShortname = "yet-another-iteration"
 googleAnalytics = "UA-112393378-1"
 paginate = 7
 canonifyurls = true
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.idx1-ubyte"$, "\\.idx3-ubyte$"]
 math = true 
 
 [permalinks]
