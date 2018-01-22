@@ -17,6 +17,8 @@ Collinearity refers to the situation in which two or more predictor variables co
 
 This [R Notebook](http://rmarkdown.rstudio.com/r_notebooks.html) seeks to ilustrate some of the difficulties that can be result from a collinearity.
 
+<!--more-->
+
 ## Collinearity
 
 The concept of collinearity is illustrated in Figure below using the `Credit` data set in the `ISLR Package`. In the left-hand panel of Figure the two predictors `limit` and `age` appear to have no obvious relationship. In contrast, in the right-hand panel the predictors `limit` and `rating` are very highly correlated with each other, and we say that they are collinear.[^1]

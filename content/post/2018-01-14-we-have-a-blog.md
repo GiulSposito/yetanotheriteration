@@ -8,7 +8,9 @@ thumbnailImage: images/hugo-creative-portfolio-theme.tn.png
 disqusIdentifier: blogwelcome
 ---
 
-It's just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
+A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
+
+<!--more-->
 
 {{< tweet 928447584712253440 >}}
 

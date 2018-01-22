@@ -16,6 +16,8 @@ thumbnailImagePosition: left
 
 Este artigo ([RNotebook](http://rmarkdown.rstudio.com/r_notebooks.html)) explora técnicas de *Análise de Redes Sociais* ([SNA](https://en.wikipedia.org/wiki/Social_network_analysis)) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R[^1] publicados no repositório CRAN[^2].
 
+<!--more-->
+
 ## Introdução
 
 ### Redes Sociais

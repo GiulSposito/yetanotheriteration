@@ -19,6 +19,8 @@ thumbnailImagePosition: left
 
 In this quick post, we'll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using `gganimate` Package and using the same code we learned, we can animate the map with few words. 
 
+<!--more-->
+
 ## Reading TCX File
 
 [We already saw](/2018/01/ploting-your-mtb-track-with-r/) to how read and GPS track information stored in a TXC/GPX file, once it's just an `XML File`.

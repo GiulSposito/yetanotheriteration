@@ -16,6 +16,8 @@ disqusIdentifier: rstatmodelaccuracy
 
 This post talks about the use of **Mean Squared Error (MSE)** against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the [An Introduction to Statistical Learning in R](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370) book.
 
+<!--more-->
+
 ## Measure the quality of fit (regression problems)
 
 In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data. That is, we need to quantify the extent to which the predicted response value for a given observation is close to the true response value for that observation. 

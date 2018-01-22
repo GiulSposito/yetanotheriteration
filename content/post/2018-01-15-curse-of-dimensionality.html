@@ -15,6 +15,7 @@ disqusIdentifier: rstatcursedimensionality
 
 
 <p>This R Notebook reproduces the <strong>Curse of Dimensionality</strong><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> in the <em>nearest neighbor regression</em> that here is defined as <em>the increasing of the interval size</em> to get 10% of the data <em>acording with the increasing of dimentions</em>. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</p>
+<!--more-->
 <div id="nearest-neighbor-moving-average" class="section level2">
 <h2>Nearest Neighbor Moving Average</h2>
 <p>In this article, the <em>curse of dimensionality</em> comes from try to use of <em>Nearest Neighbor</em> as predictors for a function. We iteratively select 10% of nearest points in the data set at a specific point X<sub>0</sub> and calculates the average of these points to use as the result of prediction of a function in at the X<sub>0</sub> point.</p>
