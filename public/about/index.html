@@ -54,8 +54,6 @@ My Job Innovation is now everyone&rsquo;s business. If you are a manager in a gl
 
     
     
-      <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/new_cover_emboss.jpg">
-    
     
 
     
@@ -207,30 +205,33 @@ ga('send', 'pageview');
 </nav>
 
       
-  <div class="post-header-cover
-              text-center
-              "
-       style="background-image:url('images/new_cover_emboss.jpg')"
-       data-behavior="2">
-    
-      <div class="post-header main-content-wrap text-center">
+
+      <div id="main" data-behavior="2"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-center">
   
     <h1 class="post-title" itemprop="headline">
       About
     </h1>
   
   
-</div>
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-01-14T00:00:00Z">
+        
+  January 14, 2018
+
+      </time>
+    
     
   </div>
 
-
-      <div id="main" data-behavior="2"
-        class="hasCover
-               hasCoverMetaIn
-               ">
-        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
-          
+</div>
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
@@ -425,6 +426,25 @@ ga('send', 'pageview');
           <div class="media">
             
             <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+                <h3 class="media-heading">kNN Analysis on MNIST with 97% accuracy</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
               <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
                 <h3 class="media-heading">Implementing LeNet with MXNET in R</h3>
               </a>
@@ -575,7 +595,7 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
          data-message-zero="no post found"
          data-message-one="1 post found"
          data-message-other="{n} posts found">
-         8 posts found
+         9 posts found
       </p>
     </div>
   </div>

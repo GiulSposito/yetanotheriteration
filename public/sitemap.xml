@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</loc>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</loc>
     <lastmod>2018-01-22T00:00:00+00:00</lastmod>
   </url>
@@ -64,14 +69,26 @@
   </url>
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/data-analysis/</loc>
+    <lastmod>2018-01-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/categories/data-science/</loc>
-    <lastmod>2018-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/en-us/</loc>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/tags/evalutation/</loc>
-    <lastmod>2018-01-19T00:00:00+00:00</lastmod>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -118,14 +135,20 @@
   </url>
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/knn/</loc>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/tags/machine-learning/</loc>
-    <lastmod>2018-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/tags/mnist/</loc>
-    <lastmod>2018-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -148,8 +171,20 @@
   </url>
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/pca/</loc>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/post/</loc>
-    <lastmod>2018-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/pt-br/</loc>
+    <lastmod>2018-01-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -197,7 +232,7 @@
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/</loc>
-    <lastmod>2018-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
