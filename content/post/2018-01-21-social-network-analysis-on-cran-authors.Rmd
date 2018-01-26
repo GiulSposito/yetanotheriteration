@@ -9,6 +9,7 @@ tags:
   - network
   - rstat
   - sna
+  - pt-BR
 slug: social-network-analysis-on-cran-authors
 thumbnailImage: images/network_tn.png
 thumbnailImagePosition: left

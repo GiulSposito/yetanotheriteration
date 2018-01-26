@@ -2,11 +2,9 @@
 title: About
 author: Giuliano Sposito
 date: '2018-01-14'
-coverImage: images/new_cover_emboss.jpg
 metaAlignment: center
 showSocial: false
 showPagination: false
-showMeta: false
 comments: false
 ---
 

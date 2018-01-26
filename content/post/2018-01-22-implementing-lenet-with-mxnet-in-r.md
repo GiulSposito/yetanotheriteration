@@ -5,10 +5,11 @@ date: '2018-01-22'
 categories:
   - data science
 tags:
-  - neural network
-  - mnist
   - ia
   - machine learning
+  - mnist
+  - neural network
+  - en-US
 slug: implementing-lenet-with-mxnet-in-r
 thumbnailImage: images/mnist_tn.png
 thumbnailImagePosition: left

@@ -12,6 +12,7 @@ tags:
   - runtastic
   - strava
   - workout
+  - en-US
 slug: putting-your-workout-to-move
 thumbnailImage: images/citymap_tn.png
 thumbnailImagePosition: left

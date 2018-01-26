@@ -8,6 +8,7 @@ tags:
   - evalutation
   - model
   - rstat
+  - en-US
 slug: assessing-model-accuracy-linear-modelsRmd
 thumbnailImagePosition: left
 thumbnailImage: images/green_flames_digital_art_lines.png

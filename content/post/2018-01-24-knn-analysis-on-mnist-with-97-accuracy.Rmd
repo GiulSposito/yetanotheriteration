@@ -1,0 +1,414 @@
+---
+title: kNN Analysis on MNIST with 97% accuracy
+author: Giuliano Sposito
+date: '2018-01-24'
+categories:
+  - data science
+tags:
+  - en-US
+  - evalutation
+  - knn
+  - machine learning
+  - mnist
+  - pca
+slug: knn-analysis-on-mnist-with-97-accuracy
+thumbnailImage: images/mnist_knn_tn.png
+thumbnailImagePosition: left
+---
+
+Usually Yann LeCun's [MNIST database](http://yann.lecun.com/exdb/mnist/index.html) is used to explore [Artificial Neural Network](https://en.wikipedia.org/wiki/Artificial_neural_network) architectures for image recognition problem. 
+
+In the [last post](/2018/01/implementing-lenet-with-mxnet-in-r/) the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+
+But in this post, we'll see that the MNIST problem isn't a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple [k-nearest neighbors algorithm](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm).
+
+<!--more-->
+
+```{r setup, warning=FALSE, message=FALSE, cache=TRUE, echo=FALSE}
+# setup
+library(knitr)
+
+# default behavior for chunks
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(cache = TRUE)
+
+```
+
+
+```{r libraries, warning=FALSE, message=FALSE, cache=FALSE}
+
+# setup
+library(tidyverse)  # for plot and data manipulation
+library(factoextra) # to plot PCA values
+library(plotly)     # 3D interactive plots
+library(class)      # KNN algorithm
+library(caret)      # Near Zero Var removing
+
+```
+
+## MNist Dataset
+
+Download all four data set files from [MNIST site](http://yann.lecun.com/exdb/mnist/) and gunzip them in the project directory. 
+
+The default MNIST data set is somewhat inconveniently formatted, but we use an adaptation of [gist from Brendan o'Connor](http://gist.github.com/39760) to read the files transforming them in a structure simple to use and access.
+
+```{r loadDataset}
+### load database
+
+# read function returns a list of datasets
+load_mnist <- function() {
+  load_image_file <- function(filename) {
+    ret = list()
+    f = file(filename,'rb')
+    readBin(f,'integer',n=1,size=4,endian='big')
+    ret$n = readBin(f,'integer',n=1,size=4,endian='big')
+    nrow = readBin(f,'integer',n=1,size=4,endian='big')
+    ncol = readBin(f,'integer',n=1,size=4,endian='big')
+    x = readBin(f,'integer',n=ret$n*nrow*ncol,size=1,signed=F)
+    ret$x = matrix(x, ncol=nrow*ncol, byrow=T)
+    close(f)
+    ret
+  }
+  load_label_file <- function(filename) {
+    f = file(filename,'rb')
+    readBin(f,'integer',n=1,size=4,endian='big')
+    n = readBin(f,'integer',n=1,size=4,endian='big')
+    y = readBin(f,'integer',n=n,size=1,signed=F)
+    close(f)
+    y
+  }
+  train <- load_image_file('./data/mnist/train-images.idx3-ubyte')
+  test <- load_image_file('./data/mnist/t10k-images.idx3-ubyte')
+  
+  train$y <- load_label_file('./data/mnist/train-labels.idx1-ubyte')
+  test$y <- load_label_file('./data/mnist/t10k-labels.idx1-ubyte')  
+  
+  return(
+    list(
+      train = train,
+      test = test
+    )
+  )
+}
+
+# load in 'mnist' var
+mnist <- load_mnist()
+
+# look the data format
+str(mnist)
+```
+
+The gist read the binary MNIST files and returns a convenient list for training cases and test cases, each with size (n), the pixels (x) and the labels (y).
+
+Let's see some of the images represented in the `x` variable.
+
+```{r plotDatabase}
+
+# functino plot one case digit (by 1d array of 784 pixels)
+show_digit <- function(arr784, col=gray(25:1/25), ...) {
+  image(matrix(arr784, nrow=28)[,28:1], col=col, ...)
+}
+
+# showing first 25 cases
+labels <- paste(mnist$train$y[1:25],collapse = ", ")
+par(mfrow=c(5,5), mar=c(0.1,0.1,0.1,0.1))
+for(i in 1:25) show_digit(mnist$train$x[i,], axes=F)
+
+```
+
+Each line in `x` var is a digit case, and each column represents the intensity of a pixel in a `28 x 28` image.
+
+## Data Analysis
+
+How the each pixels in the image behavior in the "average" for each digit? It's possible to use this information to classify an digit?
+
+### Centroid
+
+```{r calcCentroids}
+
+# calc digits centroids
+centroids <- list()
+for(i in 0:9) {
+  x <- mnist$train$x[(mnist$train$y == i),]
+  centroids[[i+1]] <- colMeans(x) 
+}
+
+# ploting the centroids
+par(mfrow=c(2,5), mar=c(0.1,0.1,0.1,0.1))
+res <- lapply(X = centroids, show_digit, xaxt='n', yaxt='n')
+
+```
+
+These averaged images are called centroids. We’re treating each image as a 784-dimensional point (28 by 28), and then taking the average of all points in each dimension individually. 
+
+We see that each centroid has a good representation of a digit, so each image in the data set are centralized in the image and there is not large variations. Maybe we can use one elementary machine learning method: **nearest centroid classifier**, would ask for each image which of these centroids it comes closest to.[^1]
+
+### Compare Centroids
+
+How different one centroid is from other? We can simply take the difference between the pixel values for each digit pair like this:
+
+```{r compCentroids}
+
+# compare cases
+compare <- tidyr::crossing(comp1 = 0:9, comp2 = 0:9)
+
+# calc features differences between the centroids
+res <- apply(compare, 1, function(x,m=centroids){
+  unlist(m[x[1]+1]) - unlist(m[x[2]+1])
+}) %>% t() %>% as_tibble()
+
+centroids_diff <- bind_cols(compare, res)
+
+# plot them
+par(mfrow=c(10,10), mar=c(0,0,0,0))
+colFunc <- colorRampPalette(c("red","white","blue"))
+res <- sapply(1:100, FUN=function(x) show_digit(as.matrix(centroids_diff[x,3:786]),
+                                                col=colFunc(35),
+                                                axes=F))
+
+```
+
+From the image we can see some "patterns" emerging from this. As higher are stains in this image more separable a digit from another is. We look particularly for `0` and `1` digits are strongly separable. But in fade images we have a problem, because the pixels are not 'that' different from one digit from other, like `4` x `9` and `3` x `8`.
+
+### Distance
+
+We can "measure" this difference, taking each pixel as a dimensions in the digit represent space and apply a simple _euclidian distance_ between these data.
+
+```{r distance}
+
+# calculating the distance between the centroids in 786 dimensions
+dist <- apply(compare,1,function(x,m=centroids){
+  sqrt(mean((unlist(m[x[1]+1])-unlist(m[x[2]+1]))^2))  
+}) %>% as_tibble()
+centroids_dist <- bind_cols(compare,dist)
+
+# ploting the distances
+ggplot(centroids_dist, aes(x=comp1, y=comp2, fill=value)) +
+  geom_tile() + 
+  geom_text(aes(label=round(value))) +
+  scale_fill_gradient2(low = "blue", high = "red") +
+  scale_x_continuous(breaks=0:9) + 
+  scale_y_continuous(breaks=0:9) + 
+  ylab("") + xlab("") + 
+  theme_bw()
+
+```
+
+The distance here, measures the degree of "difference" between the centroids, and this matrix bring us a coll view, look at `0`x`1` how distance they are (69), making them easier to classify. Look at `4`x`9`, they are more next (23), let's compare this with the [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix) generated by the LeNet ANN from the [last post](/2018/01/implementing-lenet-with-mxnet-in-r/):
+
+```
+##           Reference
+## Prediction    0    1    2    3    4    5    6    7    8    9
+##          0  974    0    1    0    0    2    3    0    2    0
+##          1    1 1131    0    0    0    0    2    2    0    0
+##          2    0    0 1025    1    1    0    0    2    0    0
+##          3    0    0    0 1000    0    5    1    1    1    2
+##          4    0    0    1    0  970    0    0    1    0    6
+##          5    1    0    0    6    0  878    4    0    2    2
+##          6    3    2    1    0    1    2  947    0    0    1
+##          7    1    0    2    0    0    0    0 1016    0    3
+##          8    0    2    2    3    0    4    1    1  966    1
+##          9    0    0    0    0   10    1    0    5    3  994
+```
+We see the 16 mismatches involving cases `4`x`9`, the largest.
+
+## Principal Component Analysis
+
+We can improve this, it's not all the pixels that have the same importance in the digit differentiation, some pixels (in the image borders, for example) don't change its value along the data set and some pixels change very few from one digit to other. We transform the data sets to evidence the first removing the _zero variance_ pixels and the second using [Principal component Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis) or PCA.
+
+```{r pca, eval=FALSE}
+
+# transforming in a matrix
+tr.x <- mnist$train$x
+ts.x <- mnist$test$x
+all.x <- rbind(tr.x,ts.x)
+
+# calculating the PCA
+
+# removing zero or near zero variance features
+nzv <- nearZeroVar(all.x, saveMetrics = T)
+all.x <- all.x[,!nzv$zeroVar]
+
+# principal component analysis
+pca <- prcomp(all.x, center = T)
+saveRDS(pca, "pca.rds") # store to save time in the future
+print(paste0("Columns with zero variance: ", sum(nzv$zeroVar)))
+
+```
+
+```{r loadPCA, echo=FALSE}
+pca <- readRDS("./data/mnist/pca.rds")
+print(paste0("Columns with zero variance: ", 784- length(pca$sdev)))
+```
+
+### Principal Componets
+
+This is the classic view of the first 10 principal components, they explain 49% of total variance of data set.
+
+```{r principalComponents}
+
+# principals component
+fviz_eig(pca)
+
+```
+
+### Distribution of variance
+
+Indeed, we see that the majority of the dimensions has near zero variance and few pixels explain a lot.
+
+```{r varianceDistribution}
+
+# rebuilding features (transformed)
+tr.x <- pca$x[(1:mnist$train$n),]
+ts.x <- pca$x[(mnist$train$n+1):(mnist$train$n+mnist$test$n),]
+
+vars <- apply(pca$x, 2, var)  
+props <- vars / sum(vars)
+
+# distribuicao da % de sdev por
+# res <- dev.off() # reset plot parameters
+hist(props, breaks = 100, col="Red")
+
+```
+
+### Cumulative Variance
+
+Let's see how much dimension of the PCA we need to consider.
+
+```{r cumulativeVar}
+
+# ploting the cumulative variance
+data_frame(x=1:length(pca$sdev), sdev.cum=cumsum(props)) %>%
+  plot_ly(x=~x,y=~sdev.cum) %>%
+  add_lines()
+
+```
+
+You can see in the chart above, we can get 90% of variance with only 80 of dimension from a universe of 719! This is a great information compression, almost 10:1!
+
+## Ploting cases in new PCA space
+
+Lets see how the 200 first cases in the data set are distributed in the first two dimensions (15% the variation).
+
+```{r casesDistribution, warning=FALSE}
+
+# lets see the distribution
+pca.idx <- sample(1:mnist$train$n, 200)
+cases <- tibble(
+  label = as.factor(mnist$train$y[pca.idx]),
+  x = tr.x[pca.idx,1],
+  y = tr.x[pca.idx,2],
+  z = tr.x[pca.idx,3]
+)
+
+# all cases
+cases %>%
+  plot_ly(x=~x, y=~y, color=~label) %>%  
+  add_markers()
+
+```
+
+A little mess, but if we plot only the most distances centroids (`0`, `1` e `9`) we already see a separable structures if only two dimensions.
+
+```{r separableCases, warning=FALSE}
+
+# cases more "distant"
+cases %>%
+  filter(label %in% c("0", "1", "9")) %>%
+  plot_ly(x=~x, y=~y, color=~label) %>%  
+  add_markers()
+
+```
+
+This sound promising. An kNN approach with higher dimension may do a decent job classifying the digits. Lets put another one, increasing the _explained variation_ to 23%.
+
+
+```{r plot3DComponents, warning=FALSE}
+
+# 3D
+plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %>%  
+  add_markers()
+
+
+```
+
+You can play around turning off the cases of some digits and rotating the chart. Can you see how the `0`, `1` and `9` clusters are distributed in the space? And the `4` and `9` cases?
+
+## k-Nearest Neighbors
+
+We saw that the PCA did a great job spreading the digits in the space, allow some separation, now let's apply a kNN fit on this. We need to decide the number of dimension to be used (`n`) and the number of k-Nearest (`k`), to do this let's make a cross validation search[^2].
+
+```{r partition}
+# knn cross validation
+part.idx <- sample(1:mnist$train$n, round(mnist$train$n/2))
+
+# cross validation parameters
+k <- seq(2,14, 2)
+n <- seq(5,80,10)
+cross.params <- crossing(k=k, n=n)
+```
+
+```{r calcCV, eval=FALSE}
+
+# fit a kNN Model for each cross validation pair, and calc the accuracy
+result <- apply(X = cross.params,1, function(p, tr.idx = part.idx, x=tr.x, y=as.factor(mnist$train$y)){
+  k_par <- as.integer(p[1])
+  n_par <- as.integer(p[2])
+  
+  print(paste0("fitting: k=",k_par, " n=",n_par))
+
+  y_hat <- knn(
+    train = x[tr.idx,1:n_par], 
+    test=x[-tr.idx,1:n_par], 
+    cl=y[tr.idx],
+    k=k_par
+  )
+  
+  accuracy <- mean(y[-tr.idx]==y_hat)
+  print(paste0("Accuracy: ", round(accuracy,4)))
+  return(accuracy)
+  
+})
+
+# build the CV results
+cv.results <- bind_cols(cross.params, accuracy=result)
+saveRDS(cv.results, "cv_result.rds") # to save time
+str(cv.results)
+```
+
+The result is a data frame contain a pair of `k` and `n`and the `accuracy` that the kNN classifier get from this configuration
+
+```{r loadCV, echo=FALSE}
+cv.results <- readRDS("./data/mnist/cv_result.rds")
+str(cv.results)
+```
+
+Let's see the _accuracy surface_ defined by `k` and `n` parameters.
+
+
+```{r plotAccuracySurface}
+# ploting the error "surface"
+plot_ly(cv.results, x=~n, y=~k, z=~accuracy) %>%
+  add_markers(marker=list(size=2))
+
+# which pair k and n are better ?
+best <- cv.results[which(cv.results$accuracy==max(cv.results$accuracy)),]
+```
+
+The best result was k=`r best$k` and n=`r best$n`, with an accuracy of `r round(100*best$accuracy)`%. Not so bad, comparing the 99% accuracy of LeNet ANN from the [last post](/2018/01/implementing-lenet-with-mxnet-in-r/).
+
+## Conclusion
+
+As we see, the data analysis on the MNIST data set allow us to realize that the digit recognition problem can be solved, with great accuracy, by a simple kNN model. Of course this is not a complete image recognition problem, an ANN would learn to separate the classes without our intervention.
+
+But the analysis show that, in this case, we don't need jump directly to an expensive ANN, and better than that, it indicates that not all 784 pixels are necessary do identify a digit and we can, for sure, use the kNN´s pre-classification as another input for the ANN, or fit independent ANNs for difficult cases like `4`x`9`, showing another paths for model improvement.
+
+### References
+
+This post was inspired by:
+
+[^1]: http://varianceexplained.org/r/digit-eda/
+[^2]: https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/
+
