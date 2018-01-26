@@ -20,6 +20,12 @@ Innovation is now everyone's business. If you are a manager in a global company,
 
 ### This Blog
 
-It's just a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
+It's a place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.
 
 The blog itself is an experience with [R](https://www.r-project.org/) (my current favorite language), created using pages written in [RMarkdown](http://rmarkdown.rstudio.com/) and converted to a site using [Blogdown](https://bookdown.org/yihui/blogdown/) and [Hugo](https://gohugo.io/), versioned in [GitHub](https://github.com/GiulSposito/yetanotheriteration) and published in [Netlify](http://www.netlify.com).
+
+### My Links
+
+. Twitter: http://www.twitter.com/gsposito
+. GitHub: https://github.com/GiulSposito
+. LinkedIn: https://www.linkedin.com/in/giulianosposito/
