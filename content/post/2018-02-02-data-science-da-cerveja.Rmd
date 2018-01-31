@@ -184,18 +184,21 @@ pages <- 1:203
 # percorre as paginas fazendo o scrap
 pages %>%                                    
   paste0(base.url, "page/", .) %>%
-  map_df(possibly(scrapBeerPage,NULL)) -> beers
+  map_df(possibly(scrapBeerPage,NULL)) -> raw_beers
+
+# salva localmente para não precisar reprocessar toda hora
+saveRDS(beers,"./data/raw_beers.rds")
 
 # quantas avaliacoes foram capturadas ?
-dim(beers)
+dim(raw_beers)
 
 ```
 
 ```{r restoreBeersSaved, echo=FALSE}
 # lendo de uma base pré salvada para não ter que
 # processar o blog a cada vez que renderizo esse Rmarkdown
-beers <- readRDS("./data/beer_tm/raw_beers.rds")
-dim(beers)
+raw_beers <- readRDS("./data/beer_tm/raw_beers.rds")
+dim(raw_beers)
 ```
 
 Possivelmente nem todos os posts serão exatamente iguais, então pode ser que algum deles possa algum formato que impessa o processamento do site todo, gerando uma falha, para evitar a interrupção usamos o `purrr::possibly()`. Essa função permite evitar que uma falha no scrap de uma página pare o processo, em vez de falhar, volta-se um resultado nulo para aquela página, e que não será concatenado pelo `purrr::map_df`, e o processo continua para as demais.
@@ -207,7 +210,7 @@ Feita a extração vamos apenas arrumar a tipagem das colunas (já que tudo veio co
 ```{r columnType}
 
 # ajustando as tipagens de algumas colunas
-beers %>%
+raw_beers %>%
   mutate(
     # corrigindo os tipos 'cervejaria', 'pais' e 'avalicao'
     cervejaria = as.factor(cervejaria), 
@@ -217,17 +220,15 @@ beers %>%
     alcool = as.numeric(str_replace(str_replace(alcool,"%",""),",","."))/100) %>%
   mutate(
     # criando uma estrutura de tipos e subtipos
-    super.tipo = str_replace(tipo, " \\(.+\\).*", ""),
-    sub.tipo   = str_match(tipo, "\\(([^)]+)\\)")
+    super.tipo = str_replace(tipo, " +\\(.+\\).*", ""),
+    sub.tipo   = str_match(tipo, "\\(([^)]+)\\)")[,2]
   ) %>%
   # o autor sempre dá uma nota para a cerveja
   # se durante o casting houve um NA então o scrap nao tinha sido 
   # feito corretamente, retiramos esse registro
   filter( !is.na(alcool) ) -> beers
 
-# salva localmente para não precisar reprocessar toda hora
-saveRDS(beers,"./data/beers.rds")
-
+dim(beers)
 ```
 
 Aproveitamos e criamos duas informação derivadas de tipo: `super.tipo` e `sub.tipo`. O autor do blog sempre classifica as cervejas com base em uma hierarquia de dois níveis, colocando nível mais específico dentro de um parênteses. Vamos derivar essa estrutura extraíndo e separando essas informações.
