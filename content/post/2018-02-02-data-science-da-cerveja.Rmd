@@ -1,18 +1,16 @@
 ---
-title: Data Science das Cervejas
-author: Giuliano Sposito
+title: "Data Science das Cervejas"
+author: "Giuliano Sposito"
 date: '2018-02-02'
-slug: data-science-da-cerveja
-categories:
-  - data science
+slug: data-science-das-cervejas
 tags:
-  - beer
-  - rstats
-  - text mining
-  - pt-BR
-slug: implementing-lenet-with-mxnet-in-r
+- beer
+- rstats
+- text mining
+- pt-BR
 thumbnailImage: images/beertm_tn.png
 thumbnailImagePosition: left
+categories: data science
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -47,7 +45,7 @@ Com possibilidade de aplicar _seletores CSS_[^5] para capturar elementos específ
 
 Usaremos o [blog Cerva Nossa](https://cervanossa.wordpress.com) como fonte para uma descrição das cervejas. O M. Nogueira, autor dos posts do blog, sempre avalia 9 aspectos: País, Tipo, Teor Alcoólico, Cor, Sabor, Malte, Avaliação, Preço e Volume, além da descrição comercial, da imagem da mesma e um link para o site da cervejaria.
 
-[./images/cervanossa.png](Formato de um post de avaliação)
+![Formato de um post de avaliação](./images/cervanossa.png)
 
 Embora as informações estejam num corpo de texto corrido dentro do post, ou seja, não é possível capturá-las individualmente usando um seletores de CSS, o fato do post ter sempre o mesmo formato facilita o tratamento de strings.
 
@@ -238,8 +236,37 @@ Aproveitamos e criamos duas informação derivadas de tipo: `super.tipo` e `sub.ti
 # vendo uma parte dessa hierarquia
 beers %>%
   select(tipo, super.tipo, sub.tipo) %>%
-  head(20) %>%
-  print()
+  head(10) %>%
+  kable()
+
+```
+
+Agora nós temos uma boa base de avaliações, com mais de mil cervejas avaliadas.
+
+```{r beersOverview}
+
+# contando tipo, subtipos e supertipos
+num_sprtp <- unique(beers$super.tipo) %>% length()
+num_subtp <- unique(beers$sub.tipo) %>% length()
+num_tipo  <- unique(beers$tipo) %>% length()
+
+# overview do dataset
+head(beers,10) %>%
+  select(-nome.completo, -sabor) %>% # tira alguns campos para visualizacao
+  select(1:10) %>%
+  kable()
+
+```
+
+São `r num_sprtp` tipos de cervejas diferentes combinados com `r num_subtp` sub.tipos, formando `r num_tipo` combinações diferentes.
+
+```{r beersTypes}
+
+# 10 tipos de cerveja mais avaliados 
+beers %>%
+  count(super.tipo, sub.tipo, sort=T) %>% 
+  head(10) %>%
+  kable()
 
 ```
 
