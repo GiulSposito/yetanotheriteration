@@ -1,8 +1,8 @@
 ---
-title: "Data Science das Cervejas"
+title: "Data Science das Cervejas (1/2)"
 author: "Giuliano Sposito"
 date: '2018-02-02'
-slug: data-science-das-cervejas
+slug: data-science-das-cervejas-1-2
 tags:
 - beer
 - rstats
@@ -270,6 +270,141 @@ beers %>%
 
 ```
 
+## Características dos Tipos de Cerveja
+
+Com o data set de avaliações em mãos, agora é possível fazer uma analise comparativa entre os diversos tipos com base nas descrições usadas no texto de descrição de sabor, malte e cor das cervejas, usando técnicas de [text mining](https://en.wikipedia.org/wiki/Text_mining), ou, _mineração de textos_, em português.
+
+O processo de _text mining_ geralmente envolve a contagem das palavras para encontrar similaridades e diferenças entre registros ou entidades. Usaremos essa ténica para tentar evidenciar a diferença entre os tipos de cerveja.
+
+```{r tmSetup}
+
+# bibliotecas
+library(tidytext) # pacote para tratamento de textos do tidyverse 
+library(ptstem)   # pacote que faz o steming de termos em português
+
+```
+
+Antes de fazer a contagem das palavras e aplicar o TF-IDF é necessário fazer uma limpeza no texto das descrições, que envolve a remoção das palavras sem significado, as chamadas _stopwords_. Stop words[^2] são palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E também é necessário fazer o _steming_, processo que elimina a flexão das palavras, por exemplo:
+
+```{r stemExample}
+
+# exemplo
+palavras <- c("notas","aromáticas", "nota", "aromática", "sabores", "distintos",
+              "sabor", "distinto", "frutas", "frutado")
+ptstem(palavras)
+
+```
+
+Esse processo equaliza as palavras facilitando a contagem
+
+```{r wordCount}
+
+# carrega stop words (do git https://gist.github.com/alopes/5358189)
+pt_stopwords <- read_table("./data/beer_tm/stopwords.txt", col_names = "word")
+
+# algumas stop words relevantes para esse problema (toque, algo, gosto, paladar)
+# sao palavras que presentes nas descrições do sabor mas não agrega informação
+my_stopwords <- read_table("./data/beer_tm/my_stopwords.txt", col_names = "word")
+
+# combina as stop words
+stopwords <- bind_rows(pt_stopwords, my_stopwords)
+
+# removendo stop-words, stem e contando
+beers %>%
+  # Concatena os campos de texto Malte, Sabor e Cor
+  mutate( review = paste0(malte, " ", sabor, " ", cor) ) %>%
+  # Seleciona campoas de interesse para a analise
+  select( tipo, super.tipo, sub.tipo, review ) %>%
+  # separa as palavras do texto em vários registros
+  unnest_tokens( word, review ) %>% 
+  # remove as stopwords
+  anti_join( stopwords ) %>% 
+  # stem das palavras
+  mutate( word = ptstem(word) ) %>%
+  # contagem das palavars
+  count( word, tipo, super.tipo ) -> beer_wordc
+
+# breve formato do tibble
+glimpse(beer_wordc)
+```
+
+O que nós temos agora então é um mapa, para cada palavra a contagem de aparições nas descrição de sabor, cor e malte para cada tipo de cerveja. Mas nem todas as palavras tem o mesmo significado, algum delas aparecem em quase todas as descrições, o que a torna irrelevante para diferenciar uma cerveja da outra, para melhorar isso, atribuímos pesos diferentes às palvras através do _Term Frequency-Inverse Document Frequency_, ou [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) que é uma ponderação freqüentemente usada para identificar palavras-chave para recuperação de documentos pelos motores de busca e em sistemas de recomendação para sugerir itens similares. Ele procura termos que são freqüentes em um documento específico, mas raros em outros documentos, evidenciando palavras mais importantes na diferenciação das entidades.
+
+A função `bind_tf_idf` do pacote `tidytext`calcula o TF_IDF ao passar um tibble contendo a contagem de um termo por linha e informando a coluna que contem o termo, o ID do agrupamento e a coluna que tem a contagem (n).
+
+Vamos aplicar essa técnica pimeiro para os tipos (super.tipos) de cerveja, para visualizar como é a diferença entre eles:
+
+```{r tfIdf}
+
+# partindo da contagem
+beer_wordc %>% 
+  # agrupa a contagem no supertipo
+  group_by(word, super.tipo) %>%
+  summarise(n=sum(n)) %>%
+  # calcula o total por palavra
+  group_by(word) %>%
+  mutate(word_total = sum(n)) %>%
+  # calcula o TF_IDF
+  bind_tf_idf(word, super.tipo, n)  %>%
+  # remove quem obteve zero de score e ordena descrescente
+  subset(tf_idf > 0) %>%
+  arrange(desc(tf_idf)) -> tipo_tf_idf
+
+# dando uma olhada no resultado
+tipo_tf_idf %>%
+  head(10) %>%
+  kable()
+
+```
+
+
+Vemos que o `bind_tf_idf` adicionou as estatísticas para o cálculo do TF_IDF, agora podemos visualizar como os tipos de cerveja se diferenciam nas descrições de sabor, ponderados por esse _score_.
+
+```{r dataSuperType}
+
+# vamos pegar os 16 "tipos" de cerveja mais frequentes
+count(beers, super.tipo, sort=T) %>%
+  top_n(16,n) %>%
+  head(16) -> top_beer_types
+
+# obter as estatíticas das principais palavras para cada um destes tipos
+beer_type_top10_tf_idf <- tipo_tf_idf %>%  
+  # obtem as palavras dos tipos selecionados cuja as 
+  # descrições tem pelo menos 10 palavras
+  subset(super.tipo %in% top_beer_types$super.tipo & word_total >= 10) %>% 
+  # agrupa por tipo e obtem os 10 dez termos com melhor tf-idf
+  group_by(super.tipo) %>%
+  top_n(10, tf_idf) %>% 
+  filter(row_number() <= 10) %>% 
+  # ordena por tipo e score (desc)
+  arrange(super.tipo, desc(tf_idf)) %>%
+  ungroup() %>%
+  # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
+  mutate(Rank = rep(10:1, 16))
+
+# overview 
+glimpse(beer_type_top10_tf_idf)
+```
+
+Para cada tipo temos as 10 mais importantes palavras, vamos visualizar a diferença entre os grupos.
+
+
+```{r plotSuperType, fig.height=10, fig.width=10}
+
+# styling omitted for brevity
+ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +  
+  geom_bar(stat="identity", fill="cadetblue", alpha=0.5) + 
+  coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
+  geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=3) +
+  labs(title="10 palavras com mais TF-IDF por tipo de cerveja", 
+       x="", y="tf-idf") +
+  theme_bw() + 
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+  
+
+```
 
 
 [^1]: R Package para _Stemming_ em Português  - https://cran.r-project.org/web/packages/ptstem/vignettes/ptstem.html
