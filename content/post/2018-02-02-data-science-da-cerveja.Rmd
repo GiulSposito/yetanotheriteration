@@ -1,16 +1,19 @@
 ---
-title: "Data Science das Cervejas (1/2)"
-author: "Giuliano Sposito"
-date: '2018-02-02'
-slug: data-science-das-cervejas-1-2
+title: Data Science das Cervejas (1/2)
+author: Giuliano Sposito
+date: '2018-02-03'
+categories:
+  - data science
 tags:
-- beer
-- rstats
-- text mining
-- pt-BR
+  - beer
+  - pt-BR
+  - rstats
+  - text mining
+slug: data-science-das-cervejas-1-2
 thumbnailImage: images/beertm_tn.png
 thumbnailImagePosition: left
-categories: data science
+coverImage: /images/beertm_cover.jpg
+metaAlignment: center
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -25,29 +28,29 @@ knitr::opts_chunk$set(cache = TRUE)
 ```
 
 
-Neste post vamos explorar a an·lise de textos extraÌtos via _data scraping_ de um blog de avaliaÁıes de cerveja para encontrar  
+Neste post vamos extra√≠r via _data scraping_ textos e dados de um blog de avalia√ß√µes de cerveja para encontrar os termos que melhor caracterizam e descrevem os tipos de cerveja atrav√©s das descri√ß√µes do sabores da mesmas.
 
 <!--more-->
 
-## Base de dados com avaliaÁ„o das cervejas
+## Base de dados com avalia√ß√£o das cervejas
 
-O primeiro passo È obter os dados descritivos das cervejas. Como n„o existe uma em portuguÍs dando sopa por aÌ, a estratÈgia e buscar algum site de avaliaÁ„o de cervejas, com uma boa quantidade de informaÁıes e extrair os dados de l·, montando uma base prÛpria.
+O primeiro passo √© obter os dados descritivos das cervejas. Como n√£o existe uma em portugu√™s dando sopa por a√≠, a estrat√©gia e buscar algum site de avalia√ß√£o de cervejas, com uma boa quantidade de informa√ß√µes e extrair os dados de l√°, montando uma base pr√≥pria.
 
-### Data Scraping das avaliaÁıes
+### Data Scraping das avalia√ß√µes
 
-**Data scraping** (do inglÍs, raspagem de dados) È uma tÈcnica computacional na qual um programa extrai dados de saÌda legÌvel somente para humanos, proveniente de um serviÁo ou aplicativo. Os dados extraÌdos geralmente s„o minerados e estruturados em um formato padr„o como CSV, XML ou JSON.
+**Data scraping** (do ingl√™s, raspagem de dados) √© uma t√©cnica computacional na qual um programa extrai dados de sa√≠da leg√≠vel somente para humanos, proveniente de um servi√ßo ou aplicativo. Os dados extra√≠dos geralmente s√£o minerados e estruturados em um formato padr√£o como CSV, XML ou JSON.
 
-**Rvest**[^4] È um pacote que facilita o _scraping_ de dados de p·ginas web html. Ele È projetado para trabalhar com _magrittr_ para que vocÍ possa expressar operaÁıes complexas como pipelines facilmente compreendidos.
+**Rvest**[^4] √© um pacote que facilita o _scraping_ de dados de p√°ginas web html. Ele √© projetado para trabalhar com _magrittr_ para que voc√™ possa expressar opera√ß√µes complexas como pipelines facilmente compreendidos.
 
-Com possibilidade de aplicar _seletores CSS_[^5] para capturar elementos especÌficos e prÈ-tratamento de listas e tabelas.
+Com possibilidade de aplicar _seletores CSS_[^5] para capturar elementos espec√≠ficos e pr√©-tratamento de listas e tabelas.
 
 ### Blog Cerva Nossa
 
-Usaremos o [blog Cerva Nossa](https://cervanossa.wordpress.com) como fonte para uma descriÁ„o das cervejas. O M. Nogueira, autor dos posts do blog, sempre avalia 9 aspectos: PaÌs, Tipo, Teor AlcoÛlico, Cor, Sabor, Malte, AvaliaÁ„o, PreÁo e Volume, alÈm da descriÁ„o comercial, da imagem da mesma e um link para o site da cervejaria.
+Usaremos o [blog Cerva Nossa](https://cervanossa.wordpress.com) como fonte para uma descri√ß√£o das cervejas. O M. Nogueira, autor dos posts do blog, sempre avalia 9 aspectos: Pa√≠s, Tipo, Teor Alco√≥lico, Cor, Sabor, Malte, Avalia√ß√£o, Pre√ßo e Volume, al√©m da descri√ß√£o comercial, da imagem da mesma e um link para o site da cervejaria.
 
-![Formato de um post de avaliaÁ„o](./images/cervanossa.png)
+![Formato de um post de avalia√ß√£o](./images/cervanossa.png)
 
-Embora as informaÁıes estejam num corpo de texto corrido dentro do post, ou seja, n„o È possÌvel captur·-las individualmente usando um seletores de CSS, o fato do post ter sempre o mesmo formato facilita o tratamento de strings.
+Embora as informa√ß√µes estejam num corpo de texto corrido dentro do post, ou seja, n√£o √© poss√≠vel captur√°-las individualmente usando um seletores de CSS, o fato do post ter sempre o mesmo formato facilita o tratamento de strings.
 
 ```{r scrapLibs}
 
@@ -59,7 +62,7 @@ library(lubridate) # manipulacao de datas
 
 ```
 
-O blog gerado em _wordpress_ divide o site em _pages_ e cada uma delas contÈm 7 posts. A idÈia È montar uma funÁ„o para processar uma p·gina por vez e cham·-la para as diversas p·ginas do site
+O blog gerado em _wordpress_ divide o site em _pages_ e cada uma delas cont√©m 7 posts. A id√©ia √© montar uma fun√ß√£o para processar uma p√°gina por vez e cham√°-la para as diversas p√°ginas do site
 
 ```{r scrapFunction}
 
@@ -72,18 +75,18 @@ scrapBeerPage <- function(base.url) {
   # faz o fetch da url e estrutura em um html doc (xml)
   html_doc <- read_html(base.url)
   
-  # extraÁ„o do nome da cerveja que est· no tÌtulo do post,
-  # dentro do link para o prÛprio post
+  # extra√ß√£o do nome da cerveja que est√° no t√≠tulo do post,
+  # dentro do link para o pr√≥prio post
   html_doc %>% 
     html_nodes("div .post") %>%         # div que contem o post
     html_nodes("h2 a:first-child") %>%  # primeiro link do post em um H2
     html_text() %>%                     # pega o texto da tag
-    str_replace("\u00A0"," ") %>%       # no nome h· &nbsp; e &#8209;
+    str_replace("\u00A0"," ") %>%       # no nome h√° &nbsp; e &#8209;
     str_replace("\u2011","-") %>%       # removendo
     as.tibble() %>%                     # transforma em tibble
     rename(nome.completo=value) %>%     # nome completo
     mutate(
-      # o nome est· composto por "cervejaria - cerveja" criamos colunas 
+      # o nome est√° composto por "cervejaria - cerveja" criamos colunas 
       # separadas para o valores
       cervejaria = str_split(nome.completo, " . ", simplify = T)[,1],
       cerveja = str_split(nome.completo," . ", simplify = T)[,2]
@@ -106,27 +109,27 @@ scrapBeerPage <- function(base.url) {
         html_attr("src") %>%
         head(1)        
     }) %>%
-    # a url est· acompanhada de uma query string - limpando
+    # a url est√° acompanhada de uma query string - limpando
     str_replace("\\?.*","") %>% 
     as.tibble() %>% 
     rename(image=value) -> beers.image
   
-  # captura a avaliaÁ„o: ela È um "texto corrido" dentre de um <p>,
-  # que est· dentro do div do post (main)
+  # captura a avalia√ß√£o: ela √© um "texto corrido" dentre de um <p>,
+  # que est√° dentro do div do post (main)
   # pode vir outros textos de outros p's 
   html_doc %>%
     html_nodes(".main p") %>%
     html_text() %>%
-    # so me interessa o texto que contiver "PaÌs: "
-    map( ~Filter(function(x) str_count(x,"PaÌs: ")>0,.) ) %>% 
-    # cada atributo classificado est· numa linha (/n)
+    # so me interessa o texto que contiver "Pa√≠s: "
+    map( ~Filter(function(x) str_count(x,"Pa√≠s: ")>0,.) ) %>% 
+    # cada atributo classificado est√° numa linha (/n)
     unlist() %>% str_split("\n") %>%
-    # extrai os valores dos atributos que est„o como pares "chave:valor"
-    # por exemplo: PaÌs: Brasil /n Tipo: Lagger/m
+    # extrai os valores dos atributos que est√£o como pares "chave:valor"
+    # por exemplo: Pa√≠s: Brasil /n Tipo: Lagger/m
     map(function(texts){
       str_replace(texts, ".+: ", "") %>%
         str_replace(.,"\\.+$","") %>%
-        # somente nove atributos, h· algumas "obs:" em alguns posts
+        # somente nove atributos, h√° algumas "obs:" em alguns posts
         head(9) 
     }) %>%
     unlist() %>% as.vector() %>%
@@ -138,7 +141,7 @@ scrapBeerPage <- function(base.url) {
                "avaliacao","preco","volume")) -> beers.eval
   
   # captura o link para o site da cervejaria
-  # geralmente dentre de um "<a...>" no ˙ltimo <p> do post
+  # geralmente dentre de um "<a...>" no √∫ltimo <p> do post
   html_doc %>%
     html_nodes(".main p:last-of-type") %>% 
     map(function(x){
@@ -146,7 +149,7 @@ scrapBeerPage <- function(base.url) {
     }) %>%
     # nem todo post tem link para a cervejaria
     # e alguns tem mais de um
-    # ent„o esse map volta NA quando n„o encontrar o link no post
+    # ent√£o esse map volta NA quando n√£o encontrar o link no post
     map(function(x){
       if (length(x)>0) { html_attr(x,"href") }
         else {return(NA)}
@@ -155,7 +158,7 @@ scrapBeerPage <- function(base.url) {
     rename(url=value) -> beers.url
   
   # captura a data de avalicao
-  # Est· no ˙ltimo "p" de uma "div" com class "signature"
+  # Est√° no √∫ltimo "p" de uma "div" com class "signature"
   html_doc %>%
     html_nodes(".signature p:last-of-type") %>%
     html_text() %>%
@@ -163,7 +166,7 @@ scrapBeerPage <- function(base.url) {
     as.tibble() %>%
     rename(data.avalicao=value) -> beers.eval_date
   
-  # combina os dados extraÌdos em um ˙nico tibble
+  # combina os dados extra√≠dos em um √∫nico tibble
   bind_cols( beers.name, beers.eval, beers.eval_date,
              beers.eval_link, beers.url, beers.image) %>% return()
 
@@ -171,7 +174,7 @@ scrapBeerPage <- function(base.url) {
 
 ```
 
-A funÁ„o retorna um tibble com os dados dos posts de cada p·gina, bastando ent„o chamar a funÁ„o repetidamente para todas as p·ginas do site (hoje, 203 p·ginas)
+A fun√ß√£o retorna um tibble com os dados dos posts de cada p√°gina, bastando ent√£o chamar a fun√ß√£o repetidamente para todas as p√°ginas do site (hoje, 203 p√°ginas)
 
 ```{r scrapSite, eval=FALSE}
 
@@ -184,7 +187,7 @@ pages %>%
   paste0(base.url, "page/", .) %>%
   map_df(possibly(scrapBeerPage,NULL)) -> raw_beers
 
-# salva localmente para n„o precisar reprocessar toda hora
+# salva localmente para n√£o precisar reprocessar toda hora
 saveRDS(beers,"./data/raw_beers.rds")
 
 # quantas avaliacoes foram capturadas ?
@@ -193,17 +196,17 @@ dim(raw_beers)
 ```
 
 ```{r restoreBeersSaved, echo=FALSE}
-# lendo de uma base prÈ salvada para n„o ter que
+# lendo de uma base pr√© salvada para n√£o ter que
 # processar o blog a cada vez que renderizo esse Rmarkdown
 raw_beers <- readRDS("./data/beer_tm/raw_beers.rds")
 dim(raw_beers)
 ```
 
-Possivelmente nem todos os posts ser„o exatamente iguais, ent„o pode ser que algum deles possa algum formato que impessa o processamento do site todo, gerando uma falha, para evitar a interrupÁ„o usamos o `purrr::possibly()`. Essa funÁ„o permite evitar que uma falha no scrap de uma p·gina pare o processo, em vez de falhar, volta-se um resultado nulo para aquela p·gina, e que n„o ser· concatenado pelo `purrr::map_df`, e o processo continua para as demais.
+Possivelmente nem todos os posts ser√£o exatamente iguais, ent√£o pode ser que algum deles possa algum formato que impessa o processamento do site todo, gerando uma falha, para evitar a interrup√ß√£o usamos o `purrr::possibly()`. Essa fun√ß√£o permite evitar que uma falha no scrap de uma p√°gina pare o processo, em vez de falhar, volta-se um resultado nulo para aquela p√°gina, e que n√£o ser√° concatenado pelo `purrr::map_df`, e o processo continua para as demais.
 
-O procedimento correto, seria olhar cada caso de falha e alterar a funÁ„o de scrap para trat·-las, ou ent„o "desviar" as p·ginas que falharam para rotinas que as tratam especificamente. Fiz isso para boa parte do site, mas n„o para ele todo neste post.
+O procedimento correto, seria olhar cada caso de falha e alterar a fun√ß√£o de scrap para trat√°-las, ou ent√£o "desviar" as p√°ginas que falharam para rotinas que as tratam especificamente. Fiz isso para boa parte do site, mas n√£o para ele todo neste post.
 
-Feita a extraÁ„o vamos apenas arrumar a tipagem das colunas (j· que tudo veio como "char" do html) e salvar localmente o resultado.
+Feita a extra√ß√£o vamos apenas arrumar a tipagem das colunas (j√° que tudo veio como "char" do html) e salvar localmente o resultado.
 
 ```{r columnType}
 
@@ -214,22 +217,22 @@ raw_beers %>%
     cervejaria = as.factor(cervejaria), 
     pais = as.factor(pais),             
     avaliacao = as.integer(avaliacao),  
-    # transformando o teor alcoÛlico de texto "6.5%" para num "0.065"
+    # transformando o teor alco√≥lico de texto "6.5%" para num "0.065"
     alcool = as.numeric(str_replace(str_replace(alcool,"%",""),",","."))/100) %>%
   mutate(
     # criando uma estrutura de tipos e subtipos
     super.tipo = str_replace(tipo, " +\\(.+\\).*", ""),
     sub.tipo   = str_match(tipo, "\\(([^)]+)\\)")[,2]
   ) %>%
-  # o autor sempre d· uma nota para a cerveja
-  # se durante o casting houve um NA ent„o o scrap nao tinha sido 
+  # o autor sempre d√° uma nota para a cerveja
+  # se durante o casting houve um NA ent√£o o scrap nao tinha sido 
   # feito corretamente, retiramos esse registro
   filter( !is.na(alcool) ) -> beers
 
 dim(beers)
 ```
 
-Aproveitamos e criamos duas informaÁ„o derivadas de tipo: `super.tipo` e `sub.tipo`. O autor do blog sempre classifica as cervejas com base em uma hierarquia de dois nÌveis, colocando nÌvel mais especÌfico dentro de um parÍnteses. Vamos derivar essa estrutura extraÌndo e separando essas informaÁıes.
+Aproveitamos e criamos duas informa√ß√£o derivadas de tipo: `super.tipo` e `sub.tipo`. O autor do blog sempre classifica as cervejas com base em uma hierarquia de dois n√≠veis, colocando n√≠vel mais espec√≠fico dentro de um par√™nteses. Vamos derivar essa estrutura extra√≠ndo e separando essas informa√ß√µes.
 
 ```{r typeSubtype}
 
@@ -241,7 +244,7 @@ beers %>%
 
 ```
 
-Agora nÛs temos uma boa base de avaliaÁıes, com mais de mil cervejas avaliadas.
+Agora n√≥s temos uma boa base de avalia√ß√µes, com mais de mil cervejas avaliadas.
 
 ```{r beersOverview}
 
@@ -258,7 +261,7 @@ head(beers,10) %>%
 
 ```
 
-S„o `r num_sprtp` tipos de cervejas diferentes combinados com `r num_subtp` sub.tipos, formando `r num_tipo` combinaÁıes diferentes.
+S√£o `r num_sprtp` tipos de cervejas diferentes combinados com `r num_subtp` sub.tipos, formando `r num_tipo` combina√ß√µes diferentes.
 
 ```{r beersTypes}
 
@@ -270,26 +273,28 @@ beers %>%
 
 ```
 
-## CaracterÌsticas dos Tipos de Cerveja
+## Caracter√≠sticas dos Tipos de Cerveja
 
-Com o data set de avaliaÁıes em m„os, agora È possÌvel fazer uma analise comparativa entre os diversos tipos com base nas descriÁıes usadas no texto de descriÁ„o de sabor, malte e cor das cervejas, usando tÈcnicas de [text mining](https://en.wikipedia.org/wiki/Text_mining), ou, _mineraÁ„o de textos_, em portuguÍs.
+Com o data set de avalia√ß√µes em m√£os, agora √© poss√≠vel fazer uma analise comparativa entre os diversos tipos com base nas descri√ß√µes usadas no texto de descri√ß√£o de sabor, malte e cor das cervejas, usando t√©cnicas de [text mining](https://en.wikipedia.org/wiki/Text_mining), ou, _minera√ß√£o de textos_, em portugu√™s.
 
-O processo de _text mining_ geralmente envolve a contagem das palavras para encontrar similaridades e diferenÁas entre registros ou entidades. Usaremos essa tÈnica para tentar evidenciar a diferenÁa entre os tipos de cerveja.
+O processo de _text mining_ geralmente envolve a contagem das palavras para encontrar similaridades e diferen√ßas entre registros ou entidades. Usaremos essa t√©nica para tentar evidenciar a diferen√ßa entre os tipos de cerveja.
 
 ```{r tmSetup}
 
 # bibliotecas
 library(tidytext) # pacote para tratamento de textos do tidyverse 
-library(ptstem)   # pacote que faz o steming de termos em portuguÍs
+library(ptstem)   # pacote que faz o steming de termos em portugu√™s
 
 ```
 
-Antes de fazer a contagem das palavras e aplicar o TF-IDF È necess·rio fazer uma limpeza no texto das descriÁıes, que envolve a remoÁ„o das palavras sem significado, as chamadas _stopwords_. Stop words[^2] s„o palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E tambÈm È necess·rio fazer o _steming_, processo que elimina a flex„o das palavras, por exemplo:
+### Steam & Stop Words
+
+Antes de fazer a contagem das palavras e aplicar o TF-IDF √© necess√°rio fazer uma limpeza no texto das descri√ß√µes, que envolve a remo√ß√£o das palavras sem significado, as chamadas _stopwords_. Stop words[^2] s√£o palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E tamb√©m √© necess√°rio fazer o _steming_, processo que elimina a flex√£o das palavras, por exemplo:
 
 ```{r stemExample}
 
 # exemplo
-palavras <- c("notas","arom·ticas", "nota", "arom·tica", "sabores", "distintos",
+palavras <- c("notas","arom√°ticas", "nota", "arom√°tica", "sabores", "distintos",
               "sabor", "distinto", "frutas", "frutado")
 ptstem(palavras)
 
@@ -303,7 +308,7 @@ Esse processo equaliza as palavras facilitando a contagem
 pt_stopwords <- read_table("./data/beer_tm/stopwords.txt", col_names = "word")
 
 # algumas stop words relevantes para esse problema (toque, algo, gosto, paladar)
-# sao palavras que presentes nas descriÁıes do sabor mas n„o agrega informaÁ„o
+# sao palavras que presentes nas descri√ß√µes do sabor mas n√£o agrega informa√ß√£o
 my_stopwords <- read_table("./data/beer_tm/my_stopwords.txt", col_names = "word")
 
 # combina as stop words
@@ -315,7 +320,7 @@ beers %>%
   mutate( review = paste0(malte, " ", sabor, " ", cor) ) %>%
   # Seleciona campoas de interesse para a analise
   select( tipo, super.tipo, sub.tipo, review ) %>%
-  # separa as palavras do texto em v·rios registros
+  # separa as palavras do texto em v√°rios registros
   unnest_tokens( word, review ) %>% 
   # remove as stopwords
   anti_join( stopwords ) %>% 
@@ -328,11 +333,13 @@ beers %>%
 glimpse(beer_wordc)
 ```
 
-O que nÛs temos agora ent„o È um mapa, para cada palavra a contagem de apariÁıes nas descriÁ„o de sabor, cor e malte para cada tipo de cerveja. Mas nem todas as palavras tem o mesmo significado, algum delas aparecem em quase todas as descriÁıes, o que a torna irrelevante para diferenciar uma cerveja da outra, para melhorar isso, atribuÌmos pesos diferentes ‡s palvras atravÈs do _Term Frequency-Inverse Document Frequency_, ou [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) que È uma ponderaÁ„o freq¸entemente usada para identificar palavras-chave para recuperaÁ„o de documentos pelos motores de busca e em sistemas de recomendaÁ„o para sugerir itens similares. Ele procura termos que s„o freq¸entes em um documento especÌfico, mas raros em outros documentos, evidenciando palavras mais importantes na diferenciaÁ„o das entidades.
+### Term Frequency-Inverse Document Frequency
 
-A funÁ„o `bind_tf_idf` do pacote `tidytext`calcula o TF_IDF ao passar um tibble contendo a contagem de um termo por linha e informando a coluna que contem o termo, o ID do agrupamento e a coluna que tem a contagem (n).
+O que n√≥s temos agora ent√£o √© um mapa, para cada palavra a contagem de apari√ß√µes nas descri√ß√£o de sabor, cor e malte para cada tipo de cerveja. Mas nem todas as palavras tem o mesmo significado, algum delas aparecem em quase todas as descri√ß√µes, o que a torna irrelevante para diferenciar uma cerveja da outra, para melhorar isso, atribu√≠mos pesos diferentes √†s palvras atrav√©s do _Term Frequency-Inverse Document Frequency_, ou [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) que √© uma pondera√ß√£o freq√ºentemente usada para identificar palavras-chave para recupera√ß√£o de documentos pelos motores de busca e em sistemas de recomenda√ß√£o para sugerir itens similares. Ele procura termos que s√£o freq√ºentes em um documento espec√≠fico, mas raros em outros documentos, evidenciando palavras mais importantes na diferencia√ß√£o das entidades.
 
-Vamos aplicar essa tÈcnica pimeiro para os tipos (super.tipos) de cerveja, para visualizar como È a diferenÁa entre eles:
+A fun√ß√£o `bind_tf_idf` do pacote `tidytext`calcula o TF_IDF ao passar um tibble contendo a contagem de um termo por linha e informando a coluna que contem o termo, o ID do agrupamento e a coluna que tem a contagem (n).
+
+Vamos aplicar essa t√©cnica para os tipos (super.tipos) de cerveja, para visualizar como √© a diferen√ßa entre eles:
 
 ```{r tfIdf}
 
@@ -358,7 +365,7 @@ tipo_tf_idf %>%
 ```
 
 
-Vemos que o `bind_tf_idf` adicionou as estatÌsticas para o c·lculo do TF_IDF, agora podemos visualizar como os tipos de cerveja se diferenciam nas descriÁıes de sabor, ponderados por esse _score_.
+Vemos que o `bind_tf_idf` adicionou as estat√≠sticas para o c√°lculo do TF_IDF, agora podemos visualizar como os tipos de cerveja se diferenciam nas descri√ß√µes de sabor, ponderados por esse _score_.
 
 ```{r dataSuperType}
 
@@ -367,10 +374,10 @@ count(beers, super.tipo, sort=T) %>%
   top_n(16,n) %>%
   head(16) -> top_beer_types
 
-# obter as estatÌticas das principais palavras para cada um destes tipos
+# obter as estat√≠ticas das principais palavras para cada um destes tipos
 beer_type_top10_tf_idf <- tipo_tf_idf %>%  
   # obtem as palavras dos tipos selecionados cuja as 
-  # descriÁıes tem pelo menos 10 palavras
+  # descri√ß√µes tem pelo menos 10 palavras
   subset(super.tipo %in% top_beer_types$super.tipo & word_total >= 10) %>% 
   # agrupa por tipo e obtem os 10 dez termos com melhor tf-idf
   group_by(super.tipo) %>%
@@ -378,15 +385,18 @@ beer_type_top10_tf_idf <- tipo_tf_idf %>%
   filter(row_number() <= 10) %>% 
   # ordena por tipo e score (desc)
   arrange(super.tipo, desc(tf_idf)) %>%
-  ungroup() %>%
+  ungrou/p() %>%
   # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
   mutate(Rank = rep(10:1, 16))
 
 # overview 
-glimpse(beer_type_top10_tf_idf)
+head(10) %>%
+  kable()
 ```
 
-Para cada tipo temos as 10 mais importantes palavras, vamos visualizar a diferenÁa entre os grupos.
+### Termos chaves para os tipos de servejas.
+
+Para cada tipo temos as 10 mais importantes palavras, vamos visualizar a diferen√ßa entre os grupos.
 
 
 ```{r plotSuperType, fig.height=10, fig.width=10}
@@ -406,10 +416,14 @@ ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +
 
 ```
 
+## Conclus√£o
 
-[^1]: R Package para _Stemming_ em PortuguÍs  - https://cran.r-project.org/web/packages/ptstem/vignettes/ptstem.html
+Podemos perceber que via _text mining_ conseguimos isolar os termos mais caracter√≠scos para cada tipo de cerveja. No pr√≥ximo post vamos explorar as diferen√ßas e semelhan√ßas entre os divesos tipos e explorar a capacidade de fazer sugest√µes de cerveja de acordo com a caracter√≠sticas desejadas.
 
-[^2]: _stop words_ para portuguÍs  - https://gist.github.com/alopes/5358189
+
+[^1]: R Package para _Stemming_ em Portugu√™s  - https://cran.r-project.org/web/packages/ptstem/vignettes/ptstem.html
+
+[^2]: _stop words_ para portugu√™s  - https://gist.github.com/alopes/5358189
 
 [^3]: Beer Text Mining with Tidytext - http://kaylinwalker.com/tidy-text-beer/
 
