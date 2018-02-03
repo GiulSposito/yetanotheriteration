@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</loc>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
   </url>
@@ -64,6 +69,12 @@
   </url>
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/beer/</loc>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/categories/</loc>
     <priority>0</priority>
   </url>
@@ -76,7 +87,7 @@
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/categories/data-science/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -178,19 +189,25 @@
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/post/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/tags/pt-br/</loc>
-    <lastmod>2018-01-21T00:00:00+00:00</lastmod>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/tags/rstat/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/rstats/</loc>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -225,6 +242,12 @@
   </url>
   
   <url>
+    <loc>https://yetanotheriteration.netlify.com/tags/text-mining/</loc>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://yetanotheriteration.netlify.com/tags/workout/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -232,7 +255,7 @@
   
   <url>
     <loc>https://yetanotheriteration.netlify.com/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -1,0 +1,1494 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.32.4 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Data Science das Cervejas (1/2)</title>
+    <meta name="author" content="Giuliano Sposito">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="https://yetanotheriteration.netlify.com/favicon.png">
+    
+
+    
+    <meta name="description" content="Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.">
+    <meta property="og:description" content="Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Data Science das Cervejas (1/2)">
+    <meta property="og:url" content="/2018/02/data-science-das-cervejas-1-2/">
+    <meta property="og:site_name" content="Yet Another Iteration">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Yet Another Iteration">
+    <meta name="twitter:description" content="Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.">
+    
+      <meta name="twitter:creator" content="@gsposito">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+    
+
+    
+      <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/beertm_tn.png">
+    
+    
+      <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/beertm_cover.jpg">
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yetanotheriteration.netlify.com/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-112393378-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yetanotheriteration.netlify.com/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yetanotheriteration.netlify.com/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yetanotheriteration.netlify.com/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/beertm_cover.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Data Science das Cervejas (1/2)
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-02-03T00:00:00Z">
+        
+  February 3, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yetanotheriteration.netlify.com/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Neste post vamos extrair, via <em>data scraping</em>, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.</p>
+<!--more-->
+<div id="base-de-dados-com-avaliacao-das-cervejas" class="section level2">
+<h2>Base de dados com avaliação das cervejas</h2>
+<p>O primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.</p>
+<div id="data-scraping-das-avaliacoes" class="section level3">
+<h3>Data Scraping das avaliações</h3>
+<p><strong>Data scraping</strong> (do inglês, raspagem de dados) é uma técnica computacional na qual um programa extrai dados de saída legível somente para humanos, proveniente de um serviço ou aplicativo. Os dados extraídos geralmente são minerados e estruturados em um formato padrão como CSV, XML ou JSON.</p>
+<p><strong>Rvest</strong><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> é um pacote que facilita o <em>scraping</em> de dados de páginas web html. Ele é projetado para trabalhar com <em>magrittr</em> para que você possa expressar operações complexas como pipelines facilmente compreendidos.</p>
+<p>Com possibilidade de aplicar <em>seletores CSS</em><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> para capturar elementos específicos e pré-tratamento de listas e tabelas.</p>
+</div>
+<div id="blog-cerva-nossa" class="section level3">
+<h3>Blog Cerva Nossa</h3>
+<p>Usaremos o <a href="https://cervanossa.wordpress.com">blog Cerva Nossa</a> como fonte para uma descrição das cervejas. O M. Nogueira, autor dos posts do blog, sempre avalia 9 aspectos: País, Tipo, Teor Alcoólico, Cor, Sabor, Malte, Avaliação, Preço e Volume, além da descrição comercial, da imagem da mesma e um link para o site da cervejaria.</p>
+<div class="figure">
+<img src="https://yetanotheriteration.netlify.com/images/cervanossa.png" alt="Formato de um post de avaliação" />
+<p class="caption">Formato de um post de avaliação</p>
+</div>
+<p>Embora as informações estejam num corpo de texto corrido dentro do post, ou seja, não é possível capturá-las individualmente usando um seletores de CSS, o fato do post ter sempre o mesmo formato facilita o tratamento de strings.</p>
+<p>O blog gerado em <em>wordpress</em> divide o site em <em>pages</em> e cada uma delas contém 7 posts, aproximadamente com o mesmo código HTML e formato de texto cada um:</p>
+<pre class="html"><code>
+&lt;div class=&quot;main&quot;&gt;
+    &lt;p&gt;
+      &lt;img data-attachment-id=&quot;7293&quot; src=&quot;https://cervanossa.files.wordpress.com/2017/06/ashby-pale-ale.jpg?w=96&amp;#038;h=300&quot; alt=&quot;Ashby - Pale Ale&quot; width=&quot;96&quot; height=&quot;300&quot;/&gt;
+    &lt;/p&gt;
+  &lt;p&gt;
+    País: Brasil.&lt;br/&gt;
+    Tipo: Pale Ale (English Pale Ale).&lt;br/&gt;
+    Teor alcoólico: 5,1%&lt;br/&gt;
+    Cor: Amarelo dourado.&lt;br/&gt;
+    Sabor: É uma cerveja que equilibra um amargor sutil com um toque caramelado e conjugado com uma boa base maltada. Apresenta breves notas frutadas, resultando numa cerveja fácil de beber. Espuma de boa formação, densa e duradoura; aroma frutado e maltado.&lt;br/&gt;
+    Malte: Cevada, cereais não maltados e carboidratos.&lt;br/&gt;
+    Avaliação: 8&lt;br/&gt;
+    Preço: R$ 9,40&lt;br/&gt;
+    Volume: 600 ml
+  &lt;/p&gt;
+  &lt;p style=&quot;text-align:justify;&quot;&gt;
+    &lt;strong&gt;Descrição comercial:&lt;/strong&gt;&lt;br/&gt;
+    A nossa receita vem da tradição inglesa do século XIX e ganha como aliada as águas cristalinas da Serra da Mantiqueira, o que dá um toque especial e a deixa perfeita para paladares mais exigentes. O malte especial, combinado com o lúpulo selecionado, resulta em uma cerveja clara, com amargor leve e distinto.
+  &lt;/p&gt;
+  &lt;p style=&quot;text-align:justify;&quot;&gt;
+    Harmonização: bacalhau, bife grelhado, churrasco, cordeiro grelhado, frango assado e kebab de carne. IBU: 18.
+  &lt;/p&gt;
+  &lt;p style=&quot;text-align:justify;&quot;&gt;
+    História da Cervejaria: A Cervejaria Ashby foi fundada no ano de 1993, na cidade de Amparo/SP, inspirada nas cervejarias norte-americanas e europeias que se dedicavam à pesquisa e ao feitio de bebidas de alta qualidade.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Endereço na internet: &lt;a href=&quot;http://www.ashby.com.br&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;www.ashby.com.br&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Vamos declarar uma função para processar uma página por vez e chamá-la para as diversas páginas do site, cada chamada retorna um <code>tibble</code> com dados dos posts da página:</p>
+<pre class="r"><code># pacotes usados no scrap
+library(rvest)     # scrap package
+library(stringr)   # manipulacao de strings
+library(tidyverse) # pipe, maps and tibble
+library(lubridate) # manipulacao de datas
+
+# funcao que recebe a url da pagina e processa os posts
+scrapBeerPage &lt;- function(base.url) {
+
+  # logging
+  print(paste0(&quot;Scrapping: &quot;, base.url))
+  
+  # faz o fetch da url e estrutura em um html doc (xml)
+  html_doc &lt;- read_html(base.url)
+  
+  # extração do nome da cerveja que está no título do post,
+  # dentro do link para o próprio post
+  html_doc %&gt;% 
+    html_nodes(&quot;div .post&quot;) %&gt;%         # div que contem o post
+    html_nodes(&quot;h2 a:first-child&quot;) %&gt;%  # primeiro link do post em um H2
+    html_text() %&gt;%                     # pega o texto da tag
+    str_replace(&quot;\u00A0&quot;,&quot; &quot;) %&gt;%       # no nome há &amp;nbsp; e &amp;#8209;
+    str_replace(&quot;\u2011&quot;,&quot;-&quot;) %&gt;%       # removendo
+    as.tibble() %&gt;%                     # transforma em tibble
+    rename(nome.completo=value) %&gt;%     # nome completo
+    mutate(
+      # o nome está composto por &quot;cervejaria - cerveja&quot; criamos colunas 
+      # separadas para o valores
+      cervejaria = str_split(nome.completo, &quot; . &quot;, simplify = T)[,1],
+      cerveja = str_split(nome.completo,&quot; . &quot;, simplify = T)[,2]
+    ) -&gt; beers.name
+
+  # mesmo CSS seletor do nome para capturar o link para a valiacao
+  html_doc %&gt;% 
+    html_nodes(&quot;div .post&quot;) %&gt;%
+    html_nodes(&quot;h2 a:first-child&quot;) %&gt;%
+    html_attr(&quot;href&quot;) %&gt;%               # busca o href dentro da &lt;a ...
+    as.tibble() %&gt;%
+    rename(link.avaliacao=value) -&gt; beers.eval_link
+
+  # captura o link para a imagem da cerveja
+  # geralmente o primeiro &lt;img...&gt; dentro do post
+  html_doc %&gt;% 
+    html_nodes(&quot;.main&quot;) %&gt;% 
+    map(function(x){
+      html_node(x,&quot;img&quot;) %&gt;% 
+        html_attr(&quot;src&quot;) %&gt;%
+        head(1)        
+    }) %&gt;%
+    # a url está acompanhada de uma query string - limpando
+    str_replace(&quot;\\?.*&quot;,&quot;&quot;) %&gt;% 
+    as.tibble() %&gt;% 
+    rename(image=value) -&gt; beers.image
+  
+  # captura a avaliação: ela é um &quot;texto corrido&quot; dentre de um &lt;p&gt;,
+  # que está dentro do div do post (main)
+  # pode vir outros textos de outros p&#39;s 
+  html_doc %&gt;%
+    html_nodes(&quot;.main p&quot;) %&gt;%
+    html_text() %&gt;%
+    # so me interessa o texto que contiver &quot;País: &quot;
+    map( ~Filter(function(x) str_count(x,&quot;País: &quot;)&gt;0,.) ) %&gt;% 
+    # cada atributo classificado está numa linha (/n)
+    unlist() %&gt;% str_split(&quot;\n&quot;) %&gt;%
+    # extrai os valores dos atributos que estão como pares &quot;chave:valor&quot;
+    # por exemplo: País: Brasil /n Tipo: Lagger/m
+    map(function(texts){
+      str_replace(texts, &quot;.+: &quot;, &quot;&quot;) %&gt;%
+        str_replace(.,&quot;\\.+$&quot;,&quot;&quot;) %&gt;%
+        # somente nove atributos, há algumas &quot;obs:&quot; em alguns posts
+        head(9) 
+    }) %&gt;%
+    unlist() %&gt;% as.vector() %&gt;%
+    matrix(ncol=9, byrow = T) %&gt;%
+    # convert em tibble e &quot;re-seta&quot; os nomes dos atributos
+    as.tibble() %&gt;% 
+    setNames(c(&quot;pais&quot;,&quot;tipo&quot;,&quot;alcool&quot;,
+               &quot;cor&quot;,&quot;sabor&quot;,&quot;malte&quot;,
+               &quot;avaliacao&quot;,&quot;preco&quot;,&quot;volume&quot;)) -&gt; beers.eval
+  
+  # captura o link para o site da cervejaria
+  # geralmente dentre de um &quot;&lt;a...&gt;&quot; no último &lt;p&gt; do post
+  html_doc %&gt;%
+    html_nodes(&quot;.main p:last-of-type&quot;) %&gt;% 
+    map(function(x){
+      link &lt;- html_nodes(x,&quot;a:first-child&quot;)
+    }) %&gt;%
+    # nem todo post tem link para a cervejaria
+    # e alguns tem mais de um
+    # então esse map volta NA quando não encontrar o link no post
+    map(function(x){
+      if (length(x)&gt;0) { html_attr(x,&quot;href&quot;) }
+        else {return(NA)}
+    }) %&gt;% unlist() %&gt;%
+    as.tibble() %&gt;% 
+    rename(url=value) -&gt; beers.url
+  
+  # captura a data de avalicao
+  # Está no último &quot;p&quot; de uma &quot;div&quot; com class &quot;signature&quot;
+  html_doc %&gt;%
+    html_nodes(&quot;.signature p:last-of-type&quot;) %&gt;%
+    html_text() %&gt;%
+    dmy_hm() %&gt;%     # convert para data.hora
+    as.tibble() %&gt;%
+    rename(data.avalicao=value) -&gt; beers.eval_date
+  
+  # combina os dados extraídos em um único tibble
+  bind_cols( beers.name, beers.eval, beers.eval_date,
+             beers.eval_link, beers.url, beers.image) %&gt;% return()
+
+}</code></pre>
+<p>A função retorna um <code>tibble</code> com os dados dos posts de cada página, bastando então chamar a função repetidamente para todas as páginas do site (hoje, 203 páginas)</p>
+<pre class="r"><code># url base do blog e sequencia de paginas
+base.url &lt;- &quot;https://cervanossa.wordpress.com/&quot;
+pages &lt;- 1:203
+
+# percorre as paginas fazendo o scrap
+pages %&gt;%                                    
+  paste0(base.url, &quot;page/&quot;, .) %&gt;%
+  map_df(possibly(scrapBeerPage,NULL)) -&gt; raw_beers
+
+# salva localmente para não precisar reprocessar toda hora
+saveRDS(beers,&quot;./data/raw_beers.rds&quot;)
+
+# quantas avaliacoes foram capturadas ?
+dim(raw_beers)</code></pre>
+<pre><code>## [1] 1193   16</code></pre>
+<p>Possivelmente nem todos os posts serão exatamente iguais, então pode ser que algum deles possa algum formato que impeça o processamento do site todo, gerando uma falha, para evitar a interrupção usamos o <code>purrr::possibly()</code>. Essa função permite evitar que uma falha no scrap de uma página pare o processo, em vez de falhar, volta-se um resultado nulo para aquela página, e que não será concatenado pelo <code>purrr::map_df</code>, e o processo continua para as demais.</p>
+<p>O procedimento correto, seria olhar cada caso de falha e alterar a função de scrap para tratá-las, ou então “desviar” as páginas que falharam para rotinas que as tratam especificamente. Fiz isso para boa parte do site, mas não para ele todo neste post.</p>
+<p>Feita a extração vamos apenas arrumar a tipagem das colunas (já que tudo veio como “char” do html) e salvar localmente o resultado.</p>
+<pre class="r"><code># ajustando as tipagens de algumas colunas
+raw_beers %&gt;%
+  mutate(
+    # corrigindo os tipos &#39;cervejaria&#39;, &#39;pais&#39; e &#39;avalicao&#39;
+    cervejaria = as.factor(cervejaria), 
+    pais = as.factor(pais),             
+    avaliacao = as.integer(avaliacao),  
+    # transformando o teor alcoólico de texto &quot;6.5%&quot; para num &quot;0.065&quot;
+    alcool = as.numeric(str_replace(str_replace(alcool,&quot;%&quot;,&quot;&quot;),&quot;,&quot;,&quot;.&quot;))/100) %&gt;%
+  mutate(
+    # criando uma estrutura de tipos e subtipos
+    super.tipo = str_replace(tipo, &quot; +\\(.+\\).*&quot;, &quot;&quot;),
+    sub.tipo   = str_match(tipo, &quot;\\(([^)]+)\\)&quot;)[,2]
+  ) %&gt;%
+  # o autor sempre dá uma nota para a cerveja
+  # se durante o casting houve um NA então o scrap nao tinha sido 
+  # feito corretamente, retiramos esse registro
+  filter( !is.na(alcool) ) -&gt; beers
+
+dim(beers)</code></pre>
+<pre><code>## [1] 1162   18</code></pre>
+<p>Aproveitamos e criamos duas informação derivadas de tipo: <code>super.tipo</code> e <code>sub.tipo</code>. O autor do blog sempre classifica as cervejas com base em uma hierarquia de dois níveis, colocando nível mais específico dentro de um parênteses. Vamos derivar essa estrutura extraindo e separando essas informações.</p>
+<pre class="r"><code># vendo uma parte dessa hierarquia
+beers %&gt;%
+  select(tipo, super.tipo, sub.tipo) %&gt;%
+  head(10) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">tipo</th>
+<th align="left">super.tipo</th>
+<th align="left">sub.tipo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Bock (Doppelbock)</td>
+<td align="left">Bock</td>
+<td align="left">Doppelbock</td>
+</tr>
+<tr class="even">
+<td align="left">Pale Lager (Munich Helles)</td>
+<td align="left">Pale Lager</td>
+<td align="left">Munich Helles</td>
+</tr>
+<tr class="odd">
+<td align="left">Bock</td>
+<td align="left">Bock</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Pale Ale (British Golden Ale)</td>
+<td align="left">Pale Ale</td>
+<td align="left">British Golden Ale</td>
+</tr>
+<tr class="odd">
+<td align="left">Amber Ale (English India Pale Ale – IPA)</td>
+<td align="left">Amber Ale</td>
+<td align="left">English India Pale Ale – IPA</td>
+</tr>
+<tr class="even">
+<td align="left">Amber Ale (English Pale Ale / Strong Bitter)</td>
+<td align="left">Amber Ale</td>
+<td align="left">English Pale Ale / Strong Bitter</td>
+</tr>
+<tr class="odd">
+<td align="left">Pilsen (German Pilsner)</td>
+<td align="left">Pilsen</td>
+<td align="left">German Pilsner</td>
+</tr>
+<tr class="even">
+<td align="left">Brown Ale (American Brown Ale)</td>
+<td align="left">Brown Ale</td>
+<td align="left">American Brown Ale</td>
+</tr>
+<tr class="odd">
+<td align="left">Amber Ale (American Pale Ale)</td>
+<td align="left">Amber Ale</td>
+<td align="left">American Pale Ale</td>
+</tr>
+<tr class="even">
+<td align="left">Pale Ale (American Double India Pale Ale – IPA)</td>
+<td align="left">Pale Ale</td>
+<td align="left">American Double India Pale Ale – IPA</td>
+</tr>
+</tbody>
+</table>
+<p>Agora nós temos uma boa base de avaliações, com mais de mil cervejas avaliadas.</p>
+<pre class="r"><code># contando tipo, subtipos e supertipos
+num_sprtp &lt;- unique(beers$super.tipo) %&gt;% length()
+num_subtp &lt;- unique(beers$sub.tipo) %&gt;% length()
+num_tipo  &lt;- unique(beers$tipo) %&gt;% length()
+
+# overview do dataset
+glimpse(beers)</code></pre>
+<pre><code>## Observations: 1,162
+## Variables: 18
+## $ nome.completo  &lt;chr&gt; &quot;Hohenthanner – St. Sixtus Doppelbock&quot;, &quot;Fürst ...
+## $ cervejaria     &lt;fct&gt; Hohenthanner, Fürst Wallerstein, Barba Roja, Ot...
+## $ cerveja        &lt;chr&gt; &quot;St. Sixtus Doppelbock&quot;, &quot;Stammgast Lager&quot;, &quot;Mo...
+## $ pais           &lt;fct&gt; Alemanha, Alemanha, Argentina, Argentina, Argen...
+## $ tipo           &lt;chr&gt; &quot;Bock (Doppelbock)&quot;, &quot;Pale Lager (Munich Helles...
+## $ alcool         &lt;dbl&gt; 0.080, 0.050, 0.055, 0.055, 0.087, 0.065, 0.055...
+## $ cor            &lt;chr&gt; &quot;Marrom escuro e avermelhado&quot;, &quot;Amarelo dourado...
+## $ sabor          &lt;chr&gt; &quot;É intensa e encorpada, com amargor sutil e toq...
+## $ malte          &lt;chr&gt; &quot;Cevada&quot;, &quot;Cevada&quot;, &quot;Cevada&quot;, &quot;Cevada&quot;, &quot;Cevada...
+## $ avaliacao      &lt;int&gt; 9, 8, 8, 8, 8, 7, 8, 7, 8, 7, 8, 8, 8, 9, 8, 8,...
+## $ preco          &lt;chr&gt; &quot;R$ 23,00&quot;, &quot;R$ 11,90&quot;, &quot;ARS 109,00 (pesos arge...
+## $ volume         &lt;chr&gt; &quot;500 ml&quot;, &quot;500 ml&quot;, &quot;330 ml&quot;, &quot;500 ml&quot;, &quot;330 ml...
+## $ data.avalicao  &lt;dttm&gt; 2018-01-21 17:07:00, 2018-01-21 15:21:00, 2018...
+## $ link.avaliacao &lt;chr&gt; &quot;https://cervanossa.wordpress.com/2018/01/21/ho...
+## $ url            &lt;chr&gt; &quot;http://www.hohenthanner.de&quot;, &quot;http://www.fuers...
+## $ image          &lt;chr&gt; &quot;https://cervanossa.files.wordpress.com/2018/01...
+## $ super.tipo     &lt;chr&gt; &quot;Bock&quot;, &quot;Pale Lager&quot;, &quot;Bock&quot;, &quot;Pale Ale&quot;, &quot;Ambe...
+## $ sub.tipo       &lt;chr&gt; &quot;Doppelbock&quot;, &quot;Munich Helles&quot;, NA, &quot;British Gol...</code></pre>
+<p>São 29 tipos de cervejas diferentes combinados com 231 sub.tipos, formando 357 combinações diferentes.</p>
+<pre class="r"><code># 10 tipos de cerveja mais avaliados 
+beers %&gt;%
+  count(super.tipo, sub.tipo, sort=T) %&gt;% 
+  head(10) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">super.tipo</th>
+<th align="left">sub.tipo</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Pilsen</td>
+<td align="left">NA</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">Pale Ale</td>
+<td align="left">Saison / Farmhouse Ale</td>
+<td align="right">40</td>
+</tr>
+<tr class="odd">
+<td align="left">Lager</td>
+<td align="left">NA</td>
+<td align="right">35</td>
+</tr>
+<tr class="even">
+<td align="left">Pale Ale</td>
+<td align="left">American India Pale Ale – IPA</td>
+<td align="right">30</td>
+</tr>
+<tr class="odd">
+<td align="left">Amber Ale</td>
+<td align="left">American Pale Ale</td>
+<td align="right">27</td>
+</tr>
+<tr class="even">
+<td align="left">Ale</td>
+<td align="left">NA</td>
+<td align="right">25</td>
+</tr>
+<tr class="odd">
+<td align="left">Amber Ale</td>
+<td align="left">American India Pale Ale – IPA</td>
+<td align="right">24</td>
+</tr>
+<tr class="even">
+<td align="left">Pale Ale</td>
+<td align="left">American Pale Ale</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="left">Wheat Beer</td>
+<td align="left">Witbier</td>
+<td align="right">23</td>
+</tr>
+<tr class="even">
+<td align="left">Pilsen</td>
+<td align="left">German Pilsener</td>
+<td align="right">22</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="caracteristicas-dos-tipos-de-cerveja" class="section level2">
+<h2>Características dos Tipos de Cerveja</h2>
+<p>Com o data set de avaliações em mãos, agora é possível fazer uma analise comparativa entre os diversos tipos com base nas descrições usadas no texto de descrição de sabor, malte e cor das cervejas, usando técnicas de <a href="https://en.wikipedia.org/wiki/Text_mining">text mining</a>, ou, <em>mineração de textos</em>, em português.</p>
+<p>O processo de <em>text mining</em> geralmente envolve a contagem das palavras para encontrar similaridades e diferenças entre registros ou entidades. Usaremos essa técnica para tentar evidenciar a diferença entre os tipos de cerveja.</p>
+<pre class="r"><code># bibliotecas
+library(tidytext) # pacote para tratamento de textos do tidyverse 
+library(ptstem)   # pacote que faz o steming de termos em português</code></pre>
+<div id="steam-stop-words" class="section level3">
+<h3>Steam &amp; Stop Words</h3>
+<p>Antes de fazer a contagem das palavras e aplicar o TF-IDF é necessário fazer uma limpeza no texto das descrições, que envolve a remoção das palavras sem significado, as chamadas <em>stopwords</em>. Stop words<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> são palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E também é necessário fazer o <em>steming</em>, processo que elimina a flexão das palavras, por exemplo:</p>
+<pre class="r"><code># exemplo
+palavras &lt;- c(&quot;notas&quot;,&quot;aromáticas&quot;, &quot;nota&quot;, &quot;aromática&quot;, &quot;sabores&quot;, &quot;distintos&quot;,
+              &quot;sabor&quot;, &quot;distinto&quot;, &quot;frutas&quot;, &quot;frutado&quot;)
+ptstem(palavras)</code></pre>
+<pre><code>##  [1] &quot;notas&quot;      &quot;aromáticas&quot; &quot;notas&quot;      &quot;aromáticas&quot; &quot;sabores&quot;   
+##  [6] &quot;distintos&quot;  &quot;sabores&quot;    &quot;distintos&quot;  &quot;frutas&quot;     &quot;frutas&quot;</code></pre>
+<p>Esse processo equaliza as palavras facilitando a contagem</p>
+<pre class="r"><code># carrega stop words (do git https://gist.github.com/alopes/5358189)
+pt_stopwords &lt;- read_table(&quot;./data/beer_tm/stopwords.txt&quot;, col_names = &quot;word&quot;)
+
+# algumas stop words relevantes para esse problema (toque, algo, gosto, paladar)
+# sao palavras que presentes nas descrições do sabor mas não agrega informação
+my_stopwords &lt;- read_table(&quot;./data/beer_tm/my_stopwords.txt&quot;, col_names = &quot;word&quot;)
+
+# combina as stop words
+stopwords &lt;- bind_rows(pt_stopwords, my_stopwords)
+
+# removendo stop-words, stem e contando
+beers %&gt;%
+  # Concatena os campos de texto Malte, Sabor e Cor
+  mutate( review = paste0(malte, &quot; &quot;, sabor, &quot; &quot;, cor) ) %&gt;%
+  # Seleciona campoas de interesse para a analise
+  select( tipo, super.tipo, sub.tipo, review ) %&gt;%
+  # separa as palavras do texto em vários registros
+  unnest_tokens( word, review ) %&gt;% 
+  # remove as stopwords
+  anti_join( stopwords ) %&gt;% 
+  # stem das palavras
+  mutate( word = ptstem(word) ) %&gt;%
+  # contagem das palavars
+  count( word, tipo, super.tipo ) -&gt; beer_wordc
+
+# breve formato do tibble
+glimpse(beer_wordc)</code></pre>
+<pre><code>## Observations: 12,572
+## Variables: 4
+## $ word       &lt;chr&gt; &quot;12&quot;, &quot;15&quot;, &quot;15&quot;, &quot;20&quot;, &quot;20&quot;, &quot;22&quot;, &quot;30&quot;, &quot;30&quot;, &quot;35...
+## $ tipo       &lt;chr&gt; &quot;Lambic (Fruit)&quot;, &quot;Ale (Dubbel)&quot;, &quot;Lambic (Fruit)&quot;,...
+## $ super.tipo &lt;chr&gt; &quot;Lambic&quot;, &quot;Ale&quot;, &quot;Lambic&quot;, &quot;Ale&quot;, &quot;Brown Ale&quot;, &quot;Ale...
+## $ n          &lt;int&gt; 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, ...</code></pre>
+</div>
+<div id="term-frequency-inverse-document-frequency" class="section level3">
+<h3>Term Frequency-Inverse Document Frequency</h3>
+<p>O que nós temos agora então é um mapa, para cada palavra a contagem de aparições nas descrição de sabor, cor e malte para cada tipo de cerveja. Mas nem todas as palavras tem o mesmo significado, algum delas aparecem em quase todas as descrições, o que a torna irrelevante para diferenciar uma cerveja da outra, para melhorar isso, atribuímos pesos diferentes às palavras através do <em>Term Frequency-Inverse Document Frequency</em>, ou <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">TF-IDF</a> que é uma ponderação freqüentemente usada para identificar palavras-chave para recuperação de documentos pelos motores de busca e em sistemas de recomendação para sugerir itens similares. Ele procura termos que são freqüentes em um documento específico, mas raros em outros documentos, evidenciando palavras mais importantes na diferenciação das entidades.</p>
+<p>A função <code>bind_tf_idf</code> do pacote <code>tidytext</code>calcula o TF_IDF ao passar um <code>tibble</code> contendo a contagem de um termo por linha e informando a coluna que contem o termo, o ID do agrupamento e a coluna que tem a contagem (n).</p>
+<p>Vamos aplicar essa técnica para os tipos (super.tipos) de cerveja, para visualizar como é a diferença entre eles:</p>
+<pre class="r"><code># partindo da contagem
+beer_wordc %&gt;% 
+  # agrupa a contagem no supertipo
+  group_by(word, super.tipo) %&gt;%
+  summarise(n=sum(n)) %&gt;%
+  # calcula o total por palavra
+  group_by(word) %&gt;%
+  mutate(word_total = sum(n)) %&gt;%
+  # calcula o TF_IDF
+  bind_tf_idf(word, super.tipo, n)  %&gt;%
+  # remove quem obteve zero de score e ordena descrescente
+  subset(tf_idf &gt; 0) %&gt;%
+  arrange(desc(tf_idf)) -&gt; tipo_tf_idf
+
+# dando uma olhada no resultado
+tipo_tf_idf %&gt;%
+  head(10) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">word</th>
+<th align="left">super.tipo</th>
+<th align="right">n</th>
+<th align="right">word_total</th>
+<th align="right">tf</th>
+<th align="right">idf</th>
+<th align="right">tf_idf</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">amagor</td>
+<td align="left">Porter/Stout</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">0.0625000</td>
+<td align="right">1.7578579</td>
+<td align="right">0.1098661</td>
+</tr>
+<tr class="even">
+<td align="left">defumado</td>
+<td align="left">Rauchbier</td>
+<td align="right">4</td>
+<td align="right">34</td>
+<td align="right">0.1176471</td>
+<td align="right">0.8823892</td>
+<td align="right">0.1038105</td>
+</tr>
+<tr class="odd">
+<td align="left">tinto</td>
+<td align="left">Sour Ale</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">0.0333333</td>
+<td align="right">2.6741486</td>
+<td align="right">0.0891383</td>
+</tr>
+<tr class="even">
+<td align="left">definido</td>
+<td align="left">Amber Lager / Hybrid</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0263158</td>
+<td align="right">3.3672958</td>
+<td align="right">0.0886130</td>
+</tr>
+<tr class="odd">
+<td align="left">rústico</td>
+<td align="left">Amber Lager / Hybrid</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0263158</td>
+<td align="right">3.3672958</td>
+<td align="right">0.0886130</td>
+</tr>
+<tr class="even">
+<td align="left">entretanto</td>
+<td align="left">Brown Porter</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0256410</td>
+<td align="right">3.3672958</td>
+<td align="right">0.0863409</td>
+</tr>
+<tr class="odd">
+<td align="left">estar</td>
+<td align="left">Brown Porter</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0256410</td>
+<td align="right">3.3672958</td>
+<td align="right">0.0863409</td>
+</tr>
+<tr class="even">
+<td align="left">necessário</td>
+<td align="left">Brown Porter</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0256410</td>
+<td align="right">3.3672958</td>
+<td align="right">0.0863409</td>
+</tr>
+<tr class="odd">
+<td align="left">presentes</td>
+<td align="left">Brown Porter</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0256410</td>
+<td align="right">3.3672958</td>
+<td align="right">0.0863409</td>
+</tr>
+<tr class="even">
+<td align="left">preta</td>
+<td align="left">Porter/Stout</td>
+<td align="right">1</td>
+<td align="right">56</td>
+<td align="right">0.0625000</td>
+<td align="right">1.2878543</td>
+<td align="right">0.0804909</td>
+</tr>
+</tbody>
+</table>
+<p>Vemos que o <code>bind_tf_idf</code> adicionou as estatísticas para o cálculo do TF_IDF, agora podemos visualizar como os tipos de cerveja se diferenciam nas descrições de sabor, ponderados por esse <em>score</em>.</p>
+<pre class="r"><code># vamos pegar os 16 &quot;tipos&quot; de cerveja mais frequentes
+count(beers, super.tipo, sort=T) %&gt;%
+  top_n(16,n) %&gt;%
+  head(16) -&gt; top_beer_types
+
+# obter as estatíticas das principais palavras para cada um destes tipos
+beer_type_top10_tf_idf &lt;- tipo_tf_idf %&gt;%  
+  # obtem as palavras dos tipos selecionados cuja as 
+  # descrições tem pelo menos 10 palavras
+  subset(super.tipo %in% top_beer_types$super.tipo &amp; word_total &gt;= 10) %&gt;% 
+  # agrupa por tipo e obtem os 10 dez termos com melhor tf-idf
+  group_by(super.tipo) %&gt;%
+  top_n(10, tf_idf) %&gt;% 
+  filter(row_number() &lt;= 10) %&gt;% 
+  # ordena por tipo e score (desc)
+  arrange(super.tipo, desc(tf_idf)) %&gt;%
+  ungroup() %&gt;%
+  # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
+  mutate(Rank = rep(10:1, 16))
+
+# overview 
+beer_type_top10_tf_idf %&gt;%
+  head(10) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">word</th>
+<th align="left">super.tipo</th>
+<th align="right">n</th>
+<th align="right">word_total</th>
+<th align="right">tf</th>
+<th align="right">idf</th>
+<th align="right">tf_idf</th>
+<th align="right">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">frutada</td>
+<td align="left">Abadia</td>
+<td align="right">48</td>
+<td align="right">997</td>
+<td align="right">0.0757098</td>
+<td align="right">0.2318016</td>
+<td align="right">0.0175496</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">especiarias</td>
+<td align="left">Abadia</td>
+<td align="right">10</td>
+<td align="right">224</td>
+<td align="right">0.0157729</td>
+<td align="right">0.8023465</td>
+<td align="right">0.0126553</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">encorpada</td>
+<td align="left">Abadia</td>
+<td align="right">23</td>
+<td align="right">326</td>
+<td align="right">0.0362776</td>
+<td align="right">0.3227734</td>
+<td align="right">0.0117094</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">açúcar</td>
+<td align="left">Abadia</td>
+<td align="right">14</td>
+<td align="right">165</td>
+<td align="right">0.0220820</td>
+<td align="right">0.4769241</td>
+<td align="right">0.0105314</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">quente</td>
+<td align="left">Abadia</td>
+<td align="right">11</td>
+<td align="right">100</td>
+<td align="right">0.0173502</td>
+<td align="right">0.5947071</td>
+<td align="right">0.0103183</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">amarelo</td>
+<td align="left">Abadia</td>
+<td align="right">10</td>
+<td align="right">616</td>
+<td align="right">0.0157729</td>
+<td align="right">0.5947071</td>
+<td align="right">0.0093802</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">dourado</td>
+<td align="left">Abadia</td>
+<td align="right">8</td>
+<td align="right">359</td>
+<td align="right">0.0126183</td>
+<td align="right">0.7282385</td>
+<td align="right">0.0091891</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">amadeirado</td>
+<td align="left">Abadia</td>
+<td align="right">15</td>
+<td align="right">233</td>
+<td align="right">0.0236593</td>
+<td align="right">0.3227734</td>
+<td align="right">0.0076366</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">cítrico</td>
+<td align="left">Abadia</td>
+<td align="right">8</td>
+<td align="right">543</td>
+<td align="right">0.0126183</td>
+<td align="right">0.5947071</td>
+<td align="right">0.0075042</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">álcool</td>
+<td align="left">Abadia</td>
+<td align="right">6</td>
+<td align="right">170</td>
+<td align="right">0.0094637</td>
+<td align="right">0.7282385</td>
+<td align="right">0.0068918</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="termos-chaves-para-os-tipos-de-cervejas." class="section level3">
+<h3>Termos chaves para os tipos de cervejas.</h3>
+<p>Para cada tipo temos as 10 mais importantes palavras, vamos visualizar a diferença entre os grupos.</p>
+<pre class="r"><code># styling omitted for brevity
+ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +  
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;cadetblue&quot;, alpha=0.5) + 
+  coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
+  geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=4) +
+  labs(title=&quot;10 palavras com mais TF-IDF por tipo de cerveja&quot;, 
+       x=&quot;&quot;, y=&quot;tf-idf&quot;) +
+  theme_bw() + 
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())</code></pre>
+<p><img src="https://yetanotheriteration.netlify.com/post/2018-02-02-data-science-da-cerveja_files/figure-html/plotSuperType-1.png" width="960" /></p>
+</div>
+</div>
+<div id="conclusao" class="section level2">
+<h2>Conclusão</h2>
+<p>Podemos perceber que via <em>text mining</em> conseguimos isolar os termos mais característicos para cada tipo de cerveja. No próximo post vamos explorar as diferenças e semelhanças entre os diversos tipos e explorar a capacidade de fazer sugestões de cerveja de acordo com a características desejadas.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Tutoriais de <strong>rvest</strong> - <a href="https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/" class="uri">https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/</a> - <a href="https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/" class="uri">https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>CSS Selectors - <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="uri">https://www.w3schools.com/cssref/css_selectors.asp</a><a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p><em>stop words</em> para português - <a href="https://gist.github.com/alopes/5358189" class="uri">https://gist.github.com/alopes/5358189</a><a href="#fnref3">↩</a></p></li>
+</ol>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/beer/">beer</a>
+
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/pt-br/">pt-BR</a>
+
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/rstats/">rstats</a>
+
+  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/text-mining/">text mining</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/" data-tooltip="kNN Analysis on MNIST with 97% accuracy">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/" data-tooltip="kNN Analysis on MNIST with 97% accuracy">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F02%2Fdata-science-das-cervejas-1-2%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F02%2Fdata-science-das-cervejas-1-2%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F02%2Fdata-science-das-cervejas-1-2%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">
+                <h3 class="media-heading">Data Science das Cervejas (1/2)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+                <h3 class="media-heading">kNN Analysis on MNIST with 97% accuracy</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">
+                <h3 class="media-heading">Implementing LeNet with MXNET in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">R Notebook</a> I implement an <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">Convolutional Neural Network (CNN)</a> using the <a href="http://yann.lecun.com/exdb/mnist/">MNIST Database</a> for handwritten digits recognition using <a href="http://mxnet.io/">mxnet</a> framework for <a href="https://www.r-project.org/">R</a>.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/">
+                <h3 class="media-heading">Social Network Analysis on CRAN Authors</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
+IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/">
+                <h3 class="media-heading">Putting your workout to move</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
+Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
+library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &lt;- &quot;11654237848.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/">
+                <h3 class="media-heading">High Collinearity Effect in Regressions</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/">
+                <h3 class="media-heading">Ploting your MTB track with R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/">
+                <h3 class="media-heading">Curse of Dimensionality</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/">
+                <h3 class="media-heading">Assessing Model Accuracy (Linear Models)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
+Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/">
+                <h3 class="media-heading">We have a blog!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         10 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://yetanotheriteration.netlify.com/images/new_cover_emboss.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yetanotheriteration.netlify.com/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yetanotheriteration.netlify.com\/2018\/02\/data-science-das-cervejas-1-2\/';
+          
+            this.page.identifier = '\/2018\/02\/data-science-das-cervejas-1-2\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+    <script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </body>
+</html>
+

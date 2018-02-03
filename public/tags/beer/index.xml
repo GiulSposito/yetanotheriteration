@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Beer on Yet Another Iteration</title>
+    <link>https://yetanotheriteration.netlify.com/tags/beer/</link>
+    <description>Recent content in Beer on Yet Another Iteration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 03 Feb 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/beer/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Data Science das Cervejas (1/2)</title>
+      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
+      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
+      <description>Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.</description>
+    </item>
+    
+  </channel>
+</rss>
