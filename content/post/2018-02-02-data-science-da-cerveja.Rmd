@@ -8,8 +8,8 @@ tags:
   - beer
   - pt-BR
   - rstats
-  - text mining
   - rvest
+  - text mining
   - tidytext
 coverImage: /images/beertm_cover.jpg
 metaAlignment: center
