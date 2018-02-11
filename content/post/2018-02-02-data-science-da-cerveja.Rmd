@@ -222,7 +222,7 @@ pages %>%
   map_df(possibly(scrapBeerPage,NULL)) -> raw_beers
 
 # salva localmente para não precisar reprocessar toda hora
-saveRDS(beers,"./data/raw_beers.rds")
+saveRDS(raw_beers,"./data/raw_beers.rds")
 
 # quantas avaliacoes foram capturadas ?
 dim(raw_beers)
@@ -262,6 +262,9 @@ raw_beers %>%
   # se durante o casting houve um NA então o scrap nao tinha sido 
   # feito corretamente, retiramos esse registro
   filter( !is.na(alcool) ) -> beers
+
+# salva base intermediaria de cervejas
+saveRDS(beers,"./data/beer_tm/beers.rds")
 
 dim(beers)
 ```
@@ -359,6 +362,9 @@ beers %>%
   mutate( word = ptstem(word) ) %>%
   # contagem das palavars
   count( word, tipo, super.tipo ) -> beer_wordc
+
+# salva base intermediaria
+saveRDS(beer_wordc,"./data/beer_tm/beer_wordc.rds")
 
 # breve formato do tibble
 glimpse(beer_wordc)

@@ -1,0 +1,112 @@
+---
+title: Data Science das Cervejas (2/2)
+author: Giuliano Sposito
+date: '2018-02-13'
+slug: data-science-das-cervejas-2-2
+categories:
+  - data science
+tags:
+  - beer
+  - pt-BR
+  - data analysis
+  - rstats
+  - text mining
+thumbnailImage: images/beertm_tn.png
+thumbnailImagePosition: left
+coverImage: /images/beertm_cover.jpg
+metaAlignment: center
+---
+
+Continuando a análise das cerveja no post anteior...
+
+<!--more-->
+
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+# setup
+library(knitr)
+
+# default behavior for chunks
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+
+## Que cerveja é similar a outra?
+
+```{r loading}
+
+# libs
+library(tidyverse) # pipe, maps and tibble
+library(lubridate) # manipulacao de datas
+library(corrplot)  # correlation plot
+library(ape)       # disk dendogram
+library(RColorBrewer) # color palette
+
+# recuperando contagem de palavras gravada no post anterior
+beers <- readRDS("./data/beer_tm/beers.rds")
+beer_wordc <- readRDS("./data/beer_tm/beer_wordc.rds")
+glimpse(beer_wordc)
+```
+
+```{r correlacao}
+beers %>% 
+  group_by(tipo) %>% 
+  tally() %>% 
+  filter(n>1) -> selected.types
+
+beer_corr <- beer_wordc %>%
+  filter(tipo %in% selected.types$tipo) %>%
+  select(-super.tipo) %>%
+  group_by(tipo) %>%
+  mutate(proporcao = n / sum(n))  %>%
+  subset(n >= 5) %>%
+  select(-n) %>%
+  spread(tipo, proporcao)
+
+# replace NAs with 0 because an NA 
+# is an observation of 0 words
+beer_corr[is.na(beer_corr)] <- 0 
+
+mycol <- colorRampPalette(c("red", "lightsalmon", "white", "paleturquoise", "blue"))
+
+corr <- cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%  
+  corrplot(method="color", order="hclust", diag=FALSE, 
+           tl.col = "black", tl.srt = 45, tl.cex=0.6,
+           col=mycol(100), 
+           type="lower",
+           title="Correlaçao de Palabras entre Tipos de Cerveja",
+           mar=c(0,0,1,0))
+
+
+```
+
+```{r hclusterPlot}
+# transpose the matrix to have styles
+# as rows and words as columns
+beer_corr_t <- t(beer_corr[,-1])
+
+# calculate distance
+beer_dist <- dist(beer_corr_t, method="euclidean")
+
+# fit clusters
+fit <- hclust(beer_dist, method="ward.D")
+
+```
+
+```{r phyloPlot}
+
+# Cut the dendrogram into 4 clusters
+colors = RColorBrewer::brewer.pal(10,"Paired")
+clus4 = cutree(fit, 10)
+
+plot(as.phylo(fit), type = "fan", tip.color = colors[clus4],
+     label.offset = 0, cex = 0.7)
+```
+
+```{r}
+
+```
+
