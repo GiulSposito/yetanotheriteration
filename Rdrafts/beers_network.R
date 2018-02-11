@@ -11,8 +11,10 @@ library(ptstem)   # pacote que faz o steming de termos em português
 
 # carrega base de avaliacoes de cerveja (gerada no post anterior)
 beers <- readRDS("./content/post/data/beer_tm/beers.rds") %>%
-  # adiciona um id para cerveja
-  mutate( beer.id = 1:nrow(.))
+  mutate( beer.id = 1:nrow(.), # adiciona um id para cerveja
+          super.tipo = as.factor(super.tipo), # adiciona um id para cerveja
+          sub.tipo   = as.factor(sub.tipo)) # adiciona um id para cerveja
+          
 
 # vamos selecionar os tipos de cerveja com mais de uma avaliacao
 # so para diminuir o número de cervejas
@@ -76,7 +78,7 @@ beer_words <- inner_join(beer_words, words)
 
 # constroi a lista de arestas
 # para cada palavra
-edge_list <- map_df(words$word.id, function(wid,bw){
+raw_edge_list <- map_df(words$word.id, function(wid,bw){
   # pega as cervejas que compartilham a palavra
   nodes <- bw %>%
     filter(word.id==wid) %>%
@@ -85,15 +87,87 @@ edge_list <- map_df(words$word.id, function(wid,bw){
     arrange( beer.id )
   
   # e cria arestas entre as cervejas
+  # combinando 2 a dois cervejas que comparilham
+  # a mesma palavra
   edges <- nodes$beer.id %>%
     combn(2) %>%
     t() %>%
     as.tibble() %>%
     setNames(c("from","to")) %>%
-    mutate(word.id=wid) %>%
     return()
 
-}, bw=beers_words, .id="word.id")
+}, bw=beer_words, .id="word.id")
 
-str(edge_list)
-# e as liga
+# overview
+glimpse(raw_edge_list)
+
+# constuindo graphs
+library(igraph)    # estrutura de dados
+library(tidygraph) # manipulações de redes
+library(ggraph)    # visualizacoes de redes
+
+# rede de semelhanca
+edges_list <- raw_edge_list %>%
+  group_by(from,to) %>%
+  tally()
+
+bids <- c(edges_list$from, edges_list$to) %>%
+  unique() %>%
+  sort()
+ 
+beer.net <- edges_list %>%
+  select(from,to) %>%
+  as.matrix() %>%
+  graph.edgelist(directed=F) %>%
+  as_tbl_graph() %>%
+  activate("edges") %>%
+  inner_join(edges_list) %>%
+  activate("nodes") %>%
+  mutate(beer.id=1:1161) %>%
+  inner_join(beers) %>%
+  mutate( component = as.factor(group_components()))
+
+beer.net %>%
+  activate("edges") %>%
+  filter(n>3) %>%
+  activate("nodes") %>%
+  mutate( component = as.factor(group_components())) %>%
+  filter (component == names(table(component))[which.max(table(component))]) %>%
+  ggraph() +
+  geom_node_point(aes(color=super.tipo)) +
+  geom_edge_fan(aes(alpha=n)) +
+  theme_void()
+
+
+# Lista de arestas, os números são identificadores dos nós
+g_edgelist <- data.frame(
+  from = c( 1,1,2,2,3,3,5,5),
+  to   = c( 2,3,3,5,4,5,6,7)
+) 
+
+# construindo a rede a partir da lista de arestas
+g <- g_edgelist %>%
+  as.matrix() %>%
+  graph.edgelist(directed = FALSE) %>% # usando igraph 
+  as_tbl_graph() %>%
+  activate("nodes") %>%
+  mutate( name = LETTERS[1:7] ) # nomeando os nós
+
+# calculando previamente as métricas
+g <- g %>% 
+  mutate( degree = centrality_degree(), 
+          btwn   = round( centrality_betweenness(),2 ),
+          clsn   = round( centrality_closeness(normalized = T),2 ),
+          eign   = round( centrality_eigen(scale = F), 2 ))
+
+# fixando o layout previamente para todos os plots terem a mesma disposicao
+g_layout <- create_layout(g, layout = "kk")
+
+# plotando o graph
+ggraph(g_layout) +
+  geom_edge_fan(color="black") +
+  geom_node_point(color="blue",alpha=0.8, size=8) +
+  geom_node_text(aes(label=name), color="white") +
+  theme_void() +
+  ggtitle( "Exemplo de Rede" ) + 
+  theme( legend.position = "none" )
