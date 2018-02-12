@@ -1,19 +1,21 @@
 ---
-title: "Data Science das Cervejas (2/2)"
-author: "Giuliano Sposito"
+title: Data Science das Cervejas (2/2)
+author: Giuliano Sposito
 date: '2018-02-13'
-coverImage: /images/beertm_cover.jpg
+categories:
+  - data science
+tags:
+  - beer
+  - data analysis
+  - pt-BR
+  - rstats
+  - text mining
+  - hcluster
+coverImage: /images/beertm_2b_cover.jpg
 metaAlignment: center
 slug: data-science-das-cervejas-2-2
-tags:
-- beer
-- pt-BR
-- data analysis
-- rstats
-- text mining
-thumbnailImage: images/beertm_tn.png
+thumbnailImage: images/beertm_2_tn.jpg
 thumbnailImagePosition: left
-categories: data science
 ---
 
 Esta é a segunda parte do post sobre análise de textos usando avaliações de cerveja extraído da web. Nele analisaremos as semelhanças entre os tipos de cervejas, ou seja, que cervejas possuem mesmas características de sabor, cor e malte, independentemente do seu tipo. Isso é um aspecto importante no campo de _Data Science_, pois permite encontrar "sugestões" de consumo, para usuários que apreciam um determinado produto.
@@ -34,7 +36,7 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ## Que cerveja é similar a outra?
 
-O primeiro passo é encontrar as semelhança entre os tipos de cerveja, para tal vamos recuperar os dados obtidos do post anterior, a base de descrição de cervejas e a contagem de palavras por tipo.
+O primeiro passo é encontrar as semelhança entre os tipos de cerveja, para tal vamos recuperar os dados obtidos do [post anterior](https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/), a base de descrição de cervejas e a contagem de palavras por tipo.
 
 ```{r loading}
 
@@ -87,14 +89,14 @@ beer_corr <- beer_wordc %>%
 beer_corr[is.na(beer_corr)] <- 0 
 
 # mostrando um subset da tabulacao
-beer_corr[1:10, 1:10] %>%
+beer_corr[1:10, 1:5] %>%
   kable()
 ```
 
 
 Contamos então a frequência com que cada uma das palavras (linhas) aparece, frente as outras palavras, para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre os tipos, usaremos a função `cor()` a correlação e a função `corrplot` para visualizá-la.
 
-```{r plotCorr, fig.height=8, fig.width=8}
+```{r plotCorr, fig.height=10, fig.width=10}
 
 # definindo uma palheta de core para escala de correlação [-1,1]
 mycol <- colorRampPalette(c("red", "lightsalmon", "white", "paleturquoise", "blue"))
@@ -103,7 +105,7 @@ mycol <- colorRampPalette(c("red", "lightsalmon", "white", "paleturquoise", "blu
 cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%  
   # plotando a correlação, organizando como um hclust
   corrplot(method="color", order="hclust", diag=FALSE, 
-           tl.col = "black", tl.srt = 45, tl.cex=0.6,
+           tl.col = "black", tl.srt = 45, tl.cex=0.7,
            col=mycol(100), 
            # triangulo inferior (já que é uma matriz simétrica)
            type="lower",
@@ -187,9 +189,9 @@ beer_wordc %>%
 
 ```
  
- Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como `maltada`, `café`, `cevada`, `espuma` e `duradouro`. Características comuns desse tipo de cerveja.
+ Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como _maltada_, _café_, _cevada_, _espuma_ e _duradouro_. Características comuns desse tipo de cerveja.
  
- Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no post anterior, calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando TF_IDF.
+ Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no [post anterior](https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/), calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando [TF_IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).
 
 
 ```{r twoBeersDifferences}
@@ -234,7 +236,7 @@ beer_wordc %>%
 
 Agora podemos observar que elementos como `caramelo x chocolate`, `marrom x preta`, `coco x baunilha` e `herbáceo x seco` são elementos que diferencia a _American Brown Ale_ de uma _English Porter_.
 
-Essas informações são interessantes em um sistema de sugestões, você pode procurar primeiro pelo cluster similar (pertencente na verdade) ao produto que o usuário já gosta e então dentro do cluster navegar pelas diferenças sugerindo direções como +frutada, +chocolate, +leve, etc.
+Essas informações são interessantes em um sistema de sugestões, você pode procurar primeiro pelo cluster similar (pertencente na verdade) ao produto que o usuário já gosta e então dentro do cluster navegar pelas diferenças sugerindo direções como `+frutada`, `+chocolate`, `+leve`, etc.
 
 ## Conclusão
 
