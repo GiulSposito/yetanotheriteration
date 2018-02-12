@@ -1,0 +1,283 @@
+---
+title: Data Science das Cervejas (2/2)
+author: Giuliano Sposito
+date: '2018-02-13'
+categories:
+  - data science
+tags:
+  - beer
+  - data analysis
+  - pt-BR
+  - rstats
+  - text mining
+  - hcluster
+coverImage: /images/beertm_2b_cover.jpg
+metaAlignment: center
+slug: data-science-das-cervejas-2-2
+thumbnailImage: images/beertm_2_tn.jpg
+thumbnailImagePosition: left
+---
+
+
+
+<p>Esta é a segunda parte do post sobre análise de textos usando avaliações de cerveja extraído da web. Nele analisaremos as semelhanças entre os tipos de cervejas, ou seja, que cervejas possuem mesmas características de sabor, cor e malte, independentemente do seu tipo. Isso é um aspecto importante no campo de <em>Data Science</em>, pois permite encontrar “sugestões” de consumo, para usuários que apreciam um determinado produto.</p>
+<!--more-->
+<div id="que-cerveja-e-similar-a-outra" class="section level2">
+<h2>Que cerveja é similar a outra?</h2>
+<p>O primeiro passo é encontrar as semelhança entre os tipos de cerveja, para tal vamos recuperar os dados obtidos do <a href="https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">post anterior</a>, a base de descrição de cervejas e a contagem de palavras por tipo.</p>
+<pre class="r"><code># libs
+library(tidyverse) # pipe, maps and tibble
+library(lubridate) # manipulacao de datas
+library(corrplot)  # correlation plot
+library(ape)       # disk dendogram
+library(RColorBrewer) # color palette
+library(tidytext) # pacote para tratamento de textos do tidyverse 
+
+# recuperando contagem de palavras gravada no post anterior
+beers &lt;- readRDS(&quot;./data/beer_tm/beers.rds&quot;)
+beer_wordc &lt;- readRDS(&quot;./data/beer_tm/beer_wordc.rds&quot;)
+glimpse(beer_wordc)</code></pre>
+<pre><code>## Observations: 12,572
+## Variables: 4
+## $ word       &lt;chr&gt; &quot;12&quot;, &quot;15&quot;, &quot;15&quot;, &quot;20&quot;, &quot;20&quot;, &quot;22&quot;, &quot;30&quot;, &quot;30&quot;, &quot;35...
+## $ tipo       &lt;chr&gt; &quot;Lambic (Fruit)&quot;, &quot;Ale (Dubbel)&quot;, &quot;Lambic (Fruit)&quot;,...
+## $ super.tipo &lt;chr&gt; &quot;Lambic&quot;, &quot;Ale&quot;, &quot;Lambic&quot;, &quot;Ale&quot;, &quot;Brown Ale&quot;, &quot;Ale...
+## $ n          &lt;int&gt; 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, ...</code></pre>
+<div id="correlacao" class="section level3">
+<h3>Correlação</h3>
+<p>A técnica mais óbvia para determinar semelhança entre tipos é correlacionar a frequência das palavras encontradas nas descrições entre os diversos tipos. Ou seja, tipos que possuem frequentemente a mesma palavra são tipos que são semelhantes entre si.</p>
+<p>Por exemplo, se a Weiss é descrita com “sabor de trigo” e a WitBier também contém “trigo” na descrição, então elas são semelhantes, mais semelhantes conforme a frequência de “trigo” aparece nas descrições das diversas cervejas de ambas categorias.</p>
+<p>Então, vamos tabular a frequência de cada uma das palavras em cada um dos tipos de cerveja.</p>
+<pre class="r"><code># vamos limitar a analise aos tipos que possuem mais de 3 avaliações
+# para facilitar a visualização dos dados 
+beers %&gt;% 
+  group_by(tipo) %&gt;% 
+  tally() %&gt;% 
+  filter(n&gt;3) -&gt; selected.types
+
+# a partir da contagem de palavras por tipo
+beer_corr &lt;- beer_wordc %&gt;%
+  # selecionar os tipos que interessam
+  filter(tipo %in% selected.types$tipo) %&gt;%
+  select(-super.tipo) %&gt;%
+  # por tipo calcular a porporcao em que a palavra aparece
+  group_by(tipo) %&gt;%
+  mutate(proporcao = n / sum(n))  %&gt;%
+  # manter as palabras (por tipo) que aparecem com mais frequencia
+  subset(n &gt;= 5) %&gt;%
+  select(-n) %&gt;%
+  # pivotar para ter &quot;palavra&quot; x &quot;tipo&quot;
+  spread(tipo, proporcao)
+
+# zerar as células em que o tipo não possuem a palavra (NA -&gt; 0)
+beer_corr[is.na(beer_corr)] &lt;- 0 
+
+# mostrando um subset da tabulacao
+beer_corr[1:10, 1:5] %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">word</th>
+<th align="right">Abadia (Ale)</th>
+<th align="right">Ale</th>
+<th align="right">Ale (English Pale Ale)</th>
+<th align="right">Amber Ale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">abundante</td>
+<td align="right">0.0400000</td>
+<td align="right">0.0294785</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">acidez</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">açúcar</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0158730</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">adocicado</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0158730</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">agradável</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">álcool</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">amadeirado</td>
+<td align="right">0.0342857</td>
+<td align="right">0.0408163</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">amarelo</td>
+<td align="right">0.0285714</td>
+<td align="right">0.0158730</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="odd">
+<td align="left">amargor</td>
+<td align="right">0.0628571</td>
+<td align="right">0.0544218</td>
+<td align="right">0.0697674</td>
+<td align="right">0.0561798</td>
+</tr>
+<tr class="even">
+<td align="left">âmbar</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0113379</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<p>Contamos então a frequência com que cada uma das palavras (linhas) aparece, frente as outras palavras, para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre os tipos, usaremos a função <code>cor()</code> a correlação e a função <code>corrplot</code> para visualizá-la.</p>
+<pre class="r"><code># definindo uma palheta de core para escala de correlação [-1,1]
+mycol &lt;- colorRampPalette(c(&quot;red&quot;, &quot;lightsalmon&quot;, &quot;white&quot;, &quot;paleturquoise&quot;, &quot;blue&quot;))
+
+# calculando a correlação (tirando a primeira coluna que é a palavra)
+cor(beer_corr[,-1], use = &quot;pairwise.complete.obs&quot;) %&gt;%  
+  # plotando a correlação, organizando como um hclust
+  corrplot(method=&quot;color&quot;, order=&quot;hclust&quot;, diag=FALSE, 
+           tl.col = &quot;black&quot;, tl.srt = 45, tl.cex=0.7,
+           col=mycol(100), 
+           # triangulo inferior (já que é uma matriz simétrica)
+           type=&quot;lower&quot;,
+           title=&quot;Correlaçao entre Tipos de Cerveja&quot;,
+           mar=c(0,0,1,0))</code></pre>
+<p><img src="/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/plotCorr-1.png" width="960" /></p>
+<p>Nesse plot, podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre alguns tipos. já pedimos para o plot aproximar os itens semelhantes entre si (parâmetro <code>hclust</code>), então a ordenação reflete essa informação.</p>
+</div>
+<div id="clusters" class="section level3">
+<h3>Clusters</h3>
+<p>Outra maneira de encontrar os tipos mais semelhantes é <em>clusterizar</em>, para tal, tratamos cada palavra como uma dimensão no espaço de descrições, e então usamos a frequência com que ela ocorre como um ponto neste espaço, a partir daí calculamos a distancia entre cada um dos pontos e então <em>clusterizamos</em>, agrupando os tipos mais próximos entre si.</p>
+<pre class="r"><code># removendo a coluna
+beer_corr[,-1] %&gt;%
+  # transpondo: observação (tipo) na linha e features nas colunas (palavras)
+  t() %&gt;%
+  # calculando a distancia (euclidiana) entre as observações
+  dist(method=&quot;euclidean&quot;) -&gt; beer.dist
+
+beer.dist %&gt;%
+  # clusterizando (hierarquicamente)
+  hclust(method=&quot;ward.D&quot;) -&gt; beer.clusters
+
+# agrupando em 10 tipos distintos
+clusters = cutree(beer.clusters, 10)
+
+# palheta de cores para visualizacao (10 grupos)
+colors = RColorBrewer::brewer.pal(10,&quot;Paired&quot;)
+
+# plotando como uma &quot;roda&quot;
+plot(as.phylo(beer.clusters), type = &quot;fan&quot;, tip.color = colors[clusters],
+     label.offset = 0, cex = 0.9)</code></pre>
+<p><img src="/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/hclusterPlot-1.png" width="864" /></p>
+<p>A clusterização aproxima tipos de cervejas diferentes mas que possuem as mesmas características de sabor, cor e malte. Note que o número de grupos é relativamente “arbitrário”, nos escolhemos agrupar por distância em 10 grupos quando aplicamos o <code>cutree</code>.</p>
+<p>Vamos ver as palavras que definem dois tipos diferentes que foram colocados juntos: a <em>English Poter</em> e a <em>American Brown Ale</em>.</p>
+<pre class="r"><code># partindo da contagem de palavras
+beer_wordc %&gt;%
+  # somente os tipos de interesse
+  filter( tipo %in% c(&quot;Porter (English Porter)&quot;,&quot;Brown Ale (American Brown Ale)&quot;),
+          n&gt;1) %&gt;%
+  # conta por tipo
+  group_by(word, super.tipo) %&gt;%
+  summarise(n=sum(n)) %&gt;%
+  group_by(super.tipo) %&gt;%
+  # seleciona as 15 mais frequentes palavras
+  top_n(15, n) %&gt;%
+  # garante que são  somente as 15 mesmos
+  filter(row_number() &lt;= 15) %&gt;%
+  # ordena 
+  arrange(super.tipo, desc(n)) %&gt;%
+  ungroup() %&gt;%
+  # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
+  mutate(Rank = rep(15:1, 2)) %&gt;%
+  # styling omitted for brevity
+  ggplot(aes(x=as.factor(Rank), y=n)) +  
+    geom_bar(stat=&quot;identity&quot;, fill=&quot;cadetblue&quot;, alpha=0.5) + 
+    coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
+    geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=4) +
+    labs(title=&quot;15 palavras com mais comuns para cada tipo&quot;, 
+         x=&quot;&quot;, y=&quot;n&quot;) +
+    theme_bw() + 
+    theme(axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())</code></pre>
+<p><img src="/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/twoSimilarBeers-1.png" width="672" /></p>
+<p>Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como <em>maltada</em>, <em>café</em>, <em>cevada</em>, <em>espuma</em> e <em>duradouro</em>. Características comuns desse tipo de cerveja.</p>
+<p>Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no <a href="https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">post anterior</a>, calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">TF_IDF</a>.</p>
+<pre class="r"><code># partindo da contagem de palavras
+beer_wordc %&gt;%
+  # somente dos tipos interessados
+  filter( tipo %in% c(&quot;Porter (English Porter)&quot;,&quot;Brown Ale (American Brown Ale)&quot;),
+          n&gt;1) %&gt;%
+  # agrupa a contagem por tipo
+  group_by(word, super.tipo) %&gt;%
+  summarise(n=sum(n)) %&gt;%
+  # calcula o total por palavra
+  group_by(word) %&gt;%
+  mutate(word_total = sum(n)) %&gt;%
+  # calcula o TF_IDF
+  bind_tf_idf(word, super.tipo, n)  %&gt;%
+  # remove quem obteve zero de score e ordena descrescente
+  subset(tf_idf &gt; 0) %&gt;%
+  arrange(desc(tf_idf)) %&gt;%
+  group_by(super.tipo) %&gt;%
+  top_n(10, tf_idf) %&gt;% 
+  filter(row_number() &lt;= 10) %&gt;% 
+  # ordena por tipo e score (desc)
+  arrange(super.tipo, desc(tf_idf)) %&gt;%
+  ungroup() %&gt;%
+  # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
+  mutate(Rank = rep(10:1, 2)) %&gt;%
+  ggplot(aes(x=as.factor(Rank), y=tf_idf)) +  
+    geom_bar(stat=&quot;identity&quot;, fill=&quot;cadetblue&quot;, alpha=0.5) + 
+    coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
+    geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=4) +
+    labs(title=&quot;10 palavras com mais TF-IDF por tipo de cerveja&quot;, 
+         x=&quot;&quot;, y=&quot;tf-idf&quot;) +
+    theme_bw() + 
+    theme(axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())</code></pre>
+<p><img src="/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/twoBeersDifferences-1.png" width="672" /></p>
+<p>Agora podemos observar que elementos como <code>caramelo x chocolate</code>, <code>marrom x preta</code>, <code>coco x baunilha</code> e <code>herbáceo x seco</code> são elementos que diferencia a <em>American Brown Ale</em> de uma <em>English Porter</em>.</p>
+<p>Essas informações são interessantes em um sistema de sugestões, você pode procurar primeiro pelo cluster similar (pertencente na verdade) ao produto que o usuário já gosta e então dentro do cluster navegar pelas diferenças sugerindo direções como <code>+frutada</code>, <code>+chocolate</code>, <code>+leve</code>, etc.</p>
+</div>
+</div>
+<div id="conclusao" class="section level2">
+<h2>Conclusão</h2>
+<p>Podemos observar como técnicas de processamento de texto nos dão <em>insights</em> relevantes sobre produtos, podendo nos dar graus de similaridade/dissimilaridade, oferecendo oportunidades econômicas interessantes.</p>
+<p>Uma evolução interessante deste trabalho seria de fato criar uma aplicação trivial que pudesse oferecer sugestões de cervejas, dada uma cerveja ou a descrição do sabor desejado (ou não desejado).</p>
+</div>

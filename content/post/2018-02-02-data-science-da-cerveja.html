@@ -24,12 +24,13 @@ thumbnailImagePosition: left
 <!--more-->
 <div id="base-de-dados-com-avaliacao-das-cervejas" class="section level2">
 <h2>Base de dados com avaliação das cervejas</h2>
+<p>O uso de avaliações de cerveja para análise de texto é bem comum<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas! :)</p>
 <p>O primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.</p>
 <div id="data-scraping-das-avaliacoes" class="section level3">
 <h3>Data Scraping das avaliações</h3>
 <p><strong>Data scraping</strong> (do inglês, raspagem de dados) é uma técnica computacional na qual um programa extrai dados de saída legível somente para humanos, proveniente de um serviço ou aplicativo. Os dados extraídos geralmente são minerados e estruturados em um formato padrão como CSV, XML ou JSON.</p>
-<p><strong>Rvest</strong><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> é um pacote que facilita o <em>scraping</em> de dados de páginas web html. Ele é projetado para trabalhar com <em>magrittr</em> para que você possa expressar operações complexas como pipelines facilmente compreendidos.</p>
-<p>Com possibilidade de aplicar <em>seletores CSS</em><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> para capturar elementos específicos e pré-tratamento de listas e tabelas.</p>
+<p><strong>Rvest</strong><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> é um pacote que facilita o <em>scraping</em> de dados de páginas web html. Ele é projetado para trabalhar com <em>magrittr</em> para que você possa expressar operações complexas como pipelines facilmente compreendidos.</p>
+<p>Com possibilidade de aplicar <em>seletores CSS</em><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> para capturar elementos específicos e pré-tratamento de listas e tabelas.</p>
 </div>
 <div id="blog-cerva-nossa" class="section level3">
 <h3>Blog Cerva Nossa</h3>
@@ -194,7 +195,7 @@ pages %&gt;%
   map_df(possibly(scrapBeerPage,NULL)) -&gt; raw_beers
 
 # salva localmente para não precisar reprocessar toda hora
-saveRDS(beers,&quot;./data/raw_beers.rds&quot;)
+saveRDS(raw_beers,&quot;./data/raw_beers.rds&quot;)
 
 # quantas avaliacoes foram capturadas ?
 dim(raw_beers)</code></pre>
@@ -220,6 +221,9 @@ raw_beers %&gt;%
   # se durante o casting houve um NA então o scrap nao tinha sido 
   # feito corretamente, retiramos esse registro
   filter( !is.na(alcool) ) -&gt; beers
+
+# salva base intermediaria de cervejas
+saveRDS(beers,&quot;./data/beer_tm/beers.rds&quot;)
 
 dim(beers)</code></pre>
 <pre><code>## [1] 1162   18</code></pre>
@@ -396,7 +400,7 @@ library(tidytext) # pacote para tratamento de textos do tidyverse
 library(ptstem)   # pacote que faz o steming de termos em português</code></pre>
 <div id="steam-stop-words" class="section level3">
 <h3>Steam &amp; Stop Words</h3>
-<p>Antes de fazer a contagem das palavras e aplicar o TF-IDF é necessário fazer uma limpeza no texto das descrições, que envolve a remoção das palavras sem significado, as chamadas <em>stopwords</em>. Stop words<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> são palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E também é necessário fazer o <em>steming</em>, processo que elimina a flexão das palavras, por exemplo:</p>
+<p>Antes de fazer a contagem das palavras e aplicar o TF-IDF é necessário fazer uma limpeza no texto das descrições, que envolve a remoção das palavras sem significado, as chamadas <em>stopwords</em>. Stop words<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> são palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E também é necessário fazer o <em>steming</em>, processo que elimina a flexão das palavras, por exemplo:</p>
 <pre class="r"><code># exemplo
 palavras &lt;- c(&quot;notas&quot;,&quot;aromáticas&quot;, &quot;nota&quot;, &quot;aromática&quot;, &quot;sabores&quot;, &quot;distintos&quot;,
               &quot;sabor&quot;, &quot;distinto&quot;, &quot;frutas&quot;, &quot;frutado&quot;)
@@ -429,9 +433,12 @@ beers %&gt;%
   # contagem das palavars
   count( word, tipo, super.tipo ) -&gt; beer_wordc
 
+# salva base intermediaria
+saveRDS(beer_wordc,&quot;./data/beer_tm/beer_wordc.rds&quot;)
+
 # breve formato do tibble
 glimpse(beer_wordc)</code></pre>
-<pre><code>## Observations: 12,572
+<pre><code>## Observations: 12,559
 ## Variables: 4
 ## $ word       &lt;chr&gt; &quot;12&quot;, &quot;15&quot;, &quot;15&quot;, &quot;20&quot;, &quot;20&quot;, &quot;22&quot;, &quot;30&quot;, &quot;30&quot;, &quot;35...
 ## $ tipo       &lt;chr&gt; &quot;Lambic (Fruit)&quot;, &quot;Ale (Dubbel)&quot;, &quot;Lambic (Fruit)&quot;,...
@@ -711,7 +718,7 @@ beer_type_top10_tf_idf %&gt;%
 <div id="termos-chaves-para-os-tipos-de-cervejas." class="section level3">
 <h3>Termos chaves para os tipos de cervejas.</h3>
 <p>Para cada tipo temos as 10 mais importantes palavras, vamos visualizar a diferença entre os grupos.</p>
-<pre class="r"><code># styling omitted for brevity
+<pre class="r"><code># plotando as principais palavras
 ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +  
   geom_bar(stat=&quot;identity&quot;, fill=&quot;cadetblue&quot;, alpha=0.5) + 
   coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
@@ -734,8 +741,9 @@ ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Tutoriais de <strong>rvest</strong> - <a href="https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/" class="uri">https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/</a> - <a href="https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/" class="uri">https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>CSS Selectors - <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="uri">https://www.w3schools.com/cssref/css_selectors.asp</a><a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p><em>stop words</em> para português - <a href="https://gist.github.com/alopes/5358189" class="uri">https://gist.github.com/alopes/5358189</a><a href="#fnref3">↩</a></p></li>
+<li id="fn1"><p>Tidy Text Mining Beer Review - <a href="http://kaylinwalker.com/tidy-text-beer/" class="uri">http://kaylinwalker.com/tidy-text-beer/</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Tutoriais de <strong>rvest</strong> - <a href="https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/" class="uri">https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/</a> - <a href="https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/" class="uri">https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/</a><a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>CSS Selectors - <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="uri">https://www.w3schools.com/cssref/css_selectors.asp</a><a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p><em>stop words</em> para português - <a href="https://gist.github.com/alopes/5358189" class="uri">https://gist.github.com/alopes/5358189</a><a href="#fnref4">↩</a></p></li>
 </ol>
 </div>
