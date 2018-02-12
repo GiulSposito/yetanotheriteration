@@ -93,45 +93,59 @@ beer_corr[1:10, 1:10] %>%
 ```
 
 
-Contamos então a frequencia com que cada uma das palavras (linhas) aparece, frente as outras palavras, para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre os tipos, usaremos a funçao `cor()`.
+Contamos então a frequencia com que cada uma das palavras (linhas) aparece, frente as outras palavras, para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre os tipos, usaremos a funçao `cor()` a correlação e a função `corrplot` para visualizá-la.
 
 ```{r plotCorr}
 
 # definindo uma palheta de core para escala de correlação [-1,1]
 mycol <- colorRampPalette(c("red", "lightsalmon", "white", "paleturquoise", "blue"))
 
-# 
+# calculando a correlação (tirando a primeira coluna que é a palavra)
 cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%  
+  # plotando a correlação, organizando como um hclust
   corrplot(method="color", order="hclust", diag=FALSE, 
            tl.col = "black", tl.srt = 45, tl.cex=0.6,
            col=mycol(100), 
+           # triangulo inferior (já que é uma matriz simétrica)
            type="lower",
-           title="Correlaçao de Palabras entre Tipos de Cerveja",
+           title="Correlaçao entre Tipos de Cerveja",
            mar=c(0,0,1,0))
 
 
 ```
 
-```{r hclusterPlot}
-# transpose the matrix to have styles
-# as rows and words as columns
-beer_corr_t <- t(beer_corr[,-1])
+Nesse plot, podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre alguns tipos. já pedimos para o plot aproximar os itens semelhantes entre si (parâmetro `hclust`), então a ordenação reflete essa informação.
 
-# calculate distance
-beer_dist <- dist(beer_corr_t, method="euclidean")
+### Clusters
 
-# fit clusters
-fit <- hclust(beer_dist, method="ward.D")
+Outra maneira de encontrar os tipos mais semelhantes é clusterizar, para tal, tratamos cada palavra como uma dimensão no espaço de descrições, e então usamos a frequência com que ela ocorre como um ponto neste espaço, a partir daí calculamos a distancia entre cada um dos pontos e então clusterizamos, agrupando os tipos mais próximos entre si.
 
-# Cut the dendrogram into 4 clusters
+```{r hclusterPlot, fig.height=10, fig.width=10}
+
+# removendo a coluna
+beer_corr[,-1] %>%
+  # transpondo: observação (tipo) na linha e features nas colunas (palavras)
+  t() %>%
+  # calculando a distancia (euclidiana) entre as observações
+  dist(method="euclidean") %>%
+  # clusterizando (hierarquicamente)
+  hclust(method="ward.D") -> beer.clusters
+
+# agrupando em 10 tipos distintos
+clusters = cutree(beer.clusters, 10)
+
+# palheta de cores para visualizacao (10 grupos)
 colors = RColorBrewer::brewer.pal(10,"Paired")
-clus4 = cutree(fit, 10)
 
-plot(as.phylo(fit), type = "fan", tip.color = colors[clus4],
+# plotando como uma "roda"
+plot(as.phylo(beer.clusters), type = "fan", tip.color = colors[clusters],
      label.offset = 0, cex = 0.7)
 ```
 
-A clusterização aproxima tipos de cervejas diferentes mas que possuem as mesmas características de sabor, cor e malte. Vamos ver as palavras que definem dois tipos diferentes que foram colocados juntos: a _English Poter_ e a _American Brown Ale_.
+A clusterização aproxima tipos de cervejas diferentes mas que possuem as mesmas características de sabor, cor e malte. Note que o número de grupos é relativamente "arbitrário", nos escolhemos agrupar por distância em 10 grupos quando aplicamos o `cutree`. 
+
+
+Vamos ver as palavras que definem dois tipos diferentes que foram colocados juntos: a _English Poter_ e a _American Brown Ale_.
 
 ```{r twoSimilarBeers}
 
