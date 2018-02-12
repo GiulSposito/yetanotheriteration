@@ -17,7 +17,7 @@ coverImage: /images/beertm_cover.jpg
 metaAlignment: center
 ---
 
-Continuando a an�lise das cerveja no post anteior...
+Esta é a segunda parte do post sobre análise de textos usando avaliações de cerveja extraído da web. Nele analisaremos as semelhanças entre os tipos de cervejas, ou seja, que cervejas possuem memas características de sabor, cor e malte, independentemente do seu tipo. Isso é um aspecto importante no campo de _Data Science_, pois permite encontrar "sugestões" de consumo, para usuários que apreciam um determinado produto.
 
 <!--more-->
 
@@ -33,8 +33,9 @@ knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
+## Que cerveja é similar a outra?
 
-## Que cerveja � similar a outra?
+O primeiro passo é encontrar as semelhança entre os tipos de cerveja, para tal vamos recuperar os dados obtidos do post anterior, a base de descrição de cervejas e a contagem de palavras por tipo.
 
 ```{r loading}
 
@@ -44,6 +45,7 @@ library(lubridate) # manipulacao de datas
 library(corrplot)  # correlation plot
 library(ape)       # disk dendogram
 library(RColorBrewer) # color palette
+library(tidytext) # pacote para tratamento de textos do tidyverse 
 
 # recuperando contagem de palavras gravada no post anterior
 beers <- readRDS("./data/beer_tm/beers.rds")
@@ -51,33 +53,60 @@ beer_wordc <- readRDS("./data/beer_tm/beer_wordc.rds")
 glimpse(beer_wordc)
 ```
 
-```{r correlacao}
+### Correlação
+
+A técnica mais óbvia para determinar semelhança entre tipos é correlacionar a frquência das palavras encontradas nas descrições entre os diversos tipos. Ou seja, tipos que possuem frequentimente a mesma palavra são tipos que são semelhantes entre si.
+
+Por exemplo, se a Weiss é descrita com "sabor de trigo" e a WitBier também contém "trigo" na descrição, então elas são semelhantes, mais semelhantes conforme a frequência de "trigo" aparece nas descrições das diversas cervejas de ambas categorias.
+
+Então, vamos tabular a frequencia de cada uma das palabras em cada um dos tipos de cerveja.
+
+```{r wordFreq}
+
+# vamos limitar a analise aos tipos que possuem mais de 3 avaliações
+# para facilitar a visualização dos dados 
 beers %>% 
   group_by(tipo) %>% 
   tally() %>% 
-  filter(n>1) -> selected.types
+  filter(n>3) -> selected.types
 
+# a partir da contagem de palavras por tipo
 beer_corr <- beer_wordc %>%
+  # selecionar os tipos que interessam
   filter(tipo %in% selected.types$tipo) %>%
   select(-super.tipo) %>%
+  # por tipo calcular a porporcao em que a palavra aparece
   group_by(tipo) %>%
   mutate(proporcao = n / sum(n))  %>%
+  # manter as palabras (por tipo) que aparecem com mais frequencia
   subset(n >= 5) %>%
   select(-n) %>%
+  # pivotar para ter "palavra" x "tipo"
   spread(tipo, proporcao)
 
-# replace NAs with 0 because an NA 
-# is an observation of 0 words
+# zerar as células em que o tipo não possuem a palavra (NA -> 0)
 beer_corr[is.na(beer_corr)] <- 0 
 
+# mostrando um subset da tabulacao
+beer_corr[1:10, 1:10] %>%
+  kable()
+```
+
+
+Contamos então a frequencia com que cada uma das palavras (linhas) aparece, frente as outras palavras, para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre os tipos, usaremos a funçao `cor()`.
+
+```{r plotCorr}
+
+# definindo uma palheta de core para escala de correlação [-1,1]
 mycol <- colorRampPalette(c("red", "lightsalmon", "white", "paleturquoise", "blue"))
 
-corr <- cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%  
+# 
+cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%  
   corrplot(method="color", order="hclust", diag=FALSE, 
            tl.col = "black", tl.srt = 45, tl.cex=0.6,
            col=mycol(100), 
            type="lower",
-           title="Correla�ao de Palabras entre Tipos de Cerveja",
+           title="Correlaçao de Palabras entre Tipos de Cerveja",
            mar=c(0,0,1,0))
 
 
@@ -94,10 +123,6 @@ beer_dist <- dist(beer_corr_t, method="euclidean")
 # fit clusters
 fit <- hclust(beer_dist, method="ward.D")
 
-```
-
-```{r phyloPlot}
-
 # Cut the dendrogram into 4 clusters
 colors = RColorBrewer::brewer.pal(10,"Paired")
 clus4 = cutree(fit, 10)
@@ -106,7 +131,84 @@ plot(as.phylo(fit), type = "fan", tip.color = colors[clus4],
      label.offset = 0, cex = 0.7)
 ```
 
-```{r}
+A clusterização aproxima tipos de cervejas diferentes mas que possuem as mesmas características de sabor, cor e malte. Vamos ver as palavras que definem dois tipos diferentes que foram colocados juntos: a _English Poter_ e a _American Brown Ale_.
+
+```{r twoSimilarBeers}
+
+beer_wordc %>%
+  filter( tipo %in% c("Porter (English Porter)","Brown Ale (American Brown Ale)"),
+          n>1) %>%
+  group_by(word, super.tipo) %>%
+  summarise(n=sum(n)) %>%
+  group_by(super.tipo) %>%
+  top_n(15, n) %>%
+  filter(row_number() <= 15) %>%
+  arrange(super.tipo, desc(n)) %>%
+  ungroup() %>%
+  # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
+  mutate(Rank = rep(15:1, 2)) %>%
+  # styling omitted for brevity
+  ggplot(aes(x=as.factor(Rank), y=n)) +  
+    geom_bar(stat="identity", fill="cadetblue", alpha=0.5) + 
+    coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
+    geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=4) +
+    labs(title="15 palavras com mais comuns para cada tipo", 
+         x="", y="n") +
+    theme_bw() + 
+    theme(axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
+
+
+
 
 ```
+ 
+ Podemos notarque há uma série de palavras comuns descrevendo ambos os tipos, como _maltada, café, cevada, espuma e duradouro_. Características comuns desse tipo de cerveja.
+ 
+ Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no post anteior, calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando TF_IDF.
+
+
+```{r twoBeersDifferences}
+
+beer_wordc %>%
+  filter( tipo %in% c("Porter (English Porter)","Brown Ale (American Brown Ale)"),
+          n>1) %>%
+  group_by(word, super.tipo) %>%
+  summarise(n=sum(n)) %>%
+  # calcula o total por palavra
+  group_by(word) %>%
+  mutate(word_total = sum(n)) %>%
+  # calcula o TF_IDF
+  bind_tf_idf(word, super.tipo, n)  %>%
+  # remove quem obteve zero de score e ordena descrescente
+  subset(tf_idf > 0) %>%
+  arrange(desc(tf_idf)) %>%
+  group_by(super.tipo) %>%
+  top_n(10, tf_idf) %>% 
+  filter(row_number() <= 10) %>% 
+  # ordena por tipo e score (desc)
+  arrange(super.tipo, desc(tf_idf)) %>%
+  ungroup() %>%
+  # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
+  mutate(Rank = rep(10:1, 2)) %>%
+  ggplot(aes(x=as.factor(Rank), y=tf_idf)) +  
+    geom_bar(stat="identity", fill="cadetblue", alpha=0.5) + 
+    coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
+    geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=4) +
+    labs(title="10 palavras com mais TF-IDF por tipo de cerveja", 
+         x="", y="tf-idf") +
+    theme_bw() + 
+    theme(axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
+
+```
+
+Agora podemos observar que elementos como caramelo x chocolate, marrom x preta, coco x baunilha e herbáceo x seco são elementos que diferencia a _American Brown Ale_ de uma _English Porter_.
+
 

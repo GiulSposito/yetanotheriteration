@@ -36,6 +36,8 @@ Neste post vamos extrair, via _data scraping_, textos e dados de um blog de aval
 
 ## Base de dados com avaliação das cervejas
 
+O uso de avaliações de cerveja para análise de texto é bem comum[^6], e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas! :)
+
 O primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.
 
 ### Data Scraping das avaliações
@@ -439,7 +441,7 @@ Para cada tipo temos as 10 mais importantes palavras, vamos visualizar a diferen
 
 ```{r plotSuperType, fig.height=10, fig.width=10}
 
-# styling omitted for brevity
+# plotando as principais palavras
 ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +  
   geom_bar(stat="identity", fill="cadetblue", alpha=0.5) + 
   coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
