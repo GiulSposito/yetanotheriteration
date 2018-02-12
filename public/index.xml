@@ -6,10 +6,20 @@
     <description>Recent content on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://yetanotheriteration.netlify.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Data Science das Cervejas (2/2)</title>
+      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
+      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
+      <description>Esta é a segunda parte do post sobre análise de textos usando avaliações de cerveja extraído da web. Nele analisaremos as semelhanças entre os tipos de cervejas, ou seja, que cervejas possuem mesmas características de sabor, cor e malte, independentemente do seu tipo. Isso é um aspecto importante no campo de Data Science, pois permite encontrar “sugestões” de consumo, para usuários que apreciam um determinado produto.
+Que cerveja é similar a outra?</description>
+    </item>
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
