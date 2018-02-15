@@ -401,7 +401,7 @@ cor(beer_corr[,-1], use = &quot;pairwise.complete.obs&quot;) %&gt;%
            # triangulo inferior (já que é uma matriz simétrica)
            type=&quot;lower&quot;,
            title=&quot;Correlaçao entre Tipos de Cerveja&quot;,
-           mar=c(0,0,0,0))</code></pre>
+           mar=c(0,0,1,0))</code></pre>
 <p><img src="https://yetanotheriteration.netlify.com/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/plotCorr-1.png" width="960" /></p>
 <p>Podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre eles. Configuramos o plot aproximar os itens semelhantes entre si (via parâmetro <code>hclust</code>), então a ordenação reflete essa informação, os tipos mais próximos estão mais relacionados entre si.</p>
 </div>

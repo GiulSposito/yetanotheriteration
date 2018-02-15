@@ -1,18 +1,19 @@
 ---
-title: "kNN Analysis on MNIST with 97% accuracy"
-author: "Giuliano Sposito"
+title: kNN Analysis on MNIST with 97% accuracy
+author: Giuliano Sposito
 date: '2018-01-24'
-slug: knn-analysis-on-mnist-with-97-accuracy
+categories:
+  - data science
 tags:
-- en-US
-- evalutation
-- knn
-- machine learning
-- mnist
-- pca
+  - en-US
+  - evalutation
+  - knn
+  - machine learning
+  - mnist
+  - pca
+slug: knn-analysis-on-mnist-with-97-accuracy
 thumbnailImage: images/mnist_knn_tn.png
 thumbnailImagePosition: left
-categories: data science
 ---
 
 Usually Yann LeCun's [MNIST database](http://yann.lecun.com/exdb/mnist/index.html) is used to explore [Artificial Neural Network](https://en.wikipedia.org/wiki/Artificial_neural_network) architectures for image recognition problem. 
@@ -28,14 +29,13 @@ But in this post, we'll see that the MNIST problem isn't a difficult one, only r
 library(knitr)
 
 # default behavior for chunks
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(warning = FALSE)
-knitr::opts_chunk$set(message = FALSE)
-knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set( warning = FALSE,
+                       message = FALSE,
+                       cache   = TRUE)
 ```
 
 
-```{r libraries}
+```{r libraries, warning=FALSE, message=FALSE}
 
 # setup
 library(tidyverse)  # for plot and data manipulation
@@ -290,7 +290,7 @@ You can see in the chart above, we can get 90% of variance with only 80 of dimen
 
 Lets see how the 200 first cases in the data set are distributed in the first two dimensions (15% the variation).
 
-```{r casesDistribution}
+```{r casesDistribution, warning=FALSE}
 
 # lets see the distribution
 pca.idx <- sample(1:mnist$train$n, 200)
@@ -310,7 +310,7 @@ cases %>%
 
 A little mess, but if we plot only the most distances centroids (`0`, `1` e `9`) we already see a separable structures if only two dimensions.
 
-```{r separableCases}
+```{r separableCases, warning=FALSE}
 
 # cases more "distant"
 cases %>%
@@ -323,7 +323,7 @@ cases %>%
 This sound promising. An kNN approach with higher dimension may do a decent job classifying the digits. Lets put another one, increasing the _explained variation_ to 23%.
 
 
-```{r plot3DComponents}
+```{r plot3DComponents, warning=FALSE}
 
 # 3D
 plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %>%  
