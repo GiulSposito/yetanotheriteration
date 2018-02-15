@@ -17,7 +17,7 @@ thumbnailImage: images/beertm_2_tn.jpg
 thumbnailImagePosition: left
 ---
 
-Esta é a segunda parte do post sobre análise de textos usando avaliações de cerveja extraído da web. Nele analisaremos as semelhanças entre os tipos de cervejas, ou seja, que cervejas possuem mesmas características de sabor, cor e malte, independentemente do seu tipo. Isso é um aspecto importante no campo de _Data Science_, pois permite encontrar "sugestões" de consumo, para usuários que apreciam um determinado produto.
+Esta é a [segunda parte]((https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)) do post sobre _text mining_ usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de _Data Science_, pois permite construir um processo de "sugestões" para consumo, tomando como base o gosto atual dos usuários.
 
 <!--more-->
 
@@ -35,17 +35,11 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ## Que cerveja é similar a outra?
 
-O primeiro passo é encontrar as semelhança entre os tipos de cerveja, para tal vamos recuperar os dados obtidos do [post anterior](https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/), a base de descrição de cervejas e a contagem de palavras por tipo.
+O primeiro passo neste processo é encontrar que semelhanças aproximam os diferentes tipos de cerveja, para tal, vamos recuperar os dados obtidos no [post anterior](https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/). A nossa base de avaliações de cervejas, obtido via _data scraping_ do blog [Cerva Nossa](https://cervanossa.wordpress.com/) do Marcos Nogueira, e a contagem de palavras por tipo.
 
 ```{r loading}
-
 # libs
 library(tidyverse) # pipe, maps and tibble
-library(lubridate) # manipulacao de datas
-library(corrplot)  # correlation plot
-library(ape)       # disk dendogram
-library(RColorBrewer) # color palette
-library(tidytext) # pacote para tratamento de textos do tidyverse 
 
 # recuperando contagem de palavras gravada no post anterior
 beers <- readRDS("./data/beer_tm/beers.rds")
@@ -78,7 +72,7 @@ beer_corr <- beer_wordc %>%
   # por tipo calcular a porporcao em que a palavra aparece
   group_by(tipo) %>%
   mutate(proporcao = n / sum(n))  %>%
-  # manter as palabras (por tipo) que aparecem com mais frequencia
+  # manter as palavras (por tipo) que aparecem com mais frequencia
   subset(n >= 5) %>%
   select(-n) %>%
   # pivotar para ter "palavra" x "tipo"
@@ -93,14 +87,15 @@ beer_corr[1:10, 1:5] %>%
 ```
 
 
-Contamos então a frequência com que cada uma das palavras (linhas) aparece, frente as outras palavras, para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre os tipos, usaremos a função `cor()` a correlação e a função `corrplot` para visualizá-la.
+Contamos então a frequência com que cada uma das palavras (linhas) aparece, frente as outras palavras, e tabulando para cada tipo de cerveja (colunas). Para descobrir qual tipo é mais semelhante com o outro, basta calcular a correlação entre essas frequências, usaremos a função `cor()` para gerar uma matriz de correção (entre os tipo) e a função `corrplot` para visualizá-la.
 
 ```{r plotCorr, fig.height=10, fig.width=10}
 
-# definindo uma palheta de core para escala de correlação [-1,1]
+# definindo uma palheta de cores para escala de correlação [-1,1]
 mycol <- colorRampPalette(c("red", "lightsalmon", "white", "paleturquoise", "blue"))
 
 # calculando a correlação (tirando a primeira coluna que é a palavra)
+library(corrplot)  # correlation plot
 cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%  
   # plotando a correlação, organizando como um hclust
   corrplot(method="color", order="hclust", diag=FALSE, 
@@ -114,7 +109,7 @@ cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%
 
 ```
 
-Nesse plot, podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre alguns tipos. já pedimos para o plot aproximar os itens semelhantes entre si (parâmetro `hclust`), então a ordenação reflete essa informação.
+Nesse plot, podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre eles. Configuramos o plot aproximar os itens semelhantes entre si (via parâmetro `hclust`), então a ordenação reflete essa informação, os tipos mais próximos estão mais relacionados entre si.
 
 ### Clusters
 
@@ -122,7 +117,7 @@ Outra maneira de encontrar os tipos mais semelhantes é _clusterizar_, para tal,
 
 ```{r hclusterPlot, fig.height=9, fig.width=9}
 
-# removendo a coluna
+# removendo a coluna da palavra
 beer_corr[,-1] %>%
   # transpondo: observação (tipo) na linha e features nas colunas (palavras)
   t() %>%
@@ -137,9 +132,11 @@ beer.dist %>%
 clusters = cutree(beer.clusters, 10)
 
 # palheta de cores para visualizacao (10 grupos)
+library(RColorBrewer) # color palette
 colors = RColorBrewer::brewer.pal(10,"Paired")
 
 # plotando como uma "roda"
+library(ape)       # disk dendogram : implementa o "as.phylo"
 plot(as.phylo(beer.clusters), type = "fan", tip.color = colors[clusters],
      label.offset = 0, cex = 0.9)
 ```
@@ -147,9 +144,12 @@ plot(as.phylo(beer.clusters), type = "fan", tip.color = colors[clusters],
 A clusterização aproxima tipos de cervejas diferentes mas que possuem as mesmas características de sabor, cor e malte. Note que o número de grupos é relativamente "arbitrário", nos escolhemos agrupar por distância em 10 grupos quando aplicamos o `cutree`. 
 
 
-Vamos ver as palavras que definem dois tipos diferentes que foram colocados juntos: a _English Poter_ e a _American Brown Ale_.
+Vamos ver quais as palavras que definem dois tipos diferentes que foram colocados juntos: a _English Poter_ e a _American Brown Ale_.
 
 ```{r twoSimilarBeers}
+
+# pacote para tratamento de textos do tidyverse 
+library(tidytext)
 
 # partindo da contagem de palavras
 beer_wordc %>%
@@ -169,12 +169,13 @@ beer_wordc %>%
   ungroup() %>%
   # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
   mutate(Rank = rep(15:1, 2)) %>%
-  # styling omitted for brevity
+  # plota um bar chart na horizontal de palavras
+  # para cada um dos tipos, mostrando as top 15
   ggplot(aes(x=as.factor(Rank), y=n)) +  
     geom_bar(stat="identity", fill="cadetblue", alpha=0.5) + 
     coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
     geom_text(aes(label=word, x=Rank), y=0,hjust=0, size=4) +
-    labs(title="15 palavras com mais comuns para cada tipo", 
+    labs(title="15 palavras mais comuns para cada tipo", 
          x="", y="n") +
     theme_bw() + 
     theme(axis.title.y=element_blank(),
@@ -188,7 +189,7 @@ beer_wordc %>%
 
 ```
  
- Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como _maltada_, _café_, _cevada_, _espuma_ e _duradouro_. Características comuns desse tipo de cerveja.
+ Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como _maltada_, _café_, _cevada_, _espuma_ e _duradouro_, que são aracterísticas comuns entre os dois.
  
  Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no [post anterior](https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/), calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando [TF_IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).
 
@@ -196,7 +197,7 @@ beer_wordc %>%
 ```{r twoBeersDifferences}
 # partindo da contagem de palavras
 beer_wordc %>%
-  # somente dos tipos interessados
+  # somente dos tipos em que estamos interessaods
   filter( tipo %in% c("Porter (English Porter)","Brown Ale (American Brown Ale)"),
           n>1) %>%
   # agrupa a contagem por tipo
@@ -218,6 +219,8 @@ beer_wordc %>%
   ungroup() %>%
   # atribui um rank para cada palavra dentro do tipo (facilitar o plot) 
   mutate(Rank = rep(10:1, 2)) %>%
+  # plota um bar chart na horizontal de palavras
+  # para cada um dos tipos, mostrando as top 10
   ggplot(aes(x=as.factor(Rank), y=tf_idf)) +  
     geom_bar(stat="identity", fill="cadetblue", alpha=0.5) + 
     coord_flip() + facet_wrap(~super.tipo,ncol=4) + 
@@ -235,10 +238,8 @@ beer_wordc %>%
 
 Agora podemos observar que elementos como `caramelo x chocolate`, `marrom x preta`, `coco x baunilha` e `herbáceo x seco` são elementos que diferencia a _American Brown Ale_ de uma _English Porter_.
 
-Essas informações são interessantes em um sistema de sugestões, você pode procurar primeiro pelo cluster similar (pertencente na verdade) ao produto que o usuário já gosta e então dentro do cluster navegar pelas diferenças sugerindo direções como `+frutada`, `+chocolate`, `+leve`, etc.
+Essas informações são interessantes em um sistema de sugestões, você pode procurar primeiro pelo cluster similar à um produto o usuário já aprecia e então dentro do cluster oferecer similares, ou então, navegar pelas diferenças, sugerindo direções como `+frutada`, `+chocolate`, `+leve`, etc, e a partir disto oferecer as cervejas que cumprem esses quesitos.
 
 ## Conclusão
 
-Podemos observar como técnicas de processamento de texto nos dão _insights_ relevantes sobre produtos, podendo nos dar graus de similaridade/dissimilaridade, oferecendo oportunidades econômicas interessantes.
-
-Uma evolução interessante deste trabalho seria de fato criar uma aplicação trivial que pudesse oferecer sugestões de cervejas, dada uma cerveja ou a descrição do sabor desejado (ou não desejado).
+Podemos observar como técnicas de processamento de texto e simples contagens de palavras nos dão _insights_ relevantes sobre produtos. A extração dessas informações e disponibilização delas para outras ferramentas de análise deados podem nos dar graus de similaridade/dissimilaridade, oferecendo oportunidades econômicas interessantes.
