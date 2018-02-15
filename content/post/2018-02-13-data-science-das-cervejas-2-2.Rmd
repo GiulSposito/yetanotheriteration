@@ -17,7 +17,7 @@ thumbnailImage: images/beertm_2_tn.jpg
 thumbnailImagePosition: left
 ---
 
-Esta é a [segunda parte]((https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)) do post sobre _text mining_ usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de _Data Science_, pois permite construir um processo de "sugestões" para consumo, tomando como base o gosto atual dos usuários.
+Esta é a [segunda parte]((https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)) do post sobre _text mining_ usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de _Data Science_, pois permite construir um processo de "sugestões" para consumo, tomando como base o gosto atual dos usuários.
 
 <!--more-->
 
@@ -189,7 +189,7 @@ beer_wordc %>%
 
 ```
  
- Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como _maltada_, _café_, _cevada_, _espuma_ e _duradouro_, que são aracterísticas comuns entre os dois.
+ Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como _maltada_, _café_, _cevada_, _espuma_ e _duradouro_, que são características comuns entre os dois.
  
  Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no [post anterior](https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/), calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando [TF_IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).
 
