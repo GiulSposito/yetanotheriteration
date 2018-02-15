@@ -24,7 +24,7 @@ But in this post, we'll see that the MNIST problem isn't a difficult one, only r
 
 <!--more-->
 
-```{r setup, warning=FALSE, message=FALSE, cache=TRUE, echo=FALSE}
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
 # setup
 library(knitr)
 
@@ -37,7 +37,7 @@ knitr::opts_chunk$set(cache = TRUE)
 ```
 
 
-```{r libraries, warning=FALSE, message=FALSE, cache=FALSE}
+```{r libraries}
 
 # setup
 library(tidyverse)  # for plot and data manipulation
@@ -292,7 +292,7 @@ You can see in the chart above, we can get 90% of variance with only 80 of dimen
 
 Lets see how the 200 first cases in the data set are distributed in the first two dimensions (15% the variation).
 
-```{r casesDistribution, warning=FALSE}
+```{r casesDistribution}
 
 # lets see the distribution
 pca.idx <- sample(1:mnist$train$n, 200)
@@ -312,7 +312,7 @@ cases %>%
 
 A little mess, but if we plot only the most distances centroids (`0`, `1` e `9`) we already see a separable structures if only two dimensions.
 
-```{r separableCases, warning=FALSE}
+```{r separableCases}
 
 # cases more "distant"
 cases %>%
@@ -325,7 +325,7 @@ cases %>%
 This sound promising. An kNN approach with higher dimension may do a decent job classifying the digits. Lets put another one, increasing the _explained variation_ to 23%.
 
 
-```{r plot3DComponents, warning=FALSE}
+```{r plot3DComponents}
 
 # 3D
 plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %>%  

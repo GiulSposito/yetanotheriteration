@@ -17,7 +17,7 @@
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
-      <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
+      <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
     </item>
     
     <item>

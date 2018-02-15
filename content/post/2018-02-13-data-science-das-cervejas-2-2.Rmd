@@ -104,12 +104,12 @@ cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%
            # triangulo inferior (já que é uma matriz simétrica)
            type="lower",
            title="Correlaçao entre Tipos de Cerveja",
-           mar=c(0,0,1,0))
+           mar=c(0,0,0,0))
 
 
 ```
 
-Nesse plot, podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre eles. Configuramos o plot aproximar os itens semelhantes entre si (via parâmetro `hclust`), então a ordenação reflete essa informação, os tipos mais próximos estão mais relacionados entre si.
+Podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre eles. Configuramos o plot aproximar os itens semelhantes entre si (via parâmetro `hclust`), então a ordenação reflete essa informação, os tipos mais próximos estão mais relacionados entre si.
 
 ### Clusters
 

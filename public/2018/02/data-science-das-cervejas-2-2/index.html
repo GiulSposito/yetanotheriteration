@@ -30,15 +30,15 @@
     
 
     
-    <meta name="description" content="Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.">
-    <meta property="og:description" content="Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.">
+    <meta name="description" content="Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.">
+    <meta property="og:description" content="Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.">
     <meta property="og:type" content="blog">
     <meta property="og:title" content="Data Science das Cervejas (2/2)">
     <meta property="og:url" content="/2018/02/data-science-das-cervejas-2-2/">
     <meta property="og:site_name" content="Yet Another Iteration">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Yet Another Iteration">
-    <meta name="twitter:description" content="Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.">
+    <meta name="twitter:description" content="Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.">
     
       <meta name="twitter:creator" content="@gsposito">
     
@@ -254,7 +254,7 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>Esta é a <a href="(https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)">segunda parte</a> do post sobre <em>text mining</em> usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de <em>Data Science</em>, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</p>
+              <p>Esta é a <a href="(https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)">segunda parte</a> do post sobre <em>text mining</em> usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de <em>Data Science</em>, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</p>
 <!--more-->
 <div id="que-cerveja-e-similar-a-outra" class="section level2">
 <h2>Que cerveja é similar a outra?</h2>
@@ -401,9 +401,9 @@ cor(beer_corr[,-1], use = &quot;pairwise.complete.obs&quot;) %&gt;%
            # triangulo inferior (já que é uma matriz simétrica)
            type=&quot;lower&quot;,
            title=&quot;Correlaçao entre Tipos de Cerveja&quot;,
-           mar=c(0,0,1,0))</code></pre>
+           mar=c(0,0,0,0))</code></pre>
 <p><img src="https://yetanotheriteration.netlify.com/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/plotCorr-1.png" width="960" /></p>
-<p>Nesse plot, podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre eles. Configuramos o plot aproximar os itens semelhantes entre si (via parâmetro <code>hclust</code>), então a ordenação reflete essa informação, os tipos mais próximos estão mais relacionados entre si.</p>
+<p>Podemos observar o grau de similaridade entre os tipos de cerveja e verificar que há estruturas entre eles. Configuramos o plot aproximar os itens semelhantes entre si (via parâmetro <code>hclust</code>), então a ordenação reflete essa informação, os tipos mais próximos estão mais relacionados entre si.</p>
 </div>
 <div id="clusters" class="section level3">
 <h3>Clusters</h3>
@@ -469,7 +469,7 @@ beer_wordc %&gt;%
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank())</code></pre>
 <p><img src="https://yetanotheriteration.netlify.com/post/2018-02-13-data-science-das-cervejas-2-2_files/figure-html/twoSimilarBeers-1.png" width="672" /></p>
-<p>Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como <em>maltada</em>, <em>café</em>, <em>cevada</em>, <em>espuma</em> e <em>duradouro</em>, que são aracterísticas comuns entre os dois.</p>
+<p>Podemos notar que há uma série de palavras comuns descrevendo ambos os tipos, como <em>maltada</em>, <em>café</em>, <em>cevada</em>, <em>espuma</em> e <em>duradouro</em>, que são características comuns entre os dois.</p>
 <p>Mas e se quiséssemos evidenciar o que difere uma tipo do outro? Usaríamos a mesma técnica usada no <a href="https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/">post anterior</a>, calcularíamos quais as palavras mais importantes, distintas entre as descrições dos dois tipos, usando <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">TF_IDF</a>.</p>
 <pre class="r"><code># partindo da contagem de palavras
 beer_wordc %&gt;%
@@ -786,7 +786,7 @@ beer_wordc %&gt;%
                   Feb 2, 2018
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blgo na web. Nete post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</div>
+              <div class="media-content hide-xs font-merryweather">Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
