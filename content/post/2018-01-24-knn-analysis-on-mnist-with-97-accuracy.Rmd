@@ -1,19 +1,18 @@
 ---
-title: kNN Analysis on MNIST with 97% accuracy
-author: Giuliano Sposito
+title: "kNN Analysis on MNIST with 97% accuracy"
+author: "Giuliano Sposito"
 date: '2018-01-24'
-categories:
-  - data science
-tags:
-  - en-US
-  - evalutation
-  - knn
-  - machine learning
-  - mnist
-  - pca
 slug: knn-analysis-on-mnist-with-97-accuracy
+tags:
+- en-US
+- evalutation
+- knn
+- machine learning
+- mnist
+- pca
 thumbnailImage: images/mnist_knn_tn.png
 thumbnailImagePosition: left
+categories: data science
 ---
 
 Usually Yann LeCun's [MNIST database](http://yann.lecun.com/exdb/mnist/index.html) is used to explore [Artificial Neural Network](https://en.wikipedia.org/wiki/Artificial_neural_network) architectures for image recognition problem. 
@@ -24,7 +23,7 @@ But in this post, we'll see that the MNIST problem isn't a difficult one, only r
 
 <!--more-->
 
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 # setup
 library(knitr)
 
@@ -33,7 +32,6 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(cache = TRUE)
-
 ```
 
 

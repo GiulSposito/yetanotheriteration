@@ -104,7 +104,7 @@ cor(beer_corr[,-1], use = "pairwise.complete.obs") %>%
            # triangulo inferior (já que é uma matriz simétrica)
            type="lower",
            title="Correlaçao entre Tipos de Cerveja",
-           mar=c(0,0,0,0))
+           mar=c(0,0,1,0))
 
 
 ```
