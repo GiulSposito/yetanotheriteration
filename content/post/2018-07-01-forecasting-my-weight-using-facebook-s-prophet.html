@@ -1,0 +1,521 @@
+---
+title: Forecasting my weight using Facebook's Prophet
+author: Giuliano Sposito
+date: '2018-07-01'
+slug: forecasting-my-weight-using-facebook-s-prophet
+categories:
+  - data science
+tags: 
+  - en-US
+  - forecast
+thumbnailImage: images/forecast_tn.png
+thumbnailImagePosition: left
+---
+
+
+
+<p>In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.</p>
+<!--more-->
+<p>Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</p>
+<p>I kept the record until end of may, when my vacations started and I travel for three weeks, and now, at end of June, I restart to record my weight again. Between this time, I saw the <a href="https://github.com/b-rodrigues/">Bruno Rodrigue’s</a> <a href="http://www.brodrigues.co/blog/2018-06-24-fun_ts/">post</a> where he try to forecast his weight using the Forecast package, and I was inspired to do the same, but using my own data, and see how the <a href="https://facebook.github.io/prophet/">Facebook’s Prophet</a> package performs trying to predict my weight in the final of June using the data recorded between March and May.</p>
+<pre class="r"><code>#setup
+
+library(googlesheets) # I keep my records in a google spreadsheet
+library(tibbletime)   # We&#39;ll use tibble time and mice to fill the gap in the 
+library(mice)         # weighting records
+library(tsibble)      # TS Tibble is a &#39;time aware tibble&#39; to keep time series data   
+library(lubridate)    # lubridate to manipulate easly date-time info 
+library(tidyverse)    # tidyr, dplyr and magrittr
+library(forecast)     # package &#39;standard&#39; to forecast time series
+library(prophet)      # the &#39;facebook&#39; method</code></pre>
+<div id="loading-the-dataset-and-filling-the-gaps" class="section level2">
+<h2>Loading the dataset and filling the gaps</h2>
+<p>I weigh myself almost daily (but, in the weekends I’m usually away from home) and keep the weight records in a Google Spreadsheet, so let’s get the data set using the <a href="https://cran.r-project.org/web/packages/googlesheets/googlesheets.pdf">googlesheets</a> package and fill the gap using <a href="https://cran.r-project.org/web/packages/mice/mice.pdf">mice</a> package.</p>
+<pre class="r"><code># download data from google spreadsheets
+gs_auth()
+gs_key(&quot;1P1q58DYs4Jy5cXKXCrdl11ru4Rop1Mu7r8fXEraCX9M&quot;, verbose = F) %&gt;%
+  gs_read_csv(ws=1) -&gt; raw_data
+
+# handles date/weight
+raw_data %&gt;%                # the dataset has record for date, weigth, fat, 
+  select(1:2) %&gt;%           # water, muscle and bones, filtering first two
+  mutate(Peso=Peso/10) %&gt;%  # to make it Kilograms
+  set_names(c(&quot;date&quot;,&quot;weight&quot;)) -&gt; measures 
+
+head(measures, 20) %&gt;%
+  kable(align = &quot;c&quot;,bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="center">date</th>
+<th align="center">weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">2018-03-05</td>
+<td align="center">101.4</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-06</td>
+<td align="center">101.5</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-07</td>
+<td align="center">101.2</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-08</td>
+<td align="center">100.6</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-09</td>
+<td align="center">99.9</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-10</td>
+<td align="center">99.8</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-12</td>
+<td align="center">99.0</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-13</td>
+<td align="center">99.4</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-14</td>
+<td align="center">98.4</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-15</td>
+<td align="center">98.2</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-19</td>
+<td align="center">97.8</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-20</td>
+<td align="center">97.9</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-21</td>
+<td align="center">97.0</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-22</td>
+<td align="center">97.0</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-26</td>
+<td align="center">96.4</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-27</td>
+<td align="center">95.7</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-03-28</td>
+<td align="center">96.3</td>
+</tr>
+<tr class="even">
+<td align="center">2018-03-29</td>
+<td align="center">96.0</td>
+</tr>
+<tr class="odd">
+<td align="center">2018-04-02</td>
+<td align="center">96.2</td>
+</tr>
+<tr class="even">
+<td align="center">2018-04-03</td>
+<td align="center">95.7</td>
+</tr>
+</tbody>
+</table>
+<p>We can see there is no data recorded at days 11, 16, 17 and 18 and go on. Also, there is a big gap in June.</p>
+<pre class="r"><code>tail(measures) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-05-25</td>
+<td align="right">90.7</td>
+</tr>
+<tr class="even">
+<td align="left">2018-05-28</td>
+<td align="right">89.3</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-05-29</td>
+<td align="right">89.5</td>
+</tr>
+<tr class="even">
+<td align="left">2018-05-30</td>
+<td align="right">89.5</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-06-25</td>
+<td align="right">87.0</td>
+</tr>
+<tr class="even">
+<td align="left">2018-06-29</td>
+<td align="right">87.1</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s separate the last two points, in June, from the remaining data, so we’ll have something like a “training” and a “test” data sets.</p>
+<pre class="r"><code># taking the June measures as a &quot;test&quot; points
+weight.target &lt;- measures %&gt;%
+  filter( date &gt;= ymd(20180601) )
+
+# and the previous as &quot;training&quot; points to be used in Forecast and Prophet
+measures &lt;- measures %&gt;%
+  filter( date &lt; ymd(20180601) )</code></pre>
+<p>Let’s make the gaps in the “training” data set explicit, so we can fill’in them using <a href="">mice</a>.</p>
+<pre class="r"><code># explicit NA
+measures %&gt;%
+  as_tsibble() %&gt;%
+  fill_na() -&gt; measures
+
+head(measures,20) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-03-05</td>
+<td align="right">101.4</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-06</td>
+<td align="right">101.5</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-07</td>
+<td align="right">101.2</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-08</td>
+<td align="right">100.6</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-09</td>
+<td align="right">99.9</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-10</td>
+<td align="right">99.8</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-11</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-12</td>
+<td align="right">99.0</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-13</td>
+<td align="right">99.4</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-14</td>
+<td align="right">98.4</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-15</td>
+<td align="right">98.2</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-16</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-17</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-18</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-19</td>
+<td align="right">97.8</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-20</td>
+<td align="right">97.9</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-21</td>
+<td align="right">97.0</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-22</td>
+<td align="right">97.0</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-03-23</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2018-03-24</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Now, with “NA” explicit in the time series we can use [mice].</p>
+<pre class="r"><code># complete values
+measures %&gt;%
+  mice(method = &quot;pmm&quot;, m=5, maxit = 50, seed=42, printFlag= F) %&gt;% # five imputation for NA
+  mice::complete(&quot;long&quot;) %&gt;% # fill the NA
+  group_by(date) %&gt;% # average them (5 points for missing data)
+  summarise( weight = mean(weight) ) -&gt; measures_completed
+
+# compare original data and missing values
+measures_completed %&gt;%
+  inner_join(measures, by=&quot;date&quot;) %&gt;%   # join with original (with NA) dataset
+  set_names(c(&quot;date&quot;,&quot;inputted&quot;,&quot;original&quot;)) %&gt;%
+  tidyr::gather(type,weight,-date) %&gt;% # pivot-it
+  ggplot() + geom_point(aes(date,weight,color=type))</code></pre>
+<p><img src="/post/2018-07-01-forecasting-my-weight-using-facebook-s-prophet_files/figure-html/inputeMissing-1.png" width="672" /></p>
+<p>Well, the <a href="https://cran.r-project.org/web/packages/mice/mice.pdf">mice</a> package did a remarkable job, the inputted values (red ones) seems like real measures, now with data set completed we convert it to a time series and use forecast to predict the weight behavior in June.</p>
+</div>
+<div id="forecasting-with-forecast-package" class="section level2">
+<h2>Forecasting with Forecast Package</h2>
+<p>The <a href="https://cran.r-project.org/web/packages/forecast/forecast.pdf">Forecast package</a> implements ARIMA models for time series data. In statistics and econometrics, and in particular in time series analysis, an autoregressive integrated moving average (ARIMA) model is a generalization of an autoregressive moving average (ARMA) model. Both of these models are fitted to time series data either to better understand the data or to predict future points in the series (forecasting). <a href="https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average">(more on ARIMA)</a></p>
+<p>Let’s use this model to forecast.</p>
+<pre class="r"><code># models the time series
+model &lt;- measures_completed %&gt;%
+  pull(weight) %&gt;%  # convert to a vector
+  as.ts() %&gt;%       # transform to a Time Serie
+  auto.arima()      # fit the model
+
+# make de predicion for 30 days
+prediction &lt;- model %&gt;%
+  forecast(h=31) %&gt;%  # forecast next 30 measures
+  as.tibble() %&gt;%     # covert to tibble
+  mutate( date = max(measures_completed$date) + 1:31 ) # add the dates
+
+# prediction dataset
+head(prediction) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Point Forecast</th>
+<th align="right">Lo 80</th>
+<th align="right">Hi 80</th>
+<th align="right">Lo 95</th>
+<th align="right">Hi 95</th>
+<th align="left">date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">89.27809</td>
+<td align="right">88.83101</td>
+<td align="right">89.72516</td>
+<td align="right">88.59434</td>
+<td align="right">89.96183</td>
+<td align="left">2018-05-31</td>
+</tr>
+<tr class="even">
+<td align="right">89.13843</td>
+<td align="right">88.61464</td>
+<td align="right">89.66222</td>
+<td align="right">88.33736</td>
+<td align="right">89.93950</td>
+<td align="left">2018-06-01</td>
+</tr>
+<tr class="odd">
+<td align="right">88.99877</td>
+<td align="right">88.40815</td>
+<td align="right">89.58940</td>
+<td align="right">88.09549</td>
+<td align="right">89.90206</td>
+<td align="left">2018-06-02</td>
+</tr>
+<tr class="even">
+<td align="right">88.85911</td>
+<td align="right">88.20848</td>
+<td align="right">89.50975</td>
+<td align="right">87.86406</td>
+<td align="right">89.85417</td>
+<td align="left">2018-06-03</td>
+</tr>
+<tr class="odd">
+<td align="right">88.71946</td>
+<td align="right">88.01391</td>
+<td align="right">89.42501</td>
+<td align="right">87.64041</td>
+<td align="right">89.79851</td>
+<td align="left">2018-06-04</td>
+</tr>
+<tr class="even">
+<td align="right">88.57980</td>
+<td align="right">87.82330</td>
+<td align="right">89.33629</td>
+<td align="right">87.42284</td>
+<td align="right">89.73676</td>
+<td align="left">2018-06-05</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># plot to compare the prediction with the real values
+prediction %&gt;%
+  rename( weight = `Point Forecast`) %&gt;% # rename the forecast column
+  mutate( origin = &quot;prediction&quot; ) %&gt;%    # mark the data as &#39;prediction&#39;
+  bind_rows( measures_completed %&gt;% mutate(origin=&quot;measures&quot;) ) %&gt;% # join with real data
+  ggplot(aes(x=date)) + 
+  geom_point(aes(y=weight,color=origin)) + 
+  geom_ribbon(aes(ymin=`Lo 80`, ymax=`Hi 80`), alpha=0.2) +
+  geom_ribbon(aes(ymin=`Lo 95`, ymax=`Hi 95`), alpha=0.2) +
+  geom_point(data=weight.target, mapping = aes(date, weight)) +
+  theme_bw()</code></pre>
+<p><img src="/post/2018-07-01-forecasting-my-weight-using-facebook-s-prophet_files/figure-html/forecastJune-1.png" width="672" /></p>
+<p>The Forecast package did a “OK” job, the first real measure are in the 80% certainty range and the second in the 95% range, what is, for predictions, a good job. But the model miss the two points, they are at the edge of the certainty interval.</p>
+<pre class="r"><code># comparing the real and predicted values
+prediction %&gt;%
+  inner_join(weight.target, by=&quot;date&quot;) %&gt;%
+  select(date, `Lo 95`, forecast=`Point Forecast`, weight,`Hi 95`) %&gt;%
+  mutate( interval_size = `Hi 95` - `Lo 95` ) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">Lo 95</th>
+<th align="right">forecast</th>
+<th align="right">weight</th>
+<th align="right">Hi 95</th>
+<th align="right">interval_size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-06-25</td>
+<td align="right">83.59057</td>
+<td align="right">85.78665</td>
+<td align="right">87.0</td>
+<td align="right">87.98273</td>
+<td align="right">4.392158</td>
+</tr>
+<tr class="even">
+<td align="left">2018-06-29</td>
+<td align="right">82.87864</td>
+<td align="right">85.22802</td>
+<td align="right">87.1</td>
+<td align="right">87.57740</td>
+<td align="right">4.698767</td>
+</tr>
+</tbody>
+</table>
+<p>Can the Facebook’s Prophet do a better job?</p>
+</div>
+<div id="prophet" class="section level2">
+<h2>Prophet</h2>
+<p>The <a href="https://facebook.github.io/prophet/">Facebook’s Prophet</a> is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is robust to missing data and shifts in the trend, and typically handles outliers well.</p>
+<p>Facebook implemented the procedure in R and Python and make it public in 2017, the package <a href="https://cran.r-project.org/web/packages/prophet/index.html">Prophet</a> gives you access to it. If you want to know more about it, check <a href="https://towardsdatascience.com/using-open-source-prophet-package-to-make-future-predictions-in-r-ece585b73687">this</a>.</p>
+<pre class="r"><code># by definition we need to pass a df with 2 columns &quot;ds&quot; (datestamp) and &quot;y&quot; (target var)
+measures_completed %&gt;%
+  set_names(c(&quot;ds&quot;,&quot;y&quot;)) %&gt;%
+  prophet() -&gt; pmodel</code></pre>
+<pre><code>## Initial log joint probability = -2.0267
+## Optimization terminated normally: 
+##   Convergence detected: absolute parameter change was below tolerance</code></pre>
+<pre class="r"><code># we use the model to make the prediction
+pmodel %&gt;%
+  make_future_dataframe(30) %&gt;%
+  predict(pmodel,.) -&gt; pprediction
+
+# what is the output format
+pprediction %&gt;%
+  as.tibble() %&gt;%
+  glimpse()</code></pre>
+<pre><code>## Observations: 117
+## Variables: 16
+## $ ds                         &lt;dttm&gt; 2018-03-05, 2018-03-06, 2018-03-07...
+## $ trend                      &lt;dbl&gt; 101.57077, 101.23082, 100.89088, 10...
+## $ additive_terms             &lt;dbl&gt; -0.03042137, -0.03369415, -0.052813...
+## $ additive_terms_lower       &lt;dbl&gt; -0.03042137, -0.03369415, -0.052813...
+## $ additive_terms_upper       &lt;dbl&gt; -0.03042137, -0.03369415, -0.052813...
+## $ weekly                     &lt;dbl&gt; -0.03042137, -0.03369415, -0.052813...
+## $ weekly_lower               &lt;dbl&gt; -0.03042137, -0.03369415, -0.052813...
+## $ weekly_upper               &lt;dbl&gt; -0.03042137, -0.03369415, -0.052813...
+## $ multiplicative_terms       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ multiplicative_terms_lower &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ multiplicative_terms_upper &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ yhat_lower                 &lt;dbl&gt; 101.18713, 100.85010, 100.49147, 10...
+## $ yhat_upper                 &lt;dbl&gt; 101.88794, 101.55305, 101.20007, 10...
+## $ trend_lower                &lt;dbl&gt; 101.57077, 101.23082, 100.89088, 10...
+## $ trend_upper                &lt;dbl&gt; 101.57077, 101.23082, 100.89088, 10...
+## $ yhat                       &lt;dbl&gt; 101.54035, 101.19713, 100.83806, 10...</code></pre>
+<p>As you see, the prophet’s prediction give us a lot of information, let’s check how it performed.</p>
+<pre class="r"><code>#plot the prediction against the target
+pprediction %&gt;%
+  as.tibble() %&gt;%
+  mutate(ds=as_date(ds)) %&gt;%
+  filter(ds &gt; max(measures_completed$date) ) %&gt;%
+  select(ds, trend, yhat, yhat_lower, yhat_upper) %&gt;%
+  ggplot() + 
+  geom_line(aes(x=ds, y=yhat), color=&quot;blue&quot;) +
+  geom_ribbon(aes(x=ds, ymin=yhat_lower, ymax=yhat_upper), alpha=0.2) +
+  geom_point(data=measures_completed, aes(x=date, y=weight), color=&quot;salmon&quot;) +
+  geom_point(data=weight.target, mapping=aes(x=date, y=weight), color=&quot;black&quot;) +
+  theme_bw()</code></pre>
+<p><img src="/post/2018-07-01-forecasting-my-weight-using-facebook-s-prophet_files/figure-html/prophetPerform-1.png" width="672" /></p>
+<p>Wow, the prophet to an excellent job, the real measures are in the center of the range and the prediction values are close to it.</p>
+<pre class="r"><code># checking the values in the June measures
+pprediction %&gt;%
+  as.tibble() %&gt;% 
+  mutate(date=as_date(ds)) %&gt;%
+  inner_join(weight.target, by=&quot;date&quot;) %&gt;%
+  select(date=ds, yhat_lower, yhat, weight, yhat_upper ) %&gt;%
+  mutate( interval_size = yhat_upper - yhat_lower ) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">yhat_lower</th>
+<th align="right">yhat</th>
+<th align="right">weight</th>
+<th align="right">yhat_upper</th>
+<th align="right">interval_size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-06-25</td>
+<td align="right">86.13888</td>
+<td align="right">87.22930</td>
+<td align="right">87.0</td>
+<td align="right">88.33607</td>
+<td align="right">2.197189</td>
+</tr>
+<tr class="even">
+<td align="left">2018-06-29</td>
+<td align="right">85.54548</td>
+<td align="right">86.91677</td>
+<td align="right">87.1</td>
+<td align="right">88.28074</td>
+<td align="right">2.735263</td>
+</tr>
+</tbody>
+</table>
+<p>As you saw, the prediction points made by prophet are remarkable close to the real values and also the size of certainty interval is very narrow, almost half forecast</p>
+</div>

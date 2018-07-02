@@ -3,276 +3,287 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</loc>
+    <loc>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2018/02/data-science-das-cervejas-2-2/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</loc>
+    <loc>/2018/02/data-science-das-cervejas-1-2/</loc>
     <lastmod>2018-02-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</loc>
+    <loc>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</loc>
+    <loc>/2018/01/implementing-lenet-with-mxnet-in-r/</loc>
     <lastmod>2018-01-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</loc>
+    <loc>/2018/01/social-network-analysis-on-cran-authors/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</loc>
+    <loc>/2018/01/putting-your-workout-to-move/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</loc>
+    <loc>/2018/01/high-collinearity-effect-in-regressions/</loc>
     <lastmod>2018-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</loc>
+    <loc>/2018/01/ploting-your-mtb-track-with-r/</loc>
     <lastmod>2018-01-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2018-01-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</loc>
+    <loc>/2018/01/curse-of-dimensionalityrmd/</loc>
     <lastmod>2018-01-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</loc>
+    <loc>/2018/01/assessing-model-accuracy-linear-modelsrmd/</loc>
     <lastmod>2018-01-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</loc>
+    <loc>/2018/01/we-have-a-blog/</loc>
     <lastmod>2018-01-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/animation/</loc>
+    <loc>/tags/animation/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/archives/</loc>
+    <loc>/archives/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/beer/</loc>
+    <loc>/tags/beer/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/data-analysis/</loc>
+    <loc>/tags/data-analysis/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/categories/data-science/</loc>
-    <lastmod>2018-02-12T00:00:00+00:00</lastmod>
+    <loc>/categories/data-science/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/en-us/</loc>
+    <loc>/tags/en-us/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/evalutation/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/evalutation/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/feature-engineering/</loc>
+    <loc>/tags/feature-engineering/</loc>
     <lastmod>2018-01-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/fitbit/</loc>
+    <loc>/tags/fitbit/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/gganimate/</loc>
+    <loc>/tags/forecast/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/gganimate/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/ggraph/</loc>
+    <loc>/tags/ggraph/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/gps/</loc>
+    <loc>/tags/gps/</loc>
     <lastmod>2018-01-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/gpx/</loc>
+    <loc>/tags/gpx/</loc>
     <lastmod>2018-01-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/ia/</loc>
+    <loc>/tags/ia/</loc>
     <lastmod>2018-01-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/knn/</loc>
+    <loc>/tags/knn/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/machine-learning/</loc>
+    <loc>/tags/machine-learning/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/mnist/</loc>
+    <loc>/tags/mnist/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/model/</loc>
+    <loc>/tags/model/</loc>
     <lastmod>2018-01-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/network/</loc>
+    <loc>/tags/network/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/neural-network/</loc>
+    <loc>/tags/neural-network/</loc>
     <lastmod>2018-01-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/pca/</loc>
+    <loc>/tags/pca/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/post/</loc>
+    <loc>/post/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/pt-br/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/pt-br/</loc>
-    <lastmod>2018-02-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/rstat/</loc>
+    <loc>/tags/rstat/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/rstats/</loc>
+    <loc>/tags/rstats/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/runtastic/</loc>
+    <loc>/tags/runtastic/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/rvest/</loc>
+    <loc>/tags/rvest/</loc>
     <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/sna/</loc>
+    <loc>/tags/sna/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/strava/</loc>
+    <loc>/tags/strava/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/tcx/</loc>
+    <loc>/tags/tcx/</loc>
     <lastmod>2018-01-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/text-mining/</loc>
+    <loc>/tags/text-mining/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/tidytext/</loc>
+    <loc>/tags/tidytext/</loc>
     <lastmod>2018-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/tags/workout/</loc>
+    <loc>/tags/workout/</loc>
     <lastmod>2018-01-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yetanotheriteration.netlify.com/</loc>
-    <lastmod>2018-02-12T00:00:00+00:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

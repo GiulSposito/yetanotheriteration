@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Forecast on Yet Another Iteration</title>
+    <link>/tags/forecast/</link>
+    <description>Recent content in Forecast on Yet Another Iteration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/forecast/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Forecasting my weight using Facebook&#39;s Prophet</title>
+      <link>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
+      <description>In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
+Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</description>
+    </item>
+    
+  </channel>
+</rss>

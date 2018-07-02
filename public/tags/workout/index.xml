@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Workout on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/workout/</link>
+    <link>/tags/workout/</link>
     <description>Recent content in Workout on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 20 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/workout/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/workout/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Putting your workout to move</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
+      <link>/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
+      <guid>/2018/01/putting-your-workout-to-move/</guid>
       <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
 Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
 library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
@@ -24,10 +24,10 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
 Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</description>
     </item>

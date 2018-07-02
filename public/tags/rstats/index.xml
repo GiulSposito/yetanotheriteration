@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rstats on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/rstats/</link>
+    <link>/tags/rstats/</link>
     <description>Recent content in Rstats on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 12 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/rstats/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/rstats/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Data Science das Cervejas (2/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
+      <link>/2018/02/data-science-das-cervejas-2-2/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
       <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
     </item>
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
+      <link>/2018/02/data-science-das-cervejas-1-2/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
       <description>Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
 Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</description>
     </item>
