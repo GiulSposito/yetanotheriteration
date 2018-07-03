@@ -1,15 +1,14 @@
 ---
-title: Using Facebook's Prophet to forecast my weight loss
-author: Giuliano Sposito
+title: "Using Facebook's Prophet to forecast my weight loss"
+author: "Giuliano Sposito"
 date: '2018-07-03'
 slug: forecasting-my-weight-using-facebook-s-prophet
-categories:
-  - data science
-tags: 
-  - en-US
-  - forecast
+tags:
+- en-US
+- forecast
 thumbnailImage: images/forecast_tn.png
 thumbnailImagePosition: left
+categories: data science
 ---
 
 In this post, we'll try to forecast my weight using Forecast and Facebook's Prophet packages. We'll see what is the performance from Facebook's method in a simple case of forecast.

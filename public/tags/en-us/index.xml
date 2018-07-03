@@ -6,20 +6,10 @@
     <description>Recent content in En Us on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://yetanotheriteration.netlify.com/tags/en-us/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Using Facebook&#39;s Prophet to forecast my weight loss</title>
-      <link>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
-      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
-      <description>In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
-Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</description>
-    </item>
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
