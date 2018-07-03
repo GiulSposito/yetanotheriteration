@@ -1,7 +1,7 @@
 ---
-title: Forecasting my weight using Facebook's Prophet
+title: Using Facebook's Prophet to forecast my weight loss
 author: Giuliano Sposito
-date: '2018-07-01'
+date: '2018-07-03'
 slug: forecasting-my-weight-using-facebook-s-prophet
 categories:
   - data science
@@ -224,7 +224,9 @@ pprediction %>%
 
 ```
 
-As you saw, the prediction points made by prophet are remarkable close to the real values and also the size of certainty interval is very narrow, almost half forecast´s. 
+As you saw, the prediction points made by prophet are remarkable close to the real values and also the size of certainty interval is very narrow, almost half forecast´s.
+
+Of course, we just use these packages "out-of-the-box", we didn't tunning the Forecast parameters, maybe it can be a better job, but this don't invalidate the results of Prophet.
 
 The performance of the prophet was great in the test, for sure, the this package deserves another post in the future, to explore other features available.
 

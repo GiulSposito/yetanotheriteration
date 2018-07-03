@@ -2,50 +2,50 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Science on Yet Another Iteration</title>
-    <link>/categories/data-science/</link>
+    <link>https://yetanotheriteration.netlify.com/categories/data-science/</link>
     <description>Recent content in Data Science on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Forecasting my weight using Facebook&#39;s Prophet</title>
-      <link>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
-      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      <title>Using Facebook&#39;s Prophet to forecast my weight loss</title>
+      <link>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
       <description>In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
 Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</description>
     </item>
     
     <item>
       <title>Data Science das Cervejas (2/2)</title>
-      <link>/2018/02/data-science-das-cervejas-2-2/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
       <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
     </item>
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
-      <link>/2018/02/data-science-das-cervejas-1-2/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
       <description>Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
 Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</description>
     </item>
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
-      <link>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
       <description>Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
 In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
 But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</description>
@@ -53,10 +53,10 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
     
     <item>
       <title>Implementing LeNet with MXNET in R</title>
-      <link>/2018/01/implementing-lenet-with-mxnet-in-r/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</link>
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
       <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
@@ -64,20 +64,20 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
     
     <item>
       <title>Social Network Analysis on CRAN Authors</title>
-      <link>/2018/01/social-network-analysis-on-cran-authors/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</guid>
       <description>Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
 IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</description>
     </item>
     
     <item>
       <title>Putting your workout to move</title>
-      <link>/2018/01/putting-your-workout-to-move/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/putting-your-workout-to-move/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
       <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
 Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
 library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
@@ -85,39 +85,39 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
     
     <item>
       <title>High Collinearity Effect in Regressions</title>
-      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</guid>
       <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
 This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</description>
     </item>
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
 Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</description>
     </item>
     
     <item>
       <title>Curse of Dimensionality</title>
-      <link>/2018/01/curse-of-dimensionalityrmd/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</link>
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</guid>
       <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
     </item>
     
     <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
 Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
     </item>
