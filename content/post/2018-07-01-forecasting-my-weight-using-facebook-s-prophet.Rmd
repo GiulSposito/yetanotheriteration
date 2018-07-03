@@ -1,14 +1,16 @@
 ---
-title: "Using Facebook's Prophet to forecast my weight loss"
-author: "Giuliano Sposito"
-date: '2018-07-03'
-slug: forecasting-my-weight-using-facebook-s-prophet
+title: Using Facebook's Prophet to forecast my weight loss
+author: Giuliano Sposito
+date: '2018-07-01'
+categories:
+  - data science
 tags:
-- en-US
-- forecast
+  - en-US
+  - forecast
+  - prophet
+slug: forecasting-my-weight-using-facebook-s-prophet
 thumbnailImage: images/forecast_tn.png
 thumbnailImagePosition: left
-categories: data science
 ---
 
 In this post, we'll try to forecast my weight using Forecast and Facebook's Prophet packages. We'll see what is the performance from Facebook's method in a simple case of forecast.
@@ -223,7 +225,7 @@ pprediction %>%
 
 ```
 
-As you saw, the prediction points made by prophet are remarkable close to the real values and also the size of certainty interval is very narrow, almost half forecast´s.
+As you saw, the prediction points made by prophet are remarkable close to the real values and also the size of certainty interval is very narrow, almost half forecastÂ´s.
 
 Of course, we just use these packages "out-of-the-box", we didn't tunning the Forecast parameters, maybe it can be a better job, but this don't invalidate the results of Prophet.
 

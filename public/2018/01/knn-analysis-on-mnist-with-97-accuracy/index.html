@@ -1,0 +1,1088 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.32.4 with theme Tranquilpeak 0.4.3-BETA">
+    <title>kNN Analysis on MNIST with 97% accuracy</title>
+    <meta name="author" content="Giuliano Sposito">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.">
+    <meta property="og:description" content="Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="kNN Analysis on MNIST with 97% accuracy">
+    <meta property="og:url" content="/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+    <meta property="og:site_name" content="Yet Another Iteration">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Yet Another Iteration">
+    <meta name="twitter:description" content="Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.">
+    
+      <meta name="twitter:creator" content="@gsposito">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+    
+
+    
+      <meta property="og:image" content="/images/mnist_knn_tn.png">
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-112393378-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      kNN Analysis on MNIST with 97% accuracy
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-01-24T00:00:00Z">
+        
+  January 24, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="/rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/plotlyjs/plotly-latest.min.js"></script>
+
+
+<p>Usually Yann LeCun’s <a href="http://yann.lecun.com/exdb/mnist/index.html">MNIST database</a> is used to explore <a href="https://en.wikipedia.org/wiki/Artificial_neural_network">Artificial Neural Network</a> architectures for image recognition problem.</p>
+<p>In the <a href="/2018/01/implementing-lenet-with-mxnet-in-r/">last post</a> the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.</p>
+<p>But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">k-nearest neighbors algorithm</a>.</p>
+<!--more-->
+<pre class="r"><code># setup
+library(tidyverse)  # for plot and data manipulation
+library(factoextra) # to plot PCA values
+library(plotly)     # 3D interactive plots
+library(class)      # KNN algorithm
+library(caret)      # Near Zero Var removing</code></pre>
+<div id="mnist-dataset" class="section level2">
+<h2>MNist Dataset</h2>
+<p>Download all four data set files from <a href="http://yann.lecun.com/exdb/mnist/">MNIST site</a> and gunzip them in the project directory.</p>
+<p>The default MNIST data set is somewhat inconveniently formatted, but we use an adaptation of <a href="http://gist.github.com/39760">gist from Brendan o’Connor</a> to read the files transforming them in a structure simple to use and access.</p>
+<pre class="r"><code>### load database
+
+# read function returns a list of datasets
+load_mnist &lt;- function() {
+  load_image_file &lt;- function(filename) {
+    ret = list()
+    f = file(filename,&#39;rb&#39;)
+    readBin(f,&#39;integer&#39;,n=1,size=4,endian=&#39;big&#39;)
+    ret$n = readBin(f,&#39;integer&#39;,n=1,size=4,endian=&#39;big&#39;)
+    nrow = readBin(f,&#39;integer&#39;,n=1,size=4,endian=&#39;big&#39;)
+    ncol = readBin(f,&#39;integer&#39;,n=1,size=4,endian=&#39;big&#39;)
+    x = readBin(f,&#39;integer&#39;,n=ret$n*nrow*ncol,size=1,signed=F)
+    ret$x = matrix(x, ncol=nrow*ncol, byrow=T)
+    close(f)
+    ret
+  }
+  load_label_file &lt;- function(filename) {
+    f = file(filename,&#39;rb&#39;)
+    readBin(f,&#39;integer&#39;,n=1,size=4,endian=&#39;big&#39;)
+    n = readBin(f,&#39;integer&#39;,n=1,size=4,endian=&#39;big&#39;)
+    y = readBin(f,&#39;integer&#39;,n=n,size=1,signed=F)
+    close(f)
+    y
+  }
+  train &lt;- load_image_file(&#39;./data/mnist/train-images.idx3-ubyte&#39;)
+  test &lt;- load_image_file(&#39;./data/mnist/t10k-images.idx3-ubyte&#39;)
+  
+  train$y &lt;- load_label_file(&#39;./data/mnist/train-labels.idx1-ubyte&#39;)
+  test$y &lt;- load_label_file(&#39;./data/mnist/t10k-labels.idx1-ubyte&#39;)  
+  
+  return(
+    list(
+      train = train,
+      test = test
+    )
+  )
+}
+
+# load in &#39;mnist&#39; var
+mnist &lt;- load_mnist()
+
+# look the data format
+str(mnist)</code></pre>
+<pre><code>## List of 2
+##  $ train:List of 3
+##   ..$ n: int 60000
+##   ..$ x: int [1:60000, 1:784] 0 0 0 0 0 0 0 0 0 0 ...
+##   ..$ y: int [1:60000] 5 0 4 1 9 2 1 3 1 4 ...
+##  $ test :List of 3
+##   ..$ n: int 10000
+##   ..$ x: int [1:10000, 1:784] 0 0 0 0 0 0 0 0 0 0 ...
+##   ..$ y: int [1:10000] 7 2 1 0 4 1 4 9 5 9 ...</code></pre>
+<p>The gist read the binary MNIST files and returns a convenient list for training cases and test cases, each with size (n), the pixels (x) and the labels (y).</p>
+<p>Let’s see some of the images represented in the <code>x</code> variable.</p>
+<pre class="r"><code># functino plot one case digit (by 1d array of 784 pixels)
+show_digit &lt;- function(arr784, col=gray(25:1/25), ...) {
+  image(matrix(arr784, nrow=28)[,28:1], col=col, ...)
+}
+
+# showing first 25 cases
+labels &lt;- paste(mnist$train$y[1:25],collapse = &quot;, &quot;)
+par(mfrow=c(5,5), mar=c(0.1,0.1,0.1,0.1))
+for(i in 1:25) show_digit(mnist$train$x[i,], axes=F)</code></pre>
+<p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/plotDatabase-1.png" width="672" /></p>
+<p>Each line in <code>x</code> var is a digit case, and each column represents the intensity of a pixel in a <code>28 x 28</code> image.</p>
+</div>
+<div id="data-analysis" class="section level2">
+<h2>Data Analysis</h2>
+<p>How the each pixels in the image behavior in the “average” for each digit? It’s possible to use this information to classify an digit?</p>
+<div id="centroid" class="section level3">
+<h3>Centroid</h3>
+<pre class="r"><code># calc digits centroids
+centroids &lt;- list()
+for(i in 0:9) {
+  x &lt;- mnist$train$x[(mnist$train$y == i),]
+  centroids[[i+1]] &lt;- colMeans(x) 
+}
+
+# ploting the centroids
+par(mfrow=c(2,5), mar=c(0.1,0.1,0.1,0.1))
+res &lt;- lapply(X = centroids, show_digit, xaxt=&#39;n&#39;, yaxt=&#39;n&#39;)</code></pre>
+<p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/calcCentroids-1.png" width="672" /></p>
+<p>These averaged images are called centroids. We’re treating each image as a 784-dimensional point (28 by 28), and then taking the average of all points in each dimension individually.</p>
+<p>We see that each centroid has a good representation of a digit, so each image in the data set are centralized in the image and there is not large variations. Maybe we can use one elementary machine learning method: <strong>nearest centroid classifier</strong>, would ask for each image which of these centroids it comes closest to.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+</div>
+<div id="compare-centroids" class="section level3">
+<h3>Compare Centroids</h3>
+<p>How different one centroid is from other? We can simply take the difference between the pixel values for each digit pair like this:</p>
+<pre class="r"><code># compare cases
+compare &lt;- tidyr::crossing(comp1 = 0:9, comp2 = 0:9)
+
+# calc features differences between the centroids
+res &lt;- apply(compare, 1, function(x,m=centroids){
+  unlist(m[x[1]+1]) - unlist(m[x[2]+1])
+}) %&gt;% t() %&gt;% as_tibble()
+
+centroids_diff &lt;- bind_cols(compare, res)
+
+# plot them
+par(mfrow=c(10,10), mar=c(0,0,0,0))
+colFunc &lt;- colorRampPalette(c(&quot;red&quot;,&quot;white&quot;,&quot;blue&quot;))
+res &lt;- sapply(1:100, FUN=function(x) show_digit(as.matrix(centroids_diff[x,3:786]),
+                                                col=colFunc(35),
+                                                axes=F))</code></pre>
+<p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/compCentroids-1.png" width="672" /></p>
+<p>From the image we can see some “patterns” emerging from this. As higher are stains in this image more separable a digit from another is. We look particularly for <code>0</code> and <code>1</code> digits are strongly separable. But in fade images we have a problem, because the pixels are not ‘that’ different from one digit from other, like <code>4</code> x <code>9</code> and <code>3</code> x <code>8</code>.</p>
+</div>
+<div id="distance" class="section level3">
+<h3>Distance</h3>
+<p>We can “measure” this difference, taking each pixel as a dimensions in the digit represent space and apply a simple <em>euclidian distance</em> between these data.</p>
+<pre class="r"><code># calculating the distance between the centroids in 786 dimensions
+dist &lt;- apply(compare,1,function(x,m=centroids){
+  sqrt(mean((unlist(m[x[1]+1])-unlist(m[x[2]+1]))^2))  
+}) %&gt;% as_tibble()
+centroids_dist &lt;- bind_cols(compare,dist)
+
+# ploting the distances
+ggplot(centroids_dist, aes(x=comp1, y=comp2, fill=value)) +
+  geom_tile() + 
+  geom_text(aes(label=round(value))) +
+  scale_fill_gradient2(low = &quot;blue&quot;, high = &quot;red&quot;) +
+  scale_x_continuous(breaks=0:9) + 
+  scale_y_continuous(breaks=0:9) + 
+  ylab(&quot;&quot;) + xlab(&quot;&quot;) + 
+  theme_bw()</code></pre>
+<p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/distance-1.png" width="672" /></p>
+<p>The distance here, measures the degree of “difference” between the centroids, and this matrix bring us a coll view, look at <code>0</code>x<code>1</code> how distance they are (69), making them easier to classify. Look at <code>4</code>x<code>9</code>, they are more next (23), let’s compare this with the <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a> generated by the LeNet ANN from the <a href="/2018/01/implementing-lenet-with-mxnet-in-r/">last post</a>:</p>
+<pre><code>##           Reference
+## Prediction    0    1    2    3    4    5    6    7    8    9
+##          0  974    0    1    0    0    2    3    0    2    0
+##          1    1 1131    0    0    0    0    2    2    0    0
+##          2    0    0 1025    1    1    0    0    2    0    0
+##          3    0    0    0 1000    0    5    1    1    1    2
+##          4    0    0    1    0  970    0    0    1    0    6
+##          5    1    0    0    6    0  878    4    0    2    2
+##          6    3    2    1    0    1    2  947    0    0    1
+##          7    1    0    2    0    0    0    0 1016    0    3
+##          8    0    2    2    3    0    4    1    1  966    1
+##          9    0    0    0    0   10    1    0    5    3  994</code></pre>
+<p>We see the 16 mismatches involving cases <code>4</code>x<code>9</code>, the largest.</p>
+</div>
+</div>
+<div id="principal-component-analysis" class="section level2">
+<h2>Principal Component Analysis</h2>
+<p>We can improve this, it’s not all the pixels that have the same importance in the digit differentiation, some pixels (in the image borders, for example) don’t change its value along the data set and some pixels change very few from one digit to other. We transform the data sets to evidence the first removing the <em>zero variance</em> pixels and the second using <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principal component Analysis</a> or PCA.</p>
+<pre class="r"><code># transforming in a matrix
+tr.x &lt;- mnist$train$x
+ts.x &lt;- mnist$test$x
+all.x &lt;- rbind(tr.x,ts.x)
+
+# calculating the PCA
+
+# removing zero or near zero variance features
+nzv &lt;- nearZeroVar(all.x, saveMetrics = T)
+all.x &lt;- all.x[,!nzv$zeroVar]
+
+# principal component analysis
+pca &lt;- prcomp(all.x, center = T)
+saveRDS(pca, &quot;pca.rds&quot;) # store to save time in the future
+print(paste0(&quot;Columns with zero variance: &quot;, sum(nzv$zeroVar)))</code></pre>
+<pre><code>## [1] &quot;Columns with zero variance: 65&quot;</code></pre>
+<div id="principal-componets" class="section level3">
+<h3>Principal Componets</h3>
+<p>This is the classic view of the first 10 principal components, they explain 49% of total variance of data set.</p>
+<pre class="r"><code># principals component
+fviz_eig(pca)</code></pre>
+<p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/principalComponents-1.png" width="672" /></p>
+</div>
+<div id="distribution-of-variance" class="section level3">
+<h3>Distribution of variance</h3>
+<p>Indeed, we see that the majority of the dimensions has near zero variance and few pixels explain a lot.</p>
+<pre class="r"><code># rebuilding features (transformed)
+tr.x &lt;- pca$x[(1:mnist$train$n),]
+ts.x &lt;- pca$x[(mnist$train$n+1):(mnist$train$n+mnist$test$n),]
+
+vars &lt;- apply(pca$x, 2, var)  
+props &lt;- vars / sum(vars)
+
+# distribuicao da % de sdev por
+# res &lt;- dev.off() # reset plot parameters
+hist(props, breaks = 100, col=&quot;Red&quot;)</code></pre>
+<p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/varianceDistribution-1.png" width="672" /></p>
+</div>
+<div id="cumulative-variance" class="section level3">
+<h3>Cumulative Variance</h3>
+<p>Let’s see how much dimension of the PCA we need to consider.</p>
+<pre class="r"><code># ploting the cumulative variance
+data_frame(x=1:length(pca$sdev), sdev.cum=cumsum(props)) %&gt;%
+  plot_ly(x=~x,y=~sdev.cum) %&gt;%
+  add_lines()</code></pre>
+<div id="e8856654c31" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="e8856654c31">{"x":{"visdat":{"e881ab32b4f":["function () ","plotlyVisDat"]},"cur_data":"e881ab32b4f","attrs":{"e881ab32b4f":{"x":{},"y":{},"alpha":1,"sizes":[10,100],"type":"scatter","mode":"lines"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"title":"x"},"yaxis":{"domain":[0,1],"title":"sdev.cum"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,550,551,552,553,554,555,556,557,558,559,560,561,562,563,564,565,566,567,568,569,570,571,572,573,574,575,576,577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,661,662,663,664,665,666,667,668,669,670,671,672,673,674,675,676,677,678,679,680,681,682,683,684,685,686,687,688,689,690,691,692,693,694,695,696,697,698,699,700,701,702,703,704,705,706,707,708,709,710,711,712,713,714,715,716,717,718,719],"y":[0.0974611592249475,0.169015605093734,0.230510914900965,0.284544760186447,0.333434097225226,0.376486367525526,0.409268982756225,0.438165398418126,0.465749040394352,0.489170442070969,0.510237327590838,0.530612860024304,0.547683503053422,0.564623700878988,0.580457523288817,0.595320972288867,0.608514557219423,0.621304699756383,0.633177424645846,0.644706791661696,0.655367189507487,0.665465132890983,0.675056645193017,0.684152995976153,0.692985864163297,0.70137404624728,0.709472364189611,0.717329543169271,0.724732165468963,0.731632307066549,0.738193746981433,0.74464844989189,0.750656642913385,0.756512760377095,0.76218029596771,0.76761500256166,0.772662173257746,0.777532967461252,0.782322518836511,0.78699845533318,0.791542141622259,0.795991321730448,0.800173487710443,0.804135126780335,0.807972204243715,0.811730052281231,0.815344315120433,0.818834561116834,0.822221877144379,0.825418838829715,0.828587379109113,0.831688828229332,0.834653631754224,0.837524646234817,0.840349784190123,0.843044011323246,0.845727934373841,0.848293027747647,0.850824706278169,0.853271186572531,0.855668208943789,0.858054018955404,0.860346356441971,0.862555846328514,0.864686451072526,0.866749625720926,0.868777439477652,0.870727790683287,0.872642496987345,0.874527992034829,0.87639775342233,0.878198795954253,0.879966666423203,0.881700252926667,0.883348746542195,0.884981116921987,0.886595197470356,0.88813823799739,0.889608442494149,0.891030437299259,0.892440599147196,0.893842061513971,0.895238110214738,0.896588355222581,0.897912069990327,0.899230999446524,0.90052297385683,0.901774694095608,0.902999989061687,0.904204181613766,0.905367810861766,0.906511000092663,0.907636469253128,0.908735086374366,0.909818518031064,0.910890271569427,0.911927193054755,0.912961376724668,0.913967283355707,0.914966608497445,0.915943344488506,0.916884957057827,0.91782078555797,0.918732449351649,0.919633189678252,0.920522689870334,0.921384272032851,0.922236820402765,0.923077820740102,0.923895046969835,0.924681070813686,0.925458574540112,0.926234385132241,0.92699917235722,0.927759743591339,0.928508529060912,0.929238770039718,0.929964133674955,0.930679970547153,0.931383375609827,0.932075121474836,0.932762041345189,0.93344142012326,0.934113164384526,0.934774434838235,0.935417105032946,0.936049878495131,0.936678283195803,0.937297908723836,0.937899312249712,0.938499575341094,0.939093370240305,0.939679649131318,0.940263098965238,0.94084200258528,0.941414749869126,0.941978127692538,0.94253042426746,0.943065998855509,0.943591723836581,0.944114463090655,0.944624366961432,0.945126662084876,0.945624803102485,0.946120652207025,0.946612996083647,0.94709677820857,0.947577678252084,0.948049246869301,0.948515960680629,0.948980190632988,0.949442182645952,0.94990046709197,0.950349970207861,0.950797142697461,0.951238047374015,0.951676045811954,0.952102420666667,0.952523277961338,0.952941452590341,0.953354454305428,0.9537628693612,0.95416112594009,0.954555117535695,0.954946873214549,0.955335994409155,0.955719392345438,0.956097878874463,0.956474321306727,0.956846384742649,0.957212706667153,0.957577508136012,0.957939542358972,0.95829637373997,0.958650121473688,0.959002415186545,0.959349033622442,0.959693822697811,0.960035675842975,0.960374549563643,0.960709499530985,0.961038610688804,0.96136648287675,0.961690654626685,0.962013444736796,0.962333600557018,0.962650216179337,0.962965568575468,0.963275435460085,0.963584813408,0.963890673935336,0.964193220258803,0.964494442727168,0.964794760122005,0.965090276838468,0.96538539620015,0.9656782361518,0.965969988090177,0.966256610673742,0.966539539904486,0.966821102550603,0.967098468546702,0.967372815565491,0.967644865973769,0.96791337161485,0.968180321520148,0.968444906818592,0.96870853969392,0.968970107411587,0.969228784620985,0.969486228910272,0.969742782901642,0.96999723711578,0.970249988419439,0.970501721179085,0.970750213781726,0.970997093055406,0.97124223432291,0.971484791694253,0.971725852336429,0.971966581437119,0.972205739218155,0.97244410817582,0.972680573710296,0.972912312623023,0.973143463709145,0.973372941958414,0.973600441659188,0.973827500053514,0.97405068384287,0.974271569746395,0.974491330387218,0.974708701753929,0.974924821932083,0.975139318721225,0.975352292862844,0.975564853154688,0.975774734476891,0.975984095689973,0.976190412830709,0.97639504041953,0.976597790344303,0.976799104417353,0.976999913401389,0.97719833861037,0.977395820966797,0.977591328503813,0.977784207933183,0.977976841578382,0.978168595901795,0.978359423756271,0.978548096204486,0.978735387681185,0.978922603599826,0.979108178349343,0.979293183157333,0.979477067184503,0.979659337629812,0.97984132986644,0.980021304989311,0.980198268718216,0.980374743212193,0.980550320089277,0.980724099710388,0.980897177522633,0.98106939845009,0.981240625719154,0.981410764637958,0.981579500925354,0.981746542591741,0.981913127209445,0.982079436214981,0.982243424921839,0.98240690783263,0.982569829944527,0.982731552733219,0.982891535040458,0.98305113846149,0.983209976721314,0.983367360402931,0.983523363651756,0.983677877260196,0.983831470583446,0.983984510985687,0.984136221509586,0.98428614145535,0.984435613689369,0.984583584943799,0.984731359070185,0.984877458523836,0.985021983970214,0.985165203937266,0.985307974743247,0.985450059784752,0.985591526831112,0.985731784962289,0.985869542825399,0.986006854419904,0.986143110425234,0.986278825686295,0.986413893003218,0.986548256069807,0.986681800249144,0.986814233835619,0.98694508165071,0.987074554036805,0.987203266924894,0.987330962120834,0.987458301328287,0.987585062877432,0.987711206025896,0.987837167120546,0.987961794783399,0.988084999128941,0.988206934220915,0.988328394940132,0.988448978698484,0.988568730242148,0.988687806810849,0.988806634929107,0.988923915921776,0.989040789742914,0.989156827660351,0.989272707975767,0.989387542543123,0.989501819669694,0.989613989535496,0.989725090932203,0.989835261488203,0.989945287206192,0.990055029257276,0.990164160971757,0.990272401654862,0.99037985344452,0.990486389818963,0.990592653709011,0.9906988490952,0.990803688513789,0.990906858413161,0.991009497544143,0.991111185522579,0.991211612583772,0.991311753197125,0.991411118473288,0.991510357285039,0.991608684299574,0.991706190943287,0.991803077357313,0.991898006722333,0.991992113185196,0.992085983822121,0.992179290831085,0.992271622348295,0.992363226347796,0.992454394827799,0.992544775694466,0.992634557880694,0.992723730254555,0.992812593477317,0.992900557285851,0.992987524539117,0.993073821840447,0.993159450652994,0.99324427282435,0.993328939407763,0.993412549192958,0.993495204793218,0.993577591289297,0.993659611168651,0.993740512862547,0.993821351264721,0.993900722749265,0.993979909852563,0.994058135404366,0.99413601332476,0.994213174187422,0.994289412948941,0.994365311106984,0.994439779153865,0.994513656633871,0.994586980380844,0.994659987201411,0.994732389215104,0.994804346996754,0.994875609985603,0.994945878300382,0.99501547220507,0.995084772505813,0.995152755514354,0.995220165543992,0.995287044972973,0.995352946160506,0.995417707645689,0.995481704711036,0.995545045569737,0.995608181764374,0.995669951852426,0.995730983445008,0.995791036131306,0.995850782628999,0.995909702322029,0.995968248143609,0.996026281474491,0.996083606849956,0.996140030827838,0.996196000323513,0.996251395481164,0.99630587557246,0.996360241043717,0.996414488649414,0.996467416984511,0.996520198851707,0.99657246934303,0.996624103817686,0.996675252592364,0.996725903969935,0.996775645885225,0.996825026449789,0.996874014605646,0.99692228057282,0.996969774520792,0.997016699400212,0.997063042244898,0.997109304857199,0.997154537302872,0.997199140428943,0.997242563736208,0.997284970003604,0.997327033469068,0.997368975549996,0.997410197521423,0.997451405488799,0.997492247192164,0.997532737909701,0.997572928946251,0.997611428292523,0.997649636831364,0.997687631809752,0.997725333395472,0.997762539562049,0.997799425962176,0.997835856333124,0.997871141617347,0.997906229917627,0.997941184660416,0.997975669870071,0.998010016559269,0.998044268278828,0.998077243361678,0.998109880131758,0.998141921137681,0.998173703479832,0.998205094538925,0.99823590229878,0.998265757457493,0.998295454192296,0.99832467460947,0.998353662071061,0.998382582445701,0.998410897795792,0.998438596550349,0.998466089887901,0.998493263005029,0.998520014575347,0.998545663688184,0.998570878026398,0.998595840781638,0.99862050631431,0.998644968792123,0.998669309205391,0.99869344753788,0.998717428941621,0.998740882109029,0.998764243757186,0.998787341472472,0.998809777925483,0.998831940906078,0.998853491213534,0.998874879143463,0.998896095039027,0.998916954322612,0.998937629538205,0.998957909782322,0.998977808987789,0.998997557583755,0.999017045660275,0.999036341358885,0.999055367352505,0.999074159661045,0.999092541104507,0.999110580211129,0.999128541710454,0.99914580927877,0.999162930426714,0.999179130945328,0.999195236418809,0.99921105594297,0.999226816403837,0.99924222120475,0.999257592707573,0.999272834606372,0.999287691195599,0.999302361665826,0.999316784869772,0.999330929389849,0.999344854944716,0.99935848923599,0.999372010567961,0.999385441694963,0.99939873169725,0.999411604669328,0.999424160883485,0.999436424772161,0.999448659527244,0.999460807499306,0.999472749239116,0.999484343248675,0.999495827543439,0.999507258975338,0.999518577292792,0.999529788423954,0.999540774098849,0.999551585409165,0.999562130551131,0.999572547855731,0.999582816291654,0.999592838966166,0.999602194031736,0.999611392925179,0.999620536323914,0.999629636204929,0.999638582719912,0.999647243619759,0.999655690008957,0.999663749728025,0.999671612768367,0.999679435463103,0.999687219274665,0.999694987860092,0.999702596973745,0.999710122599458,0.999717539152205,0.999724832754025,0.999732021381401,0.999739156417859,0.999746170960727,0.999752919807474,0.999759650368975,0.999765977443479,0.99977223239251,0.999778398655712,0.999784228496103,0.999789893769394,0.999795402742831,0.999800885555092,0.999806257925591,0.999811576335361,0.999816782843066,0.99982168017472,0.999826526414108,0.999831360033662,0.999836152184632,0.99984069880441,0.999845198408285,0.999849663519756,0.999854108335759,0.999858476676745,0.999862622771758,0.999866727494467,0.999870680247975,0.999874563691077,0.999878402200553,0.999882207896071,0.999885596248439,0.999888916900409,0.999892119798545,0.999895291768718,0.999898439408164,0.999901553373207,0.999904626738975,0.99990768139768,0.999910635918744,0.999913540149784,0.999916427877741,0.999919181128589,0.999921701209305,0.999924203074759,0.999926583812541,0.99992889011281,0.999931045278725,0.999933196097948,0.999935308846654,0.999937409682259,0.999939444103823,0.999941456542139,0.999943430001334,0.999945346966201,0.999947166810764,0.999948958680868,0.999950704388257,0.999952444933025,0.999954120017786,0.999955755630946,0.999957373261451,0.999958965792487,0.99996052221057,0.999962015004885,0.999963322412116,0.999964623654605,0.999965910266393,0.999967184365117,0.999968388463924,0.999969536015176,0.999970628161017,0.999971711246141,0.999972789125487,0.999973848781196,0.999974888559187,0.999975909982949,0.999976899251956,0.999977836832908,0.999978761436041,0.999979600072268,0.999980438150791,0.999981262733122,0.999982074177383,0.999982866010887,0.999983602923368,0.999984299025466,0.999984964533712,0.999985608167882,0.999986233630747,0.999986842060629,0.999987449520159,0.999988050685027,0.999988621648121,0.999989174621617,0.999989723283553,0.999990242253288,0.999990751436826,0.999991229293008,0.999991677441306,0.999992125130977,0.999992544943542,0.999992928082977,0.999993306974667,0.999993681258946,0.99999404758393,0.999994390207893,0.999994681484808,0.999994963615782,0.999995236648295,0.999995508239932,0.999995778084514,0.999996043237677,0.999996302371145,0.999996542102706,0.999996752269307,0.999996955638184,0.999997145091048,0.999997329681325,0.999997513757546,0.999997689732654,0.999997846396673,0.999998002375637,0.999998148183629,0.9999982837877,0.999998405659446,0.999998523260234,0.999998640472683,0.999998757283014,0.999998870363125,0.999998980597609,0.999999072424997,0.99999915573096,0.999999236213865,0.999999314316632,0.999999386593635,0.999999450610851,0.999999509321398,0.999999557520767,0.999999605319795,0.999999646996971,0.999999685234938,0.999999723424043,0.999999756249506,0.999999784035071,0.999999810938442,0.999999836644607,0.999999857460315,0.999999875130296,0.999999890371589,0.999999904681483,0.999999918963477,0.999999929810546,0.999999940099184,0.999999948941163,0.999999956415055,0.999999963237137,0.999999969232849,0.999999975170809,0.999999979864439,0.999999984120571,0.999999988339013,0.999999992493751,0.999999995718621,0.9999999974396,0.999999998246042,0.999999998871284,0.999999999468729,0.999999999686278,0.99999999989394,1,1,1,1,1,1,1],"type":"scatter","mode":"lines","line":{"fillcolor":"rgba(31,119,180,1)","color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<p>You can see in the chart above, we can get 90% of variance with only 80 of dimension from a universe of 719! This is a great information compression, almost 10:1!</p>
+</div>
+</div>
+<div id="ploting-cases-in-new-pca-space" class="section level2">
+<h2>Ploting cases in new PCA space</h2>
+<p>Lets see how the 200 first cases in the data set are distributed in the first two dimensions (15% the variation).</p>
+<pre class="r"><code># lets see the distribution
+pca.idx &lt;- sample(1:mnist$train$n, 200)
+cases &lt;- tibble(
+  label = as.factor(mnist$train$y[pca.idx]),
+  x = tr.x[pca.idx,1],
+  y = tr.x[pca.idx,2],
+  z = tr.x[pca.idx,3]
+)
+
+# all cases
+cases %&gt;%
+  plot_ly(x=~x, y=~y, color=~label) %&gt;%  
+  add_markers()</code></pre>
+<div id="e88503264d2" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="e88503264d2">{"x":{"visdat":{"e8853634e32":["function () ","plotlyVisDat"]},"cur_data":"e8853634e32","attrs":{"e8853634e32":{"x":{},"y":{},"color":{},"alpha":1,"sizes":[10,100],"type":"scatter","mode":"markers"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"title":"x"},"yaxis":{"domain":[0,1],"title":"y"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[-906.937561228605,-454.90199152107,-565.967739414572,-1256.23841692441,-1617.53688482392,-1715.9166971004,-175.893182444392,-397.707043995178,-270.999032541974,-463.006091975479,-503.234109194231,-1728.09692200602,-628.252217363273,-842.662528891006,-1524.79163745575,-770.959464424454,-356.227993363563,-1243.00760658615,-1418.81166520164,-1210.89528921572,-2124.87224979677,-552.436116311431,-1696.65511215841,-561.686495074573,-582.232926521385],"y":[227.76326666207,-268.509305634358,167.686640130741,171.899281527205,167.460444088768,436.33180873664,-186.122191575107,145.91178011728,429.66361714916,40.4127987997125,49.8909128247135,-183.709471599656,256.696222701935,-185.649796915247,239.101940239889,95.6706907706904,-520.858586938553,267.986760949447,465.159010598263,249.197032495781,454.025247576556,-161.955887597233,298.909563257658,118.631277495678,595.158691536494],"type":"scatter","mode":"markers","name":"0","marker":{"fillcolor":"rgba(102,194,165,0.5)","color":"rgba(102,194,165,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[868.538934483605,951.672075102337,805.015761242971,862.339103646062,259.696575175922,855.822391214321,926.870019226226,838.508535745723,976.091225821036,1035.36239908104,502.783947697109,925.867574372571,875.208199942549,979.356914725458,546.360853746247,825.03007190482,779.703574380775],"y":[729.227874746043,587.842672695822,734.182859613667,510.676495187491,759.681026344837,448.992633537568,676.182852267885,317.550847289071,456.221487878364,487.994839936815,917.101571394489,499.516217936494,472.658275671916,187.286234113653,365.341923585461,259.407955996807,874.354040384936],"type":"scatter","mode":"markers","name":"1","marker":{"fillcolor":"rgba(228,156,113,0.5)","color":"rgba(228,156,113,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[7.52996826107826,-215.571094505786,-163.864021997874,-89.0555540403452,-402.303160074212,196.099267673064,316.846849048942,-283.629192415148,74.6014557169367,-701.799071309504,-31.5484177543198,-412.345281517935,-811.258682873965,288.115326398944,523.038986102239,-186.562133122556,25.9552571593027,-189.203923515728,-413.686508607414,-109.904875665232,-274.635517031522],"y":[409.4954258138,139.390133372374,-53.7427406974636,156.992166021639,1158.61690497591,1053.75897763937,20.2933951237695,-2.097221612182,358.491594348006,-160.685708858443,-199.817584856177,232.898960897336,353.128400746611,-316.269138957644,685.161619283405,454.990156953389,682.206856879889,900.695449757528,439.94190093674,351.165369467651,553.518246178341],"type":"scatter","mode":"markers","name":"2","marker":{"fillcolor":"rgba(201,153,157,0.5)","color":"rgba(201,153,157,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[114.403877483372,-41.1156058724647,317.969947553341,494.991914576403,149.182156200788,-248.292977808782,238.310824875627,-268.245495831602,12.6179428890596,-232.830739725875,-814.375631811209,-26.1138991131631,456.116302737307,-168.704649189969,-88.0951741144875,207.627409956098,-161.193186658968,-222.493559629967,100.995368326713],"y":[129.467907009603,602.154340968032,228.065458844569,108.252255123572,512.287535698822,270.117673529851,461.895253446584,-58.2649998466269,685.630075766351,398.261526178905,452.00036978358,827.065632939694,608.754682056026,1009.54944635836,399.021804704409,387.638198727713,621.299900067024,621.754054087598,794.2558411111],"type":"scatter","mode":"markers","name":"3","marker":{"fillcolor":"rgba(175,154,200,0.5)","color":"rgba(175,154,200,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[-85.8967701181968,-314.140656406712,477.777404018062,349.712631011554,55.4724821192575,-9.6137342059098,452.432666524292,-246.008826080339,-80.5749723267931,212.494686901053,265.506178031009,322.038333162068,578.115646639926,145.665559605557,51.6435393723101],"y":[-943.335579843486,-1046.15508199323,-289.587027872135,241.517683088007,-548.968153737834,-497.185672973742,-520.86004794725,-764.939152254311,-694.912138579757,-342.764439215085,-299.483716229287,-734.505867289574,-264.769136078595,-715.624273053408,-448.016560340752],"type":"scatter","mode":"markers","name":"4","marker":{"fillcolor":"rgba(226,148,184,0.5)","color":"rgba(226,148,184,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[-284.168640112935,232.603062041377,-611.837393212608,-164.229362671219,-789.464268216499,-777.429078874389,-265.231651405167,522.567508247753,-441.063474859099,-275.786540354062,35.0576214767655,54.0779569765772,-421.520361456928,13.1712200998939,-55.4463342872367,200.298104186778,-610.693551609428,350.651999517224,-140.033956796536,-1318.39937488849,-165.572795242251,-194.212382142758,-330.291584974143,-671.184042137025,-398.312234745547],"y":[44.5075639255371,539.493497223342,375.50006386721,269.379391715427,848.505069864714,471.088767838317,-34.6332495353778,150.915215833181,456.392313003872,398.777474607983,136.353028567328,59.4345433586382,477.140267341964,-42.987196944163,116.025659623997,317.045296161369,391.441975075483,-37.3733183650123,120.242282246534,635.861485560244,431.48120308752,689.649805328415,252.655180065252,248.594505509718,9.05649380544984],"type":"scatter","mode":"markers","name":"5","marker":{"fillcolor":"rgba(176,209,99,0.5)","color":"rgba(176,209,99,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[368.404835383352,-828.214933679042,142.742048423802,14.7980437240473,-275.809675334767,-120.056361426305,-611.128502118583,-341.798534410768,8.84716362457176,37.5763338130208,-259.51651202051,69.1543960274383,-154.037807433624,-345.509705557953,-394.89359289565,209.120533338547,-645.382173026666,326.272103667058,-806.449213193205,-105.013114677229,-234.425913642708,-343.925231716767,-475.124848153048,-663.588184964348,503.067311196187],"y":[66.2027587497305,64.2284633009886,58.7830608950102,287.307772063348,247.499812257266,-479.742098805405,0.187329827467392,242.603499559278,527.048428155582,-73.927501679721,-79.961899893973,11.015056373659,-307.069178725719,-624.131296407109,78.5036449187962,-125.875527133254,107.868194826316,354.28538772494,-523.654692891175,142.343716835234,-106.15281071677,-28.2124816287934,73.7478408259336,-231.442615924489,342.967067368246],"type":"scatter","mode":"markers","name":"6","marker":{"fillcolor":"rgba(227,217,62,0.5)","color":"rgba(227,217,62,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[-249.777360881103,133.877171453851,173.409043580415,-350.072600757289,418.881337129564,307.47564085892,249.309648421338,-128.365089594758,249.507257342367,-353.410159467798,862.36623707998,691.456974026593,773.294473659637,482.371167950678,183.998192701449,258.251705793715,42.5581774263697,61.4652977741248,-584.860839021762],"y":[-1118.65166863103,-667.265751298818,31.2182320816165,-765.512957042328,-557.804626138393,-911.417479063957,-745.370599748544,-755.730077133609,-780.008537200188,-358.781082038674,-9.68496792833023,-278.52469544166,9.48638132835423,-356.151769975406,-205.338400065786,-752.682892223867,-599.474315203035,-769.728726472318,-925.04774589996],"type":"scatter","mode":"markers","name":"7","marker":{"fillcolor":"rgba(245,207,100,0.5)","color":"rgba(245,207,100,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[111.616676994862,300.962342960126,103.290707705348,-7.60612675860554,-4.50556281367757,-17.9523741651687,-383.7749489644,371.271385589718,295.430377933625,-654.389301720614,53.5619157043921,-36.7491314011338,478.334567568655,-5.40780283827193,-642.3176485099,197.537572850104,518.082884743002,-209.587183677031,507.593968427144,384.220312708216,303.566187033518,-487.916379253332],"y":[440.188079023863,363.491879939006,47.9847973275364,147.35955045273,550.296188796413,243.380553199652,337.776828747511,367.920478741705,602.948423471926,215.629413752641,-161.970337156062,-214.773968023327,-56.9450473586311,316.044573018823,-80.677986606175,-142.461933465286,122.883970776384,-408.572341706357,672.594618504994,360.607277635333,479.933943540578,-30.9973603023384],"type":"scatter","mode":"markers","name":"8","marker":{"fillcolor":"rgba(219,192,155,0.5)","color":"rgba(219,192,155,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[402.445766941775,797.720421094092,27.1900099435902,182.067871397042,212.417917278258,212.132041131094,-152.805553241884,702.290450727822,864.922419330984,900.716222859126,129.52055260651,-182.40472376122],"y":[-416.795491208841,-132.795765625785,-833.076808301754,-424.335413790506,-382.621481904911,-570.916576458198,-572.052127343812,-203.28841292284,-31.7265395146395,94.7027085325596,-856.623254922867,-733.114281161684],"type":"scatter","mode":"markers","name":"9","marker":{"fillcolor":"rgba(179,179,179,0.5)","color":"rgba(179,179,179,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<p>A little mess, but if we plot only the most distances centroids (<code>0</code>, <code>1</code> e <code>9</code>) we already see a separable structures if only two dimensions.</p>
+<pre class="r"><code># cases more &quot;distant&quot;
+cases %&gt;%
+  filter(label %in% c(&quot;0&quot;, &quot;1&quot;, &quot;9&quot;)) %&gt;%
+  plot_ly(x=~x, y=~y, color=~label) %&gt;%  
+  add_markers()</code></pre>
+<div id="e882147781a" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="e882147781a">{"x":{"visdat":{"e8829f05ffe":["function () ","plotlyVisDat"]},"cur_data":"e8829f05ffe","attrs":{"e8829f05ffe":{"x":{},"y":{},"color":{},"alpha":1,"sizes":[10,100],"type":"scatter","mode":"markers"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"title":"x"},"yaxis":{"domain":[0,1],"title":"y"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[-906.937561228605,-454.90199152107,-565.967739414572,-1256.23841692441,-1617.53688482392,-1715.9166971004,-175.893182444392,-397.707043995178,-270.999032541974,-463.006091975479,-503.234109194231,-1728.09692200602,-628.252217363273,-842.662528891006,-1524.79163745575,-770.959464424454,-356.227993363563,-1243.00760658615,-1418.81166520164,-1210.89528921572,-2124.87224979677,-552.436116311431,-1696.65511215841,-561.686495074573,-582.232926521385],"y":[227.76326666207,-268.509305634358,167.686640130741,171.899281527205,167.460444088768,436.33180873664,-186.122191575107,145.91178011728,429.66361714916,40.4127987997125,49.8909128247135,-183.709471599656,256.696222701935,-185.649796915247,239.101940239889,95.6706907706904,-520.858586938553,267.986760949447,465.159010598263,249.197032495781,454.025247576556,-161.955887597233,298.909563257658,118.631277495678,595.158691536494],"type":"scatter","mode":"markers","name":"0","marker":{"fillcolor":"rgba(102,194,165,0.5)","color":"rgba(102,194,165,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[868.538934483605,951.672075102337,805.015761242971,862.339103646062,259.696575175922,855.822391214321,926.870019226226,838.508535745723,976.091225821036,1035.36239908104,502.783947697109,925.867574372571,875.208199942549,979.356914725458,546.360853746247,825.03007190482,779.703574380775],"y":[729.227874746043,587.842672695822,734.182859613667,510.676495187491,759.681026344837,448.992633537568,676.182852267885,317.550847289071,456.221487878364,487.994839936815,917.101571394489,499.516217936494,472.658275671916,187.286234113653,365.341923585461,259.407955996807,874.354040384936],"type":"scatter","mode":"markers","name":"1","marker":{"fillcolor":"rgba(228,156,113,0.5)","color":"rgba(228,156,113,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null},{"x":[402.445766941775,797.720421094092,27.1900099435902,182.067871397042,212.417917278258,212.132041131094,-152.805553241884,702.290450727822,864.922419330984,900.716222859126,129.52055260651,-182.40472376122],"y":[-416.795491208841,-132.795765625785,-833.076808301754,-424.335413790506,-382.621481904911,-570.916576458198,-572.052127343812,-203.28841292284,-31.7265395146395,94.7027085325596,-856.623254922867,-733.114281161684],"type":"scatter","mode":"markers","name":"9","marker":{"fillcolor":"rgba(179,179,179,0.5)","color":"rgba(179,179,179,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<p>This sound promising. An kNN approach with higher dimension may do a decent job classifying the digits. Lets put another one, increasing the <em>explained variation</em> to 23%.</p>
+<pre class="r"><code># 3D
+plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %&gt;%  
+  add_markers()</code></pre>
+<div id="e8874001aa5" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="e8874001aa5">{"x":{"visdat":{"e884cd4c5":["function () ","plotlyVisDat"]},"cur_data":"e884cd4c5","attrs":{"e884cd4c5":{"x":{},"y":{},"z":{},"color":{},"alpha":1,"sizes":[10,100],"type":"scatter3d","mode":"markers"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"x"},"yaxis":{"title":"y"},"zaxis":{"title":"z"}},"xaxis":{"domain":[0,1]},"yaxis":{"domain":[0,1]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[-906.937561228605,-454.90199152107,-565.967739414572,-1256.23841692441,-1617.53688482392,-1715.9166971004,-175.893182444392,-397.707043995178,-270.999032541974,-463.006091975479,-503.234109194231,-1728.09692200602,-628.252217363273,-842.662528891006,-1524.79163745575,-770.959464424454,-356.227993363563,-1243.00760658615,-1418.81166520164,-1210.89528921572,-2124.87224979677,-552.436116311431,-1696.65511215841,-561.686495074573,-582.232926521385],"y":[227.76326666207,-268.509305634358,167.686640130741,171.899281527205,167.460444088768,436.33180873664,-186.122191575107,145.91178011728,429.66361714916,40.4127987997125,49.8909128247135,-183.709471599656,256.696222701935,-185.649796915247,239.101940239889,95.6706907706904,-520.858586938553,267.986760949447,465.159010598263,249.197032495781,454.025247576556,-161.955887597233,298.909563257658,118.631277495678,595.158691536494],"z":[-300.991914460469,-167.967300459172,804.236618446716,-1082.0455778403,419.587809702406,-67.8117149702065,342.035234794925,-101.326777874621,431.520248426181,-117.4571250509,-498.754609452794,428.107044504356,246.18391299461,403.703987305063,-471.844015419206,304.070074589202,-812.006798275947,377.527237091998,-421.154513162383,390.659962785695,-234.570580829017,-60.4179438292807,599.784548676952,335.503708707536,625.487408545559],"type":"scatter3d","mode":"markers","name":"0","marker":{"fillcolor":"rgba(102,194,165,0.5)","color":"rgba(102,194,165,1)","line":{"color":"transparent"}},"frame":null},{"x":[868.538934483605,951.672075102337,805.015761242971,862.339103646062,259.696575175922,855.822391214321,926.870019226226,838.508535745723,976.091225821036,1035.36239908104,502.783947697109,925.867574372571,875.208199942549,979.356914725458,546.360853746247,825.03007190482,779.703574380775],"y":[729.227874746043,587.842672695822,734.182859613667,510.676495187491,759.681026344837,448.992633537568,676.182852267885,317.550847289071,456.221487878364,487.994839936815,917.101571394489,499.516217936494,472.658275671916,187.286234113653,365.341923585461,259.407955996807,874.354040384936],"z":[-200.810085390694,-216.878998313344,-309.845599841478,-15.4820629015983,136.853933352578,-166.872184177906,-193.300290038801,-0.467827453051689,-141.542109434555,-86.0931809474288,-675.524265487784,-50.8048856644874,-176.278388918369,53.7294724403526,72.5157694235715,19.3990477273047,-408.39173979042],"type":"scatter3d","mode":"markers","name":"1","marker":{"fillcolor":"rgba(228,156,113,0.5)","color":"rgba(228,156,113,1)","line":{"color":"transparent"}},"frame":null},{"x":[7.52996826107826,-215.571094505786,-163.864021997874,-89.0555540403452,-402.303160074212,196.099267673064,316.846849048942,-283.629192415148,74.6014557169367,-701.799071309504,-31.5484177543198,-412.345281517935,-811.258682873965,288.115326398944,523.038986102239,-186.562133122556,25.9552571593027,-189.203923515728,-413.686508607414,-109.904875665232,-274.635517031522],"y":[409.4954258138,139.390133372374,-53.7427406974636,156.992166021639,1158.61690497591,1053.75897763937,20.2933951237695,-2.097221612182,358.491594348006,-160.685708858443,-199.817584856177,232.898960897336,353.128400746611,-316.269138957644,685.161619283405,454.990156953389,682.206856879889,900.695449757528,439.94190093674,351.165369467651,553.518246178341],"z":[-40.557266359149,-396.318742209351,-338.887432151761,-383.599312482428,-252.348624551729,332.802144395905,166.179681510509,-453.630819910404,-362.509984277568,-593.325240436359,-545.589930087241,-322.116746995953,-179.730963224942,-70.7096501060347,-108.283614491752,-129.908376500515,-169.382371184737,-565.488850180909,-105.723794806813,-418.578658286528,-467.592447123303],"type":"scatter3d","mode":"markers","name":"2","marker":{"fillcolor":"rgba(201,153,157,0.5)","color":"rgba(201,153,157,1)","line":{"color":"transparent"}},"frame":null},{"x":[114.403877483372,-41.1156058724647,317.969947553341,494.991914576403,149.182156200788,-248.292977808782,238.310824875627,-268.245495831602,12.6179428890596,-232.830739725875,-814.375631811209,-26.1138991131631,456.116302737307,-168.704649189969,-88.0951741144875,207.627409956098,-161.193186658968,-222.493559629967,100.995368326713],"y":[129.467907009603,602.154340968032,228.065458844569,108.252255123572,512.287535698822,270.117673529851,461.895253446584,-58.2649998466269,685.630075766351,398.261526178905,452.00036978358,827.065632939694,608.754682056026,1009.54944635836,399.021804704409,387.638198727713,621.299900067024,621.754054087598,794.2558411111],"z":[733.549460580701,1128.71297186268,1047.85262809508,752.968452558423,743.143884619798,1110.35679532517,1058.91093154937,1064.86665558438,439.085895397071,600.521899081273,534.908565809468,-431.173321119332,312.78986010411,484.459730027915,59.2928277808558,24.3971356770077,533.540786871174,394.15435580393,759.761977916189],"type":"scatter3d","mode":"markers","name":"3","marker":{"fillcolor":"rgba(175,154,200,0.5)","color":"rgba(175,154,200,1)","line":{"color":"transparent"}},"frame":null},{"x":[-85.8967701181968,-314.140656406712,477.777404018062,349.712631011554,55.4724821192575,-9.6137342059098,452.432666524292,-246.008826080339,-80.5749723267931,212.494686901053,265.506178031009,322.038333162068,578.115646639926,145.665559605557,51.6435393723101],"y":[-943.335579843486,-1046.15508199323,-289.587027872135,241.517683088007,-548.968153737834,-497.185672973742,-520.86004794725,-764.939152254311,-694.912138579757,-342.764439215085,-299.483716229287,-734.505867289574,-264.769136078595,-715.624273053408,-448.016560340752],"z":[-739.185802100826,386.046269612684,-225.45455289455,-215.967916030639,242.906754748539,145.698440855794,265.096497812393,526.979181958369,-236.312540824025,71.3515979687547,-154.718120300294,-194.92722475433,414.217484654944,527.181691690108,548.852060012307],"type":"scatter3d","mode":"markers","name":"4","marker":{"fillcolor":"rgba(226,148,184,0.5)","color":"rgba(226,148,184,1)","line":{"color":"transparent"}},"frame":null},{"x":[-284.168640112935,232.603062041377,-611.837393212608,-164.229362671219,-789.464268216499,-777.429078874389,-265.231651405167,522.567508247753,-441.063474859099,-275.786540354062,35.0576214767655,54.0779569765772,-421.520361456928,13.1712200998939,-55.4463342872367,200.298104186778,-610.693551609428,350.651999517224,-140.033956796536,-1318.39937488849,-165.572795242251,-194.212382142758,-330.291584974143,-671.184042137025,-398.312234745547],"y":[44.5075639255371,539.493497223342,375.50006386721,269.379391715427,848.505069864714,471.088767838317,-34.6332495353778,150.915215833181,456.392313003872,398.777474607983,136.353028567328,59.4345433586382,477.140267341964,-42.987196944163,116.025659623997,317.045296161369,391.441975075483,-37.3733183650123,120.242282246534,635.861485560244,431.48120308752,689.649805328415,252.655180065252,248.594505509718,9.05649380544984],"z":[460.672088006207,-427.446105426559,-489.892177964477,-499.33695745806,597.855859513751,701.204418742435,-722.777350368125,-481.642955302528,457.718641752595,1091.46384966253,895.123375274601,620.1230517635,638.32553729355,422.457504568441,366.435568488085,354.040242281754,721.572021823119,-513.359850160144,777.805457033859,593.263567842225,876.519171485754,-322.515321162337,993.227639085144,204.801125547133,32.9696127839791],"type":"scatter3d","mode":"markers","name":"5","marker":{"fillcolor":"rgba(176,209,99,0.5)","color":"rgba(176,209,99,1)","line":{"color":"transparent"}},"frame":null},{"x":[368.404835383352,-828.214933679042,142.742048423802,14.7980437240473,-275.809675334767,-120.056361426305,-611.128502118583,-341.798534410768,8.84716362457176,37.5763338130208,-259.51651202051,69.1543960274383,-154.037807433624,-345.509705557953,-394.89359289565,209.120533338547,-645.382173026666,326.272103667058,-806.449213193205,-105.013114677229,-234.425913642708,-343.925231716767,-475.124848153048,-663.588184964348,503.067311196187],"y":[66.2027587497305,64.2284633009886,58.7830608950102,287.307772063348,247.499812257266,-479.742098805405,0.187329827467392,242.603499559278,527.048428155582,-73.927501679721,-79.961899893973,11.015056373659,-307.069178725719,-624.131296407109,78.5036449187962,-125.875527133254,107.868194826316,354.28538772494,-523.654692891175,142.343716835234,-106.15281071677,-28.2124816287934,73.7478408259336,-231.442615924489,342.967067368246],"z":[-796.752072657904,-174.787848170205,-517.100193282578,-378.054779724213,-788.151465234195,25.5237021540604,323.200920206787,-665.516882034171,-311.190198180101,-190.21226940309,-569.0777843554,-223.864275079825,-356.970385211883,-150.073799431139,31.2986710262485,-116.980709528302,-941.521233715958,-149.077997404424,-341.601766457334,-108.932209426327,-191.752009817906,-756.818791227109,-640.37850521319,-3.91468704228914,-120.261195569174],"type":"scatter3d","mode":"markers","name":"6","marker":{"fillcolor":"rgba(227,217,62,0.5)","color":"rgba(227,217,62,1)","line":{"color":"transparent"}},"frame":null},{"x":[-249.777360881103,133.877171453851,173.409043580415,-350.072600757289,418.881337129564,307.47564085892,249.309648421338,-128.365089594758,249.507257342367,-353.410159467798,862.36623707998,691.456974026593,773.294473659637,482.371167950678,183.998192701449,258.251705793715,42.5581774263697,61.4652977741248,-584.860839021762],"y":[-1118.65166863103,-667.265751298818,31.2182320816165,-765.512957042328,-557.804626138393,-911.417479063957,-745.370599748544,-755.730077133609,-780.008537200188,-358.781082038674,-9.68496792833023,-278.52469544166,9.48638132835423,-356.151769975406,-205.338400065786,-752.682892223867,-599.474315203035,-769.728726472318,-925.04774589996],"z":[-348.732187434796,-373.640525241455,-371.353858215399,19.6155014553468,-353.782358340815,359.339056367165,408.629390757282,2.93762878194815,617.309929149082,-630.945046806673,120.554011815479,-51.1412489227624,273.933652308433,-199.545234201931,-534.726998715339,689.334510987307,151.573058228694,-380.255927424308,726.333977314563],"type":"scatter3d","mode":"markers","name":"7","marker":{"fillcolor":"rgba(245,207,100,0.5)","color":"rgba(245,207,100,1)","line":{"color":"transparent"}},"frame":null},{"x":[111.616676994862,300.962342960126,103.290707705348,-7.60612675860554,-4.50556281367757,-17.9523741651687,-383.7749489644,371.271385589718,295.430377933625,-654.389301720614,53.5619157043921,-36.7491314011338,478.334567568655,-5.40780283827193,-642.3176485099,197.537572850104,518.082884743002,-209.587183677031,507.593968427144,384.220312708216,303.566187033518,-487.916379253332],"y":[440.188079023863,363.491879939006,47.9847973275364,147.35955045273,550.296188796413,243.380553199652,337.776828747511,367.920478741705,602.948423471926,215.629413752641,-161.970337156062,-214.773968023327,-56.9450473586311,316.044573018823,-80.677986606175,-142.461933465286,122.883970776384,-408.572341706357,672.594618504994,360.607277635333,479.933943540578,-30.9973603023384],"z":[-548.835502599606,-1.82893554684472,-508.148997777449,-310.881036698382,513.874026458176,-119.631058289793,127.958907841421,451.225446308648,-662.238539740195,99.2367549388586,328.658792735754,72.8982902954507,-287.404916836285,272.004241712647,722.559717152032,426.112152930788,567.329351106311,338.859585294775,-210.080793434177,-589.190809902008,-496.154680576733,-162.744198127499],"type":"scatter3d","mode":"markers","name":"8","marker":{"fillcolor":"rgba(219,192,155,0.5)","color":"rgba(219,192,155,1)","line":{"color":"transparent"}},"frame":null},{"x":[402.445766941775,797.720421094092,27.1900099435902,182.067871397042,212.417917278258,212.132041131094,-152.805553241884,702.290450727822,864.922419330984,900.716222859126,129.52055260651,-182.40472376122],"y":[-416.795491208841,-132.795765625785,-833.076808301754,-424.335413790506,-382.621481904911,-570.916576458198,-572.052127343812,-203.28841292284,-31.7265395146395,94.7027085325596,-856.623254922867,-733.114281161684],"z":[-580.714152838608,-65.5346486036418,551.315141417496,592.519167398838,988.895809156268,619.194879710568,423.538297507511,-120.107701826905,188.19645493912,-145.854554152167,-405.513265381611,-17.7889151165844],"type":"scatter3d","mode":"markers","name":"9","marker":{"fillcolor":"rgba(179,179,179,0.5)","color":"rgba(179,179,179,1)","line":{"color":"transparent"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<p>You can play around turning off the cases of some digits and rotating the chart. Can you see how the <code>0</code>, <code>1</code> and <code>9</code> clusters are distributed in the space? And the <code>4</code> and <code>9</code> cases?</p>
+</div>
+<div id="k-nearest-neighbors" class="section level2">
+<h2>k-Nearest Neighbors</h2>
+<p>We saw that the PCA did a great job spreading the digits in the space, allow some separation, now let’s apply a kNN fit on this. We need to decide the number of dimension to be used (<code>n</code>) and the number of k-Nearest (<code>k</code>), to do this let’s make a cross validation search<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<pre class="r"><code># knn cross validation
+part.idx &lt;- sample(1:mnist$train$n, round(mnist$train$n/2))
+
+# cross validation parameters
+k &lt;- seq(2,14, 2)
+n &lt;- seq(5,80,10)
+cross.params &lt;- crossing(k=k, n=n)</code></pre>
+<pre class="r"><code># fit a kNN Model for each cross validation pair, and calc the accuracy
+result &lt;- apply(X = cross.params,1, function(p, tr.idx = part.idx, x=tr.x, y=as.factor(mnist$train$y)){
+  k_par &lt;- as.integer(p[1])
+  n_par &lt;- as.integer(p[2])
+  
+  print(paste0(&quot;fitting: k=&quot;,k_par, &quot; n=&quot;,n_par))
+
+  y_hat &lt;- knn(
+    train = x[tr.idx,1:n_par], 
+    test=x[-tr.idx,1:n_par], 
+    cl=y[tr.idx],
+    k=k_par
+  )
+  
+  accuracy &lt;- mean(y[-tr.idx]==y_hat)
+  print(paste0(&quot;Accuracy: &quot;, round(accuracy,4)))
+  return(accuracy)
+  
+})
+
+# build the CV results
+cv.results &lt;- bind_cols(cross.params, accuracy=result)
+saveRDS(cv.results, &quot;cv_result.rds&quot;) # to save time
+str(cv.results)</code></pre>
+<p>The result is a data frame contain a pair of <code>k</code> and <code>n</code>and the <code>accuracy</code> that the kNN classifier get from this configuration</p>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    56 obs. of  3 variables:
+##  $ k       : num  2 2 2 2 2 2 2 2 4 4 ...
+##  $ n       : num  5 15 25 35 45 55 65 75 5 15 ...
+##  $ accuracy: num  0.681 0.943 0.962 0.966 0.966 ...</code></pre>
+<p>Let’s see the <em>accuracy surface</em> defined by <code>k</code> and <code>n</code> parameters.</p>
+<pre class="r"><code># ploting the error &quot;surface&quot;
+plot_ly(cv.results, x=~n, y=~k, z=~accuracy) %&gt;%
+  add_markers(marker=list(size=2))</code></pre>
+<div id="e886651418e" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="e886651418e">{"x":{"visdat":{"e88abb1391":["function () ","plotlyVisDat"]},"cur_data":"e88abb1391","attrs":{"e88abb1391":{"x":{},"y":{},"z":{},"alpha":1,"sizes":[10,100],"type":"scatter3d","mode":"markers","marker":{"size":2}}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"n"},"yaxis":{"title":"k"},"zaxis":{"title":"accuracy"}},"xaxis":{"domain":[0,1]},"yaxis":{"domain":[0,1]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[5,15,25,35,45,55,65,75,5,15,25,35,45,55,65,75,5,15,25,35,45,55,65,75,5,15,25,35,45,55,65,75,5,15,25,35,45,55,65,75,5,15,25,35,45,55,65,75,5,15,25,35,45,55,65,75],"y":[2,2,2,2,2,2,2,2,4,4,4,4,4,4,4,4,6,6,6,6,6,6,6,6,8,8,8,8,8,8,8,8,10,10,10,10,10,10,10,10,12,12,12,12,12,12,12,12,14,14,14,14,14,14,14,14],"z":[0.680766666666667,0.9431,0.962233333333333,0.9664,0.965866666666667,0.9668,0.964866666666667,0.965033333333333,0.720633333333333,0.953833333333333,0.967933333333333,0.9715,0.970633333333333,0.970733333333333,0.9701,0.969233333333333,0.732666666666667,0.953933333333333,0.967633333333333,0.9706,0.970866666666667,0.970233333333333,0.969366666666667,0.969266666666667,0.7407,0.9531,0.967033333333333,0.969366666666667,0.969633333333333,0.9689,0.968066666666667,0.967733333333333,0.744066666666667,0.9528,0.9656,0.968533333333333,0.967966666666667,0.967433333333333,0.967066666666667,0.9667,0.747666666666667,0.9515,0.9639,0.967133333333333,0.966633333333333,0.9658,0.9653,0.964433333333333,0.750766666666667,0.950333333333333,0.962933333333333,0.965866666666667,0.964766666666667,0.964466666666667,0.964,0.9628],"type":"scatter3d","mode":"markers","marker":{"fillcolor":"rgba(31,119,180,1)","color":"rgba(31,119,180,1)","size":2,"line":{"color":"transparent"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<pre class="r"><code># which pair k and n are better ?
+best &lt;- cv.results[which(cv.results$accuracy==max(cv.results$accuracy)),]</code></pre>
+<p>The best result was k=4 and n=35, with an accuracy of 97%. Not so bad, comparing the 99% accuracy of LeNet ANN from the <a href="/2018/01/implementing-lenet-with-mxnet-in-r/">last post</a>.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>As we see, the data analysis on the MNIST data set allow us to realize that the digit recognition problem can be solved, with great accuracy, by a simple kNN model. Of course this is not a complete image recognition problem, an ANN would learn to separate the classes without our intervention.</p>
+<p>But the analysis show that, in this case, we don’t need jump directly to an expensive ANN, and better than that, it indicates that not all 784 pixels are necessary do identify a digit and we can, for sure, use the kNN´s pre-classification as another input for the ANN, or fit independent ANNs for difficult cases like <code>4</code>x<code>9</code>, showing another paths for model improvement.</p>
+<div id="references" class="section level3">
+<h3>References</h3>
+<p>This post was inspired by:</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="http://varianceexplained.org/r/digit-eda/" class="uri">http://varianceexplained.org/r/digit-eda/</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p><a href="https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/" class="uri">https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/</a><a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/en-us/">en-US</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/evalutation/">evalutation</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/knn/">knn</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/machine-learning/">machine learning</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/mnist/">mnist</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/pca/">pca</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/data-science-das-cervejas-1-2/" data-tooltip="Data Science das Cervejas (1/2)">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/implementing-lenet-with-mxnet-in-r/" data-tooltip="Implementing LeNet with MXNET in R">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/data-science-das-cervejas-1-2/" data-tooltip="Data Science das Cervejas (1/2)">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/implementing-lenet-with-mxnet-in-r/" data-tooltip="Implementing LeNet with MXNET in R">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fknn-analysis-on-mnist-with-97-accuracy%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fknn-analysis-on-mnist-with-97-accuracy%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fknn-analysis-on-mnist-with-97-accuracy%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/07/forecasting-my-weight-using-facebook-s-prophet/">
+                <h3 class="media-heading">Using Facebook&#39;s Prophet to forecast my weight loss</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
+Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/02/data-science-das-cervejas-2-2/">
+                <h3 class="media-heading">Data Science das Cervejas (2/2)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/02/data-science-das-cervejas-1-2/">
+                <h3 class="media-heading">Data Science das Cervejas (1/2)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+                <h3 class="media-heading">kNN Analysis on MNIST with 97% accuracy</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/implementing-lenet-with-mxnet-in-r/">
+                <h3 class="media-heading">Implementing LeNet with MXNET in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>In this <a href="http://rmarkdown.rstudio.com/r_notebooks.html">R Notebook</a> I implement an <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">Convolutional Neural Network (CNN)</a> using the <a href="http://yann.lecun.com/exdb/mnist/">MNIST Database</a> for handwritten digits recognition using <a href="http://mxnet.io/">mxnet</a> framework for <a href="https://www.r-project.org/">R</a>.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/social-network-analysis-on-cran-authors/">
+                <h3 class="media-heading">Social Network Analysis on CRAN Authors</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
+IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/putting-your-workout-to-move/">
+                <h3 class="media-heading">Putting your workout to move</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
+Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
+library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &lt;- &quot;11654237848.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/high-collinearity-effect-in-regressions/">
+                <h3 class="media-heading">High Collinearity Effect in Regressions</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
+This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/ploting-your-mtb-track-with-r/">
+                <h3 class="media-heading">Ploting your MTB track with R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
+Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/curse-of-dimensionalityrmd/">
+                <h3 class="media-heading">Curse of Dimensionality</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         12 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2018\/01\/knn-analysis-on-mnist-with-97-accuracy\/';
+          
+            this.page.identifier = '\/2018\/01\/knn-analysis-on-mnist-with-97-accuracy\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+    <script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </body>
+</html>
+

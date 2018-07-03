@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rstat on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/rstat/</link>
+    <link>/tags/rstat/</link>
     <description>Recent content in Rstat on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 21 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/rstat/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/rstat/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Social Network Analysis on CRAN Authors</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</link>
+      <link>/2018/01/social-network-analysis-on-cran-authors/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</guid>
+      <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
       <description>Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
 IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</description>
     </item>
     
     <item>
       <title>Putting your workout to move</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
+      <link>/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
+      <guid>/2018/01/putting-your-workout-to-move/</guid>
       <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
 Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
 library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
@@ -34,39 +34,39 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
     
     <item>
       <title>High Collinearity Effect in Regressions</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</link>
+      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
       <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
 This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</description>
     </item>
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
 Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</description>
     </item>
     
     <item>
       <title>Curse of Dimensionality</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</link>
+      <link>/2018/01/curse-of-dimensionalityrmd/</link>
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</guid>
+      <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
       <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
     </item>
     
     <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
 Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
     </item>
