@@ -50,7 +50,7 @@
     <item>
       <title>Evalutation</title>
       <link>/tags/evalutation/</link>
-      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/evalutation/</guid>
       <description></description>
@@ -138,6 +138,15 @@
     </item>
     
     <item>
+      <title>Long Short</title>
+      <link>/tags/long-short/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/long-short/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Machine Learning</title>
       <link>/tags/machine-learning/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
@@ -158,7 +167,7 @@
     <item>
       <title>Model</title>
       <link>/tags/model/</link>
-      <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/model/</guid>
       <description></description>
@@ -183,6 +192,15 @@
     </item>
     
     <item>
+      <title>Pair Trading</title>
+      <link>/tags/pair-trading/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pair-trading/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Pca</title>
       <link>/tags/pca/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
@@ -203,7 +221,7 @@
     <item>
       <title>Pt Br</title>
       <link>/tags/pt-br/</link>
-      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/pt-br/</guid>
       <description></description>
@@ -221,7 +239,7 @@
     <item>
       <title>Rstats</title>
       <link>/tags/rstats/</link>
-      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/rstats/</guid>
       <description></description>
@@ -251,6 +269,15 @@
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/sna/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stock Market</title>
+      <link>/tags/stock-market/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/stock-market/</guid>
       <description></description>
     </item>
     
