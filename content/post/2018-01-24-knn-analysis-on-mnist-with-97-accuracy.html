@@ -123,7 +123,7 @@ par(mfrow=c(2,5), mar=c(0.1,0.1,0.1,0.1))
 res &lt;- lapply(X = centroids, show_digit, xaxt=&#39;n&#39;, yaxt=&#39;n&#39;)</code></pre>
 <p><img src="/post/2018-01-24-knn-analysis-on-mnist-with-97-accuracy_files/figure-html/calcCentroids-1.png" width="672" /></p>
 <p>These averaged images are called centroids. We’re treating each image as a 784-dimensional point (28 by 28), and then taking the average of all points in each dimension individually.</p>
-<p>We see that each centroid has a good representation of a digit, so each image in the data set are centralized in the image and there is not large variations. Maybe we can use one elementary machine learning method: <strong>nearest centroid classifier</strong>, would ask for each image which of these centroids it comes closest to.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>We see that each centroid has a good representation of a digit, so each image in the data set are centralized in the image and there is not large variations. Maybe we can use one elementary machine learning method: <strong>nearest centroid classifier</strong>, would ask for each image which of these centroids it comes closest to.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 </div>
 <div id="compare-centroids" class="section level3">
 <h3>Compare Centroids</h3>
@@ -271,7 +271,7 @@ plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %&gt;%
 </div>
 <div id="k-nearest-neighbors" class="section level2">
 <h2>k-Nearest Neighbors</h2>
-<p>We saw that the PCA did a great job spreading the digits in the space, allow some separation, now let’s apply a kNN fit on this. We need to decide the number of dimension to be used (<code>n</code>) and the number of k-Nearest (<code>k</code>), to do this let’s make a cross validation search<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<p>We saw that the PCA did a great job spreading the digits in the space, allow some separation, now let’s apply a kNN fit on this. We need to decide the number of dimension to be used (<code>n</code>) and the number of k-Nearest (<code>k</code>), to do this let’s make a cross validation search<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
 <pre class="r"><code># knn cross validation
 part.idx &lt;- sample(1:mnist$train$n, round(mnist$train$n/2))
 
@@ -330,7 +330,7 @@ best &lt;- cv.results[which(cv.results$accuracy==max(cv.results$accuracy)),]</co
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="http://varianceexplained.org/r/digit-eda/" class="uri">http://varianceexplained.org/r/digit-eda/</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p><a href="https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/" class="uri">https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/</a><a href="#fnref2">↩</a></p></li>
+<li id="fn1"><p><a href="http://varianceexplained.org/r/digit-eda/" class="uri">http://varianceexplained.org/r/digit-eda/</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/" class="uri">https://steven.codes/blog/ml/how-to-get-97-percent-on-MNIST-with-KNN/</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

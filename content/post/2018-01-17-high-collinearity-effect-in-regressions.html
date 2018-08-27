@@ -29,7 +29,7 @@ thumbnailImagePosition: left
 <!--more-->
 <div id="collinearity" class="section level2">
 <h2>Collinearity</h2>
-<p>The concept of collinearity is illustrated in Figure below using the <code>Credit</code> data set in the <code>ISLR Package</code>. In the left-hand panel of Figure the two predictors <code>limit</code> and <code>age</code> appear to have no obvious relationship. In contrast, in the right-hand panel the predictors <code>limit</code> and <code>rating</code> are very highly correlated with each other, and we say that they are collinear.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>The concept of collinearity is illustrated in Figure below using the <code>Credit</code> data set in the <code>ISLR Package</code>. In the left-hand panel of Figure the two predictors <code>limit</code> and <code>age</code> appear to have no obvious relationship. In contrast, in the right-hand panel the predictors <code>limit</code> and <code>rating</code> are very highly correlated with each other, and we say that they are collinear.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <pre class="r"><code># setup
 library(ISLR)
 library(tidyverse)
@@ -192,7 +192,7 @@ plot_ly(data=rxl_var,
 </div>
 <div id="correlation-matrix" class="section level2">
 <h2>Correlation Matrix</h2>
-<p>A simple way to detect collinearity is to look at the correlation matrix of the predictors. An element of this matrix that is large in absolute value indicates a pair of highly correlated variables, and therefore a collinearity problem in the data. Unfortunately, not all collinearity problems can be detected by inspection of the correlation matrix: it is possible for collinearity to exist between three or more variables even if no pair of variables has a particularly high correlation. We call this situation multicollinearity.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>A simple way to detect collinearity is to look at the correlation matrix of the predictors. An element of this matrix that is large in absolute value indicates a pair of highly correlated variables, and therefore a collinearity problem in the data. Unfortunately, not all collinearity problems can be detected by inspection of the correlation matrix: it is possible for collinearity to exist between three or more variables even if no pair of variables has a particularly high correlation. We call this situation multicollinearity.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <pre class="r"><code># calc the correlation between the features
 Credit %&gt;%
   select(-ID, -Balance) %&gt;% # remove &quot;ID&quot; and &quot;Target&quot; Column
@@ -363,7 +363,12 @@ corrplot(corCredMtx, type = &quot;upper&quot;, order = &quot;hclust&quot;,
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>When faced with the problem of collinearity, there are two simple solutions. The first is to drop one of the problematic variables from the regression. This can usually be done without much compromise to the regression fit, since the presence of collinearity implies that the information that this variable provides about the response is redundant in the presence of the other variables.</p>
+<p>When faced with the problem of collinearity, there are two simple solutions.
+The first is to drop one of the problematic variables from the regression.
+This can usually be done without much compromise to the regression
+fit, since the presence of collinearity implies that the information that this
+variable provides about the response is redundant in the presence of the
+other variables.</p>
 <p>The second solution is to combine the collinear variables together into a single predictor. For instance, we might take the average of standardized versions of <code>limit</code> and <code>rating</code> in order to create a new variable that measures credit worthiness.</p>
 <div id="references" class="section level3">
 <h3>References</h3>
@@ -372,7 +377,7 @@ corrplot(corCredMtx, type = &quot;upper&quot;, order = &quot;hclust&quot;,
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. <a href="https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370">Introduction to Statistical Learning in R</a>, p.99<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. <a href="https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370">Introduction to Statistical Learning in R</a>, p.101<a href="#fnref2">↩</a></p></li>
+<li id="fn1"><p>Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. <a href="https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370">Introduction to Statistical Learning in R</a>, p.99<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. <a href="https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370">Introduction to Statistical Learning in R</a>, p.101<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

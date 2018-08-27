@@ -24,13 +24,13 @@ thumbnailImagePosition: left
 <!--more-->
 <div id="base-de-dados-com-avaliacao-das-cervejas" class="section level2">
 <h2>Base de dados com avaliação das cervejas</h2>
-<p>O uso de avaliações de cerveja para análise de texto é bem comum<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas! :)</p>
+<p>O uso de avaliações de cerveja para análise de texto é bem comum<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas! :)</p>
 <p>O primeiro passo é obter os dados descritivos das cervejas. Como não existe uma em português dando sopa por aí, a estratégia é buscar algum site de avaliação de cervejas, com uma boa quantidade de informações, e extrair os dados de lá, montando uma base própria.</p>
 <div id="data-scraping-das-avaliacoes" class="section level3">
 <h3>Data Scraping das avaliações</h3>
 <p><strong>Data scraping</strong> (do inglês, raspagem de dados) é uma técnica computacional na qual um programa extrai dados de saída legível somente para humanos, proveniente de um serviço ou aplicativo. Os dados extraídos geralmente são minerados e estruturados em um formato padrão como CSV, XML ou JSON.</p>
-<p><strong>Rvest</strong><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> é um pacote que facilita o <em>scraping</em> de dados de páginas web html. Ele é projetado para trabalhar com <em>magrittr</em> para que você possa expressar operações complexas como pipelines facilmente compreendidos.</p>
-<p>Com possibilidade de aplicar <em>seletores CSS</em><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> para capturar elementos específicos e pré-tratamento de listas e tabelas.</p>
+<p><strong>Rvest</strong><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> é um pacote que facilita o <em>scraping</em> de dados de páginas web html. Ele é projetado para trabalhar com <em>magrittr</em> para que você possa expressar operações complexas como pipelines facilmente compreendidos.</p>
+<p>Com possibilidade de aplicar <em>seletores CSS</em><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> para capturar elementos específicos e pré-tratamento de listas e tabelas.</p>
 </div>
 <div id="blog-cerva-nossa" class="section level3">
 <h3>Blog Cerva Nossa</h3>
@@ -400,7 +400,7 @@ library(tidytext) # pacote para tratamento de textos do tidyverse
 library(ptstem)   # pacote que faz o steming de termos em português</code></pre>
 <div id="steam-stop-words" class="section level3">
 <h3>Steam &amp; Stop Words</h3>
-<p>Antes de fazer a contagem das palavras e aplicar o TF-IDF é necessário fazer uma limpeza no texto das descrições, que envolve a remoção das palavras sem significado, as chamadas <em>stopwords</em>. Stop words<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> são palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E também é necessário fazer o <em>steming</em>, processo que elimina a flexão das palavras, por exemplo:</p>
+<p>Antes de fazer a contagem das palavras e aplicar o TF-IDF é necessário fazer uma limpeza no texto das descrições, que envolve a remoção das palavras sem significado, as chamadas <em>stopwords</em>. Stop words<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> são palavras que podem ser consideradas irrelevantes para o conjunto de resultados a ser exibido em uma busca realizada em uma search engine (de, da, para, em, etc.). E também é necessário fazer o <em>steming</em>, processo que elimina a flexão das palavras, por exemplo:</p>
 <pre class="r"><code># exemplo
 palavras &lt;- c(&quot;notas&quot;,&quot;aromáticas&quot;, &quot;nota&quot;, &quot;aromática&quot;, &quot;sabores&quot;, &quot;distintos&quot;,
               &quot;sabor&quot;, &quot;distinto&quot;, &quot;frutas&quot;, &quot;frutado&quot;)
@@ -741,9 +741,11 @@ ggplot(beer_type_top10_tf_idf, aes(x=as.factor(Rank), y=tf_idf)) +
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Tidy Text Mining Beer Review - <a href="http://kaylinwalker.com/tidy-text-beer/" class="uri">http://kaylinwalker.com/tidy-text-beer/</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Tutoriais de <strong>rvest</strong> - <a href="https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/" class="uri">https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/</a> - <a href="https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/" class="uri">https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/</a><a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>CSS Selectors - <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="uri">https://www.w3schools.com/cssref/css_selectors.asp</a><a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p><em>stop words</em> para português - <a href="https://gist.github.com/alopes/5358189" class="uri">https://gist.github.com/alopes/5358189</a><a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p>Tidy Text Mining Beer Review - <a href="http://kaylinwalker.com/tidy-text-beer/" class="uri">http://kaylinwalker.com/tidy-text-beer/</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Tutoriais de <strong>rvest</strong>
+- <a href="https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/" class="uri">https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/</a>
+- <a href="https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/" class="uri">https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>CSS Selectors - <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="uri">https://www.w3schools.com/cssref/css_selectors.asp</a><a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p><em>stop words</em> para português - <a href="https://gist.github.com/alopes/5358189" class="uri">https://gist.github.com/alopes/5358189</a><a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

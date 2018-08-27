@@ -13,7 +13,7 @@ tags:
   - stock market
   - pt-BR
 slug: operando-long-short-usando-cointegracao-em-r
-coverImage: /images/coint_cover.jpg
+coverImage: /images/coint_cover.png
 metaAlignment: center
 thumbnailImage: images/coint_tn.png
 thumbnailImagePosition: left
@@ -68,7 +68,7 @@ Muitos dos textos explicativos aqui foram retirados (ou fortemente baseados) na 
 No poste ele faz faz uma análise dos ativos [**QUAL3** - QUALICORP ON](https://www.infomoney.com.br/qualicorp-qual3) e [**RENT3** - Localiza ON](https://www.infomoney.com.br/localiza-rent3) usando uma [planilha excel](https://drnickel.files.wordpress.com/2015/04/exemplos-cointegracao-qual3_rent32.xlsx), neste notebook refaço o procedimento usando R. Para garantir que os resultados obtidos em ambas sejam os mesmos usaremos exatamente os mesmo dados que constam na planilha.
 
 
-![Cotações de QUAL3 e RENT3 no Excel](./images/excel_data.png)
+![Cotações de QUAL3 e RENT3 no Excel](/images/excel_data.png)
 
 
 Após a importação, obtemos:
@@ -154,7 +154,7 @@ $$\Delta P_{t} = \alpha + \beta P_{t-1} + \epsilon$$
 
 Após fazer a regressão, o valor chave a ser usado para determinar se a série é não estacionária é o [`t-statistic`](https://dss.princeton.edu/online_help/analysis/interpreting_regression.htm) do coeficiente $\beta$ obtido, que é o valor do coeficiente dividido pelo desvio padrão. Pode ser pensado como uma medida da precisão com que o coeficiente de regressão é medido. Se um coeficiente é grande comparado ao seu erro padrão, provavelmente é diferente de 0. Esse valor então é confrontado contra uma tabela de referência, que determinará se a série é estacionária ou não. 
 
-![Dickey-Fuller Table](./images/dickey-fuller-table.png)
+![Dickey-Fuller Table](/images/dickey-fuller-table.png)
 
 O valor de referência é sensível ao número de pontos usados na regressão. Assim sendo, vamos fazer o _fit_ da regressão linear e obter os valores de referência desta regressão
 

@@ -13,7 +13,7 @@ tags:
   - stock market
   - pt-BR
 slug: operando-long-short-usando-cointegracao-em-r
-coverImage: /images/coint_cover.jpg
+coverImage: /images/coint_cover.png
 metaAlignment: center
 thumbnailImage: images/coint_tn.png
 thumbnailImagePosition: left
@@ -42,7 +42,8 @@ thumbnailImagePosition: left
 <p>O ideal ao se fazer o Long/Short é que ele seja feito no mesmo financeiro (<em>cash-neutro</em>). Neste caso, não há a preocupação se a bolsa sobe ou desce, o que importa é a relação percentual, pois vai se estar atuando nas duas pontas (compra e venda). Além disso, praticamente não há desembolso financeiro, pois o valor da venda do ativo alugado será utilizado para a compra (há apenas a margem da CBLC ou da corretora (se for maior). E ainda dá para alavancar a carteira.</p>
 <div id="caso-de-exemplo-qual3-e-rent3" class="section level3">
 <h3>Caso de Exemplo: QUAL3 e RENT3</h3>
-<p>Este notebook tem o objetivo de reproduzir o passo-a-passo para detectar e avaliar pares de ativos <a href="https://en.wikipedia.org/wiki/Cointegration">cointegrados</a> mostrado no <a href="https://drnickel.wordpress.com/2015/04/03/long-short-atraves-de-cointegracao-parte-3/">blog do Dr. Nickel</a>. Muitos dos textos explicativos aqui foram retirados (ou fortemente baseados) na série de posts sobre Cointegração explicando o processo de análise, portando vale a pena ler a série toda, bem mais detalhada e com ótimas referências:</p>
+<p>Este notebook tem o objetivo de reproduzir o passo-a-passo para detectar e avaliar pares de ativos <a href="https://en.wikipedia.org/wiki/Cointegration">cointegrados</a> mostrado no <a href="https://drnickel.wordpress.com/2015/04/03/long-short-atraves-de-cointegracao-parte-3/">blog do Dr. Nickel</a>.
+Muitos dos textos explicativos aqui foram retirados (ou fortemente baseados) na série de posts sobre Cointegração explicando o processo de análise, portando vale a pena ler a série toda, bem mais detalhada e com ótimas referências:</p>
 <ol style="list-style-type: decimal">
 <li><a href="https://drnickel.wordpress.com/2015/03/15/long-short-atraves-de-cointegracao-parte-1/">Long-Short através de Cointegração – Parte 1</a></li>
 <li><a href="https://drnickel.wordpress.com/2015/03/15/long-short-atraves-de-cointegracao-parte-2/">Long-Short através de Cointegração – Parte 2</a></li>
@@ -54,7 +55,7 @@ thumbnailImagePosition: left
 <h3>Dataset</h3>
 <p>No poste ele faz faz uma análise dos ativos <a href="https://www.infomoney.com.br/qualicorp-qual3"><strong>QUAL3</strong> - QUALICORP ON</a> e <a href="https://www.infomoney.com.br/localiza-rent3"><strong>RENT3</strong> - Localiza ON</a> usando uma <a href="https://drnickel.files.wordpress.com/2015/04/exemplos-cointegracao-qual3_rent32.xlsx">planilha excel</a>, neste notebook refaço o procedimento usando R. Para garantir que os resultados obtidos em ambas sejam os mesmos usaremos exatamente os mesmo dados que constam na planilha.</p>
 <div class="figure">
-<img src="images/excel_data.png" alt="Cotações de QUAL3 e RENT3 no Excel" />
+<img src="/images/excel_data.png" alt="Cotações de QUAL3 e RENT3 no Excel" />
 <p class="caption">Cotações de QUAL3 e RENT3 no Excel</p>
 </div>
 <p>Após a importação, obtemos:</p>
@@ -469,7 +470,8 @@ NA
 </tr>
 </tbody>
 </table>
-<p>Como o Excel não está adequadamente formatado (há células colapsadas e colunas vazias entre os dados) e acabamos com um dado importado muito sujo, há necessidade de limpar, <em>tipar</em> e arrumar <a href="http://r4ds.had.co.nz/tidy.html">(data tidying)</a>, deixando-os simples de manipular.</p>
+<p>Como o Excel não está adequadamente formatado (há células colapsadas e colunas vazias entre os dados) e acabamos com um dado importado muito sujo, há necessidade de limpar, <em>tipar</em> e arrumar
+<a href="http://r4ds.had.co.nz/tidy.html">(data tidying)</a>, deixando-os simples de manipular.</p>
 <pre class="r"><code># limpando e arrumando (tidying)
 # primeiro isola o QUAL3
 xls %&gt;% 
@@ -641,7 +643,7 @@ ggplot(df.tickers,aes(x=ref.date, y=price.close, color=ticker)) +
 <p><span class="math display">\[\Delta P_{t} = \alpha + \beta P_{t-1} + \epsilon\]</span></p>
 <p>Após fazer a regressão, o valor chave a ser usado para determinar se a série é não estacionária é o <a href="https://dss.princeton.edu/online_help/analysis/interpreting_regression.htm"><code>t-statistic</code></a> do coeficiente <span class="math inline">\(\beta\)</span> obtido, que é o valor do coeficiente dividido pelo desvio padrão. Pode ser pensado como uma medida da precisão com que o coeficiente de regressão é medido. Se um coeficiente é grande comparado ao seu erro padrão, provavelmente é diferente de 0. Esse valor então é confrontado contra uma tabela de referência, que determinará se a série é estacionária ou não.</p>
 <div class="figure">
-<img src="images/dickey-fuller-table.png" alt="Dickey-Fuller Table" />
+<img src="/images/dickey-fuller-table.png" alt="Dickey-Fuller Table" />
 <p class="caption">Dickey-Fuller Table</p>
 </div>
 <p>O valor de referência é sensível ao número de pontos usados na regressão. Assim sendo, vamos fazer o <em>fit</em> da regressão linear e obter os valores de referência desta regressão</p>

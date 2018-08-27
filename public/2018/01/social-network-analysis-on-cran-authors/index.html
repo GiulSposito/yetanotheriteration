@@ -250,7 +250,7 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>Este artigo (<a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a>) explora técnicas de <em>Análise de Redes Sociais</em> (<a href="https://en.wikipedia.org/wiki/Social_network_analysis">SNA</a>) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> publicados no repositório CRAN<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+              <p>Este artigo (<a href="http://rmarkdown.rstudio.com/r_notebooks.html">RNotebook</a>) explora técnicas de <em>Análise de Redes Sociais</em> (<a href="https://en.wikipedia.org/wiki/Social_network_analysis">SNA</a>) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> publicados no repositório CRAN<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
 <!--more-->
 <div id="introducao" class="section level2">
 <h2>Introdução</h2>
@@ -405,7 +405,7 @@ ggraph(g_layout) +
 </div>
 <div id="eigenvector-centrality-autovetor" class="section level4">
 <h4>Eigenvector Centrality (Autovetor)</h4>
-<p>A centralidade do <em>autovetores</em> de um nó é proporcional à soma das centralidades de _autovetores de todos os nós diretamente conectados a ele. A métrica é obtida através da fatoração e calculo de autovetores da <em>matriz de adjacência</em><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> que representa a rede.</p>
+<p>A centralidade do <em>autovetores</em> de um nó é proporcional à soma das centralidades de _autovetores de todos os nós diretamente conectados a ele. A métrica é obtida através da fatoração e calculo de autovetores da <em>matriz de adjacência</em><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> que representa a rede.</p>
 <p>Está associado a reputação e um vértice com respeito às suas ligações.</p>
 <p>Exemplos:</p>
 <ul>
@@ -663,7 +663,7 @@ ggraph(h, layout=&quot;kk&quot;) +
 </div>
 <div id="rede-de-colaboracao-de-autores-no-cran" class="section level2">
 <h2>Rede de Colaboração de Autores no CRAN</h2>
-<p>CRAN<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> é o repositório oficial de pacotes de R, <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">listando</a> todos os pacotes produzido e disponibilizado gratuitamente pela comunidade de usuário e programadores. Os pacotes fornece funcionalidades adicionais ou específicas para o R e para serem utilizados devem ser copiados, instalados e carregados.</p>
+<p>CRAN<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> é o repositório oficial de pacotes de R, <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">listando</a> todos os pacotes produzido e disponibilizado gratuitamente pela comunidade de usuário e programadores. Os pacotes fornece funcionalidades adicionais ou específicas para o R e para serem utilizados devem ser copiados, instalados e carregados.</p>
 <p>Qualquer pessoa pode desenvolver e disponibilizar pacotes, porém é mais comum que os pacotes sejam desenvolvidos por equipes de pesquisa e grupos de programadores dentro de empresas ou universidades ou que sejam um desenvolvimento que segue a dinâmica de software <em>open source</em>, quando o código do pacote está público e recebe contribuição de vários desenvolvedores espalhados pelo mundo.</p>
 <div class="figure">
 <img src="/images/xgb_package.png" alt="Autores de um pacote R" />
@@ -790,7 +790,7 @@ knitr::kable(head(authors.by.components,10), caption = &quot;Maiores componentes
 </table>
 <pre class="r"><code># selecionando os componentes para comparacao
 sel_components &lt;- c(35,38,265)</code></pre>
-<p>Vamos selecionar três destes componentes para caracterizá-los: 35, 38, 265 <a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>.</p>
+<p>Vamos selecionar três destes componentes para caracterizá-los: 35, 38, 265 <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
 </div>
 <div id="comparando-os-tres-components" class="section level3">
 <h3>Comparando os três components</h3>
@@ -1626,7 +1626,7 @@ ggraph(h, layout=&quot;lgl&quot;) +
 <div id="conclusao" class="section level2">
 <h2>Conclusão</h2>
 <p>Vimos que as técnicas de análise de rede usando métricas de centralidade são relevante para identificar os principais autores de uma rede, analisar a estrutura e identificar padrões. Particularmente em estruturas muito complexas e com muitos atores, as métricas conseguem expor à luz, padrões e comportamento embutidos na estrutura.</p>
-<p>Além disso o carácter <em>reproduzível da análise</em><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> feita em R permite refinar continuamente a análise, eliminando resíduos e apurando os resultados</p>
+<p>Além disso o carácter <em>reproduzível da análise</em><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> feita em R permite refinar continuamente a análise, eliminando resíduos e apurando os resultados</p>
 </div>
 <div id="referencias" class="section level2">
 <h2>Referências</h2>
@@ -1642,12 +1642,12 @@ ggraph(h, layout=&quot;lgl&quot;) +
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="https://www.r-project.org/">R</a> é uma linguagem de programação e ambiente para computação e análise estatística, de uso gratuito e que que fornece uma ampla variedade de técnicas para: modelagem linear e não-linear, testes estatísticos, análise de séries temporais, classificação, agrupamento.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p><a href="https://cran.r-project.org/">CRAN</a> ou <em>Comprehensive R Archive Network</em> é uma rede de FTP e servidores web ao redor do mundo que armazenam versões de código e documentação atualizadas para pacotes e bibliotecas para R.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Matriz de vértices contra vértices cuja as células indica o peso ou a ligação entre os vértices.<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p><a href="https://cran.r-project.org/">CRAN</a> ou <em>Comprehensive R Archive Network</em> é uma rede de FTP e servidores web ao redor do mundo que armazenam versões de código e documentação atualizadas para pacotes e bibliotecas para R.<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>Escolhido com base no formato dos componentes e escolhendo três casos distintos.<a href="#fnref5">↩</a></p></li>
-<li id="fn6"><p><em>Reproducible Research</em> ou <strong>pesquisa reproduzível</strong> é a ideia de que a análise de dados e, em geral, as alegações científicas, são publicados com seus dados e código de software para que outros possam verificar as descobertas e construir sobre elas.<a href="#fnref6">↩</a></p></li>
+<li id="fn1"><p><a href="https://www.r-project.org/">R</a> é uma linguagem de programação e ambiente para computação e análise estatística, de uso gratuito e que que fornece uma ampla variedade de técnicas para: modelagem linear e não-linear, testes estatísticos, análise de séries temporais, classificação, agrupamento.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://cran.r-project.org/">CRAN</a> ou <em>Comprehensive R Archive Network</em> é uma rede de FTP e servidores web ao redor do mundo que armazenam versões de código e documentação atualizadas para pacotes e bibliotecas para R.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Matriz de vértices contra vértices cuja as células indica o peso ou a ligação entre os vértices.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p><a href="https://cran.r-project.org/">CRAN</a> ou <em>Comprehensive R Archive Network</em> é uma rede de FTP e servidores web ao redor do mundo que armazenam versões de código e documentação atualizadas para pacotes e bibliotecas para R.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Escolhido com base no formato dos componentes e escolhendo três casos distintos.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p><em>Reproducible Research</em> ou <strong>pesquisa reproduzível</strong> é a ideia de que a análise de dados e, em geral, as alegações científicas, são publicados com seus dados e código de software para que outros possam verificar as descobertas e construir sobre elas.<a href="#fnref6" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 
