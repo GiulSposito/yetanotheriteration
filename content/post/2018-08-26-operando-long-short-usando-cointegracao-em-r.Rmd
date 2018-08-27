@@ -1,5 +1,5 @@
 ---
-title: Operando Long-Short usando Cointegracao em R
+title: "Operando Long-Short usando Cointegração em R"
 author: Giuliano Sposito
 date: '2018-08-26'
 categories:
