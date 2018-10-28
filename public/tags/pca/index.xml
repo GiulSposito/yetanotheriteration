@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pca on Yet Another Iteration</title>
-    <link>/tags/pca/</link>
+    <link>https://yetanotheriteration.netlify.com/tags/pca/</link>
     <description>Recent content in Pca on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 24 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/pca/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/pca/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
-      <link>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
       <description>Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
 In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
 But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</description>
