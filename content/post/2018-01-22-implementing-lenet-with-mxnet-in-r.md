@@ -109,7 +109,7 @@ Labels: 5, 0, 4, 1, 9
 
 In this exercise I'll use one of the LeNet archictecutre for the neural network, based in two sets of Convolutional filters and poolings and two fully connected layers, as show bellow.
 
-![LeNet CNN Architecture](http://www.pyimagesearch.com/wp-content/uploads/2016/06/lenet_architecture.png)
+![LeNet CNN Architecture](https://www.pyimagesearch.com/wp-content/uploads/2016/06/lenet_architecture.png)
 
 ### Magrittr
 

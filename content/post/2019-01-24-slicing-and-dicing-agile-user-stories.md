@@ -18,6 +18,8 @@ thumbnailImagePosition: left
 
 A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de "divisão horizontal" para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. "Bem, nosso sistema é muito complexo", ou "precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar" são desculpas comuns nesta situação.
 
+<!--more-->
+
 ## User Story Slicing
 
 No meu trabalho de Lean/Agile coach, uma das coisas que considero mais essenciais e que é chave para o sucesso da implantação do desenvolvimento ágil é o detalhamento contínuo e _just-in-time_ do _Product Backlog_, através da decomposição constantes das _user stories_ em pequenos itens funcionais ("demonstráveis"), que possibilitem ser construídos e testados em poucos dias (de 2 à 3 dias). 
