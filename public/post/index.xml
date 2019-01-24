@@ -2,69 +2,78 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/post/</link>
+    <link>/post/</link>
     <description>Recent content in Posts on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Workshop Agile User Stories Slicing</title>
+      <link>/2019/01/slicing-and-dicing-agile-user-stories/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
+      <description>A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.</description>
+    </item>
+    
+    <item>
       <title>Forecasting Fantasy Games Using Monte Carlo Simulations</title>
-      <link>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
+      <link>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
+      <guid>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
       <description>The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using Monte Carlo simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.</description>
     </item>
     
     <item>
       <title>Operações Long-Short através de Cointegração usando R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
+      <link>/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
+      <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
       <description>Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou commodities) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.
 IntroduçãoA ideia tradicional de uma reversão de “Pair Trading” é encontrar dois ativos distintos, compartilhando fatores subjacentes que afetam seus movimentos, por exemplo, McDonald’s e Burger King.</description>
     </item>
     
     <item>
       <title>Using Facebook&#39;s Prophet to forecast my weight loss</title>
-      <link>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
+      <link>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
+      <guid>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
       <description>In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
 Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</description>
     </item>
     
     <item>
       <title>Data Science das Cervejas (2/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
+      <link>/2018/02/data-science-das-cervejas-2-2/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
       <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
     </item>
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
+      <link>/2018/02/data-science-das-cervejas-1-2/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
       <description>Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
 Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</description>
     </item>
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
+      <link>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
+      <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
       <description>Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
 In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
 But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</description>
@@ -72,10 +81,10 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
     
     <item>
       <title>Implementing LeNet with MXNET in R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</link>
+      <link>/2018/01/implementing-lenet-with-mxnet-in-r/</link>
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
+      <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
       <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
@@ -83,20 +92,20 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
     
     <item>
       <title>Social Network Analysis on CRAN Authors</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</link>
+      <link>/2018/01/social-network-analysis-on-cran-authors/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</guid>
+      <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
       <description>Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
 IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</description>
     </item>
     
     <item>
       <title>Putting your workout to move</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
+      <link>/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
+      <guid>/2018/01/putting-your-workout-to-move/</guid>
       <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
 Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
 library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
@@ -104,52 +113,61 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
     
     <item>
       <title>High Collinearity Effect in Regressions</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</link>
+      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
       <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
 This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</description>
     </item>
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
 Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</description>
     </item>
     
     <item>
       <title>Curse of Dimensionality</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</link>
+      <link>/2018/01/curse-of-dimensionalityrmd/</link>
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</guid>
+      <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
       <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
     </item>
     
     <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
 Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
     </item>
     
     <item>
       <title>We have a blog!</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</link>
+      <link>/2018/01/we-have-a-blog/</link>
       <pubDate>Tue, 02 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</guid>
+      <guid>/2018/01/we-have-a-blog/</guid>
       <description>&lt;p&gt;A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/</guid>
+      <description>Workshop Agile User Stories Slicing/*! jQuery v1.11.3 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */!function(a,b){&#34;object&#34;==typeof module&amp;&amp;&#34;object&#34;==typeof module.exports?module.exports=a.document?b(a,!0):function(a){if(!a.document)throw new Error(&#34;jQuery requires a window with a document&#34;);return b(a)}:b(a)}(&#34;undefined&#34;!=typeof window?window:this,function(a,b){var c=[],d=c.slice,e=c.concat,f=c.push,g=c.indexOf,h={},i=h.toString,j=h.hasOwnProperty,k={},l=&#34;1.11.3&#34;,m=function(a,b){return new m.fn.init(a,b)},n=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,o=/^-ms-/,p=/-([\da-z])/gi,q=function(a,b){return b.toUpperCase()};m.fn=m.prototype={jquery:l,constructor:m,selector:&#34;&#34;,length:0,toArray:function(){return d.call(this)},get:function(a){return null!=a?0a?this[a+this.length]:this[a]:d.call(this)},pushStack:function(a){var b=m.merge(this.constructor(),a);return b.prevObject=this,b.context=this.context,b},each:function(a,b){return m.each(this,a,b)},map:function(a){return this.pushStack(m.map(this,function(b,c){return a.call(b,c,b)}))},slice:function(){return this.pushStack(d.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(a){var b=this.length,c=+a+(0a?b:0);return this.pushStack(c=0&amp;&amp;bc?[this[c]]:[])},end:function(){return this.prevObject||this.constructor(null)},push:f,sort:c.sort,splice:c.splice},m.extend=m.fn.extend=function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1;for(&#34;boolean&#34;==typeof g&amp;&amp;(j=g,g=arguments[h]||{},h++),&#34;object&#34;==typeof g||m.isFunction(g)||(g={}),h===i&amp;&amp;(g=this,h--);ih;h++)if(null!=(e=arguments[h]))for(d in e)a=g[d],c=e[d],g!==c&amp;&amp;(j&amp;&amp;c&amp;&amp;(m.isPlainObject(c)||(b=m.isArray(c)))?(b?(b=!1,f=a&amp;&amp;m.isArray(a)?a:[]):f=a&amp;&amp;m.isPlainObject(a)?a:{},g[d]=m.extend(j,f,c)):void 0!==c&amp;&amp;(g[d]=c));return g},m.extend({expando:&#34;jQuery&#34;+(l+Math.random()).replace(/\D/g,&#34;&#34;),isReady:!0,error:function(a){throw new Error(a)},noop:function(){},isFunction:function(a){return&#34;function&#34;===m.type(a)},isArray:Array.isArray||function(a){return&#34;array&#34;===m.type(a)},isWindow:function(a){return null!=a&amp;&amp;a==a.window},isNumeric:function(a){return!m.isArray(a)&amp;&amp;a-parseFloat(a)+1=0},isEmptyObject:function(a){var b;for(b in a)return!1;return!0},isPlainObject:function(a){var b;if(!a||&#34;object&#34;!==m.type(a)||a.nodeType||m.isWindow(a))return!1;try{if(a.constructor&amp;&amp;!j.call(a,&#34;constructor&#34;)&amp;&amp;!j.call(a.constructor.prototype,&#34;isPrototypeOf&#34;))return!1}catch(c){return!1}if(k.ownLast)for(b in a)return j.call(a,b);for(b in a);return void 0===b||j.call(a,b)},type:function(a){return null==a?</description>
     </item>
     
   </channel>

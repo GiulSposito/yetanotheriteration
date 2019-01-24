@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agile on Yet Another Iteration</title>
+    <link>/tags/agile/</link>
+    <description>Recent content in Agile on Yet Another Iteration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/agile/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Workshop Agile User Stories Slicing</title>
+      <link>/2019/01/slicing-and-dicing-agile-user-stories/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
+      <description>A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.</description>
+    </item>
+    
+  </channel>
+</rss>
