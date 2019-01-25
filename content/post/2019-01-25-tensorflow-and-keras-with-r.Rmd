@@ -19,7 +19,7 @@ thumbnailImage: images/lenet_keras_tn.jpg
 thumbnailImagePosition: left
 ---
 
-I'll start series of post about [Keras](https://keras.io/), a high-level [neural networks](https://en.wikipedia.org/wiki/Artificial_neural_network) API developed with a focus on enabling fast experimentation, running on top of [TensorFlow](https://www.tensorflow.org), but using its [R interface](https://keras.rstudio.com/). To start, we'll review our [LeNet implemantation with MXNET](https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/) for [MNIST problem](http://yann.lecun.com/exdb/mnist/), a traditional "[Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program)" in the Neural Network world.
+I'll start series of posts about [Keras](https://keras.io/), a high-level [neural networks](https://en.wikipedia.org/wiki/Artificial_neural_network) API developed with a focus on enabling fast experimentation, running on top of [TensorFlow](https://www.tensorflow.org), but using its [R interface](https://keras.rstudio.com/). To start, we'll review our [LeNet implemantation with MXNET](https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/) for [MNIST problem](http://yann.lecun.com/exdb/mnist/), a traditional "[Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program)" in the Neural Network world.
 
 
 <!--more-->
@@ -29,20 +29,25 @@ I'll start series of post about [Keras](https://keras.io/), a high-level [neural
 
 [Keras](https://keras.io/) is an API for building neural networks written in [Python](https://www.python.org/) capable of running on top of [Tensorflow](https://www.tensorflow.org), [CNTK](https://github.com/Microsoft/cntk), or [Theano](https://github.com/Theano/Theano). It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to doing good research.
 
-We'll use a [R implementation](https://keras.rstudio.com/) of Keras, that communicates with the Python environment using the [Reticulate Package](https://rstudio.github.io/reticulate/) to build and run neural networks on Tensorflow backend.
+We'll use a [R implementation](https://keras.rstudio.com/) of Keras, that communicates with the Python environment using the [Reticulate Package](https://rstudio.github.io/reticulate/) to build and run neural networks on Tensorflow back end.
 
 
 ## Instruction for Setup
 
-It's necessary install an Python and Tensorflow environments in the machine, also, to make Tensorflow run over [GPUs](https://en.wikipedia.org/wiki/Graphics_processing_unit) you will need install nvidia's [CUDA Toolkit](https://developer.nvidia.com/cuda-zone) and [cuDNN libraries](https://developer.nvidia.com/cudnn) In my experience this is very easy and cheap using a Ubuntu [preemptible](https://cloud.google.com/compute/docs/instances/preemptible) [Google Compute Engine](https://cloud.google.com/) instance. You can follow the install instructions here: https://tensorflow.rstudio.com/tools/local_gpu.html
+It's necessary to install  Python and Tensorflow environments in your machine, also, to do the Tensorflow run over a [GPU](https://en.wikipedia.org/wiki/Graphics_processing_unit) you will need install NVIDIA's [CUDA Toolkit](https://developer.nvidia.com/cuda-zone) and [cuDNN libraries](https://developer.nvidia.com/cudnn). In my experience, this is very easy and cheap using an Ubuntu [preemptible](https://cloud.google.com/compute/docs/instances/preemptible) [Google Compute Engine](https://cloud.google.com/) instance. You can follow one of the setup instructions here:
+
+
+- https://medium.com/google-cloud/using-a-gpu-tensorflow-on-google-cloud-platform-1a2458f42b0
+- https://tensorflow.rstudio.com/tools/local_gpu.html
 
 ```{r loadLib, echo=FALSE}
 # loading keras lib
 library(keras)
 ```
-## Databaset and Tensors
 
-The Keras package already provides a set of datasets and pre-trained neural networksto serve as a learning base, the MNIST dataset is one of them, let's load it.
+## Dataset and Tensors
+
+The Keras package already provides some datasets and pre-trained networks to serve as a learning base, the MNIST dataset is one of them, let's use it.
 
 
 ```{r loadData, cache=TRUE}
@@ -67,9 +72,16 @@ summary(x.train)
 ```
 
 
-The first time you invoke `dataset_mnist ()` the data will be downloaded, we can see that we get a three-dimensional array, in the first dimension we have the index of the case, and for each one of them we have a matrix of 28x28 that corresponds the image of a number.
+The first time you invoke `dataset_mnist()` the data will be downloaded. We can see that we get in reply a three-dimensional array, in the first dimension we have the index of the case, and for each one of them, we have a matrix of 28x28 that corresponds to a image of a number.
 
-To use with "tensorflow/keras" it is necessary to convert the matrix to a "tensor" (generalization of a vector), in this case we have to convert to an array of n x 28 x 28 x 1 digits, where "n", in the first dimension is the "case" and the "1" (last dimension) is only "one channel" for each pixel of the image. As the channel will be the input signal to the neurons, it is advisable to normalize it, since the dataset is integers ranging from 0 to 255, we will simple normalize it to a range of 0.0 to 1.0.
+To use with "tensorflow/keras" it is necessary to convert the matrix into a **[Tensor](https://hackernoon.com/learning-ai-if-you-suck-at-math-p4-tensors-illustrated-with-cats-27f0002c9b32)** (generalization of a vector), in this case we have to convert to 4D-Tensor, with dimensions of "n x 28 x 28 x 1", where:
+
+
+- "n" is the "case number"
+- "28 x 28" are the width and height of the image, and
+- "1" is the "[channel](https://www.tensorflow.org/api_guides/python/image)"  (or "value"), for each pixel of the image
+ 
+The channel in the image stands for the "color encoding". In color images, usually the channel will be a 3-dimensional vector, for RGB values. In the MNIST database, the images are im grey scale, in integers from 0 to 255. To work with neural networks is advisable to normalize it into to a float value, from 0.0 to 1.0. to do that we simple divide the values by 255.
 
 ```{r reshapeDataset, cache=TRUE}
 
@@ -87,7 +99,7 @@ summary(x.train)
 ```
 
 
-In addition, it is necessary to convert the classification label using [one-hot encoding](https://machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/), since we neural network classifies the image into one of the ten possibilities (from 0 to 9).
+In addition, it is necessary to convert the classification labels using [one-hot encoding](https://machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/), since we neural network classifies the image into one of the ten possibilities (from 0 to 9).
 
 
 ```{r oneHotEncoding, cache=TRUE}
@@ -100,7 +112,7 @@ str(y.train)
 
 ```
 
-Let's see some numbers in the dataset.
+Let's visualize some numbers in the dataset.
 
 ```{r viewCases, cache=TRUE}
 
@@ -120,13 +132,13 @@ print(lbl.train[1:5])
 ```
 
 
-## LeNet Archtecture
+## LeNet Architecture
 
-I'll use one of the LeNet architecture for the neural network, based in two sets of Convolutional filters and poolings and two fully connected layers, as show bellow
+I'll use one of the LeNet architecture for the neural network, based in two sets of Convolutional filters and pooling for the convolutional layers and then two fully connected layers as classification group, as show bellow:
 
 ![LetNet](https://www.pyimagesearch.com/wp-content/uploads/2016/06/lenet_architecture.png)
 
-We'll build a sequential model, adding layer by layer in the network.
+In Keras, we'll build a sequential model, adding layer by layer in the network.
 
 ```{r buildModel, cache=TRUE}
 # build lenet
@@ -145,10 +157,12 @@ keras_model_sequential() %>%
 summary(model)
 ```
 
-In keras you have to define your network and have to compile it, this function defines:
-- Loss function
-- Optimizer/Learning Rate
-- Evalutation Metrics
+Also, we have to define some "learning parameters" for our network using `compile()` function, they are:
+
+
+- [Loss function](https://blog.algorithmia.com/introduction-to-loss-functions/): a method of evaluating how well your algorithm models your dataset.
+- [Optimizer/Learning Rate](https://blog.algorithmia.com/introduction-to-optimizers/): together the loss function and model parameters by updating the model in response to the output of the loss function
+- [Evaluation Metrics](https://towardsdatascience.com/metrics-to-evaluate-your-machine-learning-algorithm-f10ba6e38234): influences how the performance of machine learning algorithms is measured and compared
 
 ```{r compileModel, cache=TRUE, eval=FALSE}
 # keras compile
@@ -162,7 +176,7 @@ model %>% compile(
 
 ## Train and Evaluate
 
-Finnaly, your network is ready to train, let's to it with `fit()` function.
+Finally, your network is ready to train, let's to it with `fit()` function.
 
 ```{r trainNetwork, eval=FALSE}
 
@@ -195,7 +209,7 @@ As you see, it's an impressive 99% of accuracy.
 
 ## Visualizing the Activation Layers
 
-As we did in the [mxnet post](https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/), let's see how the internal layers react to a input data visualizing the neuron's activation pattern:
+As we did in the [mxnet post](https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/), let's see how the internal layers react to a input data, visualizing the neuron's activations pattern in the conv layers:
 
 ```{r activations, cache=TRUE}
 # Extracts the outputs of the top 8 layers:
