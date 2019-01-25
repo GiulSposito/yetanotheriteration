@@ -1,0 +1,213 @@
+---
+title: "Tensorflow and Keras with R"
+author: "Giuliano Sposito"
+date: '2019-01-25'
+coverImage: /images/lenet_keras_cover.jpg
+metaAlignment: center
+slug: tensorflow-and-keras-with-r
+categories:
+  - data science
+tags:
+- machine learning
+- keras
+- tensorflow
+- data analysis
+- en-US
+- mnist
+- neural network
+thumbnailImage: images/lenet_keras_tn.jpg
+thumbnailImagePosition: left
+---
+
+
+
+<p>I’ll start series of post about <a href="https://keras.io/">Keras</a>, a high-level <a href="https://en.wikipedia.org/wiki/Artificial_neural_network">neural networks</a> API developed with a focus on enabling fast experimentation, running on top of <a href="https://www.tensorflow.org">TensorFlow</a>, but using its <a href="https://keras.rstudio.com/">R interface</a>. To start, we’ll review our <a href="https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">LeNet implemantation with MXNET</a> for <a href="http://yann.lecun.com/exdb/mnist/">MNIST problem</a>, a traditional “<a href="https://en.wikipedia.org/wiki/%22Hello,_World!%22_program">Hello World</a>” in the Neural Network world.</p>
+<!--more-->
+<div id="about-keras-in-r" class="section level2">
+<h2>About Keras in R</h2>
+<p><a href="https://keras.io/">Keras</a> is an API for building neural networks written in <a href="https://www.python.org/">Python</a> capable of running on top of <a href="https://www.tensorflow.org">Tensorflow</a>, <a href="https://github.com/Microsoft/cntk">CNTK</a>, or <a href="https://github.com/Theano/Theano">Theano</a>. It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to doing good research.</p>
+<p>We’ll use a <a href="https://keras.rstudio.com/">R implementation</a> of Keras, that communicates with the Python environment using the <a href="https://rstudio.github.io/reticulate/">Reticulate Package</a> to build and run neural networks on Tensorflow backend.</p>
+</div>
+<div id="instruction-for-setup" class="section level2">
+<h2>Instruction for Setup</h2>
+<p>It’s necessary install an Python and Tensorflow environments in the machine, also, to make Tensorflow run over <a href="https://en.wikipedia.org/wiki/Graphics_processing_unit">GPUs</a> you will need install nvidia’s <a href="https://developer.nvidia.com/cuda-zone">CUDA Toolkit</a> and <a href="https://developer.nvidia.com/cudnn">cuDNN libraries</a> In my experience this is very easy and cheap using a Ubuntu <a href="https://cloud.google.com/compute/docs/instances/preemptible">preemptible</a> <a href="https://cloud.google.com/">Google Compute Engine</a> instance. You can follow the install instructions here: <a href="https://tensorflow.rstudio.com/tools/local_gpu.html" class="uri">https://tensorflow.rstudio.com/tools/local_gpu.html</a></p>
+</div>
+<div id="databaset-and-tensors" class="section level2">
+<h2>Databaset and Tensors</h2>
+<p>The Keras package already provides a set of datasets and pre-trained neural networksto serve as a learning base, the MNIST dataset is one of them, let’s load it.</p>
+<pre class="r"><code># loading keras lib
+library(keras)
+
+# loading and preparing dataset
+mnist &lt;- dataset_mnist() 
+
+# separate the datasets
+x.train &lt;- mnist$train$x
+lbl.train &lt;- mnist$train$y
+x.test &lt;-  mnist$test$x
+lbl.test &lt;-  mnist$test$y
+
+# let&#39;s see what we have
+str(x.train)</code></pre>
+<pre><code>##  int [1:60000, 1:28, 1:28] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<pre class="r"><code>str(lbl.train)</code></pre>
+<pre><code>##  int [1:60000(1d)] 5 0 4 1 9 2 1 3 1 4 ...</code></pre>
+<pre class="r"><code>summary(x.train)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.00    0.00    0.00   33.32    0.00  255.00</code></pre>
+<p>The first time you invoke <code>dataset_mnist ()</code> the data will be downloaded, we can see that we get a three-dimensional array, in the first dimension we have the index of the case, and for each one of them we have a matrix of 28x28 that corresponds the image of a number.</p>
+<p>To use with “tensorflow/keras” it is necessary to convert the matrix to a “tensor” (generalization of a vector), in this case we have to convert to an array of n x 28 x 28 x 1 digits, where “n”, in the first dimension is the “case” and the “1” (last dimension) is only “one channel” for each pixel of the image. As the channel will be the input signal to the neurons, it is advisable to normalize it, since the dataset is integers ranging from 0 to 255, we will simple normalize it to a range of 0.0 to 1.0.</p>
+<pre class="r"><code># Redefine dimension of train/test inputs to 2D &quot;tensors&quot; (28x28x1)
+x.train &lt;- array_reshape(x.train, c(nrow(x.train), 28,28,1))
+x.test  &lt;- array_reshape(x.test,  c(nrow(x.test),  28,28,1))
+
+# normalize values to be between 0.0 - 1.0
+x.train &lt;- x.train/255
+x.test  &lt;- x.test/255
+
+str(x.train)</code></pre>
+<pre><code>##  num [1:60000, 1:28, 1:28, 1] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<pre class="r"><code>summary(x.train)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0000  0.0000  0.1307  0.0000  1.0000</code></pre>
+<p>In addition, it is necessary to convert the classification label using <a href="https://machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/">one-hot encoding</a>, since we neural network classifies the image into one of the ten possibilities (from 0 to 9).</p>
+<pre class="r"><code># one hot encoding
+y.train &lt;- to_categorical(lbl.train,10)
+y.test  &lt;- to_categorical(lbl.test,10)
+
+str(y.train)</code></pre>
+<pre><code>##  num [1:60000, 1:10] 0 1 0 0 0 0 0 0 0 0 ...</code></pre>
+<p>Let’s see some numbers in the dataset.</p>
+<pre class="r"><code># plot one case
+show_digit &lt;- function(tensor, col=gray(12:1/12), ...) {
+  tensor %&gt;% 
+    apply(., 2, rev) %&gt;%      # reorient to make a 90 cw rotation
+    t() %&gt;%                   # reorient to make a 90 cw rotation
+    image(col=col, axes=F, asp=1, ...)       # plot matrix as image
+}
+
+# check some data
+par(mfrow=c(1,5), mar=c(0.1,0.1,0.1,0.1))
+for(i in 1:5) show_digit(x.train[i,,,])</code></pre>
+<p><img src="/post/2019-01-25-tensorflow-and-keras-with-r_files/figure-html/viewCases-1.png" width="672" /></p>
+<pre class="r"><code>print(lbl.train[1:5])</code></pre>
+<pre><code>## [1] 5 0 4 1 9</code></pre>
+</div>
+<div id="lenet-archtecture" class="section level2">
+<h2>LeNet Archtecture</h2>
+<p>I’ll use one of the LeNet architecture for the neural network, based in two sets of Convolutional filters and poolings and two fully connected layers, as show bellow</p>
+<div class="figure">
+<img src="https://www.pyimagesearch.com/wp-content/uploads/2016/06/lenet_architecture.png" alt="LetNet" />
+<p class="caption">LetNet</p>
+</div>
+<p>We’ll build a sequential model, adding layer by layer in the network.</p>
+<pre class="r"><code># build lenet
+keras_model_sequential() %&gt;% 
+  layer_conv_2d(input_shape=c(28,28,1), filters=20, kernel_size = c(5,5), activation = &quot;tanh&quot;) %&gt;% 
+  layer_max_pooling_2d(pool_size = c(2,2), strides = c(2,2)) %&gt;% 
+  layer_conv_2d(filters = 50, kernel_size = c(5,5), activation=&quot;tanh&quot; ) %&gt;% 
+  layer_max_pooling_2d(pool_size = c(2,2), strides = c(2,2) ) %&gt;% 
+  layer_dropout(rate=0.3) %&gt;% 
+  layer_flatten() %&gt;% 
+  layer_dense(units = 500, activation = &quot;tanh&quot; ) %&gt;% 
+  layer_dropout(rate=0.3) %&gt;% 
+  layer_dense(units=10, activation = &quot;softmax&quot;) -&gt; model
+
+# lets look the summary
+summary(model)</code></pre>
+<pre><code>## ___________________________________________________________________________
+## Layer (type)                     Output Shape                  Param #     
+## ===========================================================================
+## conv2d_1 (Conv2D)                (None, 24, 24, 20)            520         
+## ___________________________________________________________________________
+## max_pooling2d_1 (MaxPooling2D)   (None, 12, 12, 20)            0           
+## ___________________________________________________________________________
+## conv2d_2 (Conv2D)                (None, 8, 8, 50)              25050       
+## ___________________________________________________________________________
+## max_pooling2d_2 (MaxPooling2D)   (None, 4, 4, 50)              0           
+## ___________________________________________________________________________
+## dropout_1 (Dropout)              (None, 4, 4, 50)              0           
+## ___________________________________________________________________________
+## flatten_1 (Flatten)              (None, 800)                   0           
+## ___________________________________________________________________________
+## dense_1 (Dense)                  (None, 500)                   400500      
+## ___________________________________________________________________________
+## dropout_2 (Dropout)              (None, 500)                   0           
+## ___________________________________________________________________________
+## dense_2 (Dense)                  (None, 10)                    5010        
+## ===========================================================================
+## Total params: 431,080
+## Trainable params: 431,080
+## Non-trainable params: 0
+## ___________________________________________________________________________</code></pre>
+<p>In keras you have to define your network and have to compile it, this function defines:
+- Loss function
+- Optimizer/Learning Rate
+- Evalutation Metrics</p>
+<pre class="r"><code># keras compile
+model %&gt;% compile(
+  loss = &quot;categorical_crossentropy&quot;,
+  optimizer = optimizer_rmsprop(),
+  metrics = c(&#39;accuracy&#39;)
+)</code></pre>
+</div>
+<div id="train-and-evaluate" class="section level2">
+<h2>Train and Evaluate</h2>
+<p>Finnaly, your network is ready to train, let’s to it with <code>fit()</code> function.</p>
+<pre class="r"><code># train the model and store the evolution history
+history &lt;- model %&gt;% fit(
+  x.train, y.train, epochs=30, batch_size=128,
+  validation_split=0.3
+)
+
+# plot the network evolution
+plot(history)</code></pre>
+<p><img src="/post/2019-01-25-tensorflow-and-keras-with-r_files/figure-html/loadNetwork-1.png" width="672" /></p>
+<p>Let’s see how good the fitted model are applying the model in the test set</p>
+<pre class="r"><code># evaluating the model
+evaluate(model, x.test, y.test)</code></pre>
+<pre><code>## $loss
+## [1] 0.04685909
+## 
+## $acc
+## [1] 0.99</code></pre>
+<p>As you see, it’s an impressive 99% of accuracy.</p>
+</div>
+<div id="visualizing-the-activation-layers" class="section level2">
+<h2>Visualizing the Activation Layers</h2>
+<p>As we did in the <a href="https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/">mxnet post</a>, let’s see how the internal layers react to a input data visualizing the neuron’s activation pattern:</p>
+<pre class="r"><code># Extracts the outputs of the top 8 layers:
+layer_outputs &lt;- lapply(model$layers[1:8], function(layer) layer$output)
+
+# Creates a model that will return these outputs, given the model input:
+activation_model &lt;- keras_model(inputs = model$input, outputs = layer_outputs)
+
+# choose a case
+a_digit &lt;- array_reshape(x.train[45,,,], c(1,28,28,1))
+
+# Returns a list of five arrays: one array per layer activation
+activations &lt;- activation_model %&gt;% predict(a_digit)
+
+# plot a tensor channel
+plot_channel &lt;- function(channel) {
+  rotate &lt;- function(x) t(apply(x, 2, rev))
+  image(rotate(channel), axes = FALSE, asp = 1)
+}
+
+# plot the channels of a layout ouput (activation)
+plotActivations &lt;- function(.activations, .index){
+  layer_inpected &lt;- .activations[[.index]]
+  par(mfrow=c(dim(layer_inpected)[4]/5,5), mar=c(0.1,0.1,0.1,0.1))
+  for(i in 1:dim(layer_inpected)[4]) plot_channel(layer_inpected[1,,,i])
+}
+
+# look the 2D layers activations
+plotActivations(activations, 1) # conv2D - tanh</code></pre>
+<p><img src="/post/2019-01-25-tensorflow-and-keras-with-r_files/figure-html/activations-1.png" width="672" /></p>
+<pre class="r"><code>plotActivations(activations, 2) # max pooling</code></pre>
+<p><img src="/post/2019-01-25-tensorflow-and-keras-with-r_files/figure-html/activations-2.png" width="672" /></p>
+<pre class="r"><code>plotActivations(activations, 3) # conv2D - tanh</code></pre>
+<p><img src="/post/2019-01-25-tensorflow-and-keras-with-r_files/figure-html/activations-3.png" width="672" /></p>
+<pre class="r"><code>plotActivations(activations, 4) # max pooling</code></pre>
+<p><img src="/post/2019-01-25-tensorflow-and-keras-with-r_files/figure-html/activations-4.png" width="672" /></p>
+</div>

@@ -41,7 +41,7 @@
     <item>
       <title>Data Analysis</title>
       <link>/tags/data-analysis/</link>
-      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-analysis/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>En Us</title>
       <link>/tags/en-us/</link>
-      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/en-us/</guid>
       <description></description>
@@ -147,6 +147,15 @@
     </item>
     
     <item>
+      <title>Keras</title>
+      <link>/tags/keras/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/keras/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Knn</title>
       <link>/tags/knn/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
@@ -176,7 +185,7 @@
     <item>
       <title>Machine Learning</title>
       <link>/tags/machine-learning/</link>
-      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/machine-learning/</guid>
       <description></description>
@@ -185,7 +194,7 @@
     <item>
       <title>Mnist</title>
       <link>/tags/mnist/</link>
-      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/mnist/</guid>
       <description></description>
@@ -221,7 +230,7 @@
     <item>
       <title>Neural Network</title>
       <link>/tags/neural-network/</link>
-      <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/neural-network/</guid>
       <description></description>
@@ -350,6 +359,15 @@
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/tcx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tensorflow</title>
+      <link>/tags/tensorflow/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tensorflow/</guid>
       <description></description>
     </item>
     

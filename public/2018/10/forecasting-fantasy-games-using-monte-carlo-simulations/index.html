@@ -261,7 +261,7 @@ if (!doNotTrack) {
 
 
 <p>The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using <code>Monte Carlo</code> simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.</p>
-<!-- more -->
+<!--more-->
 <div id="abstract" class="section level2">
 <h2>Abstract</h2>
 <p>The season of <a href="https://en.wikipedia.org/wiki/American_football">American football</a> is back, and with it the <a href="http://fantasy.nfl.com/">Fantasy</a>, the already traditional online game which you bring your friends or coworkers to play together in a virtual league, where each member rosters <a href="https://www.nfl.com/">NFL’s</a> players on virtual teams and hoping that they will score well in their real life games. The real life player’s score goes to your virtual team score.</p>
@@ -1583,23 +1583,23 @@ matchups.points %&gt;%
 <pre class="r"><code># seeing the first nested data.frame
 matchups.points[1,]$home.roster[[1]]</code></pre>
 <pre><code>## # A tibble: 15 x 7
-##     src_id name           position rosterSlot points    id points.range   
-##      &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt; &lt;list&gt;         
-##  1 2558125 Patrick Mahom~ QB       QB           15.8 13116 &lt;tibble [9 x 2~
-##  2 2507164 Adrian Peters~ RB       RB            4.2  8658 &lt;tibble [9 x 2~
-##  3 2543773 James White    RB       RB           13.7 11747 &lt;tibble [9 x 2~
-##  4 2508061 Antonio Brown  WR       WR           22.1  9988 &lt;tibble [9 x 2~
-##  5 2556370 Michael Thomas WR       WR            7.4 12652 &lt;tibble [9 x 2~
-##  6 2558266 George Kittle  TE       TE            8.3 13299 &lt;tibble [9 x 2~
-##  7 2555430 Alex Collins   RB       W/R           6.6 12628 &lt;tibble [8 x 2~
-##  8    1581 DeSean Jackson WR       BN            0    9075 &lt;tibble [4 x 2~
-##  9 2540158 Zach Ertz      TE       BN           17   11247 &lt;tibble [10 x ~
-## 10 2540160 Jordan Reed    TE       BN            2.1 11248 &lt;tibble [9 x 2~
-## 11 2558063 Deshaun Watson QB       BN           21   13113 &lt;tibble [9 x 2~
-## 12 2558865 Chris Carson   RB       BN           12.7 13364 &lt;tibble [8 x 2~
-## 13 2559169 Austin Ekeler  RB       BN           11.9 13404 &lt;tibble [6 x 2~
-## 14 2507232 Mason Crosby   K        K             3    8742 &lt;tibble [10 x ~
-## 15  100011 Green Bay Pac~ DEF      DEF           2     523 &lt;tibble [8 x 2~</code></pre>
+##     src_id name            position rosterSlot points    id points.range   
+##      &lt;int&gt; &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt; &lt;list&gt;         
+##  1 2558125 Patrick Mahomes QB       QB           15.8 13116 &lt;tibble [9 x 2~
+##  2 2507164 Adrian Peterson RB       RB            4.2  8658 &lt;tibble [9 x 2~
+##  3 2543773 James White     RB       RB           13.7 11747 &lt;tibble [9 x 2~
+##  4 2508061 Antonio Brown   WR       WR           22.1  9988 &lt;tibble [9 x 2~
+##  5 2556370 Michael Thomas  WR       WR            7.4 12652 &lt;tibble [9 x 2~
+##  6 2558266 George Kittle   TE       TE            8.3 13299 &lt;tibble [9 x 2~
+##  7 2555430 Alex Collins    RB       W/R           6.6 12628 &lt;tibble [8 x 2~
+##  8    1581 DeSean Jackson  WR       BN            0    9075 &lt;tibble [4 x 2~
+##  9 2540158 Zach Ertz       TE       BN           17   11247 &lt;tibble [10 x ~
+## 10 2540160 Jordan Reed     TE       BN            2.1 11248 &lt;tibble [9 x 2~
+## 11 2558063 Deshaun Watson  QB       BN           21   13113 &lt;tibble [9 x 2~
+## 12 2558865 Chris Carson    RB       BN           12.7 13364 &lt;tibble [8 x 2~
+## 13 2559169 Austin Ekeler   RB       BN           11.9 13404 &lt;tibble [6 x 2~
+## 14 2507232 Mason Crosby    K        K             3    8742 &lt;tibble [10 x ~
+## 15  100011 Green Bay Pack~ DEF      DEF           2     523 &lt;tibble [8 x 2~</code></pre>
 <pre class="r"><code># look the second level dataframe
 matchups.points[1,]$home.roster[[1]][1,]$points.range[[1]]</code></pre>
 <pre><code>## # A tibble: 9 x 2
@@ -1743,10 +1743,10 @@ points
 Mules
 </td>
 <td style="text-align:right;">
-92.0
+91.5
 </td>
 <td style="text-align:right;">
-106.6
+106.7
 </td>
 </tr>
 <tr>
@@ -1754,7 +1754,7 @@ Mules
 Steelers
 </td>
 <td style="text-align:right;">
-92.6
+92.0
 </td>
 <td style="text-align:right;">
 106.2
@@ -1765,10 +1765,10 @@ Steelers
 Robots
 </td>
 <td style="text-align:right;">
-77.9
+76.9
 </td>
 <td style="text-align:right;">
-105.3
+105.1
 </td>
 </tr>
 <tr>
@@ -1776,10 +1776,10 @@ Robots
 Giants
 </td>
 <td style="text-align:right;">
-68.5
+68.2
 </td>
 <td style="text-align:right;">
-104.1
+104.3
 </td>
 </tr>
 <tr>
@@ -1787,10 +1787,10 @@ Giants
 Bikers
 </td>
 <td style="text-align:right;">
-31.5
+31.8
 </td>
 <td style="text-align:right;">
-99.6
+99.9
 </td>
 </tr>
 <tr>
@@ -1798,7 +1798,7 @@ Bikers
 Pfeiferians
 </td>
 <td style="text-align:right;">
-22.1
+23.1
 </td>
 <td style="text-align:right;">
 98.0
@@ -1809,10 +1809,10 @@ Pfeiferians
 Riders
 </td>
 <td style="text-align:right;">
-8.0
+8.6
 </td>
 <td style="text-align:right;">
-94.8
+95.0
 </td>
 </tr>
 <tr>
@@ -1820,10 +1820,10 @@ Riders
 Bugre
 </td>
 <td style="text-align:right;">
-7.4
+8.1
 </td>
 <td style="text-align:right;">
-92.8
+92.7
 </td>
 </tr>
 </tbody>
@@ -1889,10 +1889,10 @@ home.nickname
 Bugre
 </td>
 <td style="text-align:right;">
-7.4
+8.1
 </td>
 <td style="text-align:right;">
-92.6
+92.0
 </td>
 <td style="text-align:left;">
 Steelers
@@ -1903,10 +1903,10 @@ Steelers
 Giants
 </td>
 <td style="text-align:right;">
-68.5
+68.2
 </td>
 <td style="text-align:right;">
-31.5
+31.8
 </td>
 <td style="text-align:left;">
 Bikers
@@ -1917,10 +1917,10 @@ Bikers
 Mules
 </td>
 <td style="text-align:right;">
-92.0
+91.5
 </td>
 <td style="text-align:right;">
-8.0
+8.6
 </td>
 <td style="text-align:left;">
 Riders
@@ -1931,10 +1931,10 @@ Riders
 Robots
 </td>
 <td style="text-align:right;">
-77.9
+76.9
 </td>
 <td style="text-align:right;">
-22.1
+23.1
 </td>
 <td style="text-align:left;">
 Pfeiferians
@@ -2015,13 +2015,13 @@ home.nickname
 Bugre
 </td>
 <td style="text-align:right;">
-7.4
+8.1
 </td>
 <td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:right;">
-92.8
+92.7
 </td>
 <td style="text-align:right;">
 112.6
@@ -2042,7 +2042,7 @@ FALSE
 TRUE
 </td>
 <td style="text-align:right;">
-92.6
+92.0
 </td>
 <td style="text-align:left;">
 Steelers
@@ -2053,19 +2053,19 @@ Steelers
 Giants
 </td>
 <td style="text-align:right;">
-68.5
+68.2
 </td>
 <td style="text-align:left;">
 TRUE
 </td>
 <td style="text-align:right;">
-104.1
+104.3
 </td>
 <td style="text-align:right;">
 108.7
 </td>
 <td style="text-align:right;">
--4.0
+-4.1
 </td>
 <td style="text-align:right;">
 -11.5
@@ -2074,13 +2074,13 @@ TRUE
 97.2
 </td>
 <td style="text-align:right;">
-99.6
+99.9
 </td>
 <td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:right;">
-31.5
+31.8
 </td>
 <td style="text-align:left;">
 Bikers
@@ -2091,13 +2091,13 @@ Bikers
 Mules
 </td>
 <td style="text-align:right;">
-92.0
+91.5
 </td>
 <td style="text-align:left;">
 TRUE
 </td>
 <td style="text-align:right;">
-106.6
+106.7
 </td>
 <td style="text-align:right;">
 98.4
@@ -2112,13 +2112,13 @@ TRUE
 90.1
 </td>
 <td style="text-align:right;">
-94.8
+95.0
 </td>
 <td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:right;">
-8.0
+8.6
 </td>
 <td style="text-align:left;">
 Riders
@@ -2129,13 +2129,13 @@ Riders
 Robots
 </td>
 <td style="text-align:right;">
-77.9
+76.9
 </td>
 <td style="text-align:left;">
 TRUE
 </td>
 <td style="text-align:right;">
-105.3
+105.1
 </td>
 <td style="text-align:right;">
 113.6
@@ -2156,7 +2156,7 @@ TRUE
 FALSE
 </td>
 <td style="text-align:right;">
-22.1
+23.1
 </td>
 <td style="text-align:left;">
 Pfeiferians
@@ -2573,6 +2573,24 @@ DEF
           <div class="media">
             
             <div class="media-body">
+              <a class="link-unstyled" href="/2019/01/tensorflow-and-keras-with-r/">
+                <h3 class="media-heading">Tensorflow and Keras with R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’ll start series of post about Keras, a high-level neural networks API developed with a focus on enabling fast experimentation, running on top of TensorFlow, but using its R interface. To start, we’ll review our LeNet implemantation with MXNET for MNIST problem, a traditional “Hello World” in the Neural Network world.
+About Keras in RKeras is an API for building neural networks written in Python capable of running on top of Tensorflow, CNTK, or Theano.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
               <a class="link-unstyled" href="/2019/01/slicing-and-dicing-agile-user-stories/">
                 <h3 class="media-heading">Workshop Agile User Stories Slicing</h3>
               </a>
@@ -2733,25 +2751,6 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
             <hr>
           </div>
         
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="/2018/01/putting-your-workout-to-move/">
-                <h3 class="media-heading">Putting your workout to move</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Jan 1, 2018
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
-Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
-library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &lt;- &quot;11654237848.</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
       </div>
     </div>
     <div class="modal-footer">
@@ -2759,7 +2758,7 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
          data-message-zero="no post found"
          data-message-one="1 post found"
          data-message-other="{n} posts found">
-         16 posts found
+         17 posts found
       </p>
     </div>
   </div>

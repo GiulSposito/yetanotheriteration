@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2019/01/tensorflow-and-keras-with-r/</loc>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2019/01/slicing-and-dicing-agile-user-stories/</loc>
     <lastmod>2019-01-24T00:00:00+00:00</lastmod>
   </url>
@@ -123,19 +128,19 @@
   
   <url>
     <loc>/tags/data-analysis/</loc>
-    <lastmod>2018-02-12T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/data-science/</loc>
-    <lastmod>2018-10-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/en-us/</loc>
-    <lastmod>2018-10-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -200,6 +205,12 @@
   </url>
   
   <url>
+    <loc>/tags/keras/</loc>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/knn/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -219,13 +230,13 @@
   
   <url>
     <loc>/tags/machine-learning/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/mnist/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -249,7 +260,7 @@
   
   <url>
     <loc>/tags/neural-network/</loc>
-    <lastmod>2018-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -273,7 +284,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -350,6 +361,12 @@
   </url>
   
   <url>
+    <loc>/tags/tensorflow/</loc>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/text-mining/</loc>
     <lastmod>2018-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -375,7 +392,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
