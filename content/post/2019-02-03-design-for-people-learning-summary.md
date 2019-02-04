@@ -1,32 +1,41 @@
 ---
-title: Design For People Learning - Summary
-author: Giuliano Sposito
+title: "Design For People Learning - Summary"
+author: "Giuliano Sposito"
 date: '2019-02-03'
 slug: design-for-people-learning-summary
-categories:
-  - agile
 tags:
-  - en-US
-  - lean
-  - agile
-  - lean transformation
-  - animation
-  - culture change
+- en-US
+- lean
+- agile
+- lean transformation
+- animation
+- culture change
+categories: agile
 ---
 
-## Summary
+Much of the my work about lean/digital consulting, involves learning. Learning new concepts, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the changes or transformations processes. In this post, I'll explore the key concepts in the great [Julie Dirksen's](https://twitter.com/usablelearning) ["Design for How People Learning"](https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0) book, that I frequently revisit and use when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in your daily work.
 
-- A successful learning experience doesn't just involve a learner knowing more-it's about them being able to do more with that knowledge.
-- Sometimes a learner's main gap is knowledge, but more frequently knowledge and information are just the supplies the learner needs to develop skills.
-- Use the question "Is it reasonable to think that someone can be proficient without practice?" to identify skills gaps. If the answer is no, ensure that learners have opportunities to practice and develop those skills.
-- You need to consider the motivations and attitudes of your learners. If they know how to do something, are there other reasons why they aren't succeeding?
-- Change can be hard because learners may have deeply ingrained patterns they have to unlearn, and you need to expect that as part of the change process.
-- The environment needs to support the learner. People are much less likely to be successful if they encounter roadblocks when they try to apply what they've learned.
-- Sometimes it's not a learning problem, but rather a problem of communication, direction, or leadership. Recognizing those instances can save a lot of effort in wrong directions.
-- If you have a well-defined problem, you can design much better learning solutions. It's always worth clearly defining the problem before trying to define the solution.
+<!--more-->
 
+## Introduction
 
-## 1) Where Do We Start
+[Julie Dirksen](https://twitter.com/usablelearning) is an independent consultant and instructional designer with more than 15 years experience creating highly interactive e-Learning experiences for clients ranging from Fortune 500 companies, to innovative technology startups, to major grant-funded research initiatives. Ms. Dirksen holds an M.S. degree in Instructional Systems Technology from Indiana University.  She is also an adjunct faculty member in the Visualization Department at the Minneapolis College of Art and Design, where she has designed and taught courses in Project Management, Instructional Design and Cognitive Psychology.
+
+In [Design For How People Learn](https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0), Julie explores how to use the key principles behind learning, memory, and attention to create materials that enable your audience to both gain and retain the knowledge and skills you're sharing. Using accessible visual metaphors and concrete methods and examples she teaches you how to leverage the fundamental concepts of instructional design, preparing the public to a real mindset transformation.
+
+## Learning Experience
+
+A successful learning experience doesn't just involve a learner knowing more-it's about them being able to do more with that knowledge. Sometimes a learner's main gap is knowledge, but more frequently knowledge and information are just the supplies the learner needs to develop skills.
+
+Use the question "*Is it reasonable to think that someone can be proficient without practice?*" to identify skills gaps. If the answer is no, ensure that learners have opportunities to practice and develop those skills. You need to consider the motivations and attitudes of your learners. If they know how to do something, are there other reasons why they aren't succeeding? *Change can be hard because learners may have deeply ingrained patterns they have to unlearn*, and you need to expect that as part of the change process.
+
+The environment needs to support the learner. 
+
+People are much less likely to be successful if they encounter roadblocks when they try to apply what they've learned. Sometimes it's not a learning problem, but rather a problem of communication, direction, or leadership. Recognizing those instances can save a lot of effort in wrong directions. *If you have a well-defined problem, you can design much better learning solutions*, it's always worth clearly defining the problem before trying to define the solution.
+
+![Design for How People Learn](https://images-na.ssl-images-amazon.com/images/I/51M0cX78XnL._SX384_BO1,204,203,200_.jpg)
+
+## Where Do We Start
 
 ### Identifying and Bridging Gaps
 
@@ -51,7 +60,7 @@ Communication
 - Are the goals being clearly communicated?
 
 
-## 2. Who Are Your Learners?
+## Who Are Your Learners?
 
 - You want to know about your learners-not just about their demographics, but about their motivation, likes and dislikes, skill level, and about how they understand the world.
 - Provide more structure for your new learners, and more resources and autonomy for your experienced learners.
@@ -59,9 +68,9 @@ Communication
 - Learning experiences should be two-way interactions, so you know when learners understand correctly, and when they don't.
 - All of the theory in the world won't help you as much as spending time in your learners' world, and testing your designs early and often.
 
-## 3. What's The Goal?
+## What's The Goal?
 
-- Use questions like "Why, why, no really, why?" and "What bad thing will happen if they don't know?" to uncover the real reason for learning.
+- Use questions like "*Why, why, no really, why?*" and "*What bad thing will happen if they don't know?*" to uncover the real reason for learning.
 - Define the problem before coming up with solutions, to ensure you are actually solving the real problem and not a problem you don't have.
 - Use the two questions "Is this something the learner would actually do in the real world?" and "Can I tell when they've done it?" to make sure your learning objectives are useful and usable.
 - Decide how sophisticated your learner's understanding needs to be, and how proficient they need to be, and then design accordingly.
