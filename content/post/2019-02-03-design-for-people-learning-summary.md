@@ -11,12 +11,13 @@ tags:
 - lean transformation
 - animation
 - culture change
-categories: agile
+categories:
+  - agile
 thumbnailImage: images/design_learning_tn.png
 thumbnailImagePosition: left
 ---
 
-Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I'll explore and summarize the key concepts in the great [Julie Dirksen's](https://twitter.com/usablelearning) ["Design for How People Learning"](https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0) book. I frequently review these when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.
+Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I'll explore and summarize the key concepts in the great [Julie Dirksen's](https://twitter.com/usablelearning) ["Design for How People Learning"](https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0) book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.
 
 <!--more-->
 
