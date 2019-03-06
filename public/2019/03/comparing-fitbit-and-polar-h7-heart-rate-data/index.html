@@ -1,0 +1,1821 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.47.1 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Comparing Fitbit and Polar H7 heart rate data</title>
+    <meta name="author" content="Giuliano Sposito">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.">
+    <meta property="og:description" content="How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Comparing Fitbit and Polar H7 heart rate data">
+    <meta property="og:url" content="/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+    <meta property="og:site_name" content="Yet Another Iteration">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Yet Another Iteration">
+    <meta name="twitter:description" content="How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.">
+    
+      <meta name="twitter:creator" content="@gsposito">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+    
+
+    
+      <meta property="og:image" content="/images/fitbit_polar_tn.png">
+    
+    
+      <meta property="og:image" content="/images/fitbit_polar_cover.jpg">
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-112393378-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/fitbit_polar_cover.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Comparing Fitbit and Polar H7 heart rate data
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-03-05T00:00:00Z">
+        
+  March 5, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.</p>
+<!--more-->
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this post we will compare acquisition of heart rate data performed by two different devices in the same session training: a sport <em>wearable</em> wristband called <strong><a href="https://www.fitbit.com/">Fitbit</a></strong> and a <strong><a href="https://www.polar.com/br">Polar</a></strong> heart monitoring.</p>
+<p>How good is the <strong>Fitbit</strong> measures comparing to <strong>Polar H7</strong>? They agree with the measures? How the differences are distributed? I did a MTB session using both devices, now I can use R to access the data and compare the measures.</p>
+<div id="the-devices" class="section level3">
+<h3>The devices</h3>
+<div id="fitbit-charge-hr" class="section level4">
+<h4>Fitbit Charge HR</h4>
+<p>The bracelet model used was <strong><a href="https://www.fitbit.com/be/chargehr">Fitbit ChargeHR</a></strong>, which is no longer marketed, but use the same technology embedded in newer models. The <strong>Fitbit</strong> uses a proprietary technology called <em><a href="https://www.fitbit.com/purepulse">PurePulse</a></em> a to perform a heart rate measurement. When your heart beats, yours capillaries in the skin expand and contract based on changes in blood volume. The light of the <em>PurePulse LEDs</em> on your Fitbit device reflect on the skin to detect changes in blood volume, and finely tuned algorithms are applied to measure heart rate automatically and continuously.</p>
+<div class="figure">
+<img src="/images/fitbit.jpg" alt="fitbit Charge HR" />
+<p class="caption">fitbit Charge HR</p>
+</div>
+</div>
+<div id="polar-h7" class="section level4">
+<h4>Polar H7</h4>
+<p>The heart rate monitor used was <strong><a href="https://www.polar.com/us-en/products/accessories/h10_heart_rate_sensor">Polar H7 Heart Rate Sensor</a></strong>, which works as an Electrocardiogram, or in other words, electrodes in contact with the skin detect the electrical signal triggered by the heart in each heart beat.</p>
+<div class="figure">
+<img src="/images/polar.png" alt="Polar H7" />
+<p class="caption">Polar H7</p>
+</div>
+<p>In this way we will compare the quality and accuracy of heart rate data obtained from two very different technologies.</p>
+</div>
+</div>
+</div>
+<div id="data-acquisitions" class="section level2">
+<h2>Data Acquisitions</h2>
+<p>The first steps is to get the devices data, and for each one we will use a different strategy, for <strong>Fitbit</strong> we’ll access the data via <code>Web API</code>, and for the <strong>Polar H7</strong> we’ll extract from the training session <code>GPX file</code>.</p>
+<div id="fitbit" class="section level3">
+<h3>Fitbit</h3>
+<p>The <strong>Fitbit</strong> data is availabe throught an <a href="https://dev.fitbit.com/build/reference/web-api/">Web API</a> in the Fitbit’s <a href="https://dev.fitbit.com/">Development Portal</a>. It’s necessary to use <a href="https://oauth.net/2/">Oauth 2.0</a> protocol for authorization and authentication, so you must obtain an <a href="https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/">ID and Secret</a> doing a registration in the portal first.</p>
+<p>Follow the steps:</p>
+<ol style="list-style-type: decimal">
+<li>Log in and go to <a href="https://dev.fitbit.com/apps/new">Manage &gt; Register An App</a></li>
+<li>enter whatever you want for Application name and description</li>
+<li>in the application website box, any valid URL (usually I create a link from a google doc)</li>
+<li>for organization put “self”</li>
+<li>for organization website any valid URL</li>
+<li>for OAuth 2.0 Application Type select “Personal”</li>
+<li>for Callback URL put in <a href="http://localhost:1410/" class="uri">http://localhost:1410/</a></li>
+<li>for Default Access Type select “Read Only”</li>
+<li>click “save”</li>
+</ol>
+<p>After that, you should now be at a page that shows your</p>
+<ol style="list-style-type: decimal">
+<li>The App Name you choose</li>
+<li>OAuth 2.0 Client ID</li>
+<li>Client Secret</li>
+<li>URL Callback you defined</li>
+<li>Authentication URL</li>
+<li>Refresh Token URL</li>
+</ol>
+<p>These parameters will be used to get or renew the <a href="https://www.oauth.com/oauth2-servers/access-tokens/">API Access Token</a>. Fill a <code>fitbit_config.yml</code> configuration file (see the appendix at the end of this post) with them and we’ll be ready to request and get the <strong>Fitbit</strong> data using the<code>httr package</code>.</p>
+<pre class="r"><code># loading ID and Secret 
+# (see the post apendix)
+library(yaml)
+.config &lt;- yaml.load_file(&quot;./config/fitbit_config.yml&quot;)
+
+# performing authentication and autorization
+library(httr)
+fb_app   &lt;- oauth_app(.config$app_name, .config$client_id, .config$client_secret)
+fb_oauth &lt;- oauth_endpoint(authorize = .config$auth_uri, access = .config$refresh_token_uri)
+token    &lt;- oauth2.0_token(fb_oauth, fb_app, scope = c(&quot;activity&quot;,&quot;heartrate&quot;,&quot;sleep&quot;), cache = F, use_basic_auth = T)</code></pre>
+<p>The <code>oauth_app</code>,<code>oauth_endpoint</code> and <code>oauth2.0_token</code> functions execute the authentication and authorization flow of the<code>OAuth 2.0</code> protocol to obtain the <code>Access Token</code>, which must be passed for each request made to the <code>Fitbit Web API</code>. When executing these function the browser will be called for you to authenticate in the site, and then the callback URL will be called by passing the <code>authentication token</code> confirming that you have access to the APIs.</p>
+<p>Then, we can call the <em><a href="https://dev.fitbit.com/build/reference/web-api/heart-rate/">endpoint</a></em> responsible for querying heart rate information.</p>
+<pre class="r"><code># request HR data
+# Resource URL - There are two acceptable formats for retrieving time series data:
+#
+# GET https://api.fitbit.com/1/user/[user-id]/activities/heart/date/[date]/[period].json
+# GET https://api.fitbit.com/1/user/[user-id]/activities/heart/date/[base-date]/[end-date].json
+#
+# user-id:   The encoded ID of the user. Use &quot;-&quot; (dash) for current logged-in user.
+# base-date: The range start date, in the format yyyy-MM-dd or today.
+# end-date:  The end date of the range.
+# date:      The end date of the period specified in the format yyyy-MM-dd or today.
+# period:      The range for which data will be returned. Options are 1d, 7d, 30d, 1w, 1m.
+
+# shortcut to define a url to get heart rate
+library(glue)
+gen_hr_url &lt;- function(.user_id=&quot;-&quot;,.date=&quot;today&quot;,.period=&quot;1d&quot;)
+  glue(&quot;https://api.fitbit.com/1/user/{.user_id}/activities/heart/date/{.date}/{.period}.json&quot;)
+
+
+# make a HTTP GET 
+# 2019-02-24 is the date of my MTB 
+resp &lt;- GET(gen_hr_url(.date=&quot;2019-02-24&quot;), conf=config(token=token))
+
+# check if the result is 200 (OK)
+resp$status_code</code></pre>
+<pre><code>## [1] 200</code></pre>
+<p>If everything went well, the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">http request</a> returned <a href="https://www.w3.org/%20Protocols%20/%20rfc2616%20/%20rfc2616-sec10.html">status 200</a>, then we can process the <a href="https://www.w3schools.com/js/js_json_intro.asp">json</a> of the response content to extract the requested heart rate data.</p>
+<pre class="r"><code># process response content
+library(jsonlite)
+data &lt;- fromJSON(content(resp, &quot;text&quot;))
+
+# get the heart rate data 
+# see the response json format in https://dev.fitbit.com/build/reference/web-api/heart-rate/ 
+hrdt &lt;- data$`activities-heart-intraday`$dataset
+
+# convert the &quot;text time data&quot; in in date-time and create a tibble
+library(tidyverse)
+library(lubridate)
+hrdt %&gt;% 
+  as.tibble() %&gt;% 
+  mutate( datetime = paste0(&quot;2019-02-24 &quot;, time) ) %&gt;% # adding &quot;day&quot; to time info
+  mutate( datetime = ymd_hms(datetime) ) %&gt;% 
+  rename(fitbit_hr = value) %&gt;% 
+  select(datetime, fitbit_hr) -&gt; fitbit_hr
+
+# let&#39;s see we got
+library(knitr)
+library(kableExtra)
+fitbit_hr %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+datetime
+</th>
+<th style="text-align:right;">
+fitbit_hr
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:00:00
+</td>
+<td style="text-align:right;">
+73
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:01:00
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:02:00
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:03:00
+</td>
+<td style="text-align:right;">
+72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:04:00
+</td>
+<td style="text-align:right;">
+77
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:05:00
+</td>
+<td style="text-align:right;">
+74
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:06:00
+</td>
+<td style="text-align:right;">
+77
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:07:00
+</td>
+<td style="text-align:right;">
+72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:08:00
+</td>
+<td style="text-align:right;">
+73
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 00:09:00
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Fitbit’s</strong> heart rate data obtained are minute-by-minute measurements of how much the heart beated, i.e., heart beats per minute, it is possible to plot the heart rate captured by the <em>wearable</em> throughout the day.</p>
+<pre class="r"><code># ploting HR x Datatime
+fitbit_hr %&gt;% 
+  ggplot() +
+  geom_line(aes(x=datetime, y=fitbit_hr, color=fitbit_hr)) +
+  scale_color_gradient(name=&quot;heart rate (bpm)&quot;,low=&quot;green&quot;, high=&quot;red&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/fbHeartHate-1.png" width="672" /></p>
+</div>
+<div id="polar-h7-1" class="section level3">
+<h3>Polar H7</h3>
+<p>Unlike the <strong>Fitbit</strong>, to access the heart rate data of the <strong>Polar H7</strong>, the easiest way is to pull the data from the App used in to track the training session, at that time I used the <a href="https://www.strava.com/">Strava Application</a> connected to the heart monitor by bluetooth. As we did in the post <strong><a href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/">“Ploting your mtb track with R”</a></strong>, we download the <a href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a> file containing the data recorded during the exercise session, directly from the <strong>Strava</strong> website, and then process the XML to extract the data we are looking for.</p>
+<pre class="r"><code># read gpx file
+library(XML)
+gpx_file &lt;- htmlTreeParse(&quot;./data/Visconde_de_Sotello_e_Moenda.gpx&quot;, useInternalNodes = T)
+
+# trackpoint XML  structure 
+#
+# &lt;trkpt lat=&quot;-22.7036870&quot; lon=&quot;-46.7560630&quot;&gt;
+#   &lt;ele&gt;675.1&lt;/ele&gt;
+#   &lt;time&gt;2019-02-24T11:13:36Z&lt;/time&gt;
+#   &lt;extensions&gt;
+#     &lt;gpxtpx:TrackPointExtension&gt;
+#       &lt;gpxtpx:hr&gt;105&lt;/gpxtpx:hr&gt;
+#     &lt;/gpxtpx:TrackPointExtension&gt;
+#   &lt;/extensions&gt;
+# &lt;/trkpt&gt;
+
+# extract (by xpath) times
+dtime &lt;- xpathSApply(gpx_file, path = &quot;//trkpt/time&quot;, xmlValue) 
+hr    &lt;- xpathSApply(gpx_file, path = &quot;//trkpt/extensions/trackpointextension/hr&quot;, xmlValue) 
+
+# create a tibble
+polar_hr &lt;- tibble(
+  datetime  = ymd_hms(dtime),
+  polar_hr = as.integer(hr)
+)
+
+# overview
+summary(polar_hr)</code></pre>
+<pre><code>##     datetime                      polar_hr    
+##  Min.   :2019-02-24 11:13:36   Min.   :101.0  
+##  1st Qu.:2019-02-24 12:05:49   1st Qu.:135.0  
+##  Median :2019-02-24 13:12:44   Median :143.0  
+##  Mean   :2019-02-24 13:12:32   Mean   :144.1  
+##  3rd Qu.:2019-02-24 14:24:18   3rd Qu.:154.0  
+##  Max.   :2019-02-24 15:17:45   Max.   :180.0</code></pre>
+<pre class="r"><code># lets see the content
+polar_hr %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+datetime
+</th>
+<th style="text-align:right;">
+polar_hr
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:13:36
+</td>
+<td style="text-align:right;">
+105
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:13:57
+</td>
+<td style="text-align:right;">
+105
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:13:59
+</td>
+<td style="text-align:right;">
+101
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:00
+</td>
+<td style="text-align:right;">
+102
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:01
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:02
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:03
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:04
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:05
+</td>
+<td style="text-align:right;">
+104
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 11:14:06
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+</tbody>
+</table>
+<p>As <strong>Fitbit’s</strong> data, the heart rate from the <strong>Polar H7</strong> obtained are minute-by-minute beats rate, it is possible to visualize the heart rate along the training session.</p>
+<pre class="r"><code># Visualize dataset
+polar_hr %&gt;% 
+  ggplot() +
+  geom_line(aes(x=datetime, y=polar_hr, color=polar_hr)) +
+  scale_color_gradient(name=&quot;heart rate (bpm)&quot;,low=&quot;green&quot;, high=&quot;red&quot;) + 
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/plotPolar-1.png" width="672" /></p>
+</div>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<div id="comparing-measurements" class="section level3">
+<h3>Comparing measurements</h3>
+<p>With the dataset at hand, we now can compare the measurements obtained by the two devices. In both measurements, the heart rate is measured in <em>beats per minute</em> and stored minute by minute, let’s join them by timestamp.</p>
+<pre class="r"><code># join both datasets by the timestamp
+# the datetime in polar_hr data are in UTC and the fitbit are in local time
+# ajusting the &quot;timezone&quot; and merging both devices removing 2 hours from polar data
+polar_hr %&gt;% 
+  mutate(datetime = datetime - hours(2)) %&gt;% 
+  inner_join(fitbit_hr, by = &quot;datetime&quot;) -&gt; hr_data
+
+
+# let&#39;s see what we got
+hr_data %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+datetime
+</th>
+<th style="text-align:right;">
+polar_hr
+</th>
+<th style="text-align:right;">
+fitbit_hr
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:14:00
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:right;">
+106
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:15:00
+</td>
+<td style="text-align:right;">
+108
+</td>
+<td style="text-align:right;">
+109
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:16:00
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:17:00
+</td>
+<td style="text-align:right;">
+114
+</td>
+<td style="text-align:right;">
+112
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:18:00
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:right;">
+113
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:19:00
+</td>
+<td style="text-align:right;">
+113
+</td>
+<td style="text-align:right;">
+114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:20:00
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:21:00
+</td>
+<td style="text-align:right;">
+116
+</td>
+<td style="text-align:right;">
+116
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:22:00
+</td>
+<td style="text-align:right;">
+118
+</td>
+<td style="text-align:right;">
+117
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:23:00
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117
+</td>
+</tr>
+</tbody>
+</table>
+<p>Ploting both data toghether.</p>
+<pre class="r"><code># lets plot the dataset
+hr_data %&gt;% 
+  gather(device, hr, -datetime) %&gt;% 
+  ggplot(aes(x=datetime, y=hr, group=device)) +
+  geom_line(aes(color=device)) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/plotHRdata-1.png" width="672" /></p>
+<p>We can see that the measurements of <strong>Fitbit</strong> follows the <strong>Polar H7</strong> data with remarkable proximity, we can better evaluate the relation between them plotting one against other.</p>
+<pre class="r"><code># lets see the correlation
+hr_data %&gt;% 
+  ggplot(aes(x=polar_hr, y=fitbit_hr)) +
+  geom_point() +
+  stat_smooth(method = &quot;lm&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/corrPlot-1.png" width="672" /></p>
+<p>The correlation between the two measurements, although not exactly accurate, is clear, let’s test it</p>
+<pre class="r"><code># correlation test
+cor.test(x=hr_data$polar_hr, y=hr_data$fitbit_hr, alternative = &quot;two.sided&quot;)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  hr_data$polar_hr and hr_data$fitbit_hr
+## t = 21.59, df = 143, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.8301432 0.9082697
+## sample estimates:
+##       cor 
+## 0.8747767</code></pre>
+<p>The correlation are 0.87 and significant (p-value &lt; 2.2e-16). We can do the linear regression of the <strong>Fitbit</strong> measurements on the <strong>Polar h7</strong> and analyze how the residues behaves.</p>
+<pre class="r"><code># check the quality of a linear correlation
+model &lt;- lm(fitbit_hr~polar_hr, hr_data)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = fitbit_hr ~ polar_hr, data = hr_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -14.3036  -4.5178   0.0902   4.8933  26.4926 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 27.95671    5.26854   5.306 4.17e-07 ***
+## polar_hr     0.79965    0.03704  21.590  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.763 on 143 degrees of freedom
+## Multiple R-squared:  0.7652, Adjusted R-squared:  0.7636 
+## F-statistic: 466.1 on 1 and 143 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>par(mfrow = c(2, 2))
+plot(model)</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/corrModel-1.png" width="672" /></p>
+</div>
+<div id="bland-altman-agreement-analysis" class="section level3">
+<h3>Bland Altman Agreement Analysis</h3>
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/">Bland and Altman</a> published in 1983 the first article as an alternative methodology to the calculation of the coefficient of correlation, methodology used until then. The correlation coefficient does not evaluate agreement and yes association between two measures, very different things.</p>
+<p>The methodology initially proposed by Bland and Altman to evaluate the agreement between two variables (X and Y) starts from a <a href="https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot">graphical view</a> from a dispersion between the difference of the two variables (X - Y) and the average of the two (X + Y) / 2.</p>
+<p>Let’s reproduce the methodology with these data.</p>
+<pre class="r"><code># math for Bland Altman test
+hr_data %&gt;% 
+  mutate(
+    mean      = (polar_hr + fitbit_hr)/2,
+    diff      = fitbit_hr - polar_hr,
+    diff.pct  = (fitbit_hr - polar_hr)/polar_hr,
+    diff.mn   = mean(diff),
+    diff.sd   = sqrt(var(diff)),
+    upper.lim = diff.mn + (2*diff.sd), 
+    lower.lim = diff.mn - (2*diff.sd),
+  ) -&gt; hr_data_ba
+
+# let&#39;s see
+hr_data_ba %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+datetime
+</th>
+<th style="text-align:right;">
+polar_hr
+</th>
+<th style="text-align:right;">
+fitbit_hr
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+diff
+</th>
+<th style="text-align:right;">
+diff.pct
+</th>
+<th style="text-align:right;">
+diff.mn
+</th>
+<th style="text-align:right;">
+diff.sd
+</th>
+<th style="text-align:right;">
+upper.lim
+</th>
+<th style="text-align:right;">
+lower.lim
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:14:00
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:right;">
+106
+</td>
+<td style="text-align:right;">
+104.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.0392157
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:15:00
+</td>
+<td style="text-align:right;">
+108
+</td>
+<td style="text-align:right;">
+109
+</td>
+<td style="text-align:right;">
+108.5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0092593
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:16:00
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+114
+</td>
+<td style="text-align:right;">
+115.5
+</td>
+<td style="text-align:right;">
+-3
+</td>
+<td style="text-align:right;">
+-0.0256410
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:17:00
+</td>
+<td style="text-align:right;">
+114
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:right;">
+113.0
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:right;">
+-0.0175439
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:18:00
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:right;">
+113
+</td>
+<td style="text-align:right;">
+112.5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0089286
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:19:00
+</td>
+<td style="text-align:right;">
+113
+</td>
+<td style="text-align:right;">
+114
+</td>
+<td style="text-align:right;">
+113.5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0088496
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:20:00
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:21:00
+</td>
+<td style="text-align:right;">
+116
+</td>
+<td style="text-align:right;">
+116
+</td>
+<td style="text-align:right;">
+116.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:22:00
+</td>
+<td style="text-align:right;">
+118
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117.5
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-0.0084746
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-02-24 09:23:00
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+117.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+-0.3793103
+</td>
+<td style="text-align:right;">
+7.396573
+</td>
+<td style="text-align:right;">
+14.41384
+</td>
+<td style="text-align:right;">
+-15.17246
+</td>
+</tr>
+</tbody>
+</table>
+<p>In this graph, it’s possible to visualize the bias (how much the differences deviate from the zero value) and the error distribution (the dispersion of the points of the differences around the mean), in addition to outliers and tendencies.</p>
+<p>From the calculation of bias (d) and its standard deviation (sd) it is possible to reach the limits of agreement: d ± 1,96sd, which must be calculated and included in the graph. If the bias presents normal distribution, these limits represent the region where 95% of the differences in the studied cases are found.</p>
+<pre class="r"><code># Bland Altman plot
+hr_data_ba %&gt;% 
+  ggplot(aes(x=mean, y=diff)) + 
+  geom_point() +
+  geom_hline(yintercept=0, color=&quot;grey&quot;) +
+  geom_hline(yintercept=hr_data_ba$diff.mn[1], linetype=2, color=&quot;blue&quot;) +
+  geom_hline(yintercept=hr_data_ba$upper.lim[1], linetype=2, color=&quot;red&quot;) +
+  geom_hline(yintercept=hr_data_ba$lower.lim[1], linetype=2, color=&quot;red&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/baltmanPlot-1.png" width="672" /></p>
+<p>Visually we see that there is no bias (average of the differences is close to zero) and that the dispersion of the differences are within a very small range:</p>
+<ul>
+<li>Bias: -0.3793103</li>
+<li>Dispersion (<span class="math inline">\(2\sigma\)</span>): 14.4138355 bpm</li>
+</ul>
+<p>Before proceeding with the analysis, let’s take a look at the distribution of the differences in measurements of <strong>fitbit</strong> relative to polar <strong>h7</strong>:</p>
+<pre class="r"><code># Overview
+summary(hr_data_ba$diff.pct)</code></pre>
+<pre><code>##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+## -0.1123596 -0.0344828  0.0000000 -0.0004492  0.0324675  0.1830986</code></pre>
+<pre class="r"><code># Visualizing
+hr_data_ba %&gt;% 
+  ggplot() +
+  geom_density(aes(x=diff.pct), color=&quot;blue&quot;, fill=&quot;blue&quot; ) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-03-05-comparing-fitbit-and-polar-h7-heart-rate-data_files/figure-html/diffplot-1.png" width="672" /></p>
+<p>For the Bland-Altman test, what should be evaluated is whether the differences between the variables depend on the measurement size or not. This can be done through a correlation between differences and averages, which should be null.</p>
+<pre class="r"><code># correlation between diff and mean
+cor.test(x=hr_data_ba$mean, y=hr_data_ba$diff, alternative = &quot;two.sided&quot;)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  hr_data_ba$mean and hr_data_ba$diff
+## t = -2.2191, df = 143, p-value = 0.02806
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.3354834 -0.0200386
+## sample estimates:
+##        cor 
+## -0.1824519</code></pre>
+<p>Our numbers showed some correlation, where it should not be found, even with the large <em>p-value</em>. The bias hypothesis may or may not be equal to zero can be tested by a t-test for paired samples.</p>
+<pre class="r"><code># t.test between paired samples
+t.test(x=hr_data_ba$mean, y=hr_data_ba$diff, paired = T)</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  hr_data_ba$mean and hr_data_ba$diff
+## t = 99.873, df = 144, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  138.8213 144.4270
+## sample estimates:
+## mean of the differences 
+##                141.6241</code></pre>
+<p>Here, the bias was practically zero, demonstrating agreement between the measurements of <strong>Fitbit</strong> and <strong>Polar H7</strong>.</p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this post we use the <code>httr package</code> to access a<code>WebAPI</code> using <code>OAuth2.0</code> to get data from <strong>Fitbit</strong> and compare it with that obtained by a <strong>Polar H7</strong>, imported from a <code>GPX file</code></p>
+<p>The <strong>fitbit</strong> captures the heart rate based on the expansion and contraction of the capillaries in the skin and makes this measurement based on the reflection / absorption of LED lights. This method proved to be comparable and in agreement with the measurements obtained in the <strong>Polar H7</strong> heart monitor, which captures the electrical signals of the beat.</p>
+</div>
+<div id="apendix" class="section level2">
+<h2>Apendix</h2>
+<div id="config.yml" class="section level3">
+<h3>config.yml</h3>
+<p>To prevent <em>passwords</em>, <em>IDs</em> and <em>secrets</em> from being hard coded and getting versioned and exposed in <a href="https://github.com/">Github</a> accidentally, I usually create a <a href="https://en.wikipedia.org/wiki/YAML">yaml file</a> and put it in <code>.gitignore</code>. In this code, the <code>yaml file</code> has the following format:</p>
+<pre class="r"><code># registe a new app in Fitbit developer site at # https://dev.fitbit.com/apps/new
+# follow the instruction on https://hydroecology.net/getting-detailed-fitbit-data-with-r/
+# fill these var contents and save as &#39;fitbit_config.yml&#39;
+
+app_name: &quot;&quot;
+client_id: &quot;&quot;
+client_secret: &quot;&quot;
+callback_url: &quot;&quot;
+auth_uri: &quot;&quot;
+refresh_token_uri: &quot;&quot;</code></pre>
+</div>
+<div id="references" class="section level3">
+<h3>References</h3>
+<p>References used in this post:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.polar.com" class="uri">https://www.polar.com</a></li>
+<li><a href="https://www.fitbit.com" class="uri">https://www.fitbit.com</a></li>
+<li><a href="https://dev.fitbit.com" class="uri">https://dev.fitbit.com</a></li>
+<li><a href="https://seer.ufrgs.br/hcpa/article/view/11727/7021" class="uri">https://seer.ufrgs.br/hcpa/article/view/11727/7021</a></li>
+<li><a href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/" class="uri">https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</a></li>
+<li><a href="https://www.telegraph.co.uk/technology/news/12086337/Fitbit-heart-rate-tracking-is-dangerously-inaccurate-lawsuit-claims.html" class="uri">https://www.telegraph.co.uk/technology/news/12086337/Fitbit-heart-rate-tracking-is-dangerously-inaccurate-lawsuit-claims.html</a></li>
+</ol>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/data-analysis/">data analysis</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/en-us/">en-US</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/oauth20/">oauth20</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/web-api/">web api</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/workout/">workout</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/design-for-people-learning-summary/" data-tooltip="The learning process in organizational change">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/design-for-people-learning-summary/" data-tooltip="The learning process in organizational change">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2019%2F03%2Fcomparing-fitbit-and-polar-h7-heart-rate-data%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2019%2F03%2Fcomparing-fitbit-and-polar-h7-heart-rate-data%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2019%2F03%2Fcomparing-fitbit-and-polar-h7-heart-rate-data%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">
+                <h3 class="media-heading">Comparing Fitbit and Polar H7 heart rate data</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Mar 3, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/design-for-people-learning-summary/">
+                <h3 class="media-heading">The learning process in organizational change</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I&rsquo;ll explore and summarize the key concepts in the great <a href="https://twitter.com/usablelearning">Julie Dirksen&rsquo;s</a> <a href="https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0">&ldquo;Design for How People Learning&rdquo;</a> book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/01/tensorflow-and-keras-with-r/">
+                <h3 class="media-heading">Tensorflow and Keras with R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’ll start series of posts about Keras, a high-level neural networks API developed with a focus on enabling fast experimentation, running on top of TensorFlow, but using its R interface. To start, we’ll review our LeNet implemantation with MXNET for MNIST problem, a traditional “Hello World” in the Neural Network world.
+About Keras in RKeras is an API for building neural networks written in Python capable of running on top of Tensorflow, CNTK, or Theano.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/01/slicing-and-dicing-agile-user-stories/">
+                <h3 class="media-heading">Workshop Agile User Stories Slicing</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &ldquo;divisão horizontal&rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &ldquo;Bem, nosso sistema é muito complexo&rdquo;, ou &ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&rdquo; são desculpas comuns nesta situação.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/">
+                <h3 class="media-heading">Forecasting Fantasy Games Using Monte Carlo Simulations</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using Monte Carlo simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/08/operando-long-short-usando-cointegracao-em-r/">
+                <h3 class="media-heading">Operações Long-Short através de Cointegração usando R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou commodities) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.
+IntroduçãoA ideia tradicional de uma reversão de “Pair Trading” é encontrar dois ativos distintos, compartilhando fatores subjacentes que afetam seus movimentos, por exemplo, McDonald’s e Burger King.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/07/forecasting-my-weight-using-facebook-s-prophet/">
+                <h3 class="media-heading">Using Facebook&#39;s Prophet to forecast my weight loss</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
+Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/02/data-science-das-cervejas-2-2/">
+                <h3 class="media-heading">Data Science das Cervejas (2/2)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/02/data-science-das-cervejas-1-2/">
+                <h3 class="media-heading">Data Science das Cervejas (1/2)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
+Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/knn-analysis-on-mnist-with-97-accuracy/">
+                <h3 class="media-heading">kNN Analysis on MNIST with 97% accuracy</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
+In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
+But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         19 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/03\/comparing-fitbit-and-polar-h7-heart-rate-data\/';
+          
+            this.page.identifier = '\/2019\/03\/comparing-fitbit-and-polar-h7-heart-rate-data\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+    <script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </body>
+</html>
+

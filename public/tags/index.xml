@@ -50,7 +50,7 @@
     <item>
       <title>Data Analysis</title>
       <link>/tags/data-analysis/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-analysis/</guid>
       <description></description>
@@ -59,7 +59,7 @@
     <item>
       <title>En Us</title>
       <link>/tags/en-us/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/en-us/</guid>
       <description></description>
@@ -264,6 +264,15 @@
     </item>
     
     <item>
+      <title>Oauth20</title>
+      <link>/tags/oauth20/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/oauth20/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Pair Trading</title>
       <link>/tags/pair-trading/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
@@ -311,7 +320,7 @@
     <item>
       <title>Rstats</title>
       <link>/tags/rstats/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/rstats/</guid>
       <description></description>
@@ -417,9 +426,18 @@
     </item>
     
     <item>
+      <title>Web Api</title>
+      <link>/tags/web-api/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/web-api/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Workout</title>
       <link>/tags/workout/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/workout/</guid>
       <description></description>

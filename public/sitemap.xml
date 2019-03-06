@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</loc>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2019/02/design-for-people-learning-summary/</loc>
     <lastmod>2019-02-03T00:00:00+00:00</lastmod>
   </url>
@@ -139,19 +144,19 @@
   
   <url>
     <loc>/tags/data-analysis/</loc>
-    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/data-science/</loc>
-    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/en-us/</loc>
-    <lastmod>2019-02-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -288,6 +293,12 @@
   </url>
   
   <url>
+    <loc>/tags/oauth20/</loc>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/pair-trading/</loc>
     <lastmod>2018-08-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -301,7 +312,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2019-02-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -325,7 +336,7 @@
   
   <url>
     <loc>/tags/rstats/</loc>
-    <lastmod>2018-08-26T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -402,14 +413,20 @@
   </url>
   
   <url>
+    <loc>/tags/web-api/</loc>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/workout/</loc>
-    <lastmod>2018-01-20T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-02-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

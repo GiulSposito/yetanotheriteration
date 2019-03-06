@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Comparing Fitbit and Polar H7 heart rate data</title>
+      <link>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
+      <description>How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.</description>
+    </item>
     
     <item>
       <title>The learning process in organizational change</title>
