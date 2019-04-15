@@ -6,10 +6,19 @@
     <description>Recent content on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Agile Trends: Ready-Ready, PO Team &amp; Heijunka</title>
+      <link>/2019/04/agile-trends-ready-ready-po-team-heijunka/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/agile-trends-ready-ready-po-team-heijunka/</guid>
+      <description>Durante a transformação ágil da CI&amp;amp;T, aprendemos como a existência de um Product Owner completo, capaz de desempenhar tudo que o papel exige, é crítica não só para a qualidade do produto como também para a performance do próprio time de desenvolvimento. Hoje, frequentemente, encontramos os mesmos problemas decorrentes da atuação incompleta do PO em clientes que estão começando a sua jornada ágil. Neste post compartilho a minha apresentação realizada no Agile Trends 2019 que fala a respeito da importancia deste papel na agilidade e como resolver alguns gaps de atuação.</description>
+    </item>
     
     <item>
       <title>Comparing Fitbit and Polar H7 heart rate data</title>

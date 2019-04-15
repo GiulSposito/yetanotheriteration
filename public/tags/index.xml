@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Agile</title>
       <link>/tags/agile/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/agile/</guid>
       <description></description>
@@ -291,6 +291,33 @@
     </item>
     
     <item>
+      <title>Po</title>
+      <link>/tags/po/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/po/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Po Team</title>
+      <link>/tags/po-team/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/po-team/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Product Owner</title>
+      <link>/tags/product-owner/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/product-owner/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Prophet</title>
       <link>/tags/prophet/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
@@ -302,7 +329,7 @@
     <item>
       <title>Pt Br</title>
       <link>/tags/pt-br/</link>
-      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/pt-br/</guid>
       <description></description>
