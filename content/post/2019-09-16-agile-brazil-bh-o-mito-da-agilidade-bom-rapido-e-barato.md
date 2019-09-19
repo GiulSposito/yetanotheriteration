@@ -26,7 +26,7 @@ gallery:
   - /images/ab_bh_cschool_05.jpg /images/ab_bh_cschool_05.jpg
 ---
 
-Em setembro de 2019, em visita à Belo Horizonte, tive a oportunidade de palestrar em um Meetup organizado pela empresa onde trabalho e também no maior evento de agilidade do país, o Agile Brazil, em ambos o tema da palestra foi "O Mito da Agilidade: Bom, Rápido e Barato,", onde comento quais são as práticas ágeis que realmente promovem velocidade e qualidade de desenvolvimento. Este post publica os slides e as referências utilizadas. 
+Em setembro de 2019, em visita à Belo Horizonte, tive a oportunidade de palestrar em um Meetup organizado pela empresa onde trabalho e também no maior evento de agilidade do país, o Agile Brazil, em ambos o tema da palestra foi "O mito da agilidade: bom, rápido e barato! Será mesmo que Scrum e Ágil entrega 'o dobro pela metade do tempo'?", onde comento quais são as práticas ágeis que realmente promovem velocidade e qualidade de desenvolvimento.
 
 <!--more-->
 
@@ -36,7 +36,9 @@ A base da [CI&T](https://br.ciandt.com/) em  [BH](https://br.ciandt.com/CIANDT-e
 
 O grupo aborda assuntos diversos, com cunho técnico e não-técnico, geralmente com temas que que conectam estratégia, customer-centricity, processos de engenharia, tecnologia, design e dados. Os encontros encontros recorrentes visa promover conexões entre as pessoas por diversos meios e canais.
 
-Aproveitando minha palestra no Agile Brazil, falei no [último meetup do dia 10 de setembro](https://www.meetup.com/pt-BR/ciandt/events/264528249/), sobre **"O mito da agilidade: bom, rápido e barato!: Será mesmo que Scrum e Ágil entrega 'o dobro pela metade do tempo'?"** Que aborda os fatores que mais influenciam a produtividade e a qualidade do desenvolvimento de software usando métodos ágeis, uma extensão da [palestra que fiz](/2019/04/agile-trends-ready-ready-po-team-heijunka/) no [Agile Trends 2019](http://agiletrendsbr.com) na sua [edição de São Paulo](http://agiletrendsbr.com/programacao-agiletrends-2019/).
+Aproveitando minha palestra no Agile Brazil, falei no [último meetup do dia 10 de setembro](https://www.meetup.com/pt-BR/ciandt/events/264528249/), sobre **"O mito da agilidade: bom, rápido e barato! Será mesmo que Scrum e Ágil entrega 'o dobro pela metade do tempo'?"** Que aborda os fatores que mais influenciam a produtividade e a qualidade do desenvolvimento de software usando métodos ágeis, uma extensão da [palestra que fiz](/2019/04/agile-trends-ready-ready-po-team-heijunka/) no [Agile Trends 2019](http://agiletrendsbr.com) na sua [edição de São Paulo](http://agiletrendsbr.com/programacao-agiletrends-2019/).
+
+Se você perdeu, [os slides estão disponíveis](https://eventmobi-files.s3.amazonaws.com/events/37810/7372856d-def6-46fd-8632-794768f2b08e) para download.
 
 <p></p>
 
