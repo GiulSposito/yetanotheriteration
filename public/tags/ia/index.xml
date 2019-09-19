@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ia on Yet Another Iteration</title>
+    <title>ia on Yet Another Iteration</title>
     <link>/tags/ia/</link>
-    <description>Recent content in Ia on Yet Another Iteration</description>
+    <description>Recent content in ia on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 22 Jan 2018 00:00:00 +0000</lastBuildDate>
@@ -17,9 +17,7 @@
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
-      <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Agile Brazil BH - O Mito da Agilidade: Bom, RÃ¡pido e Barato</title>
+      <link>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
+      <description>&lt;p&gt;Este é o draft do artigo com os materiais.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Agile Trends: Ready-Ready, PO Team &amp; Heijunka</title>
@@ -26,7 +35,12 @@
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
-      <description>How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -35,9 +49,7 @@
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/02/design-for-people-learning-summary/</guid>
-      <description>&lt;p&gt;Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I&amp;rsquo;ll explore and summarize the key concepts in the great &lt;a href=&#34;https://twitter.com/usablelearning&#34;&gt;Julie Dirksen&amp;rsquo;s&lt;/a&gt; &lt;a href=&#34;https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0&#34;&gt;&amp;ldquo;Design for How People Learning&amp;rdquo;&lt;/a&gt; book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I&amp;rsquo;ll explore and summarize the key concepts in the great &lt;a href=&#34;https://twitter.com/usablelearning&#34;&gt;Julie Dirksen&amp;rsquo;s&lt;/a&gt; &lt;a href=&#34;https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0&#34;&gt;&amp;ldquo;Design for How People Learning&amp;rdquo;&lt;/a&gt; book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -46,8 +58,11 @@
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/01/tensorflow-and-keras-with-r/</guid>
-      <description>I’ll start series of posts about Keras, a high-level neural networks API developed with a focus on enabling fast experimentation, running on top of TensorFlow, but using its R interface. To start, we’ll review our LeNet implemantation with MXNET for MNIST problem, a traditional “Hello World” in the Neural Network world.
-About Keras in RKeras is an API for building neural networks written in Python capable of running on top of Tensorflow, CNTK, or Theano.</description>
+      <description>
+
+
+&lt;p&gt;I’ll start series of posts about &lt;a href=&#34;https://keras.io/&#34;&gt;Keras&lt;/a&gt;, a high-level &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;neural networks&lt;/a&gt; API developed with a focus on enabling fast experimentation, running on top of &lt;a href=&#34;https://www.tensorflow.org&#34;&gt;TensorFlow&lt;/a&gt;, but using its &lt;a href=&#34;https://keras.rstudio.com/&#34;&gt;R interface&lt;/a&gt;. To start, we’ll review our &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;LeNet implemantation with MXNET&lt;/a&gt; for &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST problem&lt;/a&gt;, a traditional “&lt;a href=&#34;https://en.wikipedia.org/wiki/%22Hello,_World!%22_program&#34;&gt;Hello World&lt;/a&gt;” in the Neural Network world.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -56,9 +71,7 @@
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
-      <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -67,7 +80,12 @@
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
-      <description>The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using Monte Carlo simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using &lt;code&gt;Monte Carlo&lt;/code&gt; simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -76,8 +94,12 @@
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
-      <description>Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou commodities) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.
-IntroduçãoA ideia tradicional de uma reversão de “Pair Trading” é encontrar dois ativos distintos, compartilhando fatores subjacentes que afetam seus movimentos, por exemplo, McDonald’s e Burger King.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou &lt;em&gt;commodities&lt;/em&gt;) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -86,8 +108,11 @@
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
-      <description>In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.
-Recently, in the beginning of march, I went to a Nutritionist who recommended me to start a regime to lost some weight. As a good practice in these situations, short feedback cycles are essential to (re)build good habits, so I start to weigh myself almost daily, and record the values in a spreadsheet to follow my progress.</description>
+      <description>
+
+
+&lt;p&gt;In this post, we’ll try to forecast my weight using Forecast and Facebook’s Prophet packages. We’ll see what is the performance from Facebook’s method in a simple case of forecast.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -96,7 +121,11 @@
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
-      <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
+      <description>
+
+
+&lt;p&gt;Esta é a &lt;a href=&#34;(https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)&#34;&gt;segunda parte&lt;/a&gt; do post sobre &lt;em&gt;text mining&lt;/em&gt; usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de &lt;em&gt;Data Science&lt;/em&gt;, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -105,8 +134,11 @@
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
-      <description>Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
-Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</description>
+      <description>
+
+
+&lt;p&gt;Neste post vamos extrair, via &lt;em&gt;data scraping&lt;/em&gt;, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -115,9 +147,21 @@
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
-      <description>Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
-In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
-But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Usually Yann LeCun’s &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/index.html&#34;&gt;MNIST database&lt;/a&gt; is used to explore &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;Artificial Neural Network&lt;/a&gt; architectures for image recognition problem.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
+&lt;p&gt;But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple &lt;a href=&#34;https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm&#34;&gt;k-nearest neighbors algorithm&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -126,9 +170,7 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
-      <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -137,8 +179,11 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
-      <description>Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
-IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</description>
+      <description>
+
+
+&lt;p&gt;Este artigo (&lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;RNotebook&lt;/a&gt;) explora técnicas de &lt;em&gt;Análise de Redes Sociais&lt;/em&gt; (&lt;a href=&#34;https://en.wikipedia.org/wiki/Social_network_analysis&#34;&gt;SNA&lt;/a&gt;) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; publicados no repositório CRAN&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -147,9 +192,11 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/putting-your-workout-to-move/</guid>
-      <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
-Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
-library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
+      <description>
+
+
+&lt;p&gt;In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using &lt;code&gt;gganimate&lt;/code&gt; Package and using the same code we learned, we can animate the map with few words.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -158,8 +205,20 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
-      <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
-This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; seeks to ilustrate some of the difficulties that can be result from a collinearity.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -168,8 +227,11 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
-      <description>In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
-Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</description>
+      <description>
+
+
+&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;RNotebook&lt;/a&gt; we’ll read a &lt;a href=&#34;https://en.wikipedia.org/wiki/Training_Center_XML&#34;&gt;TCX&lt;/a&gt; and &lt;a href=&#34;https://en.wikipedia.org/wiki/GPS_Exchange_Format&#34;&gt;GPX&lt;/a&gt; files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -178,7 +240,11 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
-      <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
+      <description>
+
+
+&lt;p&gt;This R Notebook reproduces the &lt;strong&gt;Curse of Dimensionality&lt;/strong&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; in the &lt;em&gt;nearest neighbor regression&lt;/em&gt; that here is defined as &lt;em&gt;the increasing of the interval size&lt;/em&gt; to get 10% of the data &lt;em&gt;acording with the increasing of dimentions&lt;/em&gt;. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -187,8 +253,11 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
-      <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
-Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
+      <description>
+
+
+&lt;p&gt;This post talks about the use of &lt;strong&gt;Mean Squared Error (MSE)&lt;/strong&gt; against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the &lt;a href=&#34;https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370&#34;&gt;An Introduction to Statistical Learning in R&lt;/a&gt; book.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -197,9 +266,7 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Tue, 02 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/we-have-a-blog/</guid>
-      <description>&lt;p&gt;A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.&lt;/p&gt;</description>
     </item>
     
     <item>

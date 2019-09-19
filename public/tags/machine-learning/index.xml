@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Machine Learning on Yet Another Iteration</title>
+    <title>machine learning on Yet Another Iteration</title>
     <link>/tags/machine-learning/</link>
-    <description>Recent content in Machine Learning on Yet Another Iteration</description>
+    <description>Recent content in machine learning on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 25 Jan 2019 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,11 @@
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/01/tensorflow-and-keras-with-r/</guid>
-      <description>I’ll start series of posts about Keras, a high-level neural networks API developed with a focus on enabling fast experimentation, running on top of TensorFlow, but using its R interface. To start, we’ll review our LeNet implemantation with MXNET for MNIST problem, a traditional “Hello World” in the Neural Network world.
-About Keras in RKeras is an API for building neural networks written in Python capable of running on top of Tensorflow, CNTK, or Theano.</description>
+      <description>
+
+
+&lt;p&gt;I’ll start series of posts about &lt;a href=&#34;https://keras.io/&#34;&gt;Keras&lt;/a&gt;, a high-level &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;neural networks&lt;/a&gt; API developed with a focus on enabling fast experimentation, running on top of &lt;a href=&#34;https://www.tensorflow.org&#34;&gt;TensorFlow&lt;/a&gt;, but using its &lt;a href=&#34;https://keras.rstudio.com/&#34;&gt;R interface&lt;/a&gt;. To start, we’ll review our &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;LeNet implemantation with MXNET&lt;/a&gt; for &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST problem&lt;/a&gt;, a traditional “&lt;a href=&#34;https://en.wikipedia.org/wiki/%22Hello,_World!%22_program&#34;&gt;Hello World&lt;/a&gt;” in the Neural Network world.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -27,9 +30,21 @@
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
-      <description>Usually Yann LeCun’s MNIST database is used to explore Artificial Neural Network architectures for image recognition problem.
-In the last post the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.
-But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple k-nearest neighbors algorithm.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Usually Yann LeCun’s &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/index.html&#34;&gt;MNIST database&lt;/a&gt; is used to explore &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;Artificial Neural Network&lt;/a&gt; architectures for image recognition problem.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
+&lt;p&gt;But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple &lt;a href=&#34;https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm&#34;&gt;k-nearest neighbors algorithm&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -38,9 +53,7 @@ But in this post, we’ll see that the MNIST problem isn’t a difficult one, on
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
-      <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
   </channel>

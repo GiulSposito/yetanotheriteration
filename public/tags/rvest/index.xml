@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rvest on Yet Another Iteration</title>
+    <title>rvest on Yet Another Iteration</title>
     <link>/tags/rvest/</link>
-    <description>Recent content in Rvest on Yet Another Iteration</description>
+    <description>Recent content in rvest on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 Feb 2018 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,11 @@
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
-      <description>Neste post vamos extrair, via data scraping, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.
-Base de dados com avaliação das cervejasO uso de avaliações de cerveja para análise de texto é bem comum1, e uma ótima maneira de exercitar técnicas de análise de texto (NLP) para evidenciar diferenças e semelhança entre elementos via descrição textual, e fica ainda mais interessante se você é também um apreciador de cervejas!</description>
+      <description>
+
+
+&lt;p&gt;Neste post vamos extrair, via &lt;em&gt;data scraping&lt;/em&gt;, textos e dados de um blog de avaliações de cerveja para encontrar os termos que melhor caracterizam e descrevem os diversos tipos de cerveja através das descrições dos sabores, cores e maltes das mesmas.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

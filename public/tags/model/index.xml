@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Model on Yet Another Iteration</title>
+    <title>model on Yet Another Iteration</title>
     <link>/tags/model/</link>
-    <description>Recent content in Model on Yet Another Iteration</description>
+    <description>Recent content in model on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 26 Aug 2018 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,12 @@
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
-      <description>Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou commodities) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.
-IntroduçãoA ideia tradicional de uma reversão de “Pair Trading” é encontrar dois ativos distintos, compartilhando fatores subjacentes que afetam seus movimentos, por exemplo, McDonald’s e Burger King.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou &lt;em&gt;commodities&lt;/em&gt;) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -27,8 +31,11 @@
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
-      <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
-Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
+      <description>
+
+
+&lt;p&gt;This post talks about the use of &lt;strong&gt;Mean Squared Error (MSE)&lt;/strong&gt; against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the &lt;a href=&#34;https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370&#34;&gt;An Introduction to Statistical Learning in R&lt;/a&gt; book.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

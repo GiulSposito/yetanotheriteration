@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Po on Yet Another Iteration</title>
+    <title>po on Yet Another Iteration</title>
     <link>/tags/po/</link>
-    <description>Recent content in Po on Yet Another Iteration</description>
+    <description>Recent content in po on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/po/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Agile Brazil BH - O Mito da Agilidade: Bom, RÃ¡pido e Barato</title>
+      <link>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
+      <description>&lt;p&gt;Este é o draft do artigo com os materiais.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Agile Trends: Ready-Ready, PO Team &amp; Heijunka</title>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sna on Yet Another Iteration</title>
+    <title>sna on Yet Another Iteration</title>
     <link>/tags/sna/</link>
-    <description>Recent content in Sna on Yet Another Iteration</description>
+    <description>Recent content in sna on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 21 Jan 2018 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,11 @@
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
-      <description>Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
-IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</description>
+      <description>
+
+
+&lt;p&gt;Este artigo (&lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;RNotebook&lt;/a&gt;) explora técnicas de &lt;em&gt;Análise de Redes Sociais&lt;/em&gt; (&lt;a href=&#34;https://en.wikipedia.org/wiki/Social_network_analysis&#34;&gt;SNA&lt;/a&gt;) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; publicados no repositório CRAN&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

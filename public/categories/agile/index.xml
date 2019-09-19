@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Agile on Yet Another Iteration</title>
+    <title>agile on Yet Another Iteration</title>
     <link>/categories/agile/</link>
-    <description>Recent content in Agile on Yet Another Iteration</description>
+    <description>Recent content in agile on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/agile/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Agile Brazil BH - O Mito da Agilidade: Bom, RÃ¡pido e Barato</title>
+      <link>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
+      <description>&lt;p&gt;Este é o draft do artigo com os materiais.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Agile Trends: Ready-Ready, PO Team &amp; Heijunka</title>
@@ -26,9 +35,7 @@
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/02/design-for-people-learning-summary/</guid>
-      <description>&lt;p&gt;Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I&amp;rsquo;ll explore and summarize the key concepts in the great &lt;a href=&#34;https://twitter.com/usablelearning&#34;&gt;Julie Dirksen&amp;rsquo;s&lt;/a&gt; &lt;a href=&#34;https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0&#34;&gt;&amp;ldquo;Design for How People Learning&amp;rdquo;&lt;/a&gt; book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I&amp;rsquo;ll explore and summarize the key concepts in the great &lt;a href=&#34;https://twitter.com/usablelearning&#34;&gt;Julie Dirksen&amp;rsquo;s&lt;/a&gt; &lt;a href=&#34;https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0&#34;&gt;&amp;ldquo;Design for How People Learning&amp;rdquo;&lt;/a&gt; book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -37,9 +44,7 @@
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
-      <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;</description>
     </item>
     
   </channel>

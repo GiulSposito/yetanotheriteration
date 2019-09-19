@@ -6,328 +6,67 @@
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Agile</title>
+      <title>agile</title>
       <link>/tags/agile/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/agile/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Animation</title>
-      <link>/tags/animation/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/animation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Beer</title>
-      <link>/tags/beer/</link>
-      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/beer/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Culture Change</title>
-      <link>/tags/culture-change/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/culture-change/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Data Analysis</title>
-      <link>/tags/data-analysis/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/data-analysis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>En Us</title>
-      <link>/tags/en-us/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/en-us/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Evalutation</title>
-      <link>/tags/evalutation/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/evalutation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fantasy</title>
-      <link>/tags/fantasy/</link>
-      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/fantasy/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Feature Engineering</title>
-      <link>/tags/feature-engineering/</link>
-      <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/feature-engineering/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fitbit</title>
-      <link>/tags/fitbit/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/fitbit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Forecast</title>
-      <link>/tags/forecast/</link>
-      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/forecast/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gganimate</title>
-      <link>/tags/gganimate/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/gganimate/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ggraph</title>
-      <link>/tags/ggraph/</link>
-      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ggraph/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gps</title>
-      <link>/tags/gps/</link>
-      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/gps/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gpx</title>
-      <link>/tags/gpx/</link>
-      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/gpx/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ia</title>
-      <link>/tags/ia/</link>
-      <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ia/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Keras</title>
-      <link>/tags/keras/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/keras/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Knn</title>
-      <link>/tags/knn/</link>
-      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/knn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Lean</title>
-      <link>/tags/lean/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/lean/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Lean Transformation</title>
+      <title>lean transformation</title>
       <link>/tags/lean-transformation/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/lean-transformation/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Long Short</title>
-      <link>/tags/long-short/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/long-short/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Machine Learning</title>
-      <link>/tags/machine-learning/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Mnist</title>
-      <link>/tags/mnist/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/mnist/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Model</title>
-      <link>/tags/model/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/model/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Monte Carlo</title>
-      <link>/tags/monte-carlo/</link>
-      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/monte-carlo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Network</title>
-      <link>/tags/network/</link>
-      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Neural Network</title>
-      <link>/tags/neural-network/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/neural-network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Nfl</title>
-      <link>/tags/nfl/</link>
-      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/nfl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Oauth20</title>
-      <link>/tags/oauth20/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/oauth20/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pair Trading</title>
-      <link>/tags/pair-trading/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/pair-trading/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pca</title>
-      <link>/tags/pca/</link>
-      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/pca/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Po</title>
+      <title>po</title>
       <link>/tags/po/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/po/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Po Team</title>
+      <title>po team</title>
       <link>/tags/po-team/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/po-team/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Product Owner</title>
+      <title>product owner</title>
       <link>/tags/product-owner/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/product-owner/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Prophet</title>
-      <link>/tags/prophet/</link>
-      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      <title>user story</title>
+      <link>/tags/user-story/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/prophet/</guid>
+      <guid>/tags/user-story/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Pt Br</title>
+      <title>pt-BR</title>
       <link>/tags/pt-br/</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -336,16 +75,34 @@
     </item>
     
     <item>
-      <title>Rstat</title>
-      <link>/tags/rstat/</link>
-      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      <title>data analysis</title>
+      <link>/tags/data-analysis/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/rstat/</guid>
+      <guid>/tags/data-analysis/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Rstats</title>
+      <title>en-US</title>
+      <link>/tags/en-us/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/en-us/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>oauth20</title>
+      <link>/tags/oauth20/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/oauth20/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstats</title>
       <link>/tags/rstats/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
@@ -354,106 +111,7 @@
     </item>
     
     <item>
-      <title>Runtastic</title>
-      <link>/tags/runtastic/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/runtastic/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Rvest</title>
-      <link>/tags/rvest/</link>
-      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rvest/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Simulation</title>
-      <link>/tags/simulation/</link>
-      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/simulation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Sna</title>
-      <link>/tags/sna/</link>
-      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/sna/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Stock Market</title>
-      <link>/tags/stock-market/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/stock-market/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Strava</title>
-      <link>/tags/strava/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/strava/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tcx</title>
-      <link>/tags/tcx/</link>
-      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/tcx/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tensorflow</title>
-      <link>/tags/tensorflow/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/tensorflow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Text Mining</title>
-      <link>/tags/text-mining/</link>
-      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/text-mining/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tidytext</title>
-      <link>/tags/tidytext/</link>
-      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/tidytext/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>User Story</title>
-      <link>/tags/user-story/</link>
-      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/user-story/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Web Api</title>
+      <title>web api</title>
       <link>/tags/web-api/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
@@ -462,11 +120,353 @@
     </item>
     
     <item>
-      <title>Workout</title>
+      <title>workout</title>
       <link>/tags/workout/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/workout/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>animation</title>
+      <link>/tags/animation/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/animation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>culture change</title>
+      <link>/tags/culture-change/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/culture-change/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lean</title>
+      <link>/tags/lean/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lean/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>keras</title>
+      <link>/tags/keras/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/keras/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine learning</title>
+      <link>/tags/machine-learning/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mnist</title>
+      <link>/tags/mnist/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/mnist/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>neural network</title>
+      <link>/tags/neural-network/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/neural-network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tensorflow</title>
+      <link>/tags/tensorflow/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tensorflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fantasy</title>
+      <link>/tags/fantasy/</link>
+      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/fantasy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>forecast</title>
+      <link>/tags/forecast/</link>
+      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/forecast/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>monte carlo</title>
+      <link>/tags/monte-carlo/</link>
+      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/monte-carlo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nfl</title>
+      <link>/tags/nfl/</link>
+      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/nfl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>simulation</title>
+      <link>/tags/simulation/</link>
+      <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/simulation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>evalutation</title>
+      <link>/tags/evalutation/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/evalutation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>long short</title>
+      <link>/tags/long-short/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/long-short/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>model</title>
+      <link>/tags/model/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/model/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pair trading</title>
+      <link>/tags/pair-trading/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pair-trading/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stock market</title>
+      <link>/tags/stock-market/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/stock-market/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>prophet</title>
+      <link>/tags/prophet/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/prophet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>beer</title>
+      <link>/tags/beer/</link>
+      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/beer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>text mining</title>
+      <link>/tags/text-mining/</link>
+      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/text-mining/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rvest</title>
+      <link>/tags/rvest/</link>
+      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rvest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidytext</title>
+      <link>/tags/tidytext/</link>
+      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tidytext/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>knn</title>
+      <link>/tags/knn/</link>
+      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/knn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pca</title>
+      <link>/tags/pca/</link>
+      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pca/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ia</title>
+      <link>/tags/ia/</link>
+      <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ggraph</title>
+      <link>/tags/ggraph/</link>
+      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ggraph/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>/tags/network/</link>
+      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstat</title>
+      <link>/tags/rstat/</link>
+      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rstat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sna</title>
+      <link>/tags/sna/</link>
+      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sna/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fitbit</title>
+      <link>/tags/fitbit/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/fitbit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gganimate</title>
+      <link>/tags/gganimate/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gganimate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>runtastic</title>
+      <link>/tags/runtastic/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/runtastic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>strava</title>
+      <link>/tags/strava/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/strava/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>feature engineering</title>
+      <link>/tags/feature-engineering/</link>
+      <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/feature-engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gps</title>
+      <link>/tags/gps/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gpx</title>
+      <link>/tags/gpx/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gpx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tcx</title>
+      <link>/tags/tcx/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tcx/</guid>
       <description></description>
     </item>
     

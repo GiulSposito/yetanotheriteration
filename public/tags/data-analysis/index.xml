@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Data Analysis on Yet Another Iteration</title>
+    <title>data analysis on Yet Another Iteration</title>
     <link>/tags/data-analysis/</link>
-    <description>Recent content in Data Analysis on Yet Another Iteration</description>
+    <description>Recent content in data analysis on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
@@ -17,7 +17,12 @@
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
-      <description>How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -26,8 +31,11 @@
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/01/tensorflow-and-keras-with-r/</guid>
-      <description>I’ll start series of posts about Keras, a high-level neural networks API developed with a focus on enabling fast experimentation, running on top of TensorFlow, but using its R interface. To start, we’ll review our LeNet implemantation with MXNET for MNIST problem, a traditional “Hello World” in the Neural Network world.
-About Keras in RKeras is an API for building neural networks written in Python capable of running on top of Tensorflow, CNTK, or Theano.</description>
+      <description>
+
+
+&lt;p&gt;I’ll start series of posts about &lt;a href=&#34;https://keras.io/&#34;&gt;Keras&lt;/a&gt;, a high-level &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;neural networks&lt;/a&gt; API developed with a focus on enabling fast experimentation, running on top of &lt;a href=&#34;https://www.tensorflow.org&#34;&gt;TensorFlow&lt;/a&gt;, but using its &lt;a href=&#34;https://keras.rstudio.com/&#34;&gt;R interface&lt;/a&gt;. To start, we’ll review our &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;LeNet implemantation with MXNET&lt;/a&gt; for &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST problem&lt;/a&gt;, a traditional “&lt;a href=&#34;https://en.wikipedia.org/wiki/%22Hello,_World!%22_program&#34;&gt;Hello World&lt;/a&gt;” in the Neural Network world.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -36,7 +44,11 @@
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
-      <description>Esta é a segunda parte do post sobre text mining usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de Data Science, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.</description>
+      <description>
+
+
+&lt;p&gt;Esta é a &lt;a href=&#34;(https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/)&#34;&gt;segunda parte&lt;/a&gt; do post sobre &lt;em&gt;text mining&lt;/em&gt; usando como base, a avaliações de cervejas extraído de um blog na web. Neste post analisaremos as semelhanças entre os diversos tipos através de suas características de sabor, cor e malte. Quais tipos de cervejas são semelhantes entre si e como tipos semelhantes ainda se diferem. Esse tipo de análise é um aspecto importante no campo de &lt;em&gt;Data Science&lt;/em&gt;, pois permite construir um processo de “sugestões” para consumo, tomando como base o gosto atual dos usuários.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -45,7 +57,11 @@
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
-      <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
+      <description>
+
+
+&lt;p&gt;This R Notebook reproduces the &lt;strong&gt;Curse of Dimensionality&lt;/strong&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; in the &lt;em&gt;nearest neighbor regression&lt;/em&gt; that here is defined as &lt;em&gt;the increasing of the interval size&lt;/em&gt; to get 10% of the data &lt;em&gt;acording with the increasing of dimentions&lt;/em&gt;. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

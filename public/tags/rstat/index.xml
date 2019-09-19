@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rstat on Yet Another Iteration</title>
+    <title>rstat on Yet Another Iteration</title>
     <link>/tags/rstat/</link>
-    <description>Recent content in Rstat on Yet Another Iteration</description>
+    <description>Recent content in rstat on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 21 Jan 2018 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,11 @@
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
-      <description>Este artigo (RNotebook) explora técnicas de Análise de Redes Sociais (SNA) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R1 publicados no repositório CRAN2.
-IntroduçãoRedes SociaisO trabalho em rede tem se tornado cada vez mais uma maneira de organização humana presente em nossas vidas e nos mais diferentes níveis da estrutura das empresas modernas. “Os indivíduos, dotados de recursos e capacidades propositivas, organizam suas ações nos próprios espaços políticos em função de socializações e mobilizações suscitadas pelo próprio desenvolvimento das redes”.</description>
+      <description>
+
+
+&lt;p&gt;Este artigo (&lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;RNotebook&lt;/a&gt;) explora técnicas de &lt;em&gt;Análise de Redes Sociais&lt;/em&gt; (&lt;a href=&#34;https://en.wikipedia.org/wiki/Social_network_analysis&#34;&gt;SNA&lt;/a&gt;) para analisar o comportamento e organização em redes colaboração de autores e desenvolvedores de pacotes de software para R&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; publicados no repositório CRAN&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -27,9 +30,11 @@
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/putting-your-workout-to-move/</guid>
-      <description>In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using gganimate Package and using the same code we learned, we can animate the map with few words.
-Reading TCX FileWe already saw to how read and GPS track information stored in a TXC/GPX file, once it’s just an XML File.
-library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggmap)library(gganimate)library(knitr)file &amp;lt;- &amp;quot;11654237848.</description>
+      <description>
+
+
+&lt;p&gt;In this quick post, we’ll take one MTB ride, tracked by FitBit in a TXC File, and generate a animated gif. Using &lt;code&gt;gganimate&lt;/code&gt; Package and using the same code we learned, we can animate the map with few words.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -38,8 +43,20 @@ library(XML)library(lubridate)library(tidyverse)library(ggplot2)library(ggma
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
-      <description>Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.
-This R Notebook seeks to ilustrate some of the difficulties that can be result from a collinearity.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; seeks to ilustrate some of the difficulties that can be result from a collinearity.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -48,8 +65,11 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
-      <description>In this RNotebook we’ll read a TCX and GPX files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.
-Tracking Files1There are two popular file format to track workouts and routes through GPS devices: GPX and TCX.</description>
+      <description>
+
+
+&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;RNotebook&lt;/a&gt; we’ll read a &lt;a href=&#34;https://en.wikipedia.org/wiki/Training_Center_XML&#34;&gt;TCX&lt;/a&gt; and &lt;a href=&#34;https://en.wikipedia.org/wiki/GPS_Exchange_Format&#34;&gt;GPX&lt;/a&gt; files, used to track physical training and exercises evolving GPS and paths used by some workout Mobile Apps and Devices. Particularly we’ll will process one TCX file containing a MTB ride mine and transforming the a useful R data.frame ploting the ride track over a map.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -58,7 +78,11 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
-      <description>This R Notebook reproduces the Curse of Dimensionality1 in the nearest neighbor regression that here is defined as the increasing of the interval size to get 10% of the data acording with the increasing of dimentions. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.</description>
+      <description>
+
+
+&lt;p&gt;This R Notebook reproduces the &lt;strong&gt;Curse of Dimensionality&lt;/strong&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; in the &lt;em&gt;nearest neighbor regression&lt;/em&gt; that here is defined as &lt;em&gt;the increasing of the interval size&lt;/em&gt; to get 10% of the data &lt;em&gt;acording with the increasing of dimentions&lt;/em&gt;. So according more dimensions are add to the domain, greater is the size of the range to get the same proportion of data points. Conforming we increase the size of the range we lost “locality” of the information, losing the capacity to resume the information with a simple average.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -67,8 +91,11 @@ This R Notebook seeks to ilustrate some of the difficulties that can be result f
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
-      <description>This post talks about the use of Mean Squared Error (MSE) against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the An Introduction to Statistical Learning in R book.
-Measure the quality of fit (regression problems)In order to evaluate the performance of a statistical learning method on a given data set, we need some way to measure how well its predictions actually match the observed data.</description>
+      <description>
+
+
+&lt;p&gt;This post talks about the use of &lt;strong&gt;Mean Squared Error (MSE)&lt;/strong&gt; against the flexibility of a function fitted as a technique to assess the model accuracy in a specific problem as describe in the &lt;a href=&#34;https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370&#34;&gt;An Introduction to Statistical Learning in R&lt;/a&gt; book.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

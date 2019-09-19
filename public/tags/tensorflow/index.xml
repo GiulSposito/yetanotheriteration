@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tensorflow on Yet Another Iteration</title>
+    <title>tensorflow on Yet Another Iteration</title>
     <link>/tags/tensorflow/</link>
-    <description>Recent content in Tensorflow on Yet Another Iteration</description>
+    <description>Recent content in tensorflow on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 25 Jan 2019 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,11 @@
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/01/tensorflow-and-keras-with-r/</guid>
-      <description>I’ll start series of posts about Keras, a high-level neural networks API developed with a focus on enabling fast experimentation, running on top of TensorFlow, but using its R interface. To start, we’ll review our LeNet implemantation with MXNET for MNIST problem, a traditional “Hello World” in the Neural Network world.
-About Keras in RKeras is an API for building neural networks written in Python capable of running on top of Tensorflow, CNTK, or Theano.</description>
+      <description>
+
+
+&lt;p&gt;I’ll start series of posts about &lt;a href=&#34;https://keras.io/&#34;&gt;Keras&lt;/a&gt;, a high-level &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;neural networks&lt;/a&gt; API developed with a focus on enabling fast experimentation, running on top of &lt;a href=&#34;https://www.tensorflow.org&#34;&gt;TensorFlow&lt;/a&gt;, but using its &lt;a href=&#34;https://keras.rstudio.com/&#34;&gt;R interface&lt;/a&gt;. To start, we’ll review our &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;LeNet implemantation with MXNET&lt;/a&gt; for &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST problem&lt;/a&gt;, a traditional “&lt;a href=&#34;https://en.wikipedia.org/wiki/%22Hello,_World!%22_program&#34;&gt;Hello World&lt;/a&gt;” in the Neural Network world.&lt;/p&gt;
+</description>
     </item>
     
   </channel>
