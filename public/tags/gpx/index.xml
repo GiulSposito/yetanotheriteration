@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>gpx on Yet Another Iteration</title>
-    <link>/tags/gpx/</link>
+    <link>https://yetanotheriteration.netlify.com/tags/gpx/</link>
     <description>Recent content in gpx on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 16 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/gpx/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/gpx/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>
 
 
