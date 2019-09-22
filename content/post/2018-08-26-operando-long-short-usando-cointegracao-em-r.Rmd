@@ -32,6 +32,18 @@ Isso significa que uma negociação de curto prazo realizada nesse ponto de inte
 
 Encontrar pares de ativos ou índices que se comportem desta maneira possibilita abrir operações Long (compra) e short (venda) simultâneas quando os ativos se "afastam" momentaneamente do movimento conjunto, e se encerra quando elas retornam para o padrão. Ganha-se então com a variação da diferença (ou a distância) entre os dois.
 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- blog_long_short_ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="3645387345"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 ## Análise de Cointegração usando R
 
 Análise de Cointegração e Operação Long-Short consiste sumariamente em:
