@@ -63,6 +63,10 @@ Vale o agradecimento e a menção honrosa para os meus colegas [Vinícius Lucas]
 
 Aproveitando o meu _tour BH_, o resto da semana foi preenchido pelo [Agile Brazil 2019](https://www.agilebrazil.com/2019/), com três dias cheios de palestras e workshops, no que é o maior evento de agilidade do país. Neste evento, [apresentei no último dia](https://eventmobi.com/agilebrazil2019/people/bfe53b20-cf18-4e43-97ee-5822f2a64ffb/a9cb3cc3-eb46-4427-9ef5-554186bd0808), logo após o almoço. 
 
+<p></p>
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/4QV3I1wEcbhu0G" width="446" height="364" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+
 Dos renomados [keynotes](https://www.agilebrazil.com/2019/) destacados na [programação do evento](https://eventmobi.com/agilebrazil2019/), o que eu mais gostei, foi do [Marco Mendes](https://www.linkedin.com/in/marcomendes/).
 
 Em sua [apresentação](https://eventmobi-files.s3.amazonaws.com/events/37810/8d18d7cd-b42b-4d36-a680-8af6b9f3c728), Marco explora o cenário de [complexidade](https://en.wikipedia.org/wiki/Cynefin_framework) existente no processo de desenvolvimento de software, e a partir daí, discorre sobre os *patterns* que trazem fragilidade para o processo e para o software desenvolvido. Explorando também o conceito de [Antifragilidade](https://www.amazon.com.br/Antifr%C3%A1gil-Coisas-que-beneficiam-caos/dp/8576846136) de [Nassim Taleb](https://pt.wikipedia.org/wiki/Nassim_Nicholas_Taleb), apresenta quais seriam então as práticas e técnicas de engenharia de software que deixaram o processo todo [Anti-Frágil](https://en.wikipedia.org/wiki/Antifragility), vale a pena conhecer o [material apresentado](https://eventmobi-files.s3.amazonaws.com/events/37810/8d18d7cd-b42b-4d36-a680-8af6b9f3c728) e explorar as referências. 
