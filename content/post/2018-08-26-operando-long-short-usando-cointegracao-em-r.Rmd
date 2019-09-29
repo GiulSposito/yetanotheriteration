@@ -250,6 +250,17 @@ coefs %>%
 
 Para QUAL3 encontramos o valor de **`r round(coefs[coefs$ticker=="QUAL3", "statistic"],3)`** e para RENT3 encontramos **`r round(coefs[coefs$ticker=="RENT3", "statistic"],3)`** para ~500 amostras. Ambos os valores estão abaixo (em módulo) dos valores de referência na tabela Dickey-Fuller (**-2.87**), mostrando que ambas as séries são "não-estacionárias".
 
+<!-- long-short-ad02 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="7833868199"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 ## Teste de Cointegração (metodologia de Engle-Granger)
 
 A metodologia de [Engle-Granger](https://www.empiwifo.uni-freiburg.de/lehre-teaching-1/winter-term/makrookonometrie/methodology.pdf) consiste em dois passos: primeiro fazemos uma regressão linear de uma série temporal contra a outra. Em seguida, aplicamos um teste de estacionariedade (como por exemplo o teste de Dickey-Fuller) nos resíduos desta regressão. Se os resíduos forem estacionários, isto significa que encontramos a combinação linear tal que as duas séries são cointegradas.
@@ -358,6 +369,17 @@ tstat <- coint.lm %>% tidy %>% filter(term=="deltaRes") %>% pull(statistic)
 ```
 
 Desta vez, o `t-stat` obtido foi de **`r round(tstat,3)`**, muito além (em módulo) dos valores para a tabela de significância para 500 ou mais amostras (**-2.87**). Neste caso confirmando que a hipótese de que a série é estacionária, e portanto os pares estão cointegrados.
+
+<!-- long-short-ad03 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="9479150029"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ## Trading Long-Short
 
@@ -558,6 +580,17 @@ results %>%
 Como simulamos as operações usando a estratégia [_cash-neutral_](https://www.investopedia.com/terms/c/cash-neutral.asp), em teoria poderíamos manter o capital total investido em Tesouro Direto, LCAs ou LCI e usá-lo como garantia, permitindo assim que as operações pudessem sere feitas com muito pouco dinheiro investido. No cenário simulado foi possível obter cerca de R$700,00 dos R$2000,00 reais em uma janela de dois anos (35% de rendimento bruto), o que parece bem promissor.
 
 Cabe lembrar que não acrescentamos os custos de operação, do aluguel de ações ou de tributos, o que poderiam alterar significativamente o resultado final. Tema esse que ficará para um próximo post.
+
+<!-- long-short-ad04 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="8405741508"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ## Conclusão
 
