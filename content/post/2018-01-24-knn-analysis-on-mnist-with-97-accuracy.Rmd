@@ -118,6 +118,19 @@ for(i in 1:25) show_digit(mnist$train$x[i,], axes=F)
 
 Each line in `x` var is a digit case, and each column represents the intensity of a pixel in a `28 x 28` image.
 
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- knn-mnist-ad01 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="8848594632"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 ## Data Analysis
 
 How the each pixels in the image behavior in the "average" for each digit? It's possible to use this information to classify an digit?
@@ -211,6 +224,17 @@ The distance here, measures the degree of "difference" between the centroids, an
 ##          9    0    0    0    0   10    1    0    5    3  994
 ```
 We see the 16 mismatches involving cases `4`x`9`, the largest.
+
+<!-- knn-mnist-ad02 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="6953059034"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ## Principal Component Analysis
 
@@ -333,6 +357,17 @@ plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %>%
 ```
 
 You can play around turning off the cases of some digits and rotating the chart. Can you see how the `0`, `1` and `9` clusters are distributed in the space? And the `4` and `9` cases?
+
+<!-- knn-mnist-ad03 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="7308282255"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ## k-Nearest Neighbors
 
