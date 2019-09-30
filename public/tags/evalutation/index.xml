@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>evalutation on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/evalutation/</link>
+    <link>/tags/evalutation/</link>
     <description>Recent content in evalutation on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 26 Aug 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/evalutation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/evalutation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Operações Long-Short através de Cointegração usando R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
+      <link>/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
+      <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou &lt;em&gt;commodities&lt;/em&gt;) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.&lt;/p&gt;
@@ -27,42 +27,42 @@
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
+      <link>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
+      <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Usually Yann LeCun’s &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/index.html&#34;&gt;MNIST database&lt;/a&gt; is used to explore &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;Artificial Neural Network&lt;/a&gt; architectures for image recognition problem.&lt;/p&gt;
-&lt;p&gt;In the &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
 &lt;p&gt;But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple &lt;a href=&#34;https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm&#34;&gt;k-nearest neighbors algorithm&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>High Collinearity Effect in Regressions</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</link>
+      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.&lt;/p&gt;
@@ -72,10 +72,10 @@
     
     <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>
 
 

@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>data science on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/categories/data-science/</link>
+    <link>/categories/data-science/</link>
     <description>Recent content in data science on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Comparing Fitbit and Polar H7 heart rate data</title>
-      <link>https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
+      <link>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
+      <guid>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.&lt;/p&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>Tensorflow and Keras with R</title>
-      <link>https://yetanotheriteration.netlify.com/2019/01/tensorflow-and-keras-with-r/</link>
+      <link>/2019/01/tensorflow-and-keras-with-r/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/01/tensorflow-and-keras-with-r/</guid>
+      <guid>/2019/01/tensorflow-and-keras-with-r/</guid>
       <description>
 
 
@@ -40,12 +40,12 @@
     
     <item>
       <title>Forecasting Fantasy Games Using Monte Carlo Simulations</title>
-      <link>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
+      <link>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
+      <guid>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using &lt;code&gt;Monte Carlo&lt;/code&gt; simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.&lt;/p&gt;
@@ -54,12 +54,12 @@
     
     <item>
       <title>Operações Long-Short através de Cointegração usando R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
+      <link>/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
+      <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou &lt;em&gt;commodities&lt;/em&gt;) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.&lt;/p&gt;
@@ -68,10 +68,10 @@
     
     <item>
       <title>Using Facebook&#39;s Prophet to forecast my weight loss</title>
-      <link>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
+      <link>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
+      <guid>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
       <description>
 
 
@@ -81,10 +81,10 @@
     
     <item>
       <title>Data Science das Cervejas (2/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
+      <link>/2018/02/data-science-das-cervejas-2-2/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
       <description>
 
 
@@ -94,10 +94,10 @@
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
+      <link>/2018/02/data-science-das-cervejas-1-2/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
       <description>
 
 
@@ -107,42 +107,42 @@
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
+      <link>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
+      <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Usually Yann LeCun’s &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/index.html&#34;&gt;MNIST database&lt;/a&gt; is used to explore &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;Artificial Neural Network&lt;/a&gt; architectures for image recognition problem.&lt;/p&gt;
-&lt;p&gt;In the &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
 &lt;p&gt;But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple &lt;a href=&#34;https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm&#34;&gt;k-nearest neighbors algorithm&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Implementing LeNet with MXNET in R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</link>
+      <link>/2018/01/implementing-lenet-with-mxnet-in-r/</link>
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
+      <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
       <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Social Network Analysis on CRAN Authors</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</link>
+      <link>/2018/01/social-network-analysis-on-cran-authors/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</guid>
+      <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
       <description>
 
 
@@ -152,10 +152,10 @@
     
     <item>
       <title>Putting your workout to move</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
+      <link>/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
+      <guid>/2018/01/putting-your-workout-to-move/</guid>
       <description>
 
 
@@ -165,19 +165,19 @@
     
     <item>
       <title>High Collinearity Effect in Regressions</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</link>
+      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.&lt;/p&gt;
@@ -187,10 +187,10 @@
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>
 
 
@@ -200,10 +200,10 @@
     
     <item>
       <title>Curse of Dimensionality</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</link>
+      <link>/2018/01/curse-of-dimensionalityrmd/</link>
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</guid>
+      <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
       <description>
 
 
@@ -213,10 +213,10 @@
     
     <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>
 
 

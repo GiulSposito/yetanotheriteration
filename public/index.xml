@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/</link>
+    <link>/</link>
     <description>Recent content on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Agile Brazil BH - O Mito da Agilidade: Bom, Rápido e Barato</title>
-      <link>https://yetanotheriteration.netlify.com/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
+      <link>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
+      <guid>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
       <description>&lt;p&gt;Em setembro de 2019, em visita à Belo Horizonte, tive a oportunidade de palestrar em um Meetup organizado pelos colegas de empresa e também no maior evento de agilidade do país, o Agile Brazil. Em ambos, o tema da palestra foi &amp;ldquo;O mito da agilidade: bom, rápido e barato! Será mesmo que Scrum e Ágil entregam &amp;lsquo;o dobro pela metade do tempo&amp;rsquo;?&amp;ldquo;. Nesta palestra discuto quais são as práticas ágeis que mais promovem produtividade e qualidade no desenvolvimento ágil.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Agile Trends: Ready-Ready, PO Team &amp; Heijunka</title>
-      <link>https://yetanotheriteration.netlify.com/2019/04/agile-trends-ready-ready-po-team-heijunka/</link>
+      <link>/2019/04/agile-trends-ready-ready-po-team-heijunka/</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/04/agile-trends-ready-ready-po-team-heijunka/</guid>
+      <guid>/2019/04/agile-trends-ready-ready-po-team-heijunka/</guid>
       <description>Durante a transformação ágil da CI&amp;amp;T, aprendemos como a existência de um Product Owner completo, capaz de desempenhar tudo que o papel exige, é crítica não só para a qualidade do produto como também para a performance do próprio time de desenvolvimento. Hoje, frequentemente, encontramos os mesmos problemas decorrentes da atuação incompleta do PO em clientes que estão começando a sua jornada ágil. Neste post compartilho a minha apresentação realizada no Agile Trends 2019 que fala a respeito da importancia deste papel na agilidade e como resolver alguns gaps de atuação.</description>
     </item>
     
     <item>
       <title>Comparing Fitbit and Polar H7 heart rate data</title>
-      <link>https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
+      <link>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
+      <guid>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.&lt;/p&gt;
@@ -45,19 +45,19 @@
     
     <item>
       <title>The learning process in organizational change</title>
-      <link>https://yetanotheriteration.netlify.com/2019/02/design-for-people-learning-summary/</link>
+      <link>/2019/02/design-for-people-learning-summary/</link>
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/02/design-for-people-learning-summary/</guid>
+      <guid>/2019/02/design-for-people-learning-summary/</guid>
       <description>&lt;p&gt;Much of the my work about lean/digital consulting and change management is to make people learning. Learning new concepts, new values, new ways of doing a job or an activity, learning to managing and lead using new tools and methods, and also involves unlearning concepts and points of view built over time, to make room for the new knowledge. So, learning is a key aspect, and also a barrier, for the people involved in the change or transformation processes. In this post, I&amp;rsquo;ll explore and summarize the key concepts in the great &lt;a href=&#34;https://twitter.com/usablelearning&#34;&gt;Julie Dirksen&amp;rsquo;s&lt;/a&gt; &lt;a href=&#34;https://www.amazon.com/gp/product/B018OJP5QW/ref=dbs_a_def_rwt_hsch_vapi_taft_p1_i0&#34;&gt;&amp;ldquo;Design for How People Learning&amp;rdquo;&lt;/a&gt; book. I frequently review these points when preparing a change roadmap for a team, department or company, the success of a change is direct linked with how people will effectively learn and be capable to use new knowledge in their daily work.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Tensorflow and Keras with R</title>
-      <link>https://yetanotheriteration.netlify.com/2019/01/tensorflow-and-keras-with-r/</link>
+      <link>/2019/01/tensorflow-and-keras-with-r/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/01/tensorflow-and-keras-with-r/</guid>
+      <guid>/2019/01/tensorflow-and-keras-with-r/</guid>
       <description>
 
 
@@ -67,21 +67,21 @@
     
     <item>
       <title>Workshop Agile User Stories Slicing</title>
-      <link>https://yetanotheriteration.netlify.com/2019/01/slicing-and-dicing-agile-user-stories/</link>
+      <link>/2019/01/slicing-and-dicing-agile-user-stories/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/01/slicing-and-dicing-agile-user-stories/</guid>
+      <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
       <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Forecasting Fantasy Games Using Monte Carlo Simulations</title>
-      <link>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
+      <link>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
+      <guid>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using &lt;code&gt;Monte Carlo&lt;/code&gt; simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.&lt;/p&gt;
@@ -90,12 +90,12 @@
     
     <item>
       <title>Operações Long-Short através de Cointegração usando R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
+      <link>/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
+      <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou &lt;em&gt;commodities&lt;/em&gt;) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.&lt;/p&gt;
@@ -104,10 +104,10 @@
     
     <item>
       <title>Using Facebook&#39;s Prophet to forecast my weight loss</title>
-      <link>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
+      <link>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
+      <guid>/2018/07/forecasting-my-weight-using-facebook-s-prophet/</guid>
       <description>
 
 
@@ -117,10 +117,10 @@
     
     <item>
       <title>Data Science das Cervejas (2/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
+      <link>/2018/02/data-science-das-cervejas-2-2/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
       <description>
 
 
@@ -130,10 +130,10 @@
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
+      <link>/2018/02/data-science-das-cervejas-1-2/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
       <description>
 
 
@@ -143,42 +143,42 @@
     
     <item>
       <title>kNN Analysis on MNIST with 97% accuracy</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
+      <link>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
+      <guid>/2018/01/knn-analysis-on-mnist-with-97-accuracy/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Usually Yann LeCun’s &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/index.html&#34;&gt;MNIST database&lt;/a&gt; is used to explore &lt;a href=&#34;https://en.wikipedia.org/wiki/Artificial_neural_network&#34;&gt;Artificial Neural Network&lt;/a&gt; architectures for image recognition problem.&lt;/p&gt;
-&lt;p&gt;In the &lt;a href=&#34;https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;/2018/01/implementing-lenet-with-mxnet-in-r/&#34;&gt;last post&lt;/a&gt; the use of a ANN (LeNet architecture) implemented using mxnet to resolve this classification problem.&lt;/p&gt;
 &lt;p&gt;But in this post, we’ll see that the MNIST problem isn’t a difficult one, only resolved by ANNs, analyzing the data set we can see that is possible, with a high degree of precision, resolving this classification problem with a simple &lt;a href=&#34;https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm&#34;&gt;k-nearest neighbors algorithm&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Implementing LeNet with MXNET in R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</link>
+      <link>/2018/01/implementing-lenet-with-mxnet-in-r/</link>
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
+      <guid>/2018/01/implementing-lenet-with-mxnet-in-r/</guid>
       <description>&lt;p&gt;In this &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;R Notebook&lt;/a&gt; I implement an &lt;a href=&#34;https://en.wikipedia.org/wiki/Convolutional_neural_network&#34;&gt;Convolutional Neural Network (CNN)&lt;/a&gt; using the &lt;a href=&#34;http://yann.lecun.com/exdb/mnist/&#34;&gt;MNIST Database&lt;/a&gt; for handwritten digits recognition using &lt;a href=&#34;http://mxnet.io/&#34;&gt;mxnet&lt;/a&gt; framework for &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Social Network Analysis on CRAN Authors</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</link>
+      <link>/2018/01/social-network-analysis-on-cran-authors/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</guid>
+      <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
       <description>
 
 
@@ -188,10 +188,10 @@
     
     <item>
       <title>Putting your workout to move</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
+      <link>/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
+      <guid>/2018/01/putting-your-workout-to-move/</guid>
       <description>
 
 
@@ -201,19 +201,19 @@
     
     <item>
       <title>High Collinearity Effect in Regressions</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</link>
+      <link>/2018/01/high-collinearity-effect-in-regressions/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/high-collinearity-effect-in-regressions/</guid>
+      <guid>/2018/01/high-collinearity-effect-in-regressions/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotly-binding/plotly.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/typedarray/typedarray.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/crosstalk/css/crosstalk.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/crosstalk/js/crosstalk.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/plotlyjs/plotly-latest.min.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Collinearity refers to the situation in which two or more predictor variables collinearity are closely related to one another. The presence of collinearity can pose problems in the regression context, since it can be difficult to separate out the individual effects of collinear variables on the response.&lt;/p&gt;
@@ -223,10 +223,10 @@
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>
 
 
@@ -236,20 +236,20 @@
     
     <item>
       <title>About</title>
-      <link>https://yetanotheriteration.netlify.com/about/</link>
+      <link>/about/</link>
       <pubDate>Sun, 14 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/about/</guid>
+      <guid>/about/</guid>
       <description>Giuliano Sposito Myself Computer Engineer and Master in Strategic Management of Technological Innovation, both by Unicamp, and with a specialization in Data Science. Senior Manager at CI&amp;amp;T, current working as Lean Digital Consulting.
 My Job Innovation is now everyone&amp;rsquo;s business. If you are a manager in a global company, an entrepreneur starting your business, a team leader, or even a developer within a development team, it is expected that you do more and better with fewer resources (Get Lean!</description>
     </item>
     
     <item>
       <title>Curse of Dimensionality</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</link>
+      <link>/2018/01/curse-of-dimensionalityrmd/</link>
       <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/curse-of-dimensionalityrmd/</guid>
+      <guid>/2018/01/curse-of-dimensionalityrmd/</guid>
       <description>
 
 
@@ -259,10 +259,10 @@ My Job Innovation is now everyone&amp;rsquo;s business. If you are a manager in 
     
     <item>
       <title>Assessing Model Accuracy (Linear Models)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
+      <link>/2018/01/assessing-model-accuracy-linear-modelsrmd/</link>
       <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
+      <guid>/2018/01/assessing-model-accuracy-linear-modelsrmd/</guid>
       <description>
 
 
@@ -272,19 +272,19 @@ My Job Innovation is now everyone&amp;rsquo;s business. If you are a manager in 
     
     <item>
       <title>We have a blog!</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</link>
+      <link>/2018/01/we-have-a-blog/</link>
       <pubDate>Tue, 02 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/we-have-a-blog/</guid>
+      <guid>/2018/01/we-have-a-blog/</guid>
       <description>&lt;p&gt;A place to put my ideas and thoughts on the topics that I like and I get involved in everyday life, especially about software development, agility, lean production and data science.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://yetanotheriteration.netlify.com/1/01/</link>
+      <link>/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/1/01/</guid>
+      <guid>/1/01/</guid>
       <description>Workshop Agile User Stories Slicing/*! jQuery v1.11.3 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */!function(a,b){&#34;object&#34;==typeof module&amp;&amp;&#34;object&#34;==typeof module.exports?module.exports=a.document?b(a,!0):function(a){if(!a.document)throw new Error(&#34;jQuery requires a window with a document&#34;);return b(a)}:b(a)}(&#34;undefined&#34;!=typeof window?window:this,function(a,b){var c=[],d=c.slice,e=c.concat,f=c.push,g=c.indexOf,h={},i=h.toString,j=h.hasOwnProperty,k={},l=&#34;1.11.3&#34;,m=function(a,b){return new m.fn.init(a,b)},n=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,o=/^-ms-/,p=/-([\da-z])/gi,q=function(a,b){return b.toUpperCase()};m.fn=m.prototype={jquery:l,constructor:m,selector:&#34;&#34;,length:0,toArray:function(){return d.call(this)},get:function(a){return null!=a?0a?this[a+this.length]:this[a]:d.call(this)},pushStack:function(a){var b=m.merge(this.constructor(),a);return b.prevObject=this,b.context=this.context,b},each:function(a,b){return m.each(this,a,b)},map:function(a){return this.pushStack(m.map(this,function(b,c){return a.call(b,c,b)}))},slice:function(){return this.pushStack(d.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(a){var b=this.length,c=+a+(0a?b:0);return this.pushStack(c=0&amp;&amp;bc?[this[c]]:[])},end:function(){return this.prevObject||this.constructor(null)},push:f,sort:c.sort,splice:c.splice},m.extend=m.fn.extend=function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1;for(&#34;boolean&#34;==typeof g&amp;&amp;(j=g,g=arguments[h]||{},h++),&#34;object&#34;==typeof g||m.isFunction(g)||(g={}),h===i&amp;&amp;(g=this,h--);ih;h++)if(null!=(e=arguments[h]))for(d in e)a=g[d],c=e[d],g!==c&amp;&amp;(j&amp;&amp;c&amp;&amp;(m.isPlainObject(c)||(b=m.isArray(c)))?(b?(b=!1,f=a&amp;&amp;m.isArray(a)?a:[]):f=a&amp;&amp;m.isPlainObject(a)?a:{},g[d]=m.extend(j,f,c)):void 0!==c&amp;&amp;(g[d]=c));return g},m.extend({expando:&#34;jQuery&#34;+(l+Math.random()).replace(/\D/g,&#34;&#34;),isReady:!0,error:function(a){throw new Error(a)},noop:function(){},isFunction:function(a){return&#34;function&#34;===m.type(a)},isArray:Array.isArray||function(a){return&#34;array&#34;===m.type(a)},isWindow:function(a){return null!=a&amp;&amp;a==a.window},isNumeric:function(a){return!m.isArray(a)&amp;&amp;a-parseFloat(a)+1=0},isEmptyObject:function(a){var b;for(b in a)return!1;return!0},isPlainObject:function(a){var b;if(!a||&#34;object&#34;!==m.type(a)||a.nodeType||m.isWindow(a))return!1;try{if(a.constructor&amp;&amp;!j.call(a,&#34;constructor&#34;)&amp;&amp;!j.call(a.constructor.prototype,&#34;isPrototypeOf&#34;))return!1}catch(c){return!1}if(k.ownLast)for(b in a)return j.call(a,b);for(b in a);return void 0===b||j.call(a,b)},type:function(a){return null==a?</description>
     </item>
     

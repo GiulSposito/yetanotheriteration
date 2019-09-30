@@ -2,471 +2,471 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>agile</title>
-      <link>https://yetanotheriteration.netlify.com/tags/agile/</link>
+      <link>/tags/agile/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/agile/</guid>
+      <guid>/tags/agile/</guid>
       <description></description>
     </item>
     
     <item>
       <title>lean transformation</title>
-      <link>https://yetanotheriteration.netlify.com/tags/lean-transformation/</link>
+      <link>/tags/lean-transformation/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/lean-transformation/</guid>
+      <guid>/tags/lean-transformation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>po</title>
-      <link>https://yetanotheriteration.netlify.com/tags/po/</link>
+      <link>/tags/po/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/po/</guid>
+      <guid>/tags/po/</guid>
       <description></description>
     </item>
     
     <item>
       <title>po team</title>
-      <link>https://yetanotheriteration.netlify.com/tags/po-team/</link>
+      <link>/tags/po-team/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/po-team/</guid>
+      <guid>/tags/po-team/</guid>
       <description></description>
     </item>
     
     <item>
       <title>product owner</title>
-      <link>https://yetanotheriteration.netlify.com/tags/product-owner/</link>
+      <link>/tags/product-owner/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/product-owner/</guid>
+      <guid>/tags/product-owner/</guid>
       <description></description>
     </item>
     
     <item>
       <title>user story</title>
-      <link>https://yetanotheriteration.netlify.com/tags/user-story/</link>
+      <link>/tags/user-story/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/user-story/</guid>
+      <guid>/tags/user-story/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pt-BR</title>
-      <link>https://yetanotheriteration.netlify.com/tags/pt-br/</link>
+      <link>/tags/pt-br/</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/pt-br/</guid>
+      <guid>/tags/pt-br/</guid>
       <description></description>
     </item>
     
     <item>
       <title>data analysis</title>
-      <link>https://yetanotheriteration.netlify.com/tags/data-analysis/</link>
+      <link>/tags/data-analysis/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/data-analysis/</guid>
+      <guid>/tags/data-analysis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>en-US</title>
-      <link>https://yetanotheriteration.netlify.com/tags/en-us/</link>
+      <link>/tags/en-us/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/en-us/</guid>
+      <guid>/tags/en-us/</guid>
       <description></description>
     </item>
     
     <item>
       <title>oauth20</title>
-      <link>https://yetanotheriteration.netlify.com/tags/oauth20/</link>
+      <link>/tags/oauth20/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/oauth20/</guid>
+      <guid>/tags/oauth20/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rstats</title>
-      <link>https://yetanotheriteration.netlify.com/tags/rstats/</link>
+      <link>/tags/rstats/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/rstats/</guid>
+      <guid>/tags/rstats/</guid>
       <description></description>
     </item>
     
     <item>
       <title>web api</title>
-      <link>https://yetanotheriteration.netlify.com/tags/web-api/</link>
+      <link>/tags/web-api/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/web-api/</guid>
+      <guid>/tags/web-api/</guid>
       <description></description>
     </item>
     
     <item>
       <title>workout</title>
-      <link>https://yetanotheriteration.netlify.com/tags/workout/</link>
+      <link>/tags/workout/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/workout/</guid>
+      <guid>/tags/workout/</guid>
       <description></description>
     </item>
     
     <item>
       <title>animation</title>
-      <link>https://yetanotheriteration.netlify.com/tags/animation/</link>
+      <link>/tags/animation/</link>
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/animation/</guid>
+      <guid>/tags/animation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>culture change</title>
-      <link>https://yetanotheriteration.netlify.com/tags/culture-change/</link>
+      <link>/tags/culture-change/</link>
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/culture-change/</guid>
+      <guid>/tags/culture-change/</guid>
       <description></description>
     </item>
     
     <item>
       <title>lean</title>
-      <link>https://yetanotheriteration.netlify.com/tags/lean/</link>
+      <link>/tags/lean/</link>
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/lean/</guid>
+      <guid>/tags/lean/</guid>
       <description></description>
     </item>
     
     <item>
       <title>keras</title>
-      <link>https://yetanotheriteration.netlify.com/tags/keras/</link>
+      <link>/tags/keras/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/keras/</guid>
+      <guid>/tags/keras/</guid>
       <description></description>
     </item>
     
     <item>
       <title>machine learning</title>
-      <link>https://yetanotheriteration.netlify.com/tags/machine-learning/</link>
+      <link>/tags/machine-learning/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/machine-learning/</guid>
+      <guid>/tags/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>mnist</title>
-      <link>https://yetanotheriteration.netlify.com/tags/mnist/</link>
+      <link>/tags/mnist/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/mnist/</guid>
+      <guid>/tags/mnist/</guid>
       <description></description>
     </item>
     
     <item>
       <title>neural network</title>
-      <link>https://yetanotheriteration.netlify.com/tags/neural-network/</link>
+      <link>/tags/neural-network/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/neural-network/</guid>
+      <guid>/tags/neural-network/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tensorflow</title>
-      <link>https://yetanotheriteration.netlify.com/tags/tensorflow/</link>
+      <link>/tags/tensorflow/</link>
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/tensorflow/</guid>
+      <guid>/tags/tensorflow/</guid>
       <description></description>
     </item>
     
     <item>
       <title>fantasy</title>
-      <link>https://yetanotheriteration.netlify.com/tags/fantasy/</link>
+      <link>/tags/fantasy/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/fantasy/</guid>
+      <guid>/tags/fantasy/</guid>
       <description></description>
     </item>
     
     <item>
       <title>forecast</title>
-      <link>https://yetanotheriteration.netlify.com/tags/forecast/</link>
+      <link>/tags/forecast/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/forecast/</guid>
+      <guid>/tags/forecast/</guid>
       <description></description>
     </item>
     
     <item>
       <title>monte carlo</title>
-      <link>https://yetanotheriteration.netlify.com/tags/monte-carlo/</link>
+      <link>/tags/monte-carlo/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/monte-carlo/</guid>
+      <guid>/tags/monte-carlo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>nfl</title>
-      <link>https://yetanotheriteration.netlify.com/tags/nfl/</link>
+      <link>/tags/nfl/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/nfl/</guid>
+      <guid>/tags/nfl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>simulation</title>
-      <link>https://yetanotheriteration.netlify.com/tags/simulation/</link>
+      <link>/tags/simulation/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/simulation/</guid>
+      <guid>/tags/simulation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>evalutation</title>
-      <link>https://yetanotheriteration.netlify.com/tags/evalutation/</link>
+      <link>/tags/evalutation/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/evalutation/</guid>
+      <guid>/tags/evalutation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>long short</title>
-      <link>https://yetanotheriteration.netlify.com/tags/long-short/</link>
+      <link>/tags/long-short/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/long-short/</guid>
+      <guid>/tags/long-short/</guid>
       <description></description>
     </item>
     
     <item>
       <title>model</title>
-      <link>https://yetanotheriteration.netlify.com/tags/model/</link>
+      <link>/tags/model/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/model/</guid>
+      <guid>/tags/model/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pair trading</title>
-      <link>https://yetanotheriteration.netlify.com/tags/pair-trading/</link>
+      <link>/tags/pair-trading/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/pair-trading/</guid>
+      <guid>/tags/pair-trading/</guid>
       <description></description>
     </item>
     
     <item>
       <title>stock market</title>
-      <link>https://yetanotheriteration.netlify.com/tags/stock-market/</link>
+      <link>/tags/stock-market/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/stock-market/</guid>
+      <guid>/tags/stock-market/</guid>
       <description></description>
     </item>
     
     <item>
       <title>prophet</title>
-      <link>https://yetanotheriteration.netlify.com/tags/prophet/</link>
+      <link>/tags/prophet/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/prophet/</guid>
+      <guid>/tags/prophet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>beer</title>
-      <link>https://yetanotheriteration.netlify.com/tags/beer/</link>
+      <link>/tags/beer/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/beer/</guid>
+      <guid>/tags/beer/</guid>
       <description></description>
     </item>
     
     <item>
       <title>text mining</title>
-      <link>https://yetanotheriteration.netlify.com/tags/text-mining/</link>
+      <link>/tags/text-mining/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/text-mining/</guid>
+      <guid>/tags/text-mining/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rvest</title>
-      <link>https://yetanotheriteration.netlify.com/tags/rvest/</link>
+      <link>/tags/rvest/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/rvest/</guid>
+      <guid>/tags/rvest/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tidytext</title>
-      <link>https://yetanotheriteration.netlify.com/tags/tidytext/</link>
+      <link>/tags/tidytext/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/tidytext/</guid>
+      <guid>/tags/tidytext/</guid>
       <description></description>
     </item>
     
     <item>
       <title>knn</title>
-      <link>https://yetanotheriteration.netlify.com/tags/knn/</link>
+      <link>/tags/knn/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/knn/</guid>
+      <guid>/tags/knn/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pca</title>
-      <link>https://yetanotheriteration.netlify.com/tags/pca/</link>
+      <link>/tags/pca/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/pca/</guid>
+      <guid>/tags/pca/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ia</title>
-      <link>https://yetanotheriteration.netlify.com/tags/ia/</link>
+      <link>/tags/ia/</link>
       <pubDate>Mon, 22 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/ia/</guid>
+      <guid>/tags/ia/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ggraph</title>
-      <link>https://yetanotheriteration.netlify.com/tags/ggraph/</link>
+      <link>/tags/ggraph/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/ggraph/</guid>
+      <guid>/tags/ggraph/</guid>
       <description></description>
     </item>
     
     <item>
       <title>network</title>
-      <link>https://yetanotheriteration.netlify.com/tags/network/</link>
+      <link>/tags/network/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/network/</guid>
+      <guid>/tags/network/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rstat</title>
-      <link>https://yetanotheriteration.netlify.com/tags/rstat/</link>
+      <link>/tags/rstat/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/rstat/</guid>
+      <guid>/tags/rstat/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sna</title>
-      <link>https://yetanotheriteration.netlify.com/tags/sna/</link>
+      <link>/tags/sna/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/sna/</guid>
+      <guid>/tags/sna/</guid>
       <description></description>
     </item>
     
     <item>
       <title>fitbit</title>
-      <link>https://yetanotheriteration.netlify.com/tags/fitbit/</link>
+      <link>/tags/fitbit/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/fitbit/</guid>
+      <guid>/tags/fitbit/</guid>
       <description></description>
     </item>
     
     <item>
       <title>gganimate</title>
-      <link>https://yetanotheriteration.netlify.com/tags/gganimate/</link>
+      <link>/tags/gganimate/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/gganimate/</guid>
+      <guid>/tags/gganimate/</guid>
       <description></description>
     </item>
     
     <item>
       <title>runtastic</title>
-      <link>https://yetanotheriteration.netlify.com/tags/runtastic/</link>
+      <link>/tags/runtastic/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/runtastic/</guid>
+      <guid>/tags/runtastic/</guid>
       <description></description>
     </item>
     
     <item>
       <title>strava</title>
-      <link>https://yetanotheriteration.netlify.com/tags/strava/</link>
+      <link>/tags/strava/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/strava/</guid>
+      <guid>/tags/strava/</guid>
       <description></description>
     </item>
     
     <item>
       <title>feature engineering</title>
-      <link>https://yetanotheriteration.netlify.com/tags/feature-engineering/</link>
+      <link>/tags/feature-engineering/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/feature-engineering/</guid>
+      <guid>/tags/feature-engineering/</guid>
       <description></description>
     </item>
     
     <item>
       <title>gps</title>
-      <link>https://yetanotheriteration.netlify.com/tags/gps/</link>
+      <link>/tags/gps/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/gps/</guid>
+      <guid>/tags/gps/</guid>
       <description></description>
     </item>
     
     <item>
       <title>gpx</title>
-      <link>https://yetanotheriteration.netlify.com/tags/gpx/</link>
+      <link>/tags/gpx/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/gpx/</guid>
+      <guid>/tags/gpx/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tcx</title>
-      <link>https://yetanotheriteration.netlify.com/tags/tcx/</link>
+      <link>/tags/tcx/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/tags/tcx/</guid>
+      <guid>/tags/tcx/</guid>
       <description></description>
     </item>
     
