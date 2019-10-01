@@ -303,8 +303,10 @@ Let's see how much dimension of the PCA we need to consider.
 
 # ploting the cumulative variance
 data_frame(x=1:length(pca$sdev), sdev.cum=cumsum(props)) %>%
-  plot_ly(x=~x,y=~sdev.cum) %>%
-  add_lines()
+  ggplot(aes(x=x, y=sdev.cum)) +
+  geom_line(color="darkblue", size=.8) +
+  theme_minimal()
+  
 
 ```
 
@@ -327,9 +329,9 @@ cases <- tibble(
 
 # all cases
 cases %>%
-  plot_ly(x=~x, y=~y, color=~label) %>%  
-  add_markers()
-
+  ggplot(aes(x=x, y=y, color=label)) +
+  geom_point(size=2, alpha=.5) +
+  theme_minimal()
 ```
 
 A little mess, but if we plot only the most distances centroids (`0`, `1` e `9`) we already see a separable structures if only two dimensions.
@@ -339,20 +341,19 @@ A little mess, but if we plot only the most distances centroids (`0`, `1` e `9`)
 # cases more "distant"
 cases %>%
   filter(label %in% c("0", "1", "9")) %>%
-  plot_ly(x=~x, y=~y, color=~label) %>%  
-  add_markers()
-
+  ggplot(aes(x=x, y=y, color=label)) +
+  geom_point(size=2, alpha=.5) +
+  theme_minimal()
 ```
 
 This sound promising. An kNN approach with higher dimension may do a decent job classifying the digits. Lets put another one, increasing the _explained variation_ to 23%.
 
 
-```{r plot3DComponents, warning=FALSE}
+```{r plot3DComponents, warning=FALSE, echo=FALSE}
 
 # 3D
 plot_ly(cases, x=~x, y=~y, z=~z, color=~label) %>%  
-  add_markers()
-
+  add_markers(size=1)
 
 ```
 
@@ -423,8 +424,8 @@ Let's see the _accuracy surface_ defined by `k` and `n` parameters.
 
 ```{r plotAccuracySurface}
 # ploting the error "surface"
-plot_ly(cv.results, x=~n, y=~k, z=~accuracy) %>%
-  add_markers(marker=list(size=2))
+cv.results %>%
+  wireframe(accuracy~n*k, .)
 
 # which pair k and n are better ?
 best <- cv.results[which(cv.results$accuracy==max(cv.results$accuracy)),]
