@@ -1,0 +1,565 @@
+---
+title: "Análise de Sentimentos via Emojis em chat do WhatsApp"
+author: "Giuliano Sposito"
+date: '2019-10-14'
+coverImage: /images/emoji_whatsapp_header.jpg
+keywords: tech
+metaAlignment: center
+slug: análise-de-sentimentos-via-emojis-em-chat-do-whatsapp
+tags:
+- pt-BR
+- rstats
+- data analysis
+- tidytext
+- text mining
+- rvest
+- emoji
+thumbnailImage: /images/emoji_whatsapp_tn.jpg
+thumbnailImagePosition: left
+categories:
+- data science
+---
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+<!--more-->
+
+```{r setup, echo=FALSE}
+
+# put rnotebook in the same workdir of this project
+knitr::opts_knit$set(root.dir = normalizePath(rprojroot::find_rstudio_root_file())) 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache=TRUE)
+
+```
+
+## Abastract
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+## Obtendo os dados
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r loadLibsNData, eval=FALSE}
+
+# libs to explore the WhatsApp chat
+library(rwhatsapp)
+library(tidyverse)
+library(lubridate)
+library(tidytext)
+library(kableExtra)
+library(RColorBrewer)
+library(knitr)
+
+# importing data
+chat <- rwa_read("./data/nfl_dudes.zip")
+
+# checking the datatable format
+chat %>% 
+  head(8) %>%
+  kable() %>% 
+  kable_styling(font_size = 9)
+```
+
+```{r loadData, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE}
+
+# libs to explore the WhatsApp chat
+library(rwhatsapp)
+library(tidyverse)
+library(lubridate)
+library(tidytext)
+library(kableExtra)
+library(RColorBrewer)
+library(knitr)
+
+# importing data and protecting the authors name and phone
+chat <- rwa_read("./data/nfl_dudes.zip") %>% 
+  filter(!is.na(author)) %>% 
+  mutate(author = as.character(author)) %>% 
+  mutate(author = case_when(
+    author == "Thiago dos S. Teixeira" ~ "ThiagoS",
+    author == "Thiago Mota" ~ "ThiagoM",
+    T ~ author
+  )) %>% 
+  mutate(author = str_trim(str_extract(author,"[a-zA-Z0-9]+"))) %>%
+  mutate(author = ifelse(author=="1", "Roander", author)) %>% 
+  mutate(author = as.factor(author))
+
+# checking the datatable
+chat %>% 
+  head(8) %>%
+  kable() %>% 
+  kable_styling(font_size = 9)
+
+
+```
+
+
+## Avaliando Frequência das Mensagens
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+### Mensagens enviadas no período
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r dataHandling, fig.width=10, fig.height=4}
+
+# main dates
+# draft:        25.APR – 27.APR
+# preseason:    01.AUG - 29.AUG
+# league draft: 02.SEP
+# season:       > 05.SEP
+# off season:   everthing else
+
+# prepare data for time/date analysis
+chat <- chat %>% 
+  mutate(day = date(time)) %>% 
+  mutate(
+    # phase classification
+    phase = case_when(
+      day >= dmy(25042019) & day <= dmy(27042019) ~ "nfl draft",
+      day >= dmy(01082019) & day <= dmy(29082019) ~ "preseason",
+      day >= dmy(30082019) & day <= dmy(04092019) ~ "league draft",
+      day >= dmy(05092019) ~ "season",
+      T ~ "off season"
+    )
+  ) %>% 
+  mutate( phase = factor(phase) ) %>% 
+  filter(!is.na(author))
+
+# my color palette
+my.phase.palette <- brewer.pal(5,"Set1")[c(5,1,3,4,2)]
+
+# Cheking how much messages was sent along the period
+chat %>% 
+  group_by(phase) %>% 
+  count(day) %>%
+  ggplot(aes(x = day, y = n, fill=phase)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab("messages") + xlab("date") +
+  ggtitle("Messages per day", "It's Football, Dudes! WhatsApp Chat Group") +
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = "bottom")
+
+```
+
+### Mensagens por dia da semana
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r messagensPerWeekDay}
+
+# mensagens por dia da semana
+chat %>% 
+  mutate( wday.num = wday(day),
+          wday.name = weekdays(day)) %>% 
+  group_by(phase, wday.num, wday.name) %>% 
+  count() %>% 
+  ggplot(aes(x = reorder(wday.name, -wday.num), y = n, fill=phase)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab("") + xlab("") +
+  coord_flip() +
+  ggtitle("Number of messages for weekday", "It's Football, Dudes! WhatsApp Chat Group") +
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = "bottom")
+
+```
+
+### Mensagens por hora
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r messageByHour, fig.width=10, fig.height=3.5}
+
+# usado como truque para nomear os facets e manter a ordem dos dias de semana
+wday.values <- c("domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado","domingo")
+names(wday.values) <- 1:7
+
+# mensagens por hora do dia
+chat %>% 
+  mutate( hour = hour(time), 
+          wday.num = wday(day),
+          wday.name = weekdays(day)) %>% 
+  count(phase, wday.num, wday.name, hour) %>% 
+  ggplot(aes(x = hour, y = n, fill=phase)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab("") + xlab("") +
+  ggtitle("Number of messages by Hour and Weekday", "It's Football, Dudes! WhatsApp Chat Group") +
+  facet_wrap(~wday.num, ncol=7, labeller = labeller(wday.num=wday.values))+
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = "bottom",
+         panel.spacing.x=unit(0.0, "lines"))
+
+
+```
+
+```{r messagesByAuthor}
+
+# mensagem por remetente 
+chat %>%
+  mutate(day = date(time)) %>%
+  group_by(phase) %>% 
+  count(author) %>%
+  ggplot(aes(x = reorder(author, n), y = n, fill=phase)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab("") + xlab("") +
+  coord_flip() +
+  ggtitle("Number of messages", "It's Football, Dudes! WhatsApp Chat Group") +
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = "bottom")
+
+```
+
+## Emoji's
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r emoji}
+chat %>% 
+  select(time, author, emoji, emoji_name) %>% 
+  unnest(emoji, emoji_name) %>% 
+  slice(1:10) %>% 
+  kable()
+```
+
+### EMOJI mais usado
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r emojiRanking, fig.width=9, fig.height=8}
+
+## emoji ranking
+chat %>% 
+  unnest(emoji, emoji_name) %>% 
+  mutate( emoji = str_sub(emoji, end = 1)) %>% # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, ":.*")) %>% # remove ligatures names
+  count(emoji, emoji_name) %>% 
+  top_n(20, n) %>% 
+  arrange(desc(n)) %>% 
+  ggplot(aes(x=reorder(emoji_name, n), y=n, fill=n, color=n)) +
+  geom_col(show.legend = FALSE, width = .1) +
+  geom_point(show.legend = FALSE, size = 3) +
+  geom_text(aes(label=emoji), size=8, nudge_y = 25, nudge_x = .3) +
+  scale_fill_gradient(low="#2b83ba",high="#d7191c") +
+  scale_color_gradient(low="#2b83ba",high="#d7191c") +
+  ylab("") +
+  xlab("") +
+  ggtitle("Most often used emojis", "It's Football, Dudes! WhatsApp Chat Group") +
+  coord_flip() +
+  theme_minimal() +
+  theme()
+
+```
+
+```{r emojiByAuthors, fig.width=8, fig.height=7}
+
+## emoji by author
+chat %>%
+  unnest(emoji, emoji_name) %>%
+  mutate( emoji = str_sub(emoji, end = 1)) %>% # remove nuancias
+  count(author, emoji, emoji_name, sort = TRUE) %>%
+  group_by(author) %>%
+  top_n(n = 6, n) %>%
+  slice(1:6) %>%
+  ggplot(aes(x = reorder(emoji, -n), y = n, fill = author, group=author)) +
+  geom_col(show.legend = FALSE) +
+  ylab("") +
+  xlab("") +
+  facet_wrap(~author, ncol = 5, scales = "free")  +
+  ggtitle("Most often used emojis") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size=18))
+
+```
+
+## Análise de Palavras
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r wordFrequence}
+
+library(tidytext)
+library(stopwords)
+
+words_to_remove <- c(stopwords(language = "pt"),
+               "http", "imagem", "gif", "ocultada","omitida", "e", "pra", "vou", "ta", "https",
+               "é","pro","to", "vai", "nao", "and", "omitido", "cara","lá", "q", "né",
+               "ta", "tá", "ja", "p", "tbm", "agora", "vc", "tô", "acho", "aí", "ai",
+               "tipo", "tava", "hj", "ver", 0:20, "figurinha", "tudo", "ainda","ser",
+               "bem","ter", "fazer","faz","pq", "bom","pode","nada", "aqui", "hoje", "vi", "fez")
+
+
+chat %>%
+  unnest_tokens(input = text, output = word) %>%
+  filter(!word %in% words_to_remove) %>% 
+  count(word) %>% 
+  top_n(20,n) %>% 
+  arrange(desc(n)) %>% 
+  ggplot(aes(x=reorder(word,n), y=n, fill=n, color=n)) +
+  geom_col(show.legend = FALSE, width = .1) +
+  geom_point(show.legend = FALSE, size = 3) +
+  scale_fill_gradient(low="#74a9cf",high="#045a8d") +
+  scale_color_gradient(low="#74a9cf",high="#045a8d") +
+  ggtitle("Most often words") +
+  xlab("words") +
+  coord_flip() +
+  theme_minimal()
+
+
+```
+
+```{r removePhoneNumbers, echo=FALSE}
+words_to_remove <- c(words_to_remove, "5519997872313","5515997495014","5515981280730","5519996069273","5519997629380")
+```
+
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+
+```{r wordsByAuthor, fig.height=9}
+
+
+chat %>%
+  unnest_tokens(input = text,
+                output = word) %>%
+  filter(!word %in% words_to_remove) %>%
+  count(author, word, sort = TRUE) %>%
+  group_by(author) %>%
+  top_n(n = 10, n) %>%
+  slice(1:10) %>%
+  ungroup() %>% 
+  arrange(author, desc(n)) %>% 
+  mutate(order=row_number()) %>% 
+  ggplot(aes(x = reorder(word, n), y = n, fill = author, color = author)) +
+  geom_col(show.legend = FALSE, width = .1) +
+  geom_point(show.legend = FALSE, size = 3) +
+  ylab("") +
+  xlab("") +
+  coord_flip() +
+  facet_wrap(~author, ncol = 3, scales = "free") +
+  ggtitle("Most often used words") +
+  theme_minimal()
+
+```
+
+## Análise de Sentimentos
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+### Emoji Sentiment Rank
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r emojiSentimentRank}
+
+library(rvest)
+
+base.url <- "http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html"
+
+doc <- read_html(base.url)
+
+emoji.table <- doc %>% 
+  html_node("#myTable") %>% 
+  html_table() %>% 
+  as_tibble()
+
+emoji.table %>% 
+  #arrange(desc(8)) %>% 
+  head(10) %>% 
+  kable() %>% 
+  kable_styling(font_size = 9)
+
+```
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r addSentiment}
+
+# geting sentiment score and cleaning emoji.table colnames
+emoji.sentiment <- emoji.table %>% 
+  select(1,6:9) %>% 
+  set_names("char", "negative","neutral","positive","sent.score")
+
+
+# extract emoji and join with sentiment 
+emoji.chat <- chat %>% 
+  unnest(emoji, emoji_name) %>% 
+  mutate( emoji = str_sub(emoji, end = 1)) %>% # remove ligatures
+  inner_join(emoji.sentiment, by=c("emoji"="char")) 
+
+# visualizing 
+emoji.chat %>% 
+  select(-source, -day, -phase) %>% 
+  slice(1207:1219) %>% 
+  kable() %>% 
+  kable_styling(font_size = 10)
+
+```
+
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r emojiSentimentByAuthor}
+
+# summarising emoji sentiment ocorrences by author
+emoji.authors.sentiment <- emoji.chat %>% 
+  group_by(author) %>% 
+  summarise(
+    positive=mean(positive),
+    negative=mean(negative),
+    neutral=mean(neutral),
+    balance=mean(sent.score)
+  ) %>% 
+  arrange(desc(balance))
+
+# formating the data to plot as divergent stacked bar
+emoji.authors.sentiment %>% 
+  mutate( negative  = -negative,
+          neutral.p =  neutral/2,
+          neutral.n = -neutral/2) %>% 
+  select(-neutral) %>% 
+  gather("sentiment","mean", -author, -balance) %>% 
+  mutate(sentiment = factor(sentiment, levels = c("negative", "neutral.n", "positive", "neutral.p"), ordered = T)) %>% 
+  ggplot(aes(x=reorder(author,balance), y=mean, fill=sentiment)) +
+  geom_bar(position="stack", stat="identity", show.legend = F, width = .5) +
+  scale_fill_manual(values = brewer.pal(4,"RdYlGn")[c(1,2,4,2)]) +
+  ylab("negativo/positivo") + xlab("") +
+  ggtitle("Análise de Sentimentos","Baseado na média do score de sentimentos dos Emojis") +
+  coord_flip() +
+  theme_minimal() 
+
+```
+
+### Emoji Name Sentiment
+
+The [AFINN lexicon](https://github.com/fnielsen/afinn/tree/master/afinn/data) is perhaps one of the simplest and most popular lexicons that can be used extensively for sentiment analysis. The current version of the lexicon is `AFINN-en-165.txt` and it contains over 3,300+ words with a polarity score associated with each word. You can find this lexicon at the author’s [official GitHub repository](https://github.com/fnielsen/afinn/tree/master/afinn/data).
+
+```{r getEmotionalLexicon}
+
+library(textdata)
+
+# extract emojis
+emoji.chat <- chat %>% 
+  unnest(emoji, emoji_name) %>% 
+  mutate( emoji = str_sub(emoji, end = 1)) %>%  # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, ":.*")) # remove ligatures names
+
+# tokenize the emoji name
+emoji.chat <- emoji.chat %>% 
+  select(author, emoji_name) %>% 
+  unnest_tokens(input=emoji_name, output=emoji_words)
+
+# get some positive/negative lexicon by textdata package
+lex.negpos  <- get_sentiments("afinn") # value intense
+
+# lets look the lexicon format
+lex.negpos %>% 
+  head(10) %>% 
+  kable() %>%
+  kable_styling(full_width = F, font_size = 11)
+
+# what are the possible values?
+table(lex.negpos$value) %>% 
+  kable() %>%
+  kable_styling(full_width = F, font_size = 11) 
+```
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r authorEmojiNameSentiment}
+
+author.summary <- emoji.chat %>% 
+  inner_join(lex.negpos, by=c("emoji_words"="word")) %>% 
+  count(author, value) %>% 
+  group_by(author) %>% 
+  mutate(mean=n/sum(n)) %>% 
+  ungroup()
+
+# trick to plot colors and bar as divergent stacked bar
+reordLevels <- c(-3,-2,-1,3,2,1)
+colors <- c("#d7191c","#fdae61","#ffffbf","#1a9641","#a6d96a","#ffffbf")
+my.colors <- brewer.pal(5,"RdYlGn")[c(1,2,3,5,4,3)]
+
+# the plot
+author.summary %>% 
+  mutate( mean = ifelse(value<0, -mean, mean)) %>% 
+  group_by(author) %>% 
+  mutate( balance = sum(mean)) %>% 
+  ungroup() %>% 
+  mutate( value = factor(value, levels = reordLevels, ordered=T)) %>% 
+  ggplot(aes(x=reorder(author,balance), y=mean, fill=value)) +
+  geom_bar(stat="identity",position="stack") +
+  scale_fill_manual(values = my.colors) +
+  xlab("") +
+  coord_flip() +
+  ggtitle("Sentiment Analysis", "By emoji's name") +
+  theme_minimal()
+
+```
+
+
+### Sentimento mais frequênte por autor
+
+The [NRC Emotion Lexicon](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) (aka EmoLex) is a list of English words and their associations with eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations were manually done by crowdsourcing.	
+
+```{r nrcLex}
+# getting another lexicon with sentiment names
+lex.sent <- get_sentiments("nrc") # sentiment name
+
+# let's see
+lex.sent %>% 
+  head(10) %>% 
+  kable() %>%
+  kable_styling(full_width = F, font_size = 11) 
+```
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+```{r mostFreqSentiment, fig.height=9}
+
+# join with emoji chat
+author.sentiment <- emoji.chat %>% 
+  inner_join(lex.sent, by=c("emoji_words"="word")) %>% 
+  filter(!sentiment %in% c("negative","positive")) # removing neg/pos classification
+
+# plotting
+author.sentiment %>% 
+  count(author, sentiment) %>% 
+  left_join(filter(lex.sent, sentiment %in% c("negative","positive")),by=c("sentiment"="word")) %>% 
+  rename( type = sentiment.y) %>% 
+  mutate( type = ifelse(is.na(type), "neutral", type)) %>% 
+  mutate( type = factor(type, levels = c("negative", "neutral", "positive"), ordered=T) ) %>% 
+  group_by(author) %>%
+  top_n(n = 8, n) %>%
+  slice(1:8) %>% 
+  ggplot(aes(x = reorder(sentiment, n), y = n, fill = type)) +
+  geom_col() +
+  scale_fill_manual(values = c("#d7191c","#fdae61", "#1a9641")) +
+  ylab("") +
+  xlab("") +
+  coord_flip() +
+  facet_wrap(~author, ncol = 3, scales = "free_x") +
+  ggtitle("Most often sentiment") + 
+  theme_minimal() + theme(legend.position = "bottom")
+
+```
+
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+
+## Referências
+
+- [Introducing rwhatsapp](https://www.johannesbgruber.eu/post/introducing-rwhatsapp/)
+- [Emoji Sentiment Ranking 1.0](https://www.clarin.si/repository/xmlui/handle/11356/1048)
+- [Emoji Sentiment Ranking v1.0 Dataset](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html)
+- [Emojis Analysis in R](http://opiateforthemass.es/articles/emoji-analysis/)
+- [Text Mining with R](https://www.tidytextmining.com/sentiment.html)

@@ -1,0 +1,1912 @@
+---
+title: "Análise de Sentimentos via Emojis em chat do WhatsApp"
+author: "Giuliano Sposito"
+date: '2019-10-14'
+coverImage: /images/emoji_whatsapp_header.jpg
+keywords: tech
+metaAlignment: center
+slug: análise-de-sentimentos-via-emojis-em-chat-do-whatsapp
+tags:
+- pt-BR
+- rstats
+- data analysis
+- tidytext
+- text mining
+- rvest
+- emoji
+thumbnailImage: /images/emoji_whatsapp_tn.jpg
+thumbnailImagePosition: left
+categories:
+- data science
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<!--more-->
+<div id="abastract" class="section level2">
+<h2>Abastract</h2>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+</div>
+<div id="obtendo-os-dados" class="section level2">
+<h2>Obtendo os dados</h2>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># libs to explore the WhatsApp chat
+library(rwhatsapp)
+library(tidyverse)
+library(lubridate)
+library(tidytext)
+library(kableExtra)
+library(RColorBrewer)
+library(knitr)
+
+# importing data
+chat &lt;- rwa_read(&quot;./data/nfl_dudes.zip&quot;)
+
+# checking the datatable format
+chat %&gt;% 
+  head(8) %&gt;%
+  kable() %&gt;% 
+  kable_styling(font_size = 9)</code></pre>
+<table class="table" style="font-size: 9px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+time
+</th>
+<th style="text-align:left;">
+author
+</th>
+<th style="text-align:left;">
+text
+</th>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+emoji
+</th>
+<th style="text-align:left;">
+emoji_name
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1553130280.706
+</td>
+<td style="text-align:left;">
+NFL
+</td>
+<td style="text-align:left;">
+It’s Football, dudes: ‎As mensagens deste grupo estão protegidas com a criptografia de ponta a ponta.
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553182747.706
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+‎imagem ocultada
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553182782.706
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+Quem fez merda agora? rs
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553182835.706
+</td>
+<td style="text-align:left;">
+Leonel
+</td>
+<td style="text-align:left;">
+T Hill
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553182841.706
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+🤦🏻‍♂🤦🏻‍♂🤦🏻‍♂
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+c(“&lt;U+0001F926&gt;&lt;U+0001F3FB&gt;&lt;U+200D&gt;&lt;U+2642&gt;”, “&lt;U+0001F926&gt;&lt;U+0001F3FB&gt;&lt;U+200D&gt;&lt;U+2642&gt;”, “&lt;U+0001F926&gt;&lt;U+0001F3FB&gt;&lt;U+200D&gt;&lt;U+2642&gt;”)
+</td>
+<td style="text-align:left;">
+c(“man facepalming: light skin tone”, “man facepalming: light skin tone”, “man facepalming: light skin tone”)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553182847.706
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553183262.706
+</td>
+<td style="text-align:left;">
+Giuliano
+</td>
+<td style="text-align:left;">
+Mas agora, como o time sabe (e perderam para os Giselos sem o Hunt) não vai perder jogador.
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1553201798.706
+</td>
+<td style="text-align:left;">
+Hilton
+</td>
+<td style="text-align:left;">
+‎imagem ocultada
+</td>
+<td style="text-align:left;">
+./data/nfl_dudes.zip
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+<td style="text-align:left;">
+character(0)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="avaliando-frequencia-das-mensagens" class="section level2">
+<h2>Avaliando Frequência das Mensagens</h2>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<div id="mensagens-enviadas-no-periodo" class="section level3">
+<h3>Mensagens enviadas no período</h3>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># main dates
+# draft:        25.APR – 27.APR
+# preseason:    01.AUG - 29.AUG
+# league draft: 02.SEP
+# season:       &gt; 05.SEP
+# off season:   everthing else
+
+# prepare data for time/date analysis
+chat &lt;- chat %&gt;% 
+  mutate(day = date(time)) %&gt;% 
+  mutate(
+    # phase classification
+    phase = case_when(
+      day &gt;= dmy(25042019) &amp; day &lt;= dmy(27042019) ~ &quot;nfl draft&quot;,
+      day &gt;= dmy(01082019) &amp; day &lt;= dmy(29082019) ~ &quot;preseason&quot;,
+      day &gt;= dmy(30082019) &amp; day &lt;= dmy(04092019) ~ &quot;league draft&quot;,
+      day &gt;= dmy(05092019) ~ &quot;season&quot;,
+      T ~ &quot;off season&quot;
+    )
+  ) %&gt;% 
+  mutate( phase = factor(phase) ) %&gt;% 
+  filter(!is.na(author))
+
+# my color palette
+my.phase.palette &lt;- brewer.pal(5,&quot;Set1&quot;)[c(5,1,3,4,2)]
+
+# Cheking how much messages was sent along the period
+chat %&gt;% 
+  group_by(phase) %&gt;% 
+  count(day) %&gt;%
+  ggplot(aes(x = day, y = n, fill=phase)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab(&quot;messages&quot;) + xlab(&quot;date&quot;) +
+  ggtitle(&quot;Messages per day&quot;, &quot;It&#39;s Football, Dudes! WhatsApp Chat Group&quot;) +
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/dataHandling-1.png" width="960" /></p>
+</div>
+<div id="mensagens-por-dia-da-semana" class="section level3">
+<h3>Mensagens por dia da semana</h3>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># mensagens por dia da semana
+chat %&gt;% 
+  mutate( wday.num = wday(day),
+          wday.name = weekdays(day)) %&gt;% 
+  group_by(phase, wday.num, wday.name) %&gt;% 
+  count() %&gt;% 
+  ggplot(aes(x = reorder(wday.name, -wday.num), y = n, fill=phase)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab(&quot;&quot;) + xlab(&quot;&quot;) +
+  coord_flip() +
+  ggtitle(&quot;Number of messages for weekday&quot;, &quot;It&#39;s Football, Dudes! WhatsApp Chat Group&quot;) +
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/messagensPerWeekDay-1.png" width="672" /></p>
+</div>
+<div id="mensagens-por-hora" class="section level3">
+<h3>Mensagens por hora</h3>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># usado como truque para nomear os facets e manter a ordem dos dias de semana
+wday.values &lt;- c(&quot;domingo&quot;,&quot;segunda-feira&quot;,&quot;terça-feira&quot;,&quot;quarta-feira&quot;,&quot;quinta-feira&quot;,&quot;sexta-feira&quot;,&quot;sábado&quot;,&quot;domingo&quot;)
+names(wday.values) &lt;- 1:7
+
+# mensagens por hora do dia
+chat %&gt;% 
+  mutate( hour = hour(time), 
+          wday.num = wday(day),
+          wday.name = weekdays(day)) %&gt;% 
+  count(phase, wday.num, wday.name, hour) %&gt;% 
+  ggplot(aes(x = hour, y = n, fill=phase)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab(&quot;&quot;) + xlab(&quot;&quot;) +
+  ggtitle(&quot;Number of messages by Hour and Weekday&quot;, &quot;It&#39;s Football, Dudes! WhatsApp Chat Group&quot;) +
+  facet_wrap(~wday.num, ncol=7, labeller = labeller(wday.num=wday.values))+
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = &quot;bottom&quot;,
+         panel.spacing.x=unit(0.0, &quot;lines&quot;))</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/messageByHour-1.png" width="960" /></p>
+<pre class="r"><code># mensagem por remetente 
+chat %&gt;%
+  mutate(day = date(time)) %&gt;%
+  group_by(phase) %&gt;% 
+  count(author) %&gt;%
+  ggplot(aes(x = reorder(author, n), y = n, fill=phase)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  scale_fill_manual(values=my.phase.palette) +
+  ylab(&quot;&quot;) + xlab(&quot;&quot;) +
+  coord_flip() +
+  ggtitle(&quot;Number of messages&quot;, &quot;It&#39;s Football, Dudes! WhatsApp Chat Group&quot;) +
+  theme_minimal() +
+  theme( legend.title = element_blank(), 
+         legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/messagesByAuthor-1.png" width="672" /></p>
+</div>
+</div>
+<div id="emojis" class="section level2">
+<h2>Emoji’s</h2>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code>chat %&gt;% 
+  select(time, author, emoji, emoji_name) %&gt;% 
+  unnest(emoji, emoji_name) %&gt;% 
+  slice(1:10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+time
+</th>
+<th style="text-align:left;">
+author
+</th>
+<th style="text-align:left;">
+emoji
+</th>
+<th style="text-align:left;">
+emoji_name
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-03-21 12:40:41
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+🤦🏻‍♂
+</td>
+<td style="text-align:left;">
+man facepalming: light skin tone
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-21 12:40:41
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+🤦🏻‍♂
+</td>
+<td style="text-align:left;">
+man facepalming: light skin tone
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-21 12:40:41
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+🤦🏻‍♂
+</td>
+<td style="text-align:left;">
+man facepalming: light skin tone
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-21 12:40:47
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-21 18:36:34
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+face with tears of joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-21 18:36:34
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+face with tears of joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-21 18:36:34
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+face with tears of joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-23 07:32:21
+</td>
+<td style="text-align:left;">
+Leonel
+</td>
+<td style="text-align:left;">
+🤣
+</td>
+<td style="text-align:left;">
+rolling on the floor laughing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-24 19:03:52
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+face screaming in fear
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-03-24 19:05:34
+</td>
+<td style="text-align:left;">
+Leonel
+</td>
+<td style="text-align:left;">
+👿
+</td>
+<td style="text-align:left;">
+angry face with horns
+</td>
+</tr>
+</tbody>
+</table>
+<div id="emoji-mais-usado" class="section level3">
+<h3>EMOJI mais usado</h3>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code>## emoji ranking
+chat %&gt;% 
+  unnest(emoji, emoji_name) %&gt;% 
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;% # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) %&gt;% # remove ligatures names
+  count(emoji, emoji_name) %&gt;% 
+  top_n(20, n) %&gt;% 
+  arrange(desc(n)) %&gt;% 
+  ggplot(aes(x=reorder(emoji_name, n), y=n, fill=n, color=n)) +
+  geom_col(show.legend = FALSE, width = .1) +
+  geom_point(show.legend = FALSE, size = 3) +
+  geom_text(aes(label=emoji), size=8, nudge_y = 25, nudge_x = .3) +
+  scale_fill_gradient(low=&quot;#2b83ba&quot;,high=&quot;#d7191c&quot;) +
+  scale_color_gradient(low=&quot;#2b83ba&quot;,high=&quot;#d7191c&quot;) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;&quot;) +
+  ggtitle(&quot;Most often used emojis&quot;, &quot;It&#39;s Football, Dudes! WhatsApp Chat Group&quot;) +
+  coord_flip() +
+  theme_minimal() +
+  theme()</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiRanking-1.png" width="864" /></p>
+<pre class="r"><code>## emoji by author
+chat %&gt;%
+  unnest(emoji, emoji_name) %&gt;%
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;% # remove nuancias
+  count(author, emoji, emoji_name, sort = TRUE) %&gt;%
+  group_by(author) %&gt;%
+  top_n(n = 6, n) %&gt;%
+  slice(1:6) %&gt;%
+  ggplot(aes(x = reorder(emoji, -n), y = n, fill = author, group=author)) +
+  geom_col(show.legend = FALSE) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;&quot;) +
+  facet_wrap(~author, ncol = 5, scales = &quot;free&quot;)  +
+  ggtitle(&quot;Most often used emojis&quot;) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size=18))</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiByAuthors-1.png" width="768" /></p>
+</div>
+</div>
+<div id="analise-de-palavras" class="section level2">
+<h2>Análise de Palavras</h2>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code>library(tidytext)
+library(stopwords)
+
+words_to_remove &lt;- c(stopwords(language = &quot;pt&quot;),
+               &quot;http&quot;, &quot;imagem&quot;, &quot;gif&quot;, &quot;ocultada&quot;,&quot;omitida&quot;, &quot;e&quot;, &quot;pra&quot;, &quot;vou&quot;, &quot;ta&quot;, &quot;https&quot;,
+               &quot;é&quot;,&quot;pro&quot;,&quot;to&quot;, &quot;vai&quot;, &quot;nao&quot;, &quot;and&quot;, &quot;omitido&quot;, &quot;cara&quot;,&quot;lá&quot;, &quot;q&quot;, &quot;né&quot;,
+               &quot;ta&quot;, &quot;tá&quot;, &quot;ja&quot;, &quot;p&quot;, &quot;tbm&quot;, &quot;agora&quot;, &quot;vc&quot;, &quot;tô&quot;, &quot;acho&quot;, &quot;aí&quot;, &quot;ai&quot;,
+               &quot;tipo&quot;, &quot;tava&quot;, &quot;hj&quot;, &quot;ver&quot;, 0:20, &quot;figurinha&quot;, &quot;tudo&quot;, &quot;ainda&quot;,&quot;ser&quot;,
+               &quot;bem&quot;,&quot;ter&quot;, &quot;fazer&quot;,&quot;faz&quot;,&quot;pq&quot;, &quot;bom&quot;,&quot;pode&quot;,&quot;nada&quot;, &quot;aqui&quot;, &quot;hoje&quot;, &quot;vi&quot;, &quot;fez&quot;)
+
+
+chat %&gt;%
+  unnest_tokens(input = text, output = word) %&gt;%
+  filter(!word %in% words_to_remove) %&gt;% 
+  count(word) %&gt;% 
+  top_n(20,n) %&gt;% 
+  arrange(desc(n)) %&gt;% 
+  ggplot(aes(x=reorder(word,n), y=n, fill=n, color=n)) +
+  geom_col(show.legend = FALSE, width = .1) +
+  geom_point(show.legend = FALSE, size = 3) +
+  scale_fill_gradient(low=&quot;#74a9cf&quot;,high=&quot;#045a8d&quot;) +
+  scale_color_gradient(low=&quot;#74a9cf&quot;,high=&quot;#045a8d&quot;) +
+  ggtitle(&quot;Most often words&quot;) +
+  xlab(&quot;words&quot;) +
+  coord_flip() +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/wordFrequence-1.png" width="672" /></p>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code>chat %&gt;%
+  unnest_tokens(input = text,
+                output = word) %&gt;%
+  filter(!word %in% words_to_remove) %&gt;%
+  count(author, word, sort = TRUE) %&gt;%
+  group_by(author) %&gt;%
+  top_n(n = 10, n) %&gt;%
+  slice(1:10) %&gt;%
+  ungroup() %&gt;% 
+  arrange(author, desc(n)) %&gt;% 
+  mutate(order=row_number()) %&gt;% 
+  ggplot(aes(x = reorder(word, n), y = n, fill = author, color = author)) +
+  geom_col(show.legend = FALSE, width = .1) +
+  geom_point(show.legend = FALSE, size = 3) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;&quot;) +
+  coord_flip() +
+  facet_wrap(~author, ncol = 3, scales = &quot;free&quot;) +
+  ggtitle(&quot;Most often used words&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/wordsByAuthor-1.png" width="672" /></p>
+</div>
+<div id="analise-de-sentimentos" class="section level2">
+<h2>Análise de Sentimentos</h2>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<div id="emoji-sentiment-rank" class="section level3">
+<h3>Emoji Sentiment Rank</h3>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code>library(rvest)
+
+base.url &lt;- &quot;http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html&quot;
+
+doc &lt;- read_html(base.url)
+
+emoji.table &lt;- doc %&gt;% 
+  html_node(&quot;#myTable&quot;) %&gt;% 
+  html_table() %&gt;% 
+  as_tibble()
+
+emoji.table %&gt;% 
+  #arrange(desc(8)) %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size = 9)</code></pre>
+<table class="table" style="font-size: 9px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Char
+</th>
+<th style="text-align:left;">
+Image[twemoji]
+</th>
+<th style="text-align:right;">
+Unicodecodepoint
+</th>
+<th style="text-align:right;">
+Occurrences[5…max]
+</th>
+<th style="text-align:right;">
+Position[0…1]
+</th>
+<th style="text-align:right;">
+Neg[0…1]
+</th>
+<th style="text-align:right;">
+Neut[0…1]
+</th>
+<th style="text-align:right;">
+Pos[0…1]
+</th>
+<th style="text-align:right;">
+Sentiment score[-1…+1]
+</th>
+<th style="text-align:left;">
+Sentiment bar(c.i. 95%)
+</th>
+<th style="text-align:left;">
+Unicode name
+</th>
+<th style="text-align:left;">
+Unicode block
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:right;">
+128514
+</td>
+<td style="text-align:right;">
+14622
+</td>
+<td style="text-align:right;">
+0.805
+</td>
+<td style="text-align:right;">
+0.247
+</td>
+<td style="text-align:right;">
+0.285
+</td>
+<td style="text-align:right;">
+0.468
+</td>
+<td style="text-align:right;">
+0.221
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+FACE WITH TEARS OF JOY
+</td>
+<td style="text-align:left;">
+Emoticons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+❤
+</td>
+<td style="text-align:left;">
+❤
+</td>
+<td style="text-align:right;">
+10084
+</td>
+<td style="text-align:right;">
+8050
+</td>
+<td style="text-align:right;">
+0.747
+</td>
+<td style="text-align:right;">
+0.044
+</td>
+<td style="text-align:right;">
+0.166
+</td>
+<td style="text-align:right;">
+0.790
+</td>
+<td style="text-align:right;">
+0.746
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+HEAVY BLACK HEART
+</td>
+<td style="text-align:left;">
+Dingbats
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+♥
+</td>
+<td style="text-align:left;">
+♥
+</td>
+<td style="text-align:right;">
+9829
+</td>
+<td style="text-align:right;">
+7144
+</td>
+<td style="text-align:right;">
+0.754
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.272
+</td>
+<td style="text-align:right;">
+0.693
+</td>
+<td style="text-align:right;">
+0.657
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+BLACK HEART SUIT
+</td>
+<td style="text-align:left;">
+Miscellaneous Symbols
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😍
+</td>
+<td style="text-align:left;">
+😍
+</td>
+<td style="text-align:right;">
+128525
+</td>
+<td style="text-align:right;">
+6359
+</td>
+<td style="text-align:right;">
+0.765
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+<td style="text-align:right;">
+0.219
+</td>
+<td style="text-align:right;">
+0.729
+</td>
+<td style="text-align:right;">
+0.678
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+SMILING FACE WITH HEART-SHAPED EYES
+</td>
+<td style="text-align:left;">
+Emoticons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😭
+</td>
+<td style="text-align:left;">
+😭
+</td>
+<td style="text-align:right;">
+128557
+</td>
+<td style="text-align:right;">
+5526
+</td>
+<td style="text-align:right;">
+0.803
+</td>
+<td style="text-align:right;">
+0.436
+</td>
+<td style="text-align:right;">
+0.220
+</td>
+<td style="text-align:right;">
+0.343
+</td>
+<td style="text-align:right;">
+-0.093
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+LOUDLY CRYING FACE
+</td>
+<td style="text-align:left;">
+Emoticons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😘
+</td>
+<td style="text-align:left;">
+😘
+</td>
+<td style="text-align:right;">
+128536
+</td>
+<td style="text-align:right;">
+3648
+</td>
+<td style="text-align:right;">
+0.854
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+0.193
+</td>
+<td style="text-align:right;">
+0.754
+</td>
+<td style="text-align:right;">
+0.701
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+FACE THROWING A KISS
+</td>
+<td style="text-align:left;">
+Emoticons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😊
+</td>
+<td style="text-align:left;">
+😊
+</td>
+<td style="text-align:right;">
+128522
+</td>
+<td style="text-align:right;">
+3186
+</td>
+<td style="text-align:right;">
+0.813
+</td>
+<td style="text-align:right;">
+0.060
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.704
+</td>
+<td style="text-align:right;">
+0.644
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+SMILING FACE WITH SMILING EYES
+</td>
+<td style="text-align:left;">
+Emoticons
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+👌
+</td>
+<td style="text-align:left;">
+👌
+</td>
+<td style="text-align:right;">
+128076
+</td>
+<td style="text-align:right;">
+2925
+</td>
+<td style="text-align:right;">
+0.805
+</td>
+<td style="text-align:right;">
+0.094
+</td>
+<td style="text-align:right;">
+0.249
+</td>
+<td style="text-align:right;">
+0.657
+</td>
+<td style="text-align:right;">
+0.563
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+OK HAND SIGN
+</td>
+<td style="text-align:left;">
+Miscellaneous Symbols and Pictographs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+💕
+</td>
+<td style="text-align:left;">
+💕
+</td>
+<td style="text-align:right;">
+128149
+</td>
+<td style="text-align:right;">
+2400
+</td>
+<td style="text-align:right;">
+0.766
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+0.285
+</td>
+<td style="text-align:right;">
+0.674
+</td>
+<td style="text-align:right;">
+0.632
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+TWO HEARTS
+</td>
+<td style="text-align:left;">
+Miscellaneous Symbols and Pictographs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+👏
+</td>
+<td style="text-align:left;">
+👏
+</td>
+<td style="text-align:right;">
+128079
+</td>
+<td style="text-align:right;">
+2336
+</td>
+<td style="text-align:right;">
+0.787
+</td>
+<td style="text-align:right;">
+0.104
+</td>
+<td style="text-align:right;">
+0.271
+</td>
+<td style="text-align:right;">
+0.624
+</td>
+<td style="text-align:right;">
+0.520
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+CLAPPING HANDS SIGN
+</td>
+<td style="text-align:left;">
+Miscellaneous Symbols and Pictographs
+</td>
+</tr>
+</tbody>
+</table>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># geting sentiment score and cleaning emoji.table colnames
+emoji.sentiment &lt;- emoji.table %&gt;% 
+  select(1,6:9) %&gt;% 
+  set_names(&quot;char&quot;, &quot;negative&quot;,&quot;neutral&quot;,&quot;positive&quot;,&quot;sent.score&quot;)
+
+
+# extract emoji and join with sentiment 
+emoji.chat &lt;- chat %&gt;% 
+  unnest(emoji, emoji_name) %&gt;% 
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;% # remove ligatures
+  inner_join(emoji.sentiment, by=c(&quot;emoji&quot;=&quot;char&quot;)) 
+
+# visualizing 
+emoji.chat %&gt;% 
+  select(-source, -day, -phase) %&gt;% 
+  slice(1207:1219) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size = 10)</code></pre>
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+time
+</th>
+<th style="text-align:left;">
+author
+</th>
+<th style="text-align:left;">
+text
+</th>
+<th style="text-align:left;">
+emoji
+</th>
+<th style="text-align:left;">
+emoji_name
+</th>
+<th style="text-align:right;">
+negative
+</th>
+<th style="text-align:right;">
+neutral
+</th>
+<th style="text-align:right;">
+positive
+</th>
+<th style="text-align:right;">
+sent.score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-09-16 23:14:23
+</td>
+<td style="text-align:left;">
+Leonel
+</td>
+<td style="text-align:left;">
+Dolphins vai ter o primeiro e o segundo pick do Draft 😅
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+<td style="text-align:right;">
+0.292
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 08:20:31
+</td>
+<td style="text-align:left;">
+Roander
+</td>
+<td style="text-align:left;">
+Se tiver mal é só pegar o FH pra dar um up na tabela 😜
+</td>
+<td style="text-align:left;">
+😜
+</td>
+<td style="text-align:left;">
+winking face with tongue
+</td>
+<td style="text-align:right;">
+0.112
+</td>
+<td style="text-align:right;">
+0.322
+</td>
+<td style="text-align:right;">
+0.566
+</td>
+<td style="text-align:right;">
+0.455
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 13:43:09
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+<td style="text-align:right;">
+0.292
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 13:46:08
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😎
+</td>
+<td style="text-align:left;">
+😎
+</td>
+<td style="text-align:left;">
+smiling face with sunglasses
+</td>
+<td style="text-align:right;">
+0.106
+</td>
+<td style="text-align:right;">
+0.297
+</td>
+<td style="text-align:right;">
+0.597
+</td>
+<td style="text-align:right;">
+0.491
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 13:53:30
+</td>
+<td style="text-align:left;">
+Leonel
+</td>
+<td style="text-align:left;">
+Cara, tava torcendo tanto para ele fazer 20 pontos.. pq eu ganharia por .5 😅
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+<td style="text-align:right;">
+0.292
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 13:58:53
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+<td style="text-align:right;">
+0.292
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 13:59:34
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+<td style="text-align:right;">
+0.292
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 14:05:01
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+Quem acha q o Kaepernick pode voltar levanta a mão? 😎 👍🏻
+</td>
+<td style="text-align:left;">
+😎
+</td>
+<td style="text-align:left;">
+smiling face with sunglasses
+</td>
+<td style="text-align:right;">
+0.106
+</td>
+<td style="text-align:right;">
+0.297
+</td>
+<td style="text-align:right;">
+0.597
+</td>
+<td style="text-align:right;">
+0.491
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 14:05:01
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+Quem acha q o Kaepernick pode voltar levanta a mão? 😎 👍🏻
+</td>
+<td style="text-align:left;">
+👍
+</td>
+<td style="text-align:left;">
+thumbs up: light skin tone
+</td>
+<td style="text-align:right;">
+0.115
+</td>
+<td style="text-align:right;">
+0.248
+</td>
+<td style="text-align:right;">
+0.637
+</td>
+<td style="text-align:right;">
+0.521
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 14:05:14
+</td>
+<td style="text-align:left;">
+Hilton
+</td>
+<td style="text-align:left;">
+☝🏻
+</td>
+<td style="text-align:left;">
+☝
+</td>
+<td style="text-align:left;">
+index pointing up: light skin tone
+</td>
+<td style="text-align:right;">
+0.144
+</td>
+<td style="text-align:right;">
+0.402
+</td>
+<td style="text-align:right;">
+0.454
+</td>
+<td style="text-align:right;">
+0.309
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 14:05:54
+</td>
+<td style="text-align:left;">
+Marcos
+</td>
+<td style="text-align:left;">
+👎🏻
+</td>
+<td style="text-align:left;">
+👎
+</td>
+<td style="text-align:left;">
+thumbs down: light skin tone
+</td>
+<td style="text-align:right;">
+0.494
+</td>
+<td style="text-align:right;">
+0.199
+</td>
+<td style="text-align:right;">
+0.307
+</td>
+<td style="text-align:right;">
+-0.188
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 14:07:35
+</td>
+<td style="text-align:left;">
+Hilton
+</td>
+<td style="text-align:left;">
+Eu tentei ajudá-lo, mas ele não captou minha oferta, acho que pq estamos na mesma divisão 😎
+</td>
+<td style="text-align:left;">
+😎
+</td>
+<td style="text-align:left;">
+smiling face with sunglasses
+</td>
+<td style="text-align:right;">
+0.106
+</td>
+<td style="text-align:right;">
+0.297
+</td>
+<td style="text-align:right;">
+0.597
+</td>
+<td style="text-align:right;">
+0.491
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-09-17 14:08:40
+</td>
+<td style="text-align:left;">
+Leandro
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+grinning face with sweat
+</td>
+<td style="text-align:right;">
+0.292
+</td>
+<td style="text-align:right;">
+0.237
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.178
+</td>
+</tr>
+</tbody>
+</table>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># summarising emoji sentiment ocorrences by author
+emoji.authors.sentiment &lt;- emoji.chat %&gt;% 
+  group_by(author) %&gt;% 
+  summarise(
+    positive=mean(positive),
+    negative=mean(negative),
+    neutral=mean(neutral),
+    balance=mean(sent.score)
+  ) %&gt;% 
+  arrange(desc(balance))
+
+# formating the data to plot as divergent stacked bar
+emoji.authors.sentiment %&gt;% 
+  mutate( negative  = -negative,
+          neutral.p =  neutral/2,
+          neutral.n = -neutral/2) %&gt;% 
+  select(-neutral) %&gt;% 
+  gather(&quot;sentiment&quot;,&quot;mean&quot;, -author, -balance) %&gt;% 
+  mutate(sentiment = factor(sentiment, levels = c(&quot;negative&quot;, &quot;neutral.n&quot;, &quot;positive&quot;, &quot;neutral.p&quot;), ordered = T)) %&gt;% 
+  ggplot(aes(x=reorder(author,balance), y=mean, fill=sentiment)) +
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;, show.legend = F, width = .5) +
+  scale_fill_manual(values = brewer.pal(4,&quot;RdYlGn&quot;)[c(1,2,4,2)]) +
+  ylab(&quot;negativo/positivo&quot;) + xlab(&quot;&quot;) +
+  ggtitle(&quot;Análise de Sentimentos&quot;,&quot;Baseado na média do score de sentimentos dos Emojis&quot;) +
+  coord_flip() +
+  theme_minimal() </code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiSentimentByAuthor-1.png" width="672" /></p>
+</div>
+<div id="emoji-name-sentiment" class="section level3">
+<h3>Emoji Name Sentiment</h3>
+<p>The <a href="https://github.com/fnielsen/afinn/tree/master/afinn/data">AFINN lexicon</a> is perhaps one of the simplest and most popular lexicons that can be used extensively for sentiment analysis. The current version of the lexicon is <code>AFINN-en-165.txt</code> and it contains over 3,300+ words with a polarity score associated with each word. You can find this lexicon at the author’s <a href="https://github.com/fnielsen/afinn/tree/master/afinn/data">official GitHub repository</a>.</p>
+<pre class="r"><code>library(textdata)
+
+# extract emojis
+emoji.chat &lt;- chat %&gt;% 
+  unnest(emoji, emoji_name) %&gt;% 
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;%  # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) # remove ligatures names
+
+# tokenize the emoji name
+emoji.chat &lt;- emoji.chat %&gt;% 
+  select(author, emoji_name) %&gt;% 
+  unnest_tokens(input=emoji_name, output=emoji_words)
+
+# get some positive/negative lexicon by textdata package
+lex.negpos  &lt;- get_sentiments(&quot;afinn&quot;) # value intense
+
+# lets look the lexicon format
+lex.negpos %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kable_styling(full_width = F, font_size = 11)</code></pre>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+abandon
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandoned
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandons
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abducted
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abduction
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abductions
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abhor
+</td>
+<td style="text-align:right;">
+-3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abhorred
+</td>
+<td style="text-align:right;">
+-3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abhorrent
+</td>
+<td style="text-align:right;">
+-3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abhors
+</td>
+<td style="text-align:right;">
+-3
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># what are the possible values?
+table(lex.negpos$value) %&gt;% 
+  kable() %&gt;%
+  kable_styling(full_width = F, font_size = 11) </code></pre>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Var1
+</th>
+<th style="text-align:right;">
+Freq
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+-5
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-4
+</td>
+<td style="text-align:right;">
+43
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-3
+</td>
+<td style="text-align:right;">
+264
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-2
+</td>
+<td style="text-align:right;">
+966
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-1
+</td>
+<td style="text-align:right;">
+309
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+208
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+448
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+172
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+</tbody>
+</table>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code>author.summary &lt;- emoji.chat %&gt;% 
+  inner_join(lex.negpos, by=c(&quot;emoji_words&quot;=&quot;word&quot;)) %&gt;% 
+  count(author, value) %&gt;% 
+  group_by(author) %&gt;% 
+  mutate(mean=n/sum(n)) %&gt;% 
+  ungroup()
+
+# trick to plot colors and bar as divergent stacked bar
+reordLevels &lt;- c(-3,-2,-1,3,2,1)
+colors &lt;- c(&quot;#d7191c&quot;,&quot;#fdae61&quot;,&quot;#ffffbf&quot;,&quot;#1a9641&quot;,&quot;#a6d96a&quot;,&quot;#ffffbf&quot;)
+my.colors &lt;- brewer.pal(5,&quot;RdYlGn&quot;)[c(1,2,3,5,4,3)]
+
+# the plot
+author.summary %&gt;% 
+  mutate( mean = ifelse(value&lt;0, -mean, mean)) %&gt;% 
+  group_by(author) %&gt;% 
+  mutate( balance = sum(mean)) %&gt;% 
+  ungroup() %&gt;% 
+  mutate( value = factor(value, levels = reordLevels, ordered=T)) %&gt;% 
+  ggplot(aes(x=reorder(author,balance), y=mean, fill=value)) +
+  geom_bar(stat=&quot;identity&quot;,position=&quot;stack&quot;) +
+  scale_fill_manual(values = my.colors) +
+  xlab(&quot;&quot;) +
+  coord_flip() +
+  ggtitle(&quot;Sentiment Analysis&quot;, &quot;By emoji&#39;s name&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/authorEmojiNameSentiment-1.png" width="672" /></p>
+</div>
+<div id="sentimento-mais-frequente-por-autor" class="section level3">
+<h3>Sentimento mais frequênte por autor</h3>
+<p>The <a href="https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm">NRC Emotion Lexicon</a> (aka EmoLex) is a list of English words and their associations with eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations were manually done by crowdsourcing.</p>
+<pre class="r"><code># getting another lexicon with sentiment names
+lex.sent &lt;- get_sentiments(&quot;nrc&quot;) # sentiment name
+
+# let&#39;s see
+lex.sent %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kable_styling(full_width = F, font_size = 11) </code></pre>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:left;">
+sentiment
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+abacus
+</td>
+<td style="text-align:left;">
+trust
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandon
+</td>
+<td style="text-align:left;">
+fear
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandon
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandon
+</td>
+<td style="text-align:left;">
+sadness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandoned
+</td>
+<td style="text-align:left;">
+anger
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandoned
+</td>
+<td style="text-align:left;">
+fear
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandoned
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandoned
+</td>
+<td style="text-align:left;">
+sadness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandonment
+</td>
+<td style="text-align:left;">
+anger
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abandonment
+</td>
+<td style="text-align:left;">
+fear
+</td>
+</tr>
+</tbody>
+</table>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<pre class="r"><code># join with emoji chat
+author.sentiment &lt;- emoji.chat %&gt;% 
+  inner_join(lex.sent, by=c(&quot;emoji_words&quot;=&quot;word&quot;)) %&gt;% 
+  filter(!sentiment %in% c(&quot;negative&quot;,&quot;positive&quot;)) # removing neg/pos classification
+
+# plotting
+author.sentiment %&gt;% 
+  count(author, sentiment) %&gt;% 
+  left_join(filter(lex.sent, sentiment %in% c(&quot;negative&quot;,&quot;positive&quot;)),by=c(&quot;sentiment&quot;=&quot;word&quot;)) %&gt;% 
+  rename( type = sentiment.y) %&gt;% 
+  mutate( type = ifelse(is.na(type), &quot;neutral&quot;, type)) %&gt;% 
+  mutate( type = factor(type, levels = c(&quot;negative&quot;, &quot;neutral&quot;, &quot;positive&quot;), ordered=T) ) %&gt;% 
+  group_by(author) %&gt;%
+  top_n(n = 8, n) %&gt;%
+  slice(1:8) %&gt;% 
+  ggplot(aes(x = reorder(sentiment, n), y = n, fill = type)) +
+  geom_col() +
+  scale_fill_manual(values = c(&quot;#d7191c&quot;,&quot;#fdae61&quot;, &quot;#1a9641&quot;)) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;&quot;) +
+  coord_flip() +
+  facet_wrap(~author, ncol = 3, scales = &quot;free_x&quot;) +
+  ggtitle(&quot;Most often sentiment&quot;) + 
+  theme_minimal() + theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/mostFreqSentiment-1.png" width="672" /></p>
+<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+</div>
+</div>
+<div id="referencias" class="section level2">
+<h2>Referências</h2>
+<ul>
+<li><a href="https://www.johannesbgruber.eu/post/introducing-rwhatsapp/">Introducing rwhatsapp</a></li>
+<li><a href="https://www.clarin.si/repository/xmlui/handle/11356/1048">Emoji Sentiment Ranking 1.0</a></li>
+<li><a href="http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html">Emoji Sentiment Ranking v1.0 Dataset</a></li>
+<li><a href="http://opiateforthemass.es/articles/emoji-analysis/">Emojis Analysis in R</a></li>
+<li><a href="https://www.tidytextmining.com/sentiment.html">Text Mining with R</a></li>
+</ul>
+</div>

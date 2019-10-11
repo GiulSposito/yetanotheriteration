@@ -6,10 +6,73 @@
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Oct 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>data analysis</title>
+      <link>/tags/data-analysis/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>emoji</title>
+      <link>/tags/emoji/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/emoji/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pt-BR</title>
+      <link>/tags/pt-br/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pt-br/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstats</title>
+      <link>/tags/rstats/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rstats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rvest</title>
+      <link>/tags/rvest/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rvest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>text mining</title>
+      <link>/tags/text-mining/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/text-mining/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidytext</title>
+      <link>/tags/tidytext/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tidytext/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>agile</title>
@@ -66,24 +129,6 @@
     </item>
     
     <item>
-      <title>pt-BR</title>
-      <link>/tags/pt-br/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/pt-br/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>data analysis</title>
-      <link>/tags/data-analysis/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/data-analysis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>en-US</title>
       <link>/tags/en-us/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
@@ -98,15 +143,6 @@
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/oauth20/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rstats</title>
-      <link>/tags/rstats/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rstats/</guid>
       <description></description>
     </item>
     
@@ -305,33 +341,6 @@
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/beer/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>text mining</title>
-      <link>/tags/text-mining/</link>
-      <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/text-mining/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rvest</title>
-      <link>/tags/rvest/</link>
-      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rvest/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tidytext</title>
-      <link>/tags/tidytext/</link>
-      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/tidytext/</guid>
       <description></description>
     </item>
     
