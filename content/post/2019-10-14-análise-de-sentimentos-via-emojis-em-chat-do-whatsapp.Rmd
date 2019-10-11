@@ -2,7 +2,6 @@
 title: "Análise de Sentimentos via Emojis em chat do WhatsApp"
 author: "Giuliano Sposito"
 date: '2019-10-14'
-coverImage: /images/emoji_whatsapp_header.jpg
 keywords: tech
 metaAlignment: center
 slug: análise-de-sentimentos-via-emojis-em-chat-do-whatsapp
@@ -20,9 +19,11 @@ categories:
 - data science
 ---
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+O pacote `rwhatsapp`, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos `txt` (e `zip`) de uma conversão exportada pelo aplicativo `WhatsApp`, importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no `twitter` decidi explorar uma conversão de um dos meus grupos de `WhatsApp` e fazer uma análise de sentimentos através dos *Emoji's* enviados pelos remetentes. 
 
 <!--more-->
+
+![](/images/emoji_whatsapp_header.jpg)
 
 ```{r setup, echo=FALSE}
 
@@ -32,13 +33,18 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache=TRUE)
 
 ```
 
-## Abastract
+## Introdução
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+O pacote [`rwhatsapp`](https://cran.r-project.org/web/packages/rwhatsapp/index.html), desenvolvido e disponibilizado por [Johannes Grubber](https://github.com/JBGruber), permite manipular diretamente os arquivos `txt` (e `zip`) de uma conversão exportada pelo aplicativo [`WhatsApp`](https://www.whatsapp.com/), importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no [`twitter`](https://twitter.com/JohannesBGruber/status/1176415368820264960) decidi explorar uma conversão de um dos meus grupos de [`WhatsApp`](https://www.whatsapp.com/) e fazer uma análise de sentimentos através dos [Emoji's](https://home.unicode.org/emoji/) enviados pelos remetentes. 
+
+{{< tweet 1176415368820264960 >}}
 
 ## Obtendo os dados
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+A principal (e única) função no pacote, é a `rwa_read()`, que permite importar os arquivos `txt` (e `zip`) diretamente, o que significa que você pode simplesmente fornecer o caminho para um arquivo para carregar as mensagens direto num `data.frame`. Exportar uma conversa de WhatsApp também é bem direto, basta [seguir as instruções](https://tecnoblog.net/194147/whatsapp-salvar-historico-conversa/) disponíveis. Para este post, vou utilizar a conversão de um grupo meu de uma liga de [Fantasy](http://fantasy.nfl.com), assim poderemos fazer uma comparação do volume de mensagens enviadas com respeito aos horários e eventos relacionados aos jogos da [NFL](https://www.nfl.com).
+
+Aliás, essa minha [*Liga de Fantasy*](https://dudesfootball.netlify.com), já foi tema de outro post neste blog, que envolvia fazer [simulações de Montecarlo para prever resultados dos jogos](https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/), e claro, também usando [`R`](https://www.r-project.org/).
+
 
 ```{r loadLibsNData, eval=FALSE}
 
@@ -94,14 +100,23 @@ chat %>%
 
 ```
 
+Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num `data.frame`, contendo informações de *timestamp*, quem é o contato remetente, a mensagem enviada e a "*fonte de dados*" (arquivo importado). Além disso, de forma destacada da mensagem e aninhado ([*nested*](https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/)) à linha, temos informações sobre os [Emoji's](https://home.unicode.org/emoji/) que estão presentes em cada mensagem enviada, tanto o caracter unicode como o nome do `Emoji`.
 
 ## Avaliando Frequência das Mensagens
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+A análise inicial, e também a mais direta e simples,  que pode ser feita nesses dados é frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.
 
 ### Mensagens enviadas no período
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa inter temporda. Então vamos criar uma informação de *fase*, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o *timestamp* nas seguintes datas:
+
+
+- [NFL Draft](https://www.nfl.com/draft/home):  entre 25/abr à 27/abr
+- Pré Temporada: entre 01/ago à 29/ago
+- Draft da Liga: 02/set 
+- Temporada: a partir de 05/set
+- Intertemporada: datas anteriores a 01/ago
+
 
 ```{r dataHandling, fig.width=10, fig.height=4}
 
@@ -146,9 +161,11 @@ chat %>%
 
 ```
 
+Como é previsível, o grupo é bem silencioso na intertemporada (*off season*), com picos durante o [draft da NFL](https://www.nfl.com/draft/home) bem como no fim de semana e entorno o *draft* da própria liga. O volume de mensagens começa a crescer na pré-temporada (*preseason*) com o início dos jogos de treinamento transmitidos pela TV e então o chat passa a engrenar quando começa a temporada (*season*).
+
 ### Mensagens por dia da semana
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Os jogos da NFL são quase todos concentrados no domingo e mais dois jogos em horário nobre às quintas e segundas, isso deveria refletir no volume de mensagens enviadas por dia de semana.
 
 ```{r messagensPerWeekDay}
 
@@ -170,9 +187,12 @@ chat %>%
 
 ```
 
+Domingo confessa a concentração de jogos, volume de mensagens de temporada (*season*), mas é interessante reparar que os volumes de segunda e de terça-feira também é alto, sendo até mais alto que quinta-feira, dia de jogo. Isso ocorrer devido a dinâmica do *Fantasy*, já que terça-feira é dia dia de resultado da rodada e também preparação para a troca de jogadores ([*waiver*](https://www.espn.com/fantasy/football/ffl/story?page=fflruleswaiverwalk)), e no nosso caso, a liberação das projeções computada dos jogadores no [site da liga](https://dudesfootball.netlify.com/categories/projection/).
+
 ### Mensagens por hora
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Os jogos ocorrem basicamente na tarde do domingo e também nos horários nobres de domingo, segunda e quinta, vamos observar como é o comportamento de envio de mensagens ao longo das horas.
+
 
 ```{r messageByHour, fig.width=10, fig.height=3.5}
 
@@ -200,6 +220,12 @@ chat %>%
 
 ```
 
+Podemos observar claramente que a frequência de envio de mensagens são mais altas nos horários das partidas, durante a temporada (*season*), e com terça-feira, sendo um pouco mais distribuído enquanto o grupo comenta resultados da rodada e preparação para escalação e contratação de novos jogadores.
+
+### Membro mais comunicativo
+
+E claro, podemos ver quem é o usuário, membro do grupo, que mais envia mensagens.
+
 ```{r messagesByAuthor}
 
 # mensagem por remetente 
@@ -221,9 +247,10 @@ chat %>%
 
 ## Emoji's
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Como o `rwhatsapp` importa separadamente a informação sobre Emoji's, podemos explorar a popularidade dos mesmos.
 
 ```{r emoji}
+# lets see the nested emoji structure
 chat %>% 
   select(time, author, emoji, emoji_name) %>% 
   unnest(emoji, emoji_name) %>% 
@@ -233,7 +260,10 @@ chat %>%
 
 ### EMOJI mais usado
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Antes de *rankear* os `Emijis`, vamos remover as usas variações. As variações é quando vc altera por exemplo cor da pele ou do cabelo do `Emiji's`, essas variações são codificadas através da composição de vários caracteres unicode, o primeiro para dizer qual é o `Emoji` e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de ["ligadura" (*ligatures*)](https://en.wikipedia.org/wiki/Orthographic_ligature), e tem algumas [implicações interessantes](https://codepen.io/tuxsudo/pen/EwqKjy).
+
+Então, antes de rankear, vamos manter somente o primeiro caracter [unicode](https://home.unicode.org/) do Emoji, removendo todo o resto.
+
 
 ```{r emojiRanking, fig.width=9, fig.height=8}
 
@@ -243,6 +273,7 @@ chat %>%
   mutate( emoji = str_sub(emoji, end = 1)) %>% # remove ligatures
   mutate( emoji_name = str_remove(emoji_name, ":.*")) %>% # remove ligatures names
   count(emoji, emoji_name) %>% 
+  # plot top 20 emoji
   top_n(20, n) %>% 
   arrange(desc(n)) %>% 
   ggplot(aes(x=reorder(emoji_name, n), y=n, fill=n, color=n)) +
@@ -260,6 +291,9 @@ chat %>%
 
 ```
 
+A mesma análise pode ser feita, por remetente do grupo, mostrando qual é o `Emoji` preferido ou mais utilizado por cada um.
+
+
 ```{r emojiByAuthors, fig.width=8, fig.height=7}
 
 ## emoji by author
@@ -267,6 +301,7 @@ chat %>%
   unnest(emoji, emoji_name) %>%
   mutate( emoji = str_sub(emoji, end = 1)) %>% # remove nuancias
   count(author, emoji, emoji_name, sort = TRUE) %>%
+  # plot top 6 emoji from each author
   group_by(author) %>%
   top_n(n = 6, n) %>%
   slice(1:6) %>%
@@ -283,13 +318,16 @@ chat %>%
 
 ## Análise de Palavras
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Assim como fizemos com os `Emoji´s`, podemos fazar a análise de frequência das palabras mais utilizadas no grupo bem como é para cada um dos membros.
+
+### Ranking de Palavras
 
 ```{r wordFrequence}
 
 library(tidytext)
 library(stopwords)
 
+# words without significance, we remove them from analysis
 words_to_remove <- c(stopwords(language = "pt"),
                "http", "imagem", "gif", "ocultada","omitida", "e", "pra", "vou", "ta", "https",
                "é","pro","to", "vai", "nao", "and", "omitido", "cara","lá", "q", "né",
@@ -297,11 +335,12 @@ words_to_remove <- c(stopwords(language = "pt"),
                "tipo", "tava", "hj", "ver", 0:20, "figurinha", "tudo", "ainda","ser",
                "bem","ter", "fazer","faz","pq", "bom","pode","nada", "aqui", "hoje", "vi", "fez")
 
-
+# tokenize and count the words
 chat %>%
   unnest_tokens(input = text, output = word) %>%
   filter(!word %in% words_to_remove) %>% 
   count(word) %>% 
+  # plot top 20 words
   top_n(20,n) %>% 
   arrange(desc(n)) %>% 
   ggplot(aes(x=reorder(word,n), y=n, fill=n, color=n)) +
@@ -321,18 +360,17 @@ chat %>%
 words_to_remove <- c(words_to_remove, "5519997872313","5515997495014","5515981280730","5519996069273","5519997629380")
 ```
 
-
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
+### Rank de palavras por membro do grupo
 
 ```{r wordsByAuthor, fig.height=9}
 
-
+# tokinize and group count by author
 chat %>%
   unnest_tokens(input = text,
                 output = word) %>%
   filter(!word %in% words_to_remove) %>%
   count(author, word, sort = TRUE) %>%
+  # top 10 words from each member
   group_by(author) %>%
   top_n(n = 10, n) %>%
   slice(1:10) %>%
@@ -553,7 +591,7 @@ author.sentiment %>%
 
 ```
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
 
 
 ## Referências

@@ -21,7 +21,7 @@
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”&lt;/p&gt;
+&lt;p&gt;O pacote &lt;code&gt;rwhatsapp&lt;/code&gt;, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos &lt;code&gt;txt&lt;/code&gt; (e &lt;code&gt;zip&lt;/code&gt;) de uma conversão exportada pelo aplicativo &lt;code&gt;WhatsApp&lt;/code&gt;, importando os dados para um &lt;code&gt;data.frame&lt;/code&gt; e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no &lt;code&gt;twitter&lt;/code&gt; decidi explorar uma conversão de um dos meus grupos de &lt;code&gt;WhatsApp&lt;/code&gt; e fazer uma análise de sentimentos através dos &lt;em&gt;Emoji’s&lt;/em&gt; enviados pelos remetentes.&lt;/p&gt;
 </description>
     </item>
     

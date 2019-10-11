@@ -2,7 +2,6 @@
 title: "Análise de Sentimentos via Emojis em chat do WhatsApp"
 author: "Giuliano Sposito"
 date: '2019-10-14'
-coverImage: /images/emoji_whatsapp_header.jpg
 keywords: tech
 metaAlignment: center
 slug: análise-de-sentimentos-via-emojis-em-chat-do-whatsapp
@@ -23,15 +22,18 @@ categories:
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
 
 
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>O pacote <code>rwhatsapp</code>, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos <code>txt</code> (e <code>zip</code>) de uma conversão exportada pelo aplicativo <code>WhatsApp</code>, importando os dados para um <code>data.frame</code> e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no <code>twitter</code> decidi explorar uma conversão de um dos meus grupos de <code>WhatsApp</code> e fazer uma análise de sentimentos através dos <em>Emoji’s</em> enviados pelos remetentes.</p>
 <!--more-->
-<div id="abastract" class="section level2">
-<h2>Abastract</h2>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p><img src="/images/emoji_whatsapp_header.jpg" /></p>
+<div id="introducao" class="section level2">
+<h2>Introdução</h2>
+<p>O pacote <a href="https://cran.r-project.org/web/packages/rwhatsapp/index.html"><code>rwhatsapp</code></a>, desenvolvido e disponibilizado por <a href="https://github.com/JBGruber">Johannes Grubber</a>, permite manipular diretamente os arquivos <code>txt</code> (e <code>zip</code>) de uma conversão exportada pelo aplicativo <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a>, importando os dados para um <code>data.frame</code> e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960"><code>twitter</code></a> decidi explorar uma conversão de um dos meus grupos de <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a> e fazer uma análise de sentimentos através dos <a href="https://home.unicode.org/emoji/">Emoji’s</a> enviados pelos remetentes.</p>
+<p>{{&lt; tweet 1176415368820264960 &gt;}}</p>
 </div>
 <div id="obtendo-os-dados" class="section level2">
 <h2>Obtendo os dados</h2>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>A principal (e única) função no pacote, é a <code>rwa_read()</code>, que permite importar os arquivos <code>txt</code> (e <code>zip</code>) diretamente, o que significa que você pode simplesmente fornecer o caminho para um arquivo para carregar as mensagens direto num <code>data.frame</code>. Exportar uma conversa de WhatsApp também é bem direto, basta <a href="https://tecnoblog.net/194147/whatsapp-salvar-historico-conversa/">seguir as instruções</a> disponíveis. Para este post, vou utilizar a conversão de um grupo meu de uma liga de <a href="http://fantasy.nfl.com">Fantasy</a>, assim poderemos fazer uma comparação do volume de mensagens enviadas com respeito aos horários e eventos relacionados aos jogos da <a href="https://www.nfl.com">NFL</a>.</p>
+<p>Aliás, essa minha <a href="https://dudesfootball.netlify.com"><em>Liga de Fantasy</em></a>, já foi tema de outro post neste blog, que envolvia fazer <a href="https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/">simulações de Montecarlo para prever resultados dos jogos</a>, e claro, também usando <a href="https://www.r-project.org/"><code>R</code></a>.</p>
 <pre class="r"><code># libs to explore the WhatsApp chat
 library(rwhatsapp)
 library(tidyverse)
@@ -235,13 +237,21 @@ character(0)
 </tr>
 </tbody>
 </table>
+<p>Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num <code>data.frame</code>, contendo informações de <em>timestamp</em>, quem é o contato remetente, a mensagem enviada e a “<em>fonte de dados</em>” (arquivo importado). Além disso, de forma destacada da mensagem e aninhado (<a href="https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/"><em>nested</em></a>) à linha, temos informações sobre os <a href="https://home.unicode.org/emoji/">Emoji’s</a> que estão presentes em cada mensagem enviada, tanto o caracter unicode como o nome do <code>Emoji</code>.</p>
 </div>
 <div id="avaliando-frequencia-das-mensagens" class="section level2">
 <h2>Avaliando Frequência das Mensagens</h2>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>A análise inicial, e também a mais direta e simples, que pode ser feita nesses dados é frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.</p>
 <div id="mensagens-enviadas-no-periodo" class="section level3">
 <h3>Mensagens enviadas no período</h3>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa inter temporda. Então vamos criar uma informação de <em>fase</em>, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o <em>timestamp</em> nas seguintes datas:</p>
+<ul>
+<li><a href="https://www.nfl.com/draft/home">NFL Draft</a>: entre 25/abr à 27/abr</li>
+<li>Pré Temporada: entre 01/ago à 29/ago</li>
+<li>Draft da Liga: 02/set</li>
+<li>Temporada: a partir de 05/set</li>
+<li>Intertemporada: datas anteriores a 01/ago</li>
+</ul>
 <pre class="r"><code># main dates
 # draft:        25.APR – 27.APR
 # preseason:    01.AUG - 29.AUG
@@ -281,10 +291,11 @@ chat %&gt;%
   theme( legend.title = element_blank(), 
          legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/dataHandling-1.png" width="960" /></p>
+<p>Como é previsível, o grupo é bem silencioso na intertemporada (<em>off season</em>), com picos durante o <a href="https://www.nfl.com/draft/home">draft da NFL</a> bem como no fim de semana e entorno o <em>draft</em> da própria liga. O volume de mensagens começa a crescer na pré-temporada (<em>preseason</em>) com o início dos jogos de treinamento transmitidos pela TV e então o chat passa a engrenar quando começa a temporada (<em>season</em>).</p>
 </div>
 <div id="mensagens-por-dia-da-semana" class="section level3">
 <h3>Mensagens por dia da semana</h3>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Os jogos da NFL são quase todos concentrados no domingo e mais dois jogos em horário nobre às quintas e segundas, isso deveria refletir no volume de mensagens enviadas por dia de semana.</p>
 <pre class="r"><code># mensagens por dia da semana
 chat %&gt;% 
   mutate( wday.num = wday(day),
@@ -301,10 +312,11 @@ chat %&gt;%
   theme( legend.title = element_blank(), 
          legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/messagensPerWeekDay-1.png" width="672" /></p>
+<p>Domingo confessa a concentração de jogos, volume de mensagens de temporada (<em>season</em>), mas é interessante reparar que os volumes de segunda e de terça-feira também é alto, sendo até mais alto que quinta-feira, dia de jogo. Isso ocorrer devido a dinâmica do <em>Fantasy</em>, já que terça-feira é dia dia de resultado da rodada e também preparação para a troca de jogadores (<a href="https://www.espn.com/fantasy/football/ffl/story?page=fflruleswaiverwalk"><em>waiver</em></a>), e no nosso caso, a liberação das projeções computada dos jogadores no <a href="https://dudesfootball.netlify.com/categories/projection/">site da liga</a>.</p>
 </div>
 <div id="mensagens-por-hora" class="section level3">
 <h3>Mensagens por hora</h3>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Os jogos ocorrem basicamente na tarde do domingo e também nos horários nobres de domingo, segunda e quinta, vamos observar como é o comportamento de envio de mensagens ao longo das horas.</p>
 <pre class="r"><code># usado como truque para nomear os facets e manter a ordem dos dias de semana
 wday.values &lt;- c(&quot;domingo&quot;,&quot;segunda-feira&quot;,&quot;terça-feira&quot;,&quot;quarta-feira&quot;,&quot;quinta-feira&quot;,&quot;sexta-feira&quot;,&quot;sábado&quot;,&quot;domingo&quot;)
 names(wday.values) &lt;- 1:7
@@ -326,6 +338,11 @@ chat %&gt;%
          legend.position = &quot;bottom&quot;,
          panel.spacing.x=unit(0.0, &quot;lines&quot;))</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/messageByHour-1.png" width="960" /></p>
+<p>Podemos observar claramente que a frequência de envio de mensagens são mais altas nos horários das partidas, durante a temporada (<em>season</em>), e com terça-feira, sendo um pouco mais distribuído enquanto o grupo comenta resultados da rodada e preparação para escalação e contratação de novos jogadores.</p>
+</div>
+<div id="membro-mais-comunicativo" class="section level3">
+<h3>Membro mais comunicativo</h3>
+<p>E claro, podemos ver quem é o usuário, membro do grupo, que mais envia mensagens.</p>
 <pre class="r"><code># mensagem por remetente 
 chat %&gt;%
   mutate(day = date(time)) %&gt;%
@@ -345,8 +362,9 @@ chat %&gt;%
 </div>
 <div id="emojis" class="section level2">
 <h2>Emoji’s</h2>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
-<pre class="r"><code>chat %&gt;% 
+<p>Como o <code>rwhatsapp</code> importa separadamente a informação sobre Emoji’s, podemos explorar a popularidade dos mesmos.</p>
+<pre class="r"><code># lets see the nested emoji structure
+chat %&gt;% 
   select(time, author, emoji, emoji_name) %&gt;% 
   unnest(emoji, emoji_name) %&gt;% 
   slice(1:10) %&gt;% 
@@ -513,13 +531,15 @@ angry face with horns
 </table>
 <div id="emoji-mais-usado" class="section level3">
 <h3>EMOJI mais usado</h3>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Antes de <em>rankear</em> os <code>Emijis</code>, vamos remover as usas variações. As variações é quando vc altera por exemplo cor da pele ou do cabelo do <code>Emiji's</code>, essas variações são codificadas através da composição de vários caracteres unicode, o primeiro para dizer qual é o <code>Emoji</code> e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de <a href="https://en.wikipedia.org/wiki/Orthographic_ligature">“ligadura” (<em>ligatures</em>)</a>, e tem algumas <a href="https://codepen.io/tuxsudo/pen/EwqKjy">implicações interessantes</a>.</p>
+<p>Então, antes de rankear, vamos manter somente o primeiro caracter <a href="https://home.unicode.org/">unicode</a> do Emoji, removendo todo o resto.</p>
 <pre class="r"><code>## emoji ranking
 chat %&gt;% 
   unnest(emoji, emoji_name) %&gt;% 
   mutate( emoji = str_sub(emoji, end = 1)) %&gt;% # remove ligatures
   mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) %&gt;% # remove ligatures names
   count(emoji, emoji_name) %&gt;% 
+  # plot top 20 emoji
   top_n(20, n) %&gt;% 
   arrange(desc(n)) %&gt;% 
   ggplot(aes(x=reorder(emoji_name, n), y=n, fill=n, color=n)) +
@@ -535,11 +555,13 @@ chat %&gt;%
   theme_minimal() +
   theme()</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiRanking-1.png" width="864" /></p>
+<p>A mesma análise pode ser feita, por remetente do grupo, mostrando qual é o <code>Emoji</code> preferido ou mais utilizado por cada um.</p>
 <pre class="r"><code>## emoji by author
 chat %&gt;%
   unnest(emoji, emoji_name) %&gt;%
   mutate( emoji = str_sub(emoji, end = 1)) %&gt;% # remove nuancias
   count(author, emoji, emoji_name, sort = TRUE) %&gt;%
+  # plot top 6 emoji from each author
   group_by(author) %&gt;%
   top_n(n = 6, n) %&gt;%
   slice(1:6) %&gt;%
@@ -556,10 +578,13 @@ chat %&gt;%
 </div>
 <div id="analise-de-palavras" class="section level2">
 <h2>Análise de Palavras</h2>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Assim como fizemos com os <code>Emoji´s</code>, podemos fazar a análise de frequência das palabras mais utilizadas no grupo bem como é para cada um dos membros.</p>
+<div id="ranking-de-palavras" class="section level3">
+<h3>Ranking de Palavras</h3>
 <pre class="r"><code>library(tidytext)
 library(stopwords)
 
+# words without significance, we remove them from analysis
 words_to_remove &lt;- c(stopwords(language = &quot;pt&quot;),
                &quot;http&quot;, &quot;imagem&quot;, &quot;gif&quot;, &quot;ocultada&quot;,&quot;omitida&quot;, &quot;e&quot;, &quot;pra&quot;, &quot;vou&quot;, &quot;ta&quot;, &quot;https&quot;,
                &quot;é&quot;,&quot;pro&quot;,&quot;to&quot;, &quot;vai&quot;, &quot;nao&quot;, &quot;and&quot;, &quot;omitido&quot;, &quot;cara&quot;,&quot;lá&quot;, &quot;q&quot;, &quot;né&quot;,
@@ -567,11 +592,12 @@ words_to_remove &lt;- c(stopwords(language = &quot;pt&quot;),
                &quot;tipo&quot;, &quot;tava&quot;, &quot;hj&quot;, &quot;ver&quot;, 0:20, &quot;figurinha&quot;, &quot;tudo&quot;, &quot;ainda&quot;,&quot;ser&quot;,
                &quot;bem&quot;,&quot;ter&quot;, &quot;fazer&quot;,&quot;faz&quot;,&quot;pq&quot;, &quot;bom&quot;,&quot;pode&quot;,&quot;nada&quot;, &quot;aqui&quot;, &quot;hoje&quot;, &quot;vi&quot;, &quot;fez&quot;)
 
-
+# tokenize and count the words
 chat %&gt;%
   unnest_tokens(input = text, output = word) %&gt;%
   filter(!word %in% words_to_remove) %&gt;% 
   count(word) %&gt;% 
+  # plot top 20 words
   top_n(20,n) %&gt;% 
   arrange(desc(n)) %&gt;% 
   ggplot(aes(x=reorder(word,n), y=n, fill=n, color=n)) +
@@ -584,12 +610,16 @@ chat %&gt;%
   coord_flip() +
   theme_minimal()</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/wordFrequence-1.png" width="672" /></p>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
-<pre class="r"><code>chat %&gt;%
+</div>
+<div id="rank-de-palavras-por-membro-do-grupo" class="section level3">
+<h3>Rank de palavras por membro do grupo</h3>
+<pre class="r"><code># tokinize and group count by author
+chat %&gt;%
   unnest_tokens(input = text,
                 output = word) %&gt;%
   filter(!word %in% words_to_remove) %&gt;%
   count(author, word, sort = TRUE) %&gt;%
+  # top 10 words from each member
   group_by(author) %&gt;%
   top_n(n = 10, n) %&gt;%
   slice(1:10) %&gt;%
@@ -606,6 +636,7 @@ chat %&gt;%
   ggtitle(&quot;Most often used words&quot;) +
   theme_minimal()</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/wordsByAuthor-1.png" width="672" /></p>
+</div>
 </div>
 <div id="analise-de-sentimentos" class="section level2">
 <h2>Análise de Sentimentos</h2>
@@ -1897,7 +1928,6 @@ author.sentiment %&gt;%
   ggtitle(&quot;Most often sentiment&quot;) + 
   theme_minimal() + theme(legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/mostFreqSentiment-1.png" width="672" /></p>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
 </div>
 </div>
 <div id="referencias" class="section level2">
