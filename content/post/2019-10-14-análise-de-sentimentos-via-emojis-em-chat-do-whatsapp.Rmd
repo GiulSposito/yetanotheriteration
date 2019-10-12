@@ -17,6 +17,8 @@ thumbnailImage: /images/emoji_whatsapp_tn.jpg
 thumbnailImagePosition: left
 categories:
 - data science
+editor_options: 
+  chunk_output_type: inline
 ---
 
 O pacote `rwhatsapp`, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos `txt` (e `zip`) de uma conversão exportada pelo aplicativo `WhatsApp`, importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no `twitter` decidi explorar uma conversão de um dos meus grupos de `WhatsApp` e fazer uma análise de sentimentos através dos *Emoji's* enviados pelos remetentes. 
@@ -307,7 +309,7 @@ plot.data %>%
 A mesma análise pode ser feita, por remetente do grupo, mostrando qual é o `Emoji` preferido ou mais utilizado por cada um.
 
 
-```{r emojiByAuthors, fig.width=8, fig.height=8}
+```{r emojiByAuthors}
 
 # emoji rank by author
 plot.data <- chat %>%
@@ -367,8 +369,8 @@ chat %>%
   ggplot(aes(x=reorder(word,n), y=n, fill=n, color=n)) +
   geom_col(show.legend = FALSE, width = .1) +
   geom_point(show.legend = FALSE, size = 3) +
-  scale_fill_gradient(low="#74a9cf",high="#045a8d") +
-  scale_color_gradient(low="#74a9cf",high="#045a8d") +
+  scale_fill_gradient(low="#2b83ba",high="#d7191c") +
+  scale_color_gradient(low="#2b83ba",high="#d7191c") +
   ggtitle("Most often words") +
   xlab("words") +
   coord_flip() +
@@ -418,7 +420,7 @@ Como a conversa vem de um grupo de uma liga de *Fantasy*, seria interessante ana
 
 Kralj Novak P, Smailović J, Sluban B, Mozetič forneceram o primeiro léxico de sentimentos emoji, chamado de [Ranking de sentimentos Emoji](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html) que mapeia os sentimentos dos 751 emojis mais usados. O sentimento dos emojis é calculado a partir do sentimento de 70 mil tweets nos quais eles ocorrem, e foram rotulados por 83 anotadores humanos em 13 idiomas europeus. O processo e a análise da classificação de sentimentos emoji são descritos no artigo [Sentiment of Emojis](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0144296), de 2015.
 
-Usaremos o pacote `rvest` para scrapear diretamente o [rank](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html), e transformá-lo numa data.frame para incorporar na nossa análise.
+Usaremos o pacote `rvest` para *scrapear* diretamente o [rank](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html), e transformá-lo numa `data.frame` para incorporar na nossa análise.
 
 ```{r emojiSentimentRank}
 
@@ -442,6 +444,7 @@ emoji.table %>%
 
 ```
 
+O *rank* tem colunas que pontuam cada `Emoji` com respeito a representar um sentimento positivo, neutro ou negativo, numa escala de três dimensões. Então podemos juntá-la aos `Emoji` das mensagens, classificando assim indiretamente os sentimentos da mensagem.
 
 
 ```{r addSentiment}
@@ -468,7 +471,8 @@ emoji.chat %>%
 ```
 
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Resta então contabilizar qual o sentimento médio de cada remetente na lista.
+
 
 ```{r emojiSentimentByAuthor}
 
@@ -501,24 +505,19 @@ emoji.authors.sentiment %>%
 
 ```
 
-### Emoji Name Sentiment
+A imagem acima, mostra a sequencia de membros do grupo ordanados pela "positividade" dos `Emoji's` enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (*owners*) dos times *Sorocaba Wilds Mules* e *Rio Claro Pfeiferias*, respectivamente, os dois últimos na classificação autal da liga. O que podeira explicar a quantidade de `Emoji's` negativos.
 
-The [AFINN lexicon](https://github.com/fnielsen/afinn/tree/master/afinn/data) is perhaps one of the simplest and most popular lexicons that can be used extensively for sentiment analysis. The current version of the lexicon is `AFINN-en-165.txt` and it contains over 3,300+ words with a polarity score associated with each word. You can find this lexicon at the author’s [official GitHub repository](https://github.com/fnielsen/afinn/tree/master/afinn/data).
+![Ranking da Liga](/images/dudesLeagueStanding.png)
+
+### Derivando o sentimento via nome do Emoji
+
+Uma abordagem alternativa ao `Emoji Ranking` é usar um lexicon (dicionário) com a classificação de sentimentos das palavras, e fazer a associação do sentimento com o nome do `Emoji`, que convenientemente foi disponibilizado logo na importação da conversa via `rwhatsapp`.
+
+O [léxico AFINN] (https://github.com/fnielsen/afinn/tree/master/afinn/data) é talvez um dos lexicons mais simples e populares e é usado extensivamente para análise de sentimentos. A versão atual do léxico é a `AFINN-en-165.txt` e contém mais de 3.300 palavras com uma pontuação de polaridade associada a cada palavra. Você pode encontrar esse léxico no [repositório oficial do GitHub](https://github.com/fnielsen/afinn/tree/master/afinn/data) do autor, nós vamos usar o pacote [`textdata`](https://cran.r-project.org/web/packages/textdata/index.html), que já faz o download do léxico. Vamos dar uma olhada no seu conteúdo.
 
 ```{r getEmotionalLexicon}
 
 library(textdata)
-
-# extract emojis
-emoji.chat <- chat %>% 
-  unnest(emoji, emoji_name) %>% 
-  mutate( emoji = str_sub(emoji, end = 1)) %>%  # remove ligatures
-  mutate( emoji_name = str_remove(emoji_name, ":.*")) # remove ligatures names
-
-# tokenize the emoji name
-emoji.chat <- emoji.chat %>% 
-  select(author, emoji_name) %>% 
-  unnest_tokens(input=emoji_name, output=emoji_words)
 
 # get some positive/negative lexicon by textdata package
 lex.negpos  <- get_sentiments("afinn") # value intense
@@ -535,10 +534,22 @@ table(lex.negpos$value) %>%
   kable_styling(full_width = F, font_size = 11) 
 ```
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Como a descrição antecipa, as palavras são pontuadas, e aparentemente numa escala entre -5 e 5, com (quase) nenhuma palavra com 0 pontos. Repedindo o mesmo procedimento que fizemos antes com os `Emoji's` vamos olha a média de intensidade da escala de sentimento para cada um dos membros do grupo.
 
 ```{r authorEmojiNameSentiment}
 
+# extract emojis
+emoji.chat <- chat %>% 
+  unnest(emoji, emoji_name) %>% 
+  mutate( emoji = str_sub(emoji, end = 1)) %>%  # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, ":.*")) # remove ligatures names
+
+# tokenize the emoji name
+emoji.chat <- emoji.chat %>% 
+  select(author, emoji_name) %>% 
+  unnest_tokens(input=emoji_name, output=emoji_words)
+
+# join the lexicon
 author.summary <- emoji.chat %>% 
   inner_join(lex.negpos, by=c("emoji_words"="word")) %>% 
   count(author, value) %>% 
@@ -559,7 +570,7 @@ author.summary %>%
   ungroup() %>% 
   mutate( value = factor(value, levels = reordLevels, ordered=T)) %>% 
   ggplot(aes(x=reorder(author,balance), y=mean, fill=value)) +
-  geom_bar(stat="identity",position="stack") +
+  geom_bar(stat="identity",position="stack", show.legend = F, width = .5) +
   scale_fill_manual(values = my.colors) +
   xlab("") +
   coord_flip() +
@@ -568,10 +579,11 @@ author.summary %>%
 
 ```
 
+Nos extremos, o resultado parece ser o mesmo porém há algumas diferenças, mas lembre-se, não estamos classificando o sentimento pelo `Emoji` em si, mas sim pelo sentimento da palavra que dá o seu nome.
 
-### Sentimento mais frequênte por autor
+### Sentimento mais frequente
 
-The [NRC Emotion Lexicon](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) (aka EmoLex) is a list of English words and their associations with eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations were manually done by crowdsourcing.	
+Uma terceira abordagem, também explorando o nome do `Emoji`, é cruzá-lo com uma base de sentimentos, um Léxico que vincule palabras a sentimentos. O [NRC Emotion Lexicon](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) (também conhecido como EmoLex) é uma lista de palavras em inglês e suas associações com oito emoções básicas (raiva, medo, antecipação, confiança surpresa, tristeza, alegria e nojo) e dois sentimentos (negativos e positivos). As anotações foram feitas manualmente por *crowdsourcing*.
 
 ```{r nrcLex}
 # getting another lexicon with sentiment names
@@ -584,17 +596,36 @@ lex.sent %>%
   kable_styling(full_width = F, font_size = 11) 
 ```
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Vamos cruzar o léxico com os *tokens* dos nomes dos `Emoji's` nas mensagens e visualizar quais os sentimentos mais comuns.
 
-```{r mostFreqSentiment, fig.height=9}
+```{r mostFreqSentAll}
 
 # join with emoji chat
-author.sentiment <- emoji.chat %>% 
+chat.sentiment <- emoji.chat %>% 
   inner_join(lex.sent, by=c("emoji_words"="word")) %>% 
   filter(!sentiment %in% c("negative","positive")) # removing neg/pos classification
 
-# plotting
-author.sentiment %>% 
+# plot it
+chat.sentiment %>% 
+  count(sentiment) %>% 
+  ggplot(aes(x=reorder(sentiment,n), y=n)) +
+  geom_col(aes(fill=n), show.legend = FALSE, width = .1) +
+  geom_point(aes(color=n), show.legend = FALSE, size = 3) +
+  coord_flip() +
+  ylab("") + xlab("") +
+    scale_fill_gradient(low="#2b83ba",high="#d7191c") +
+  scale_color_gradient(low="#2b83ba",high="#d7191c") +
+  ggtitle("Most Frequent Sentiment","By Emoji names in 'It´s Football, Dudes!") +
+  theme_minimal()
+
+```
+
+E finalmente, vamos ver o perfil de sentimentos, por author.
+
+```{r mostFreqSentiment, fig.height=9}
+
+# plotting by author
+chat.sentiment %>% 
   count(author, sentiment) %>% 
   left_join(filter(lex.sent, sentiment %in% c("negative","positive")),by=c("sentiment"="word")) %>% 
   rename( type = sentiment.y) %>% 
