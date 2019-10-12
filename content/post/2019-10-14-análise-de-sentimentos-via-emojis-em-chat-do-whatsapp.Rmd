@@ -247,7 +247,8 @@ chat %>%
 
 ## Emoji's
 
-Como o `rwhatsapp` importa separadamente a informação sobre Emoji's, podemos explorar a popularidade dos mesmos.
+Emojis são símbolos gráficos [Unicode](https://home.unicode.org/), usados como uma abreviação para expressar conceitos e idéias, existem centenas de emojis. Como o `rwhatsapp` importa separadamente a informação sobre Emoji's, podemos explorar a sua popularidade nas trocas de mensagem do grupo.
+
 
 ```{r emoji}
 # lets see the nested emoji structure
@@ -262,13 +263,16 @@ chat %>%
 
 Antes de *rankear* os `Emijis`, vamos remover as usas variações. As variações é quando vc altera por exemplo cor da pele ou do cabelo do `Emiji's`, essas variações são codificadas através da composição de vários caracteres unicode, o primeiro para dizer qual é o `Emoji` e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de ["ligadura" (*ligatures*)](https://en.wikipedia.org/wiki/Orthographic_ligature), e tem algumas [implicações interessantes](https://codepen.io/tuxsudo/pen/EwqKjy).
 
-Então, antes de rankear, vamos manter somente o primeiro caracter [unicode](https://home.unicode.org/) do Emoji, removendo todo o resto.
+Então, antes de rankear, vamos manter somente o primeiro caracter [Unicode](https://home.unicode.org/) do Emoji, removendo todo o resto.
 
 
 ```{r emojiRanking, fig.width=9, fig.height=8}
 
+# use to fecth a PNG image of a Emoji from https://abs.twimg.com
+library(ggimage)
+
 ## emoji ranking
-chat %>% 
+plot.data <- chat %>% 
   unnest(emoji, emoji_name) %>% 
   mutate( emoji = str_sub(emoji, end = 1)) %>% # remove ligatures
   mutate( emoji_name = str_remove(emoji_name, ":.*")) %>% # remove ligatures names
@@ -276,10 +280,18 @@ chat %>%
   # plot top 20 emoji
   top_n(20, n) %>% 
   arrange(desc(n)) %>% 
-  ggplot(aes(x=reorder(emoji_name, n), y=n, fill=n, color=n)) +
-  geom_col(show.legend = FALSE, width = .1) +
-  geom_point(show.legend = FALSE, size = 3) +
-  geom_text(aes(label=emoji), size=8, nudge_y = 25, nudge_x = .3) +
+  # builds a image URL with the Unicode value of the Emoji
+  mutate( emoji_url = map_chr(emoji, 
+    ~paste0( "https://abs.twimg.com/emoji/v2/72x72/", as.hexmode(utf8ToInt(.x)),".png")) 
+  )
+
+
+# plot the ranking
+plot.data %>% 
+  ggplot(aes(x=reorder(emoji_name, n), y=n)) +
+  geom_col(aes(fill=n), show.legend = FALSE, width = .2) +
+  geom_point(aes(color=n), show.legend = FALSE, size = 3) +
+  geom_image(aes(image=emoji_url), size=.045) +
   scale_fill_gradient(low="#2b83ba",high="#d7191c") +
   scale_color_gradient(low="#2b83ba",high="#d7191c") +
   ylab("") +
@@ -289,36 +301,45 @@ chat %>%
   theme_minimal() +
   theme()
 
+
 ```
 
 A mesma análise pode ser feita, por remetente do grupo, mostrando qual é o `Emoji` preferido ou mais utilizado por cada um.
 
 
-```{r emojiByAuthors, fig.width=8, fig.height=7}
+```{r emojiByAuthors, fig.width=8, fig.height=8}
 
-## emoji by author
-chat %>%
+# emoji rank by author
+plot.data <- chat %>%
   unnest(emoji, emoji_name) %>%
   mutate( emoji = str_sub(emoji, end = 1)) %>% # remove nuancias
   count(author, emoji, emoji_name, sort = TRUE) %>%
   # plot top 6 emoji from each author
   group_by(author) %>%
   top_n(n = 6, n) %>%
-  slice(1:6) %>%
-  ggplot(aes(x = reorder(emoji, -n), y = n, fill = author, group=author)) +
-  geom_col(show.legend = FALSE) +
+  slice(1:6) %>% 
+  # builds a image URL with the Unicode value of the Emoji
+  mutate( emoji_url = map_chr(emoji, 
+    ~paste0("https://abs.twimg.com/emoji/v2/72x72/",as.hexmode(utf8ToInt(.x)),".png")) )
+
+# plot data
+plot.data %>% 
+  ggplot(aes(x = reorder(emoji, -n), y = n)) +
+  geom_col(aes(fill = author, group=author), show.legend = FALSE, width = .20) +
+  # use to fecth a PNG image of a Emoji from https://abs.twimg.com
+  geom_image(aes(image=emoji_url), size=.13) +
   ylab("") +
   xlab("") +
   facet_wrap(~author, ncol = 5, scales = "free")  +
   ggtitle("Most often used emojis") +
   theme_minimal() +
-  theme(axis.text.x = element_text(size=18))
+  theme(axis.text.x = element_blank())
 
 ```
 
 ## Análise de Palavras
 
-Assim como fizemos com os `Emoji´s`, podemos fazar a análise de frequência das palabras mais utilizadas no grupo bem como é para cada um dos membros.
+Assim como fizemos com os `Emoji´s`, podemos fazar a análise de frequência das palabras mais utilizadas no grupo bem como é para cada um dos membros. O pacote `tidytext` deixa essa análise bem simples e direta de aplicar.
 
 ### Ranking de Palavras
 
@@ -391,34 +412,37 @@ chat %>%
 
 ## Análise de Sentimentos
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Como a conversa vem de um grupo de uma liga de *Fantasy*, seria interessante analisar as mensagens do ponto de vista emocional. Como as pessoas reagem de acordo com a sua performance no jogo ou para os times que torcem? Iremos fazer isso de duas maneiras, a primeira é utilizando o [Emoji Sentimental Rank](https://www.clarin.si/repository/xmlui/handle/11356/1048) e o outro, também com base nos Emojis, usaremos o seus "nomes" para cruzar com bases léxicas de classificação de palabras, para valiar os sentimentos e intensidades envolvidas.
 
 ### Emoji Sentiment Rank
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Kralj Novak P, Smailović J, Sluban B, Mozetič forneceram o primeiro léxico de sentimentos emoji, chamado de [Ranking de sentimentos Emoji](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html) que mapeia os sentimentos dos 751 emojis mais usados. O sentimento dos emojis é calculado a partir do sentimento de 70 mil tweets nos quais eles ocorrem, e foram rotulados por 83 anotadores humanos em 13 idiomas europeus. O processo e a análise da classificação de sentimentos emoji são descritos no artigo [Sentiment of Emojis](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0144296), de 2015.
+
+Usaremos o pacote `rvest` para scrapear diretamente o [rank](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html), e transformá-lo numa data.frame para incorporar na nossa análise.
 
 ```{r emojiSentimentRank}
 
 library(rvest)
 
+# fecht the html page
 base.url <- "http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html"
-
 doc <- read_html(base.url)
 
+# find the emoji table and process
 emoji.table <- doc %>% 
   html_node("#myTable") %>% 
   html_table() %>% 
   as_tibble()
 
+# lets look the result
 emoji.table %>% 
-  #arrange(desc(8)) %>% 
   head(10) %>% 
   kable() %>% 
   kable_styling(font_size = 9)
 
 ```
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
 
 ```{r addSentiment}
 
