@@ -104,6 +104,18 @@ chat %>%
 
 Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num `data.frame`, contendo informações de *timestamp*, quem é o contato remetente, a mensagem enviada e a "*fonte de dados*" (arquivo importado). Além disso, de forma destacada da mensagem e aninhado ([*nested*](https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/)) à linha, temos informações sobre os [Emoji's](https://home.unicode.org/emoji/) que estão presentes em cada mensagem enviada, tanto o caracter [Unicode](https://home.unicode.org/) como o nome do `Emoji`.
 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- emoji_ads_01 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="9462454685"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 ## Avaliando Frequência das Mensagens
 
 A análise inicial, e também a mais direta e simples,  que pode ser feita nesses dados é de frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.
@@ -111,7 +123,6 @@ A análise inicial, e também a mais direta e simples,  que pode ser feita nesse
 ### Mensagens enviadas no período
 
 Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa intertemporda. Então vamos criar uma informação de *fase*, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o *timestamp* nas seguintes datas:
-
 
 - [NFL Draft](https://www.nfl.com/draft/home):  entre 25/abr à 27/abr
 - Pré Temporada: entre 01/ago à 29/ago
@@ -338,6 +349,17 @@ plot.data %>%
   theme(axis.text.x = element_blank())
 
 ```
+
+<!-- emoji_ads_02 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="5774970048"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ## Análise de Palavras
 
@@ -606,6 +628,17 @@ author.summary %>%
 ```
 
 Nos extremos, o resultado parece ser o mesmo porém há algumas diferenças, mas lembre-se, não estamos classificando o sentimento pelo `Emoji` em si, mas sim pelo sentimento da palavra que dá o seu nome.
+
+<!-- emoji_ads_03 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5624634479725935"
+     data-ad-slot="6261576274"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ### Sentimento mais frequente
 
