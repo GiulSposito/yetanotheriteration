@@ -21,7 +21,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-O pacote `rwhatsapp`, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos `txt` (e `zip`) de uma conversão exportada pelo aplicativo `WhatsApp`, importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no `twitter` decidi explorar uma conversão de um dos meus grupos de `WhatsApp` e fazer uma análise de sentimentos através dos *Emoji's* enviados pelos remetentes. 
+O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos TXT (e ZIP) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no Twitter decidi explorar uma conversão de um dos meus grupos  e fazer uma análise de sentimentos através dos*Emoji's enviados pelos membros do grupo, confira como ficou...  
 
 <!--more-->
 
@@ -37,13 +37,13 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache=TRUE)
 
 ## Introdução
 
-O pacote [`rwhatsapp`](https://cran.r-project.org/web/packages/rwhatsapp/index.html), desenvolvido e disponibilizado por [Johannes Grubber](https://github.com/JBGruber), permite manipular diretamente os arquivos `txt` (e `zip`) de uma conversão exportada pelo aplicativo [`WhatsApp`](https://www.whatsapp.com/), importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no [`twitter`](https://twitter.com/JohannesBGruber/status/1176415368820264960) decidi explorar uma conversão de um dos meus grupos de [`WhatsApp`](https://www.whatsapp.com/) e fazer uma análise de sentimentos através dos [Emoji's](https://home.unicode.org/emoji/) enviados pelos remetentes. 
+O pacote [`rwhatsapp`](https://cran.r-project.org/web/packages/rwhatsapp/index.html), desenvolvido e disponibilizado por [Johannes Grubber](https://github.com/JBGruber), permite manipular diretamente os arquivos `TXT` (e `ZIP`) de uma conversão exportada pelo aplicativo [`WhatsApp`](https://www.whatsapp.com/), importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no [`Twitter`](https://twitter.com/JohannesBGruber/status/1176415368820264960) decidi explorar uma conversão de um dos meus grupos de [`WhatsApp`](https://www.whatsapp.com/) e fazer uma análise de sentimentos através dos [Emoji's](https://home.unicode.org/emoji/) enviados pelos remetentes. 
 
 {{< tweet 1176415368820264960 >}}
 
 ## Obtendo os dados
 
-A principal (e única) função no pacote, é a `rwa_read()`, que permite importar os arquivos `txt` (e `zip`) diretamente, o que significa que você pode simplesmente fornecer o caminho para um arquivo para carregar as mensagens direto num `data.frame`. Exportar uma conversa de WhatsApp também é bem direto, basta [seguir as instruções](https://tecnoblog.net/194147/whatsapp-salvar-historico-conversa/) disponíveis. Para este post, vou utilizar a conversão de um grupo meu de uma liga de [Fantasy](http://fantasy.nfl.com), assim poderemos fazer uma comparação do volume de mensagens enviadas com respeito aos horários e eventos relacionados aos jogos da [NFL](https://www.nfl.com).
+A principal (e única) função no pacote, é a `rwa_read()`, que permite importar os arquivos `TXT` (e `ZIP`) diretamente, o que significa que você pode simplesmente fornecer o caminho para um arquivo para carregar as mensagens direto num `data.frame`. Exportar uma conversa de `WhatsApp` também é bem direto, basta [seguir as instruções](https://tecnoblog.net/194147/whatsapp-salvar-historico-conversa/) disponíveis. Para este post, vou utilizar a conversão de um grupo meu de uma liga de [Fantasy](http://fantasy.nfl.com), assim poderemos fazer uma comparação do volume de mensagens enviadas com respeito aos horários e eventos relacionados aos jogos da [NFL](https://www.nfl.com).
 
 Aliás, essa minha [*Liga de Fantasy*](https://dudesfootball.netlify.com), já foi tema de outro post neste blog, que envolvia fazer [simulações de Montecarlo para prever resultados dos jogos](https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/), e claro, também usando [`R`](https://www.r-project.org/).
 
@@ -102,15 +102,15 @@ chat %>%
 
 ```
 
-Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num `data.frame`, contendo informações de *timestamp*, quem é o contato remetente, a mensagem enviada e a "*fonte de dados*" (arquivo importado). Além disso, de forma destacada da mensagem e aninhado ([*nested*](https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/)) à linha, temos informações sobre os [Emoji's](https://home.unicode.org/emoji/) que estão presentes em cada mensagem enviada, tanto o caracter unicode como o nome do `Emoji`.
+Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num `data.frame`, contendo informações de *timestamp*, quem é o contato remetente, a mensagem enviada e a "*fonte de dados*" (arquivo importado). Além disso, de forma destacada da mensagem e aninhado ([*nested*](https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/)) à linha, temos informações sobre os [Emoji's](https://home.unicode.org/emoji/) que estão presentes em cada mensagem enviada, tanto o caracter [Unicode](https://home.unicode.org/) como o nome do `Emoji`.
 
 ## Avaliando Frequência das Mensagens
 
-A análise inicial, e também a mais direta e simples,  que pode ser feita nesses dados é frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.
+A análise inicial, e também a mais direta e simples,  que pode ser feita nesses dados é de frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.
 
 ### Mensagens enviadas no período
 
-Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa inter temporda. Então vamos criar uma informação de *fase*, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o *timestamp* nas seguintes datas:
+Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa intertemporda. Então vamos criar uma informação de *fase*, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o *timestamp* nas seguintes datas:
 
 
 - [NFL Draft](https://www.nfl.com/draft/home):  entre 25/abr à 27/abr
@@ -163,7 +163,7 @@ chat %>%
 
 ```
 
-Como é previsível, o grupo é bem silencioso na intertemporada (*off season*), com picos durante o [draft da NFL](https://www.nfl.com/draft/home) bem como no fim de semana e entorno o *draft* da própria liga. O volume de mensagens começa a crescer na pré-temporada (*preseason*) com o início dos jogos de treinamento transmitidos pela TV e então o chat passa a engrenar quando começa a temporada (*season*).
+Como é previsível, o grupo é bem silencioso na intertemporada (*off season*), com picos durante o [draft da NFL](https://www.nfl.com/draft/home) bem como no fim de semana e entorno do *draft* da própria liga. O volume de mensagens começa a crescer na pré-temporada (*preseason*) com o início dos jogos de treinamento transmitidos pela TV e então o chat passa a engrenar quando começa a temporada (*season*).
 
 ### Mensagens por dia da semana
 
@@ -189,7 +189,7 @@ chat %>%
 
 ```
 
-Domingo confessa a concentração de jogos, volume de mensagens de temporada (*season*), mas é interessante reparar que os volumes de segunda e de terça-feira também é alto, sendo até mais alto que quinta-feira, dia de jogo. Isso ocorrer devido a dinâmica do *Fantasy*, já que terça-feira é dia dia de resultado da rodada e também preparação para a troca de jogadores ([*waiver*](https://www.espn.com/fantasy/football/ffl/story?page=fflruleswaiverwalk)), e no nosso caso, a liberação das projeções computada dos jogadores no [site da liga](https://dudesfootball.netlify.com/categories/projection/).
+Domingo confessa a concentração de jogos, volume de mensagens de temporada (*season*), mas é interessante reparar que os volumes de segunda e de terça-feira também são altos, sendo até mais altos que de quinta-feira, dia de jogo. Isso ocorrer devido a dinâmica do *Fantasy*, já que terça-feira é dia de oficialização do resultado da rodada e também preparação para a troca de jogadores ([*waiver*](https://www.espn.com/fantasy/football/ffl/story?page=fflruleswaiverwalk)), e no nosso caso, a liberação das projeções computadas dos jogadores no [site da liga](https://dudesfootball.netlify.com/categories/projection/).
 
 ### Mensagens por hora
 
@@ -263,7 +263,7 @@ chat %>%
 
 ### EMOJI mais usado
 
-Antes de *rankear* os `Emijis`, vamos remover as usas variações. As variações é quando vc altera por exemplo cor da pele ou do cabelo do `Emiji's`, essas variações são codificadas através da composição de vários caracteres unicode, o primeiro para dizer qual é o `Emoji` e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de ["ligadura" (*ligatures*)](https://en.wikipedia.org/wiki/Orthographic_ligature), e tem algumas [implicações interessantes](https://codepen.io/tuxsudo/pen/EwqKjy).
+Antes de *rankear* os `Emijis`, vamos remover as usas variações. As variações é quando se altera, por exemplo, cor da pele ou do cabelo do `Emiji's`, essas variações são codificadas através da composição de vários caracteres [Unicode](https://home.unicode.org/), o primeiro para dizer qual é o `Emoji` e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de ["ligadura" (*ligatures*)](https://en.wikipedia.org/wiki/Orthographic_ligature), e tem algumas [implicações interessantes](https://codepen.io/tuxsudo/pen/EwqKjy).
 
 Então, antes de rankear, vamos manter somente o primeiro caracter [Unicode](https://home.unicode.org/) do Emoji, removendo todo o resto.
 
@@ -341,7 +341,7 @@ plot.data %>%
 
 ## Análise de Palavras
 
-Assim como fizemos com os `Emoji´s`, podemos fazar a análise de frequência das palabras mais utilizadas no grupo bem como é para cada um dos membros. O pacote `tidytext` deixa essa análise bem simples e direta de aplicar.
+Assim como fizemos com os `Emoji´s`, podemos fazar a análise de frequência das palavras mais utilizadas no grupo bem como é para cada um dos membros. O pacote `tidytext` deixa essa análise bem simples e direta de aplicar.
 
 ### Ranking de Palavras
 
@@ -414,13 +414,13 @@ chat %>%
 
 ## Análise de Sentimentos
 
-Como a conversa vem de um grupo de uma liga de *Fantasy*, seria interessante analisar as mensagens do ponto de vista emocional. Como as pessoas reagem de acordo com a sua performance no jogo ou para os times que torcem? Iremos fazer isso de duas maneiras, a primeira é utilizando o [Emoji Sentimental Rank](https://www.clarin.si/repository/xmlui/handle/11356/1048) e o outro, também com base nos Emojis, usaremos o seus "nomes" para cruzar com bases léxicas de classificação de palabras, para valiar os sentimentos e intensidades envolvidas.
+Como a conversa vem de um grupo de uma liga de *Fantasy*, seria interessante analisar as mensagens do ponto de vista emocional. Como as pessoas reagem de acordo com a sua performance no jogo ou para os times que torcem? Iremos fazer isso de duas maneiras, a primeira é utilizando o [Emoji Sentimental Rank](https://www.clarin.si/repository/xmlui/handle/11356/1048) e o outro, também com base nos Emojis, usaremos o seus "nomes" para cruzar com bases léxicas de classificação de palavras, para avaliar os sentimentos e intensidades envolvidas.
 
 ### Emoji Sentiment Rank
 
 Kralj Novak P, Smailović J, Sluban B, Mozetič forneceram o primeiro léxico de sentimentos emoji, chamado de [Ranking de sentimentos Emoji](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html) que mapeia os sentimentos dos 751 emojis mais usados. O sentimento dos emojis é calculado a partir do sentimento de 70 mil tweets nos quais eles ocorrem, e foram rotulados por 83 anotadores humanos em 13 idiomas europeus. O processo e a análise da classificação de sentimentos emoji são descritos no artigo [Sentiment of Emojis](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0144296), de 2015.
 
-Usaremos o pacote `rvest` para *scrapear* diretamente o [rank](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html), e transformá-lo numa `data.frame` para incorporar na nossa análise.
+Usaremos o pacote `rvest` para *scrapear* diretamente o [rank](http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html), e transformá-lo num `data.frame` para incorporar na nossa análise.
 
 ```{r emojiSentimentRank}
 
@@ -444,7 +444,7 @@ emoji.table %>%
 
 ```
 
-O *rank* tem colunas que pontuam cada `Emoji` com respeito a representar um sentimento positivo, neutro ou negativo, numa escala de três dimensões. Então podemos juntá-la aos `Emoji` das mensagens, classificando assim indiretamente os sentimentos da mensagem.
+O *rank* tem colunas que pontuam cada `Emoji` com respeito a representar um sentimento positivo, neutro ou negativo, numa escala de três dimensões. Então podemos juntá-lo aos `Emoji` das mensagens, classificando assim indiretamente os sentimentos da mensagem.
 
 
 ```{r addSentiment}
@@ -505,15 +505,15 @@ emoji.authors.sentiment %>%
 
 ```
 
-A imagem acima, mostra a sequencia de membros do grupo ordanados pela "positividade" dos `Emoji's` enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (*owners*) dos times *Sorocaba Wilds Mules* e *Rio Claro Pfeiferias*, respectivamente, os dois últimos na classificação autal da liga. O que podeira explicar a quantidade de `Emoji's` negativos.
+A imagem acima, mostra a sequencia de membros do grupo ordanados pela "positividade" dos `Emoji's` enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (*owners*) dos times *Sorocaba Wilds Mules* e *Rio Claro Pfeiferias*, respectivamente, os dois últimos na classificação atual da liga. O que podeira explicar a maior proporção de `Emoji's` negativos.
 
-![Ranking da Liga](/images/dudesLeagueStanding.png)
+![Ranking da Liga após 5 rodadas](/images/dudesLeagueStanding.png)
 
 ### Derivando o sentimento via nome do Emoji
 
 Uma abordagem alternativa ao `Emoji Ranking` é usar um lexicon (dicionário) com a classificação de sentimentos das palavras, e fazer a associação do sentimento com o nome do `Emoji`, que convenientemente foi disponibilizado logo na importação da conversa via `rwhatsapp`.
 
-O [léxico AFINN] (https://github.com/fnielsen/afinn/tree/master/afinn/data) é talvez um dos lexicons mais simples e populares e é usado extensivamente para análise de sentimentos. A versão atual do léxico é a `AFINN-en-165.txt` e contém mais de 3.300 palavras com uma pontuação de polaridade associada a cada palavra. Você pode encontrar esse léxico no [repositório oficial do GitHub](https://github.com/fnielsen/afinn/tree/master/afinn/data) do autor, nós vamos usar o pacote [`textdata`](https://cran.r-project.org/web/packages/textdata/index.html), que já faz o download do léxico. Vamos dar uma olhada no seu conteúdo.
+O [léxico AFINN](https://github.com/fnielsen/afinn/tree/master/afinn/data) é talvez um dos lexicons mais simples e populares e é usado extensivamente para análise de sentimentos. A versão atual do léxico é a `AFINN-en-165.txt` e contém mais de 3.300 palavras com uma pontuação de polaridade associada a cada palavra. Você pode encontrar esse léxico no [repositório oficial do GitHub](https://github.com/fnielsen/afinn/tree/master/afinn/data) do autor, nós vamos usar o pacote [`textdata`](https://cran.r-project.org/web/packages/textdata/index.html), que já faz o download do léxico. Vamos dar uma olhada no seu conteúdo.
 
 ```{r getEmotionalLexicon}
 
@@ -583,7 +583,7 @@ Nos extremos, o resultado parece ser o mesmo porém há algumas diferenças, mas
 
 ### Sentimento mais frequente
 
-Uma terceira abordagem, também explorando o nome do `Emoji`, é cruzá-lo com uma base de sentimentos, um Léxico que vincule palabras a sentimentos. O [NRC Emotion Lexicon](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) (também conhecido como EmoLex) é uma lista de palavras em inglês e suas associações com oito emoções básicas (raiva, medo, antecipação, confiança surpresa, tristeza, alegria e nojo) e dois sentimentos (negativos e positivos). As anotações foram feitas manualmente por *crowdsourcing*.
+Uma terceira abordagem, também explorando o nome do `Emoji`, é cruzá-lo com uma base de sentimentos, um Léxico que vincule palavras a sentimentos. O [NRC Emotion Lexicon](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) (também conhecido como EmoLex) é uma lista de palavras em inglês e suas associações com oito emoções básicas (raiva, medo, antecipação, confiança, surpresa, tristeza, alegria e nojo) e dois sentimentos (negativos e positivos). As anotações foram feitas manualmente por *crowdsourcing*.
 
 ```{r nrcLex}
 # getting another lexicon with sentiment names
