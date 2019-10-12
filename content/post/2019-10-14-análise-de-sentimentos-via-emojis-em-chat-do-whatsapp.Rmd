@@ -1,7 +1,7 @@
 ---
 title: "Análise de Sentimentos via Emojis em chat do WhatsApp"
 author: "Giuliano Sposito"
-date: '2019-10-14'
+date: '2019-10-12'
 keywords: tech
 metaAlignment: center
 slug: análise-de-sentimentos-via-emojis-em-chat-do-whatsapp
