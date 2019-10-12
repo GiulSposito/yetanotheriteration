@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>user story on Yet Another Iteration</title>
-    <link>/tags/user-story/</link>
+    <link>https://yetanotheriteration.netlify.com/tags/user-story/</link>
     <description>Recent content in user story on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 16 Sep 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/user-story/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/user-story/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Agile Brazil BH - O Mito da Agilidade: Bom, Rápido e Barato</title>
-      <link>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
+      <link>https://yetanotheriteration.netlify.com/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2019/09/agile-brazil-bh-o-mito-da-agilidade-bom-rapido-e-barato/</guid>
       <description>&lt;p&gt;Em setembro de 2019, em visita à Belo Horizonte, tive a oportunidade de palestrar em um Meetup organizado pelos colegas de empresa e também no maior evento de agilidade do país, o Agile Brazil. Em ambos, o tema da palestra foi &amp;ldquo;O mito da agilidade: bom, rápido e barato! Será mesmo que Scrum e Ágil entregam &amp;lsquo;o dobro pela metade do tempo&amp;rsquo;?&amp;ldquo;. Nesta palestra discuto quais são as práticas ágeis que mais promovem produtividade e qualidade no desenvolvimento ágil.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Workshop Agile User Stories Slicing</title>
-      <link>/2019/01/slicing-and-dicing-agile-user-stories/</link>
+      <link>https://yetanotheriteration.netlify.com/2019/01/slicing-and-dicing-agile-user-stories/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2019/01/slicing-and-dicing-agile-user-stories/</guid>
       <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;</description>
     </item>
     

@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>workout on Yet Another Iteration</title>
-    <link>/tags/workout/</link>
+    <link>https://yetanotheriteration.netlify.com/tags/workout/</link>
     <description>Recent content in workout on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/workout/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/workout/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Comparing Fitbit and Polar H7 heart rate data</title>
-      <link>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
+      <link>https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;How good is the Fitbit measures comparing to Polar H7? The wearable Fitbit bracelet measures the heart rate based on the expansion and contraction of the capillaries in the skin throught measurement of the reflection and absorption of LED lights, different from the method used heart rate monitor Polar H7, which captures the electrical signals from the heart beat. In this post, we’ll access a WebAPI using OAuth2.0 to get Fitbit data and compare it with those obtained by a Polar H7, imported from a GPX file during the same training session.&lt;/p&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>Putting your workout to move</title>
-      <link>/2018/01/putting-your-workout-to-move/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/putting-your-workout-to-move/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/putting-your-workout-to-move/</guid>
       <description>
 
 
@@ -40,10 +40,10 @@
     
     <item>
       <title>Ploting your MTB track with R</title>
-      <link>/2018/01/ploting-your-mtb-track-with-r/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</link>
       <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/01/ploting-your-mtb-track-with-r/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/</guid>
       <description>
 
 

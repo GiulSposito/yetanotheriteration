@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fantasy on Yet Another Iteration</title>
-    <link>/tags/fantasy/</link>
+    <link>https://yetanotheriteration.netlify.com/tags/fantasy/</link>
     <description>Recent content in fantasy on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 28 Oct 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/fantasy/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yetanotheriteration.netlify.com/tags/fantasy/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Forecasting Fantasy Games Using Monte Carlo Simulations</title>
-      <link>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
+      <link>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</link>
       <pubDate>Sun, 28 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
+      <guid>https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The football season is back, and with it the Fantasy Game! In this post, we will simulate the results and the scoring of my Fantasy League games. To do that, we’ll project the scoring of teams using &lt;code&gt;Monte Carlo&lt;/code&gt; simulation with data scraped from sites that predicts players’ performances. We will combine the various possible scores of a team’s players to estimate the team’s score distribution, and then compare with the opposing team, and finally compute each team’s chances of winning and losing.&lt;/p&gt;
