@@ -12,7 +12,7 @@
 
 
 
-O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos txt (e zip) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no twitter decidi explorar uma conversão de um dos meus grupos de WhatsApp e fazer uma análise de sentimentos através dos Emoji’s enviados pelos remetentes.
+O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos TXT (e ZIP) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no Twitter decidi explorar uma conversão de um dos meus grupos e fazer uma análise de sentimentos através dos Emoji’s enviados pelos membros do grupo, confira como ficou…
 ">
 
 
@@ -20,7 +20,7 @@ O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite
 
 
 
-O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos txt (e zip) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no twitter decidi explorar uma conversão de um dos meus grupos de WhatsApp e fazer uma análise de sentimentos através dos Emoji’s enviados pelos remetentes.
+O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos TXT (e ZIP) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no Twitter decidi explorar uma conversão de um dos meus grupos e fazer uma análise de sentimentos através dos Emoji’s enviados pelos membros do grupo, confira como ficou…
 ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Análise de Sentimentos via Emojis em chat do WhatsApp">
@@ -32,13 +32,13 @@ O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite
 
 
 
-O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos txt (e zip) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no twitter decidi explorar uma conversão de um dos meus grupos de WhatsApp e fazer uma análise de sentimentos através dos Emoji’s enviados pelos remetentes.
+O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos TXT (e ZIP) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no Twitter decidi explorar uma conversão de um dos meus grupos e fazer uma análise de sentimentos através dos Emoji’s enviados pelos membros do grupo, confira como ficou…
 ">
 <meta name="twitter:description" content="
 
 
 
-O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos txt (e zip) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no twitter decidi explorar uma conversão de um dos meus grupos de WhatsApp e fazer uma análise de sentimentos através dos Emoji’s enviados pelos remetentes.
+O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos TXT (e ZIP) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no Twitter decidi explorar uma conversão de um dos meus grupos e fazer uma análise de sentimentos através dos Emoji’s enviados pelos membros do grupo, confira como ficou…
 ">
 <meta property="og:locale" content="en-us">
 
@@ -298,12 +298,12 @@ if (!doNotTrack) {
               <p><img src="/images/emoji_whatsapp_header.jpg" /></p>
 <div id="introducao" class="section level2">
 <h2>Introdução</h2>
-<p>O pacote <a href="https://cran.r-project.org/web/packages/rwhatsapp/index.html"><code>rwhatsapp</code></a>, desenvolvido e disponibilizado por <a href="https://github.com/JBGruber">Johannes Grubber</a>, permite manipular diretamente os arquivos <code>txt</code> (e <code>zip</code>) de uma conversão exportada pelo aplicativo <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a>, importando os dados para um <code>data.frame</code> e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960"><code>twitter</code></a> decidi explorar uma conversão de um dos meus grupos de <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a> e fazer uma análise de sentimentos através dos <a href="https://home.unicode.org/emoji/">Emoji’s</a> enviados pelos remetentes.</p>
+<p>O pacote <a href="https://cran.r-project.org/web/packages/rwhatsapp/index.html"><code>rwhatsapp</code></a>, desenvolvido e disponibilizado por <a href="https://github.com/JBGruber">Johannes Grubber</a>, permite manipular diretamente os arquivos <code>TXT</code> (e <code>ZIP</code>) de uma conversão exportada pelo aplicativo <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a>, importando os dados para um <code>data.frame</code> e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960"><code>Twitter</code></a> decidi explorar uma conversão de um dos meus grupos de <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a> e fazer uma análise de sentimentos através dos <a href="https://home.unicode.org/emoji/">Emoji’s</a> enviados pelos remetentes.</p>
 <p>{{&lt; tweet 1176415368820264960 &gt;}}</p>
 </div>
 <div id="obtendo-os-dados" class="section level2">
 <h2>Obtendo os dados</h2>
-<p>A principal (e única) função no pacote, é a <code>rwa_read()</code>, que permite importar os arquivos <code>txt</code> (e <code>zip</code>) diretamente, o que significa que você pode simplesmente fornecer o caminho para um arquivo para carregar as mensagens direto num <code>data.frame</code>. Exportar uma conversa de WhatsApp também é bem direto, basta <a href="https://tecnoblog.net/194147/whatsapp-salvar-historico-conversa/">seguir as instruções</a> disponíveis. Para este post, vou utilizar a conversão de um grupo meu de uma liga de <a href="http://fantasy.nfl.com">Fantasy</a>, assim poderemos fazer uma comparação do volume de mensagens enviadas com respeito aos horários e eventos relacionados aos jogos da <a href="https://www.nfl.com">NFL</a>.</p>
+<p>A principal (e única) função no pacote, é a <code>rwa_read()</code>, que permite importar os arquivos <code>TXT</code> (e <code>ZIP</code>) diretamente, o que significa que você pode simplesmente fornecer o caminho para um arquivo para carregar as mensagens direto num <code>data.frame</code>. Exportar uma conversa de <code>WhatsApp</code> também é bem direto, basta <a href="https://tecnoblog.net/194147/whatsapp-salvar-historico-conversa/">seguir as instruções</a> disponíveis. Para este post, vou utilizar a conversão de um grupo meu de uma liga de <a href="http://fantasy.nfl.com">Fantasy</a>, assim poderemos fazer uma comparação do volume de mensagens enviadas com respeito aos horários e eventos relacionados aos jogos da <a href="https://www.nfl.com">NFL</a>.</p>
 <p>Aliás, essa minha <a href="https://dudesfootball.netlify.com"><em>Liga de Fantasy</em></a>, já foi tema de outro post neste blog, que envolvia fazer <a href="https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/">simulações de Montecarlo para prever resultados dos jogos</a>, e claro, também usando <a href="https://www.r-project.org/"><code>R</code></a>.</p>
 <pre class="r"><code># libs to explore the WhatsApp chat
 library(rwhatsapp)
@@ -508,14 +508,21 @@ character(0)
 </tr>
 </tbody>
 </table>
-<p>Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num <code>data.frame</code>, contendo informações de <em>timestamp</em>, quem é o contato remetente, a mensagem enviada e a “<em>fonte de dados</em>” (arquivo importado). Além disso, de forma destacada da mensagem e aninhado (<a href="https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/"><em>nested</em></a>) à linha, temos informações sobre os <a href="https://home.unicode.org/emoji/">Emoji’s</a> que estão presentes em cada mensagem enviada, tanto o caracter unicode como o nome do <code>Emoji</code>.</p>
+<p>Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num <code>data.frame</code>, contendo informações de <em>timestamp</em>, quem é o contato remetente, a mensagem enviada e a “<em>fonte de dados</em>” (arquivo importado). Além disso, de forma destacada da mensagem e aninhado (<a href="https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/"><em>nested</em></a>) à linha, temos informações sobre os <a href="https://home.unicode.org/emoji/">Emoji’s</a> que estão presentes em cada mensagem enviada, tanto o caracter <a href="https://home.unicode.org/">Unicode</a> como o nome do <code>Emoji</code>.</p>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- emoji_ads_01 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5624634479725935" data-ad-slot="9462454685" data-ad-format="auto" data-full-width-responsive="true">
+</ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
 <div id="avaliando-frequencia-das-mensagens" class="section level2">
 <h2>Avaliando Frequência das Mensagens</h2>
-<p>A análise inicial, e também a mais direta e simples, que pode ser feita nesses dados é frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.</p>
+<p>A análise inicial, e também a mais direta e simples, que pode ser feita nesses dados é de frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.</p>
 <div id="mensagens-enviadas-no-periodo" class="section level3">
 <h3>Mensagens enviadas no período</h3>
-<p>Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa inter temporda. Então vamos criar uma informação de <em>fase</em>, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o <em>timestamp</em> nas seguintes datas:</p>
+<p>Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa intertemporda. Então vamos criar uma informação de <em>fase</em>, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o <em>timestamp</em> nas seguintes datas:</p>
 <ul>
 <li><a href="https://www.nfl.com/draft/home">NFL Draft</a>: entre 25/abr à 27/abr</li>
 <li>Pré Temporada: entre 01/ago à 29/ago</li>
@@ -562,7 +569,7 @@ chat %&gt;%
   theme( legend.title = element_blank(), 
          legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/dataHandling-1.png" width="960" /></p>
-<p>Como é previsível, o grupo é bem silencioso na intertemporada (<em>off season</em>), com picos durante o <a href="https://www.nfl.com/draft/home">draft da NFL</a> bem como no fim de semana e entorno o <em>draft</em> da própria liga. O volume de mensagens começa a crescer na pré-temporada (<em>preseason</em>) com o início dos jogos de treinamento transmitidos pela TV e então o chat passa a engrenar quando começa a temporada (<em>season</em>).</p>
+<p>Como é previsível, o grupo é bem silencioso na intertemporada (<em>off season</em>), com picos durante o <a href="https://www.nfl.com/draft/home">draft da NFL</a> bem como no fim de semana e entorno do <em>draft</em> da própria liga. O volume de mensagens começa a crescer na pré-temporada (<em>preseason</em>) com o início dos jogos de treinamento transmitidos pela TV e então o chat passa a engrenar quando começa a temporada (<em>season</em>).</p>
 </div>
 <div id="mensagens-por-dia-da-semana" class="section level3">
 <h3>Mensagens por dia da semana</h3>
@@ -583,7 +590,7 @@ chat %&gt;%
   theme( legend.title = element_blank(), 
          legend.position = &quot;bottom&quot;)</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/messagensPerWeekDay-1.png" width="672" /></p>
-<p>Domingo confessa a concentração de jogos, volume de mensagens de temporada (<em>season</em>), mas é interessante reparar que os volumes de segunda e de terça-feira também é alto, sendo até mais alto que quinta-feira, dia de jogo. Isso ocorrer devido a dinâmica do <em>Fantasy</em>, já que terça-feira é dia dia de resultado da rodada e também preparação para a troca de jogadores (<a href="https://www.espn.com/fantasy/football/ffl/story?page=fflruleswaiverwalk"><em>waiver</em></a>), e no nosso caso, a liberação das projeções computada dos jogadores no <a href="https://dudesfootball.netlify.com/categories/projection/">site da liga</a>.</p>
+<p>Domingo confessa a concentração de jogos, volume de mensagens de temporada (<em>season</em>), mas é interessante reparar que os volumes de segunda e de terça-feira também são altos, sendo até mais altos que de quinta-feira, dia de jogo. Isso ocorrer devido a dinâmica do <em>Fantasy</em>, já que terça-feira é dia de oficialização do resultado da rodada e também preparação para a troca de jogadores (<a href="https://www.espn.com/fantasy/football/ffl/story?page=fflruleswaiverwalk"><em>waiver</em></a>), e no nosso caso, a liberação das projeções computadas dos jogadores no <a href="https://dudesfootball.netlify.com/categories/projection/">site da liga</a>.</p>
 </div>
 <div id="mensagens-por-hora" class="section level3">
 <h3>Mensagens por hora</h3>
@@ -802,7 +809,7 @@ angry face with horns
 </table>
 <div id="emoji-mais-usado" class="section level3">
 <h3>EMOJI mais usado</h3>
-<p>Antes de <em>rankear</em> os <code>Emijis</code>, vamos remover as usas variações. As variações é quando vc altera por exemplo cor da pele ou do cabelo do <code>Emiji's</code>, essas variações são codificadas através da composição de vários caracteres unicode, o primeiro para dizer qual é o <code>Emoji</code> e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de <a href="https://en.wikipedia.org/wiki/Orthographic_ligature">“ligadura” (<em>ligatures</em>)</a>, e tem algumas <a href="https://codepen.io/tuxsudo/pen/EwqKjy">implicações interessantes</a>.</p>
+<p>Antes de <em>rankear</em> os <code>Emijis</code>, vamos remover as usas variações. As variações é quando se altera, por exemplo, cor da pele ou do cabelo do <code>Emiji's</code>, essas variações são codificadas através da composição de vários caracteres <a href="https://home.unicode.org/">Unicode</a>, o primeiro para dizer qual é o <code>Emoji</code> e so segundo para implementar uma variação. Quando o computador ou o celular lê esses caracteres faz uma composição e exibe como somente um. Esse processo é chamado de <a href="https://en.wikipedia.org/wiki/Orthographic_ligature">“ligadura” (<em>ligatures</em>)</a>, e tem algumas <a href="https://codepen.io/tuxsudo/pen/EwqKjy">implicações interessantes</a>.</p>
 <p>Então, antes de rankear, vamos manter somente o primeiro caracter <a href="https://home.unicode.org/">Unicode</a> do Emoji, removendo todo o resto.</p>
 <pre class="r"><code># use to fecth a PNG image of a Emoji from https://abs.twimg.com
 library(ggimage)
@@ -863,12 +870,18 @@ plot.data %&gt;%
   ggtitle(&quot;Most often used emojis&quot;) +
   theme_minimal() +
   theme(axis.text.x = element_blank())</code></pre>
-<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiByAuthors-1.png" width="768" /></p>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiByAuthors-1.png" width="672" /></p>
+<!-- emoji_ads_02 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5624634479725935" data-ad-slot="5774970048" data-ad-format="auto" data-full-width-responsive="true">
+</ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
 </div>
 <div id="analise-de-palavras" class="section level2">
 <h2>Análise de Palavras</h2>
-<p>Assim como fizemos com os <code>Emoji´s</code>, podemos fazar a análise de frequência das palabras mais utilizadas no grupo bem como é para cada um dos membros. O pacote <code>tidytext</code> deixa essa análise bem simples e direta de aplicar.</p>
+<p>Assim como fizemos com os <code>Emoji´s</code>, podemos fazar a análise de frequência das palavras mais utilizadas no grupo bem como é para cada um dos membros. O pacote <code>tidytext</code> deixa essa análise bem simples e direta de aplicar.</p>
 <div id="ranking-de-palavras" class="section level3">
 <h3>Ranking de Palavras</h3>
 <pre class="r"><code>library(tidytext)
@@ -893,8 +906,8 @@ chat %&gt;%
   ggplot(aes(x=reorder(word,n), y=n, fill=n, color=n)) +
   geom_col(show.legend = FALSE, width = .1) +
   geom_point(show.legend = FALSE, size = 3) +
-  scale_fill_gradient(low=&quot;#74a9cf&quot;,high=&quot;#045a8d&quot;) +
-  scale_color_gradient(low=&quot;#74a9cf&quot;,high=&quot;#045a8d&quot;) +
+  scale_fill_gradient(low=&quot;#2b83ba&quot;,high=&quot;#d7191c&quot;) +
+  scale_color_gradient(low=&quot;#2b83ba&quot;,high=&quot;#d7191c&quot;) +
   ggtitle(&quot;Most often words&quot;) +
   xlab(&quot;words&quot;) +
   coord_flip() +
@@ -930,11 +943,11 @@ chat %&gt;%
 </div>
 <div id="analise-de-sentimentos" class="section level2">
 <h2>Análise de Sentimentos</h2>
-<p>Como a conversa vem de um grupo de uma liga de <em>Fantasy</em>, seria interessante analisar as mensagens do ponto de vista emocional. Como as pessoas reagem de acordo com a sua performance no jogo ou para os times que torcem? Iremos fazer isso de duas maneiras, a primeira é utilizando o <a href="https://www.clarin.si/repository/xmlui/handle/11356/1048">Emoji Sentimental Rank</a> e o outro, também com base nos Emojis, usaremos o seus “nomes” para cruzar com bases léxicas de classificação de palabras, para valiar os sentimentos e intensidades envolvidas.</p>
+<p>Como a conversa vem de um grupo de uma liga de <em>Fantasy</em>, seria interessante analisar as mensagens do ponto de vista emocional. Como as pessoas reagem de acordo com a sua performance no jogo ou para os times que torcem? Iremos fazer isso de duas maneiras, a primeira é utilizando o <a href="https://www.clarin.si/repository/xmlui/handle/11356/1048">Emoji Sentimental Rank</a> e o outro, também com base nos Emojis, usaremos o seus “nomes” para cruzar com bases léxicas de classificação de palavras, para avaliar os sentimentos e intensidades envolvidas.</p>
 <div id="emoji-sentiment-rank" class="section level3">
 <h3>Emoji Sentiment Rank</h3>
 <p>Kralj Novak P, Smailović J, Sluban B, Mozetič forneceram o primeiro léxico de sentimentos emoji, chamado de <a href="http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html">Ranking de sentimentos Emoji</a> que mapeia os sentimentos dos 751 emojis mais usados. O sentimento dos emojis é calculado a partir do sentimento de 70 mil tweets nos quais eles ocorrem, e foram rotulados por 83 anotadores humanos em 13 idiomas europeus. O processo e a análise da classificação de sentimentos emoji são descritos no artigo <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0144296">Sentiment of Emojis</a>, de 2015.</p>
-<p>Usaremos o pacote <code>rvest</code> para scrapear diretamente o <a href="http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html">rank</a>, e transformá-lo numa data.frame para incorporar na nossa análise.</p>
+<p>Usaremos o pacote <code>rvest</code> para <em>scrapear</em> diretamente o <a href="http://kt.ijs.si/data/Emoji_sentiment_ranking/index.html">rank</a>, e transformá-lo num <code>data.frame</code> para incorporar na nossa análise.</p>
 <pre class="r"><code>library(rvest)
 
 # fecht the html page
@@ -1376,6 +1389,7 @@ Miscellaneous Symbols and Pictographs
 </tr>
 </tbody>
 </table>
+<p>O <em>rank</em> tem colunas que pontuam cada <code>Emoji</code> com respeito a representar um sentimento positivo, neutro ou negativo, numa escala de três dimensões. Então podemos juntá-lo aos <code>Emoji</code> das mensagens, classificando assim indiretamente os sentimentos da mensagem.</p>
 <pre class="r"><code># geting sentiment score and cleaning emoji.table colnames
 emoji.sentiment &lt;- emoji.table %&gt;% 
   select(1,6:9) %&gt;% 
@@ -1806,7 +1820,7 @@ grinning face with sweat
 </tr>
 </tbody>
 </table>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Resta então contabilizar qual o sentimento médio de cada remetente na lista.</p>
 <pre class="r"><code># summarising emoji sentiment ocorrences by author
 emoji.authors.sentiment &lt;- emoji.chat %&gt;% 
   group_by(author) %&gt;% 
@@ -1834,22 +1848,17 @@ emoji.authors.sentiment %&gt;%
   coord_flip() +
   theme_minimal() </code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiSentimentByAuthor-1.png" width="672" /></p>
+<p>A imagem acima, mostra a sequencia de membros do grupo ordenados pela “positividade” dos <code>Emoji's</code> enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (<em>owners</em>) dos times <em>Sorocaba Wilds Mules</em> e <em>Rio Claro Pfeiferias</em>, respectivamente, os dois últimos na classificação atual da liga. O que podeira explicar a maior proporção de <code>Emoji's</code> negativos.</p>
+<div class="figure">
+<img src="/images/dudesLeagueStanding.png" alt="Ranking da Liga após 5 rodadas" />
+<p class="caption">Ranking da Liga após 5 rodadas</p>
 </div>
-<div id="emoji-name-sentiment" class="section level3">
-<h3>Emoji Name Sentiment</h3>
-<p>The <a href="https://github.com/fnielsen/afinn/tree/master/afinn/data">AFINN lexicon</a> is perhaps one of the simplest and most popular lexicons that can be used extensively for sentiment analysis. The current version of the lexicon is <code>AFINN-en-165.txt</code> and it contains over 3,300+ words with a polarity score associated with each word. You can find this lexicon at the author’s <a href="https://github.com/fnielsen/afinn/tree/master/afinn/data">official GitHub repository</a>.</p>
+</div>
+<div id="derivando-o-sentimento-via-nome-do-emoji" class="section level3">
+<h3>Derivando o sentimento via nome do Emoji</h3>
+<p>Uma abordagem alternativa ao <code>Emoji Ranking</code> é usar um lexicon (dicionário) com a classificação de sentimentos das palavras, e fazer a associação do sentimento com o nome do <code>Emoji</code>, que convenientemente foi disponibilizado logo na importação da conversa via <code>rwhatsapp</code>.</p>
+<p>O <a href="https://github.com/fnielsen/afinn/tree/master/afinn/data">léxico AFINN</a> é talvez um dos lexicons mais simples e populares e é usado extensivamente para análise de sentimentos. A versão atual do léxico é a <code>AFINN-en-165.txt</code> e contém mais de 3.300 palavras com uma pontuação de polaridade associada a cada palavra. Você pode encontrar esse léxico no <a href="https://github.com/fnielsen/afinn/tree/master/afinn/data">repositório oficial do GitHub</a> do autor, nós vamos usar o pacote <a href="https://cran.r-project.org/web/packages/textdata/index.html"><code>textdata</code></a>, que já faz o download do léxico. Vamos dar uma olhada no seu conteúdo.</p>
 <pre class="r"><code>library(textdata)
-
-# extract emojis
-emoji.chat &lt;- chat %&gt;% 
-  unnest(emoji, emoji_name) %&gt;% 
-  mutate( emoji = str_sub(emoji, end = 1)) %&gt;%  # remove ligatures
-  mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) # remove ligatures names
-
-# tokenize the emoji name
-emoji.chat &lt;- emoji.chat %&gt;% 
-  select(author, emoji_name) %&gt;% 
-  unnest_tokens(input=emoji_name, output=emoji_words)
 
 # get some positive/negative lexicon by textdata package
 lex.negpos  &lt;- get_sentiments(&quot;afinn&quot;) # value intense
@@ -2059,8 +2068,364 @@ Freq
 </tr>
 </tbody>
 </table>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
-<pre class="r"><code>author.summary &lt;- emoji.chat %&gt;% 
+<p>Como a descrição antecipa, as palavras são pontuadas, e aparentemente numa escala entre -5 e 5, com (quase) nenhuma palavra com 0 pontos. Vamos olhar como o cruzamento entre os dois.</p>
+<pre class="r"><code># extract emojis
+emoji.sent.score &lt;- chat %&gt;%
+  select( emoji, emoji_name) %&gt;% 
+  unnest( emoji, emoji_name) %&gt;% 
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;%  # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) %&gt;%  # remove ligatures names
+  distinct() %&gt;% 
+  unnest_tokens(input=emoji_name, output=emoji_words) %&gt;% 
+  inner_join(lex.negpos, by=c(&quot;emoji_words&quot;=&quot;word&quot;))
+
+# make a table with 3 columns
+bind_cols(
+  slice(emoji.sent.score, 01:10),
+  slice(emoji.sent.score, 11:20),
+  slice(emoji.sent.score, 21:30)
+) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(full_width = F, font_size = 11) </code></pre>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+emoji
+</th>
+<th style="text-align:left;">
+emoji_words
+</th>
+<th style="text-align:right;">
+value
+</th>
+<th style="text-align:left;">
+emoji1
+</th>
+<th style="text-align:left;">
+emoji_words1
+</th>
+<th style="text-align:right;">
+value1
+</th>
+<th style="text-align:left;">
+emoji2
+</th>
+<th style="text-align:left;">
+emoji_words2
+</th>
+<th style="text-align:right;">
+value2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+tears
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+😈
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+🤩
+</td>
+<td style="text-align:left;">
+struck
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+joy
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+🔥
+</td>
+<td style="text-align:left;">
+fire
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+😨
+</td>
+<td style="text-align:left;">
+fearful
+</td>
+<td style="text-align:right;">
+-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+🤣
+</td>
+<td style="text-align:left;">
+laughing
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+😔
+</td>
+<td style="text-align:left;">
+pensive
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:left;">
+😟
+</td>
+<td style="text-align:left;">
+worried
+</td>
+<td style="text-align:right;">
+-3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+screaming
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+🤟
+</td>
+<td style="text-align:left;">
+love
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+💔
+</td>
+<td style="text-align:left;">
+broken
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+😓
+</td>
+<td style="text-align:left;">
+downcast
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+😘
+</td>
+<td style="text-align:left;">
+kiss
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+👿
+</td>
+<td style="text-align:left;">
+angry
+</td>
+<td style="text-align:right;">
+-3
+</td>
+<td style="text-align:left;">
+😍
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+🙂
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😄
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+😊
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+🙁
+</td>
+<td style="text-align:left;">
+frowning
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😁
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+😊
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+😇
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😭
+</td>
+<td style="text-align:left;">
+crying
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+😞
+</td>
+<td style="text-align:left;">
+disappointed
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:left;">
+😦
+</td>
+<td style="text-align:left;">
+frowning
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😎
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+🥰
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+😧
+</td>
+<td style="text-align:left;">
+anguished
+</td>
+<td style="text-align:right;">
+-3
+</td>
+</tr>
+</tbody>
+</table>
+<p>Repedindo o mesmo procedimento que fizemos antes com os <code>Emoji's</code> vamos olha a média de intensidade da escala de sentimento para cada um dos membros do grupo.</p>
+<pre class="r"><code># extract emojis
+emoji.chat &lt;- chat %&gt;% 
+  unnest(emoji, emoji_name) %&gt;% 
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;%  # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) # remove ligatures names
+
+# tokenize the emoji name
+emoji.chat &lt;- emoji.chat %&gt;% 
+  select(author, emoji_name) %&gt;% 
+  unnest_tokens(input=emoji_name, output=emoji_words)
+
+# join the lexicon
+author.summary &lt;- emoji.chat %&gt;% 
   inner_join(lex.negpos, by=c(&quot;emoji_words&quot;=&quot;word&quot;)) %&gt;% 
   count(author, value) %&gt;% 
   group_by(author) %&gt;% 
@@ -2080,17 +2445,24 @@ author.summary %&gt;%
   ungroup() %&gt;% 
   mutate( value = factor(value, levels = reordLevels, ordered=T)) %&gt;% 
   ggplot(aes(x=reorder(author,balance), y=mean, fill=value)) +
-  geom_bar(stat=&quot;identity&quot;,position=&quot;stack&quot;) +
+  geom_bar(stat=&quot;identity&quot;,position=&quot;stack&quot;, show.legend = F, width = .5) +
   scale_fill_manual(values = my.colors) +
   xlab(&quot;&quot;) +
   coord_flip() +
   ggtitle(&quot;Sentiment Analysis&quot;, &quot;By emoji&#39;s name&quot;) +
   theme_minimal()</code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/authorEmojiNameSentiment-1.png" width="672" /></p>
+<p>Nos extremos, o resultado parece ser o mesmo porém há algumas diferenças, mas lembre-se, não estamos classificando o sentimento pelo <code>Emoji</code> em si, mas sim pelo sentimento da palavra que dá o seu nome.</p>
+<!-- emoji_ads_03 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5624634479725935" data-ad-slot="6261576274" data-ad-format="auto" data-full-width-responsive="true">
+</ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
-<div id="sentimento-mais-frequente-por-autor" class="section level3">
-<h3>Sentimento mais frequênte por autor</h3>
-<p>The <a href="https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm">NRC Emotion Lexicon</a> (aka EmoLex) is a list of English words and their associations with eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations were manually done by crowdsourcing.</p>
+<div id="sentimento-mais-frequente" class="section level3">
+<h3>Sentimento mais frequente</h3>
+<p>Uma terceira abordagem, também explorando o nome do <code>Emoji</code>, é cruzá-lo com uma base de sentimentos, um Léxico que vincule palavras a sentimentos. O <a href="https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm">NRC Emotion Lexicon</a> (também conhecido como EmoLex) é uma lista de palavras em inglês e suas associações com oito emoções básicas (raiva, medo, antecipação, confiança, surpresa, tristeza, alegria e nojo) e dois sentimentos (negativos e positivos). As anotações foram feitas manualmente por <em>crowdsourcing</em>.</p>
 <pre class="r"><code># getting another lexicon with sentiment names
 lex.sent &lt;- get_sentiments(&quot;nrc&quot;) # sentiment name
 
@@ -2193,14 +2565,399 @@ fear
 </tr>
 </tbody>
 </table>
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
+<p>Vamos dar uma olhada em como ficam algumas das classificações de sentimentos para os <code>Emoji's</code>.</p>
+<pre class="r"><code># extract emojis
+emoji.emotion &lt;- chat %&gt;%
+  select( emoji, emoji_name) %&gt;% 
+  unnest( emoji, emoji_name) %&gt;% 
+  mutate( emoji = str_sub(emoji, end = 1)) %&gt;%  # remove ligatures
+  mutate( emoji_name = str_remove(emoji_name, &quot;:.*&quot;)) %&gt;%  # remove ligatures names
+  unnest_tokens(input=emoji_name, output=emoji_words) %&gt;% 
+  inner_join(lex.sent, by=c(&quot;emoji_words&quot;=&quot;word&quot;)) %&gt;% 
+  filter(!sentiment %in% c(&quot;negative&quot;,&quot;positive&quot;)) %&gt;% # removing neg/pos classification
+  # keep only the top 4 most frequent emoji for each sentiment
+  count(emoji, emoji_words, sentiment) %&gt;% 
+  group_by(sentiment) %&gt;% 
+  top_n(4,n) %&gt;% 
+  slice(1:4) %&gt;% 
+  ungroup() %&gt;% 
+  select(-n)
+
+# trick to put tables side-by-side
+bind_cols(
+    slice(emoji.emotion, 01:16),
+    slice(emoji.emotion, 17:32)
+  ) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(full_width = F, font_size = 11) </code></pre>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+emoji
+</th>
+<th style="text-align:left;">
+emoji_words
+</th>
+<th style="text-align:left;">
+sentiment
+</th>
+<th style="text-align:left;">
+emoji1
+</th>
+<th style="text-align:left;">
+emoji_words1
+</th>
+<th style="text-align:left;">
+sentiment1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+😞
+</td>
+<td style="text-align:left;">
+disappointed
+</td>
+<td style="text-align:left;">
+anger
+</td>
+<td style="text-align:left;">
+😁
+</td>
+<td style="text-align:left;">
+beaming
+</td>
+<td style="text-align:left;">
+joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:left;">
+anger
+</td>
+<td style="text-align:left;">
+😁
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:left;">
+joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+screaming
+</td>
+<td style="text-align:left;">
+anger
+</td>
+<td style="text-align:left;">
+😂
+</td>
+<td style="text-align:left;">
+joy
+</td>
+<td style="text-align:left;">
+joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+🙁
+</td>
+<td style="text-align:left;">
+frowning
+</td>
+<td style="text-align:left;">
+anger
+</td>
+<td style="text-align:left;">
+😎
+</td>
+<td style="text-align:left;">
+smiling
+</td>
+<td style="text-align:left;">
+joy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+🏈
+</td>
+<td style="text-align:left;">
+football
+</td>
+<td style="text-align:left;">
+anticipation
+</td>
+<td style="text-align:left;">
+😔
+</td>
+<td style="text-align:left;">
+pensive
+</td>
+<td style="text-align:left;">
+sadness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😁
+</td>
+<td style="text-align:left;">
+beaming
+</td>
+<td style="text-align:left;">
+anticipation
+</td>
+<td style="text-align:left;">
+😞
+</td>
+<td style="text-align:left;">
+disappointed
+</td>
+<td style="text-align:left;">
+sadness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😘
+</td>
+<td style="text-align:left;">
+kiss
+</td>
+<td style="text-align:left;">
+anticipation
+</td>
+<td style="text-align:left;">
+😨
+</td>
+<td style="text-align:left;">
+fearful
+</td>
+<td style="text-align:left;">
+sadness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+🤩
+</td>
+<td style="text-align:left;">
+star
+</td>
+<td style="text-align:left;">
+anticipation
+</td>
+<td style="text-align:left;">
+😭
+</td>
+<td style="text-align:left;">
+crying
+</td>
+<td style="text-align:left;">
+sadness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😞
+</td>
+<td style="text-align:left;">
+disappointed
+</td>
+<td style="text-align:left;">
+disgust
+</td>
+<td style="text-align:left;">
+😘
+</td>
+<td style="text-align:left;">
+kiss
+</td>
+<td style="text-align:left;">
+surprise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😤
+</td>
+<td style="text-align:left;">
+nose
+</td>
+<td style="text-align:left;">
+disgust
+</td>
+<td style="text-align:left;">
+😮
+</td>
+<td style="text-align:left;">
+mouth
+</td>
+<td style="text-align:left;">
+surprise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+screaming
+</td>
+<td style="text-align:left;">
+disgust
+</td>
+<td style="text-align:left;">
+🤪
+</td>
+<td style="text-align:left;">
+zany
+</td>
+<td style="text-align:left;">
+surprise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+🙁
+</td>
+<td style="text-align:left;">
+frowning
+</td>
+<td style="text-align:left;">
+disgust
+</td>
+<td style="text-align:left;">
+🤭
+</td>
+<td style="text-align:left;">
+mouth
+</td>
+<td style="text-align:left;">
+surprise
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😅
+</td>
+<td style="text-align:left;">
+sweat
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:left;">
+🏆
+</td>
+<td style="text-align:left;">
+trophy
+</td>
+<td style="text-align:left;">
+trust
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😓
+</td>
+<td style="text-align:left;">
+sweat
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:left;">
+💰
+</td>
+<td style="text-align:left;">
+money
+</td>
+<td style="text-align:left;">
+trust
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:left;">
+📈
+</td>
+<td style="text-align:left;">
+chart
+</td>
+<td style="text-align:left;">
+trust
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+😱
+</td>
+<td style="text-align:left;">
+screaming
+</td>
+<td style="text-align:left;">
+fear
+</td>
+<td style="text-align:left;">
+📊
+</td>
+<td style="text-align:left;">
+chart
+</td>
+<td style="text-align:left;">
+trust
+</td>
+</tr>
+</tbody>
+</table>
+<p>Então cruzar o léxico com os <em>tokens</em> dos nomes dos <code>Emoji's</code> em todas as mensagens e visualizar quais os sentimentos mais comuns.</p>
 <pre class="r"><code># join with emoji chat
-author.sentiment &lt;- emoji.chat %&gt;% 
+chat.sentiment &lt;- emoji.chat %&gt;% 
   inner_join(lex.sent, by=c(&quot;emoji_words&quot;=&quot;word&quot;)) %&gt;% 
   filter(!sentiment %in% c(&quot;negative&quot;,&quot;positive&quot;)) # removing neg/pos classification
 
-# plotting
-author.sentiment %&gt;% 
+# plot it
+chat.sentiment %&gt;% 
+  count(sentiment) %&gt;% 
+  ggplot(aes(x=reorder(sentiment,n), y=n)) +
+  geom_col(aes(fill=n), show.legend = FALSE, width = .1) +
+  geom_point(aes(color=n), show.legend = FALSE, size = 3) +
+  coord_flip() +
+  ylab(&quot;&quot;) + xlab(&quot;&quot;) +
+    scale_fill_gradient(low=&quot;#2b83ba&quot;,high=&quot;#d7191c&quot;) +
+  scale_color_gradient(low=&quot;#2b83ba&quot;,high=&quot;#d7191c&quot;) +
+  ggtitle(&quot;Most Frequent Sentiment&quot;,&quot;By Emoji names in &#39;It´s Football, Dudes!&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/mostFreqSentAll-1.png" width="672" /></p>
+<p>E finalmente, vamos ver o perfil de sentimentos, por author.</p>
+<pre class="r"><code># plotting by author
+chat.sentiment %&gt;% 
   count(author, sentiment) %&gt;% 
   left_join(filter(lex.sent, sentiment %in% c(&quot;negative&quot;,&quot;positive&quot;)),by=c(&quot;sentiment&quot;=&quot;word&quot;)) %&gt;% 
   rename( type = sentiment.y) %&gt;% 
