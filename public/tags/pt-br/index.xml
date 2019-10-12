@@ -2,41 +2,55 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>pt-BR on Yet Another Iteration</title>
-    <link>https://yetanotheriteration.netlify.com/tags/pt-br/</link>
+    <link>/tags/pt-br/</link>
     <description>Recent content in pt-BR on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Oct 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://yetanotheriteration.netlify.com/tags/pt-br/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/pt-br/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Análise de Sentimentos via Emojis em chat do WhatsApp</title>
+      <link>/2019/10/an%C3%A1lise-de-sentimentos-via-emojis-em-chat-do-whatsapp/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/an%C3%A1lise-de-sentimentos-via-emojis-em-chat-do-whatsapp/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite manipular diretamente os arquivos TXT (e ZIP) de uma conversão exportada pelo aplicativo WhatsApp, importando os dados para um data.frame e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no Twitter decidi explorar uma conversão de um dos meus grupos e fazer uma análise de sentimentos através dos Emoji’s enviados pelos membros do grupo, confira como ficou…&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Agile Trends: Ready-Ready, PO Team &amp; Heijunka</title>
-      <link>https://yetanotheriteration.netlify.com/2019/04/agile-trends-ready-ready-po-team-heijunka/</link>
+      <link>/2019/04/agile-trends-ready-ready-po-team-heijunka/</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/04/agile-trends-ready-ready-po-team-heijunka/</guid>
+      <guid>/2019/04/agile-trends-ready-ready-po-team-heijunka/</guid>
       <description>Durante a transformação ágil da CI&amp;amp;T, aprendemos como a existência de um Product Owner completo, capaz de desempenhar tudo que o papel exige, é crítica não só para a qualidade do produto como também para a performance do próprio time de desenvolvimento. Hoje, frequentemente, encontramos os mesmos problemas decorrentes da atuação incompleta do PO em clientes que estão começando a sua jornada ágil. Neste post compartilho a minha apresentação realizada no Agile Trends 2019 que fala a respeito da importancia deste papel na agilidade e como resolver alguns gaps de atuação.</description>
     </item>
     
     <item>
       <title>Workshop Agile User Stories Slicing</title>
-      <link>https://yetanotheriteration.netlify.com/2019/01/slicing-and-dicing-agile-user-stories/</link>
+      <link>/2019/01/slicing-and-dicing-agile-user-stories/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2019/01/slicing-and-dicing-agile-user-stories/</guid>
+      <guid>/2019/01/slicing-and-dicing-agile-user-stories/</guid>
       <description>&lt;p&gt;A chave para a implantação de uma cultura de entrega ágil e passo importantíssimo para viabilizar DevOps, a quebra adequada de histórias de usuário é também um dos maiores desafios para as equipes que são novas na abordagem ágil. Frequentemente a mudança do que chamamos de &amp;ldquo;divisão horizontal&amp;rdquo; para “fatia vertical” exige uma mudança de racional de desenvolvimento que as equipes muitas vezes não estão acostumadas. &amp;ldquo;Bem, nosso sistema é muito complexo&amp;rdquo;, ou &amp;ldquo;precisamos construir recursos realmente grandes ou nossos usuários não conseguirão usar&amp;rdquo; são desculpas comuns nesta situação.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Operações Long-Short através de Cointegração usando R</title>
-      <link>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
+      <link>/2018/08/operando-long-short-usando-cointegracao-em-r/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
+      <guid>/2018/08/operando-long-short-usando-cointegracao-em-r/</guid>
       <description>
-&lt;script src=&#34;https://yetanotheriteration.netlify.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Operações Long-Short por Cointegração é uma estratégia de investimento em ativos que consiste em encontrar pares de ações (índices ou &lt;em&gt;commodities&lt;/em&gt;) que mantém um padrão de comportamento estável e previsível (equilíbrio estacionário) com variações de curto prazo que permita ser explorado em operações de Long (compra) e Short (venda) do par. Este R-Notebook refaz o passo-a-passo nas análises estatísticas necessárias para detectar e operação essa estratégia de mercado.&lt;/p&gt;
@@ -45,10 +59,10 @@
     
     <item>
       <title>Data Science das Cervejas (2/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</link>
+      <link>/2018/02/data-science-das-cervejas-2-2/</link>
       <pubDate>Mon, 12 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-2-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-2-2/</guid>
       <description>
 
 
@@ -58,10 +72,10 @@
     
     <item>
       <title>Data Science das Cervejas (1/2)</title>
-      <link>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</link>
+      <link>/2018/02/data-science-das-cervejas-1-2/</link>
       <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/02/data-science-das-cervejas-1-2/</guid>
+      <guid>/2018/02/data-science-das-cervejas-1-2/</guid>
       <description>
 
 
@@ -71,10 +85,10 @@
     
     <item>
       <title>Social Network Analysis on CRAN Authors</title>
-      <link>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</link>
+      <link>/2018/01/social-network-analysis-on-cran-authors/</link>
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://yetanotheriteration.netlify.com/2018/01/social-network-analysis-on-cran-authors/</guid>
+      <guid>/2018/01/social-network-analysis-on-cran-authors/</guid>
       <description>
 
 

@@ -25,8 +25,8 @@ Operações Long-Short por Cointegração é uma estratégia de investimento em 
 <meta property="og:type" content="article">
 <meta property="og:title" content="Operações Long-Short através de Cointegração usando R">
 <meta name="twitter:title" content="Operações Long-Short através de Cointegração usando R">
-<meta property="og:url" content="https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
-<meta property="twitter:url" content="https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+<meta property="og:url" content="/2018/08/operando-long-short-usando-cointegracao-em-r/">
+<meta property="twitter:url" content="/2018/08/operando-long-short-usando-cointegracao-em-r/">
 <meta property="og:site_name" content="Yet Another Iteration">
 <meta property="og:description" content="
 
@@ -85,12 +85,12 @@ Operações Long-Short por Cointegração é uma estratégia de investimento em 
 
 
 
-  <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/coint_tn.png">
-  <meta property="twitter:image" content="https://yetanotheriteration.netlify.com/images/coint_tn.png">
+  <meta property="og:image" content="/images/coint_tn.png">
+  <meta property="twitter:image" content="/images/coint_tn.png">
 
 
-  <meta property="og:image" content="https://yetanotheriteration.netlify.com/images/coint_cover.png">
-  <meta property="twitter:image" content="https://yetanotheriteration.netlify.com/images/coint_cover.png">
+  <meta property="og:image" content="/images/coint_cover.png">
+  <meta property="twitter:image" content="/images/coint_cover.png">
 
 
 
@@ -101,14 +101,14 @@ Operações Long-Short por Cointegração é uma estratégia de investimento em 
 
     <title>Operações Long-Short através de Cointegração usando R</title>
 
-    <link rel="icon" href="https://yetanotheriteration.netlify.com/favicon.png">
+    <link rel="icon" href="/favicon.png">
     
 
     
       <link rel="publisher" href="https://plus.google.com/&#43;giulianosposito">
     
 
-    <link rel="canonical" href="https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+    <link rel="canonical" href="/2018/08/operando-long-short-usando-cointegracao-em-r/">
 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
@@ -116,7 +116,7 @@ Operações Long-Short por Cointegração é uma estratégia de investimento em 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
     
     
-    <link rel="stylesheet" href="https://yetanotheriteration.netlify.com/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
     
     
 
@@ -144,12 +144,12 @@ if (!doNotTrack) {
       <header id="header" data-behavior="5">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
-    <a class="header-title-link" href="https://yetanotheriteration.netlify.com/">Yet Another Iteration</a>
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
   </div>
   
     
       <a class="header-right-picture "
-         href="https://yetanotheriteration.netlify.com/#about">
+         href="/#about">
     
     
     
@@ -165,7 +165,7 @@ if (!doNotTrack) {
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
-        <a href="https://yetanotheriteration.netlify.com/#about">
+        <a href="/#about">
           <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
         </a>
         <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
@@ -178,7 +178,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/">
+      <a class="sidebar-button-link " href="/">
     
       <i class="sidebar-button-icon fa fa-lg fa-home"></i>
       
@@ -188,7 +188,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/categories">
+      <a class="sidebar-button-link " href="/categories">
     
       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
       
@@ -198,7 +198,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/tags">
+      <a class="sidebar-button-link " href="/tags">
     
       <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
       
@@ -208,7 +208,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/about">
+      <a class="sidebar-button-link " href="/about">
     
       <i class="sidebar-button-icon fa fa-lg fa-question"></i>
       
@@ -222,7 +222,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://github.com/giulsposito" target="_blank" rel="noopener">
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
     
       <i class="sidebar-button-icon fa fa-lg fa-github"></i>
       
@@ -232,7 +232,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://twitter.com/gsposito" target="_blank" rel="noopener">
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
     
       <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
       
@@ -246,7 +246,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yetanotheriteration.netlify.com/index.xml">
+      <a class="sidebar-button-link " href="/index.xml">
     
       <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
       
@@ -286,7 +286,7 @@ if (!doNotTrack) {
   
     <span>in</span>
     
-      <a class="category-link" href="https://yetanotheriteration.netlify.com/categories/data-science">data science</a>
+      <a class="category-link" href="/categories/data-science">data science</a>
     
   
 
@@ -346,7 +346,7 @@ Muitos dos textos explicativos aqui foram retirados (ou fortemente baseados) na 
 <h3>Dataset</h3>
 <p>No poste ele faz faz uma análise dos ativos <a href="https://www.infomoney.com.br/qualicorp-qual3"><strong>QUAL3</strong> - QUALICORP ON</a> e <a href="https://www.infomoney.com.br/localiza-rent3"><strong>RENT3</strong> - Localiza ON</a> usando uma <a href="https://drnickel.files.wordpress.com/2015/04/exemplos-cointegracao-qual3_rent32.xlsx">planilha excel</a>, neste notebook refaço o procedimento usando R. Para garantir que os resultados obtidos em ambas sejam os mesmos usaremos exatamente os mesmo dados que constam na planilha.</p>
 <div class="figure">
-<img src="https://yetanotheriteration.netlify.com/images/excel_data.png" alt="Cotações de QUAL3 e RENT3 no Excel" />
+<img src="/images/excel_data.png" alt="Cotações de QUAL3 e RENT3 no Excel" />
 <p class="caption">Cotações de QUAL3 e RENT3 no Excel</p>
 </div>
 <p>Após a importação, obtemos:</p>
@@ -925,7 +925,7 @@ RENT3
 library(ggplot2)
 ggplot(df.tickers,aes(x=ref.date, y=price.close, color=ticker)) +
   geom_line(size=1) + theme_light()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/tickersPlot-1.png" width="672" /></p>
+<p><img src="/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/tickersPlot-1.png" width="672" /></p>
 </div>
 <div id="series-nao-estacionarias" class="section level3">
 <h3>Séries Não Estacionárias</h3>
@@ -934,7 +934,7 @@ ggplot(df.tickers,aes(x=ref.date, y=price.close, color=ticker)) +
 <p><span class="math display">\[\Delta P_{t} = \alpha + \beta P_{t-1} + \epsilon\]</span></p>
 <p>Após fazer a regressão, o valor chave a ser usado para determinar se a série é não estacionária é o <a href="https://dss.princeton.edu/online_help/analysis/interpreting_regression.htm"><code>t-statistic</code></a> do coeficiente <span class="math inline">\(\beta\)</span> obtido, que é o valor do coeficiente dividido pelo desvio padrão. Pode ser pensado como uma medida da precisão com que o coeficiente de regressão é medido. Se um coeficiente é grande comparado ao seu erro padrão, provavelmente é diferente de 0. Esse valor então é confrontado contra uma tabela de referência, que determinará se a série é estacionária ou não.</p>
 <div class="figure">
-<img src="https://yetanotheriteration.netlify.com/images/dickey-fuller-table.png" alt="Dickey-Fuller Table" />
+<img src="/images/dickey-fuller-table.png" alt="Dickey-Fuller Table" />
 <p class="caption">Dickey-Fuller Table</p>
 </div>
 <p>O valor de referência é sensível ao número de pontos usados na regressão. Assim sendo, vamos fazer o <em>fit</em> da regressão linear e obter os valores de referência desta regressão</p>
@@ -1429,7 +1429,7 @@ RENT3
   spread(key=ticker, value=price.close) %&gt;% 
   ggplot(aes(x=RENT3, y=QUAL3)) +
     geom_point(size=2, alpha=.5) + theme_light()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/plotCombinacao-1.png" width="672" /></p>
+<p><img src="/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/plotCombinacao-1.png" width="672" /></p>
 <pre class="r"><code># faz a composicao para detectar a cointegração
 # fitando um modelo de um ativo contra outro
 df.tickers %&gt;% 
@@ -2206,7 +2206,7 @@ coint.ds %&gt;%
   geom_hline(yintercept =  2*sd.res, color=&quot;red&quot;, linetype=2) +
   geom_hline(yintercept = -2*sd.res, color=&quot;red&quot;, linetype=2) +
   theme_light()</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/spreadPlot-1.png" width="672" /></p>
+<p><img src="/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/spreadPlot-1.png" width="672" /></p>
 <p>Uma regra possível de operação consistiria em vender o par quando o resíduo estiver acima da banda, e comprar o par quando estiver abaixo da banda. O trade pode ser encerrado quando o par voltar a média ou a um percentual qualquer da média.</p>
 </div>
 <div id="detectando-operacoes" class="section level3">
@@ -2257,7 +2257,7 @@ coint.ds %&gt;%
              size=1, linetype=1) +
   theme_light() +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())</code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/startOperations-1.png" width="672" /></p>
+<p><img src="/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/startOperations-1.png" width="672" /></p>
 <p>A partir dos pontos de entrada e saída do par detectados, podemos então compor a série de operações.</p>
 <pre class="r"><code># junta os pares operados  pares
 operations %&gt;% 
@@ -2575,7 +2575,7 @@ ggplot() +
                 fill=ifelse(RENT3.SA.OPEN&lt;RENT3.SA.CLOSE,&quot;green&quot;,&quot;purple&quot;)),
                 alpha=0.35, show.legend = F) +
   theme_light() </code></pre>
-<p><img src="https://yetanotheriteration.netlify.com/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2018-08-26-operando-long-short-usando-cointegracao-em-r_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>Com as cotações na mão vamos simular uma operação cointegrada com cash neutro, ou seja, o volume financeiro comprado é o mesmo valor vendido, nesta simulação usaremos R$1000,00 em cada uma dos dois ativos, e vamos avaliar o rendimento das mesmas.</p>
 <pre class="r"><code># define o capital investido
 k &lt;- 2000
@@ -2799,19 +2799,19 @@ saldoSaida
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">TAGGED IN</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/evalutation/">evalutation</a>
+  <a class="tag tag--primary tag--small" href="/tags/evalutation/">evalutation</a>
 
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/long-short/">long short</a>
+  <a class="tag tag--primary tag--small" href="/tags/long-short/">long short</a>
 
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/model/">model</a>
+  <a class="tag tag--primary tag--small" href="/tags/model/">model</a>
 
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/pair-trading/">pair trading</a>
+  <a class="tag tag--primary tag--small" href="/tags/pair-trading/">pair trading</a>
 
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/rstats/">rstats</a>
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
 
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/stock-market/">stock market</a>
+  <a class="tag tag--primary tag--small" href="/tags/stock-market/">stock market</a>
 
-  <a class="tag tag--primary tag--small" href="https://yetanotheriteration.netlify.com/tags/pt-br/">pt-BR</a>
+  <a class="tag tag--primary tag--small" href="/tags/pt-br/">pt-BR</a>
 
                   </div>
                 
@@ -2824,7 +2824,7 @@ saldoSaida
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/" data-tooltip="Forecasting Fantasy Games Using Monte Carlo Simulations">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/" data-tooltip="Forecasting Fantasy Games Using Monte Carlo Simulations">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -2832,7 +2832,7 @@ saldoSaida
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/" data-tooltip="Using Facebook&#39;s Prophet to forecast my weight loss">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/forecasting-my-weight-using-facebook-s-prophet/" data-tooltip="Using Facebook&#39;s Prophet to forecast my weight loss">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -2850,19 +2850,19 @@ saldoSaida
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/08/operando-long-short-usando-cointegracao-em-r/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/08/operando-long-short-usando-cointegracao-em-r/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/08/operando-long-short-usando-cointegracao-em-r/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -2910,7 +2910,7 @@ saldoSaida
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/" data-tooltip="Forecasting Fantasy Games Using Monte Carlo Simulations">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/10/forecasting-fantasy-games-using-monte-carlo-simulations/" data-tooltip="Forecasting Fantasy Games Using Monte Carlo Simulations">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -2918,7 +2918,7 @@ saldoSaida
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://yetanotheriteration.netlify.com/2018/07/forecasting-my-weight-using-facebook-s-prophet/" data-tooltip="Using Facebook&#39;s Prophet to forecast my weight loss">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/forecasting-my-weight-using-facebook-s-prophet/" data-tooltip="Using Facebook&#39;s Prophet to forecast my weight loss">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -2936,19 +2936,19 @@ saldoSaida
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/08/operando-long-short-usando-cointegracao-em-r/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/08/operando-long-short-usando-cointegracao-em-r/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://yetanotheriteration.netlify.com/2018/08/operando-long-short-usando-cointegracao-em-r/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/08/operando-long-short-usando-cointegracao-em-r/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -2978,19 +2978,19 @@ saldoSaida
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F08%2Foperando-long-short-usando-cointegracao-em-r%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F08%2Foperando-long-short-usando-cointegracao-em-r%2F">
           <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F08%2Foperando-long-short-usando-cointegracao-em-r%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F08%2Foperando-long-short-usando-cointegracao-em-r%2F">
           <i class="fa fa-twitter"></i><span>Share on Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fyetanotheriteration.netlify.com%2F2018%2F08%2Foperando-long-short-usando-cointegracao-em-r%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F08%2Foperando-long-short-usando-cointegracao-em-r%2F">
           <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
         </a>
       </li>
@@ -3035,7 +3035,7 @@ saldoSaida
   
     
       
-      <div id="cover" style="background-image:url('https://yetanotheriteration.netlify.com/images/new_cover_emboss.jpg');"></div>
+      <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
     
   
 
@@ -3048,7 +3048,7 @@ saldoSaida
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
 
 
-<script src="https://yetanotheriteration.netlify.com/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
 
 
 <script lang="javascript">
@@ -3083,7 +3083,7 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/yetanotheriteration.netlify.com\/2018\/08\/operando-long-short-usando-cointegracao-em-r\/';
+          this.page.url = '\/2018\/08\/operando-long-short-usando-cointegracao-em-r\/';
           
             this.page.identifier = '\/2018\/08\/operando-long-short-usando-cointegracao-em-r\/'
           
