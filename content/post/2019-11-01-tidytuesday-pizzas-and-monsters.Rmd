@@ -289,6 +289,20 @@ tidy(lasso_model$glmnet.fit) %>%
   geom_col() +
   coord_flip()
 
+# Let's see how the extrem terms shrink
+# acording lambda
+tidy(lasso_model$glmnet.fit) %>% 
+  filter(
+    term %in% c(
+      "seek","quick","military","army", "teacher", "unexpected", "suddenly", # extremes
+      "boy","move","mother","chris","virus","souls","hunters"  # intermediary
+  )) %>% 
+  ggplot(aes(lambda, estimate, color=term)) +
+  geom_vline(xintercept=lasso_model$lambda.min) +
+  geom_line() +
+  scale_x_log10() +
+  geom_hline(yintercept = 0, lty=2)
+
 ```
 
 
