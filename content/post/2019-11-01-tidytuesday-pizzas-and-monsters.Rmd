@@ -165,6 +165,7 @@ horror_movies %>%
   geom_point() +
   geom_errorbar(aes(ymin=review_rating_mean-review_rating_error, ymax=review_rating_mean+review_rating_error)) 
 ```
+
 Is there genres better evaluated than others?
 
 ```{r}
@@ -177,6 +178,121 @@ horror_movies %>%
 ```
 
 There some preferences, but not too much difference.
+
+### Textual Analysis
+
+Let's explore the `plot` field throught text analysis. Is there any word that influences the `review_rating`?
+
+```{r wordReview}
+library(tidytext) # to tokenize the plot text
+
+# tokenize
+horror_movies_unnested <- horror_movies %>% 
+  # split tokens
+  unnest_tokens(word, plot) %>% 
+  # remove meaningless words
+  anti_join(stop_words, by="word") %>% 
+  filter(!is.na(word))
+
+# lets check
+horror_movies_unnested %>% 
+  count(word, sort=T) %>% 
+  head(10) %>% 
+  kable()
+
+```
+
+Visualizing `word` and the average of `review_rating`.
+
+```{r word_x_avg_rating}
+
+# Visualizing word and the average of review_rating
+horror_movies_unnested %>% 
+  filter(!is.na(review_rating)) %>% 
+  group_by(word) %>% 
+  # by word, count and mean the review_rating
+  summarise(
+    movies=n(),
+    avg_rating = mean(review_rating)
+  ) %>% 
+  arrange(desc(movies)) %>% 
+  # words that appears in the plot of 100 or more movies only
+  filter(movies>=100) %>%
+  mutate(word=fct_reorder(word, avg_rating)) %>% 
+  ggplot(aes(avg_rating, word)) +
+  geom_point()
+
+```
+
+### Lasso Regression for Predicting Review Rating on Words
+
+Lasso stands for **Least Absolute Shrinkage Selector Operator**, it is a type of regression that allow you to regularize ("shrink") coefficients. This means that the estimated coefficients are pushed towards 0, to make them work better on new data-sets ("optimized for prediction"). This allows you to use complex models and avoid over-fitting at the same time.
+
+You can learn details of this regressions on:
+- [A comprehensive beginners guide for Linear, Ridge and Lasso Regression in Python and R](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/) @ Analytics Vidhya Blog
+- [Regularization: Ridge, Lasso and Elastic Net](https://www.datacamp.com/community/tutorials/tutorial-ridge-lasso-elastic-net) @ Datacamp
+
+```{r firstLasso}
+library(glmnet) # lasso
+library(Matrix) # to handle sparse matrixes
+
+# word sparse matrix
+movie_word_matrix <- horror_movies_unnested %>% 
+  filter(!is.na(review_rating)) %>% 
+  add_count(word) %>% 
+  # palavras que apareceram pelo menos 20 vezes
+  filter(n>=20) %>% 
+  count(title, word) %>% 
+  # sparse matrix
+  cast_sparse(title, word, n)
+
+# let's see how many words are
+dim(movie_word_matrix)
+
+# indexing review_rating by the word in the sparse matrix
+rating <- horror_movies$review_rating[match(rownames(movie_word_matrix), horror_movies$title)]
+
+# fitting the LASSO model
+lasso_model <- cv.glmnet(movie_word_matrix, rating)
+```
+
+Let's see the characteristics of the fitted model.
+
+```{r checkingTheModel}
+library(broom)
+
+# lets see how the coeficient shrink for some "popular" terms
+# conform the "lambda" term rises
+tidy(lasso_model$glmnet.fit) %>% 
+  filter(term %in% c("friends","evil", "college", "haunted", "mother", "life",
+                     "woods","discover","abandoned", "woods")) %>% 
+  ggplot(aes(lambda, estimate, color=term)) +
+  geom_line() +
+  scale_x_log10() +
+  geom_hline(yintercept = 0, lty=2)
+
+# we are able to visualize the CV performance 
+# in function of lambda parameter
+plot(lasso_model)
+
+# the model give us the lambda for optimal performance
+# (min square feet error)
+log(lasso_model$lambda.min)
+
+# at that lambda level, let's see how each term
+# weighted in the model
+tidy(lasso_model$glmnet.fit) %>% 
+  filter(lambda==lasso_model$lambda.min, 
+         term != "(Intercept)") %>% 
+  mutate( term = fct_reorder(term, estimate) ) %>% 
+  ggplot(aes(term, estimate)) +
+  geom_col() +
+  coord_flip()
+
+```
+
+
+
 
 ## Pizza Ratings
 
