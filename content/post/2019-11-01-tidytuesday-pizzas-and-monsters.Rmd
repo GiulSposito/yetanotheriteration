@@ -1,7 +1,7 @@
 ---
 title: 'TidyTuesday: Pizzas and Monsters'
 author: Giuliano Sposito
-date: '2019-11-01'
+date: '2019-10-31'
 slug: tidytuesday-pizzas-and-monsters
 categories:
   - data science
@@ -49,6 +49,7 @@ Under the halloween influence, we just reproduce the analysis of the [IMDB´s](h
 library(tidyverse)
 library(knitr) # for kable
 library(kableExtra) # to change tables font size
+library(glue)
 theme_set(theme_minimal()) # changing ggplot2 default theme
 
 # data load
@@ -390,10 +391,261 @@ horror_movies %>%
   kable() %>% 
   kable_styling(font_size = 10)
 
-``1
+```
 
 ## Pizza Ratings
+
+In the last [#TidyTuesday](https://github.com/rfordatascience/tidytuesday) analysis in this post, we'll analyze a dataset of pizza ratings, just for fun and because everybody likes pizza. :)
 
 <!-- tweet --> 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of pizza ratings and discover the best and worse 🍕 in NYC and other cities 📊 <a href="https://t.co/ldUUzsV6MU">https://t.co/ldUUzsV6MU</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/nPth3hqdnS">pic.twitter.com/nPth3hqdnS</a></p>&mdash; David Robinson (@drob) <a href="https://twitter.com/drob/status/1179080465162145792?ref_src=twsrc%5Etfw">October 1, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <!-- tweet --> 
+
+The pizza evaluation datasets are available in the [GitHub's TidyTueday Repo](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-01) there are three different data sources, let's see explore one of them.
+
+```{r loadFirstDataset}
+
+# getting data from github
+pizza_jared <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-10-01/pizza_jared.csv")
+
+# overal look
+pizza_jared %>% 
+  head(10) %>% 
+  kable() %>% 
+  kable_styling(font_size = 11)
+
+```
+
+### Simple EDA
+
+Let's look the distribution of answers by place
+
+```{r groupingByPlace}
+answer_order <- c("Never Again","Poor", "Average", "Good","Excellent")
+
+by_place_answer <- pizza_jared %>% 
+  mutate( time = as.POSIXct(time, origin="1970-01-01"),
+          date = as.Date(time),
+          answer = fct_relevel(answer, answer_order)) %>% 
+  group_by(place, answer) %>% 
+  summarise(votes=sum(votes)) %>% 
+  mutate(total = sum(votes)) %>% 
+  mutate(percent = votes/total,
+         answer_integer = as.integer(answer),
+         average=sum(answer_integer*percent)) %>% 
+  ungroup()
+
+by_place_answer %>% 
+  head(10) %>% 
+  kable() %>% 
+  kable_styling(font_size = 10)
+
+```
+```{r visualizingAnswersByPlace}
+# by place
+by_place_answer %>% 
+  # with at least 29 evaluations (cabalistic number to show 9 facets!)
+  filter(total >= 29) %>% 
+  # controls the order of the facets (worst->better)
+  mutate(place = fct_reorder(place, average)) %>%  
+  ggplot(aes(answer, percent)) +
+  geom_col() +
+  facet_wrap(~place) +
+  theme(axis.text.x=element_text(angle=90, hjust = 1)) +
+  labs(x="", y="",
+       title="What is the most popular pizza place in Open Stats meetup?",
+       subtitle="Only the 9 pizza places with the most respondents")
+```
+
+David apply a trick to control the number of places that will be show in the plot.
+
+```{r bestPlacesFirst}
+by_place_answer %>% 
+  # trick to choose "top N"
+  # reorder by total de votes in reverse order
+  # convert to integer and get "rank" <= N
+  filter(as.integer(fct_reorder(place, total, .desc = T))<=16,
+         answer!="Fair") %>% # there just one vote with answer 'fair'
+  mutate(place = glue("{place} ({total})"), # number of samples
+         place = fct_reorder(place, average)) %>% 
+  ggplot(aes(answer, percent)) +
+  geom_col() +
+  facet_wrap(~place) +
+  theme(axis.text.x=element_text(angle=90, hjust = 1)) +
+  labs(x="", y="",
+       title="What is the most popular pizza place in Open Stats meetup?",
+       subtitle="Only the 16 pizza places with the most respondents")
+```
+
+### Where is the best places?
+
+Now we'll plot the evaluations of each place but also plot the confidence interval of each evaluation. First we build an auxiliary function to use with our dataset that sums each answer by place.
+
+```{r repeatedTTest}
+# generate a sample from 'x' with each 'frequency'
+# then apply a t.test
+t_test_repeated <- function(x,frequency){
+  tidy(t.test(rep(x,frequency)))
+}
+
+# check
+t_test_repeated(c(1,2,3,4,5),c(5,10,100,50,30))
+```
+
+
+```{r plotAnswerAndCI}
+# ploting the values
+by_place_answer %>% 
+  # pelo menos cinco votos
+  filter(total>=5) %>% 
+  # por local
+  group_by(place, total) %>% 
+  # apply t.test in the answers
+  # look that the column answer an votes, grouped by place, are "vectors"
+  summarise(t_test_result=list(t_test_repeated(answer_integer, votes))) %>% 
+  ungroup() %>% 
+  unnest(t_test_result) %>% 
+  select(place, total, average=estimate, low=conf.low, high=conf.high) %>% 
+  mutate(place = glue("{place} ({total})"), # number of samples
+         place=fct_reorder(place, average)) %>% 
+  top_n(16,total) %>% 
+  ggplot(aes(average, place)) +
+  geom_point(aes(size=total)) +
+  geom_errorbarh(aes(xmin=low, xmax=high)) +
+  labs(x="Average score (1-5 Likert Scale)",
+       y="",
+       title="What is the most popular pizza place in Open Stats meetup?",
+       subtitle = "Only the 16 pizza places with the most respondents",
+       size="Respondents")
+  
+by_place <- by_place_answer %>% 
+  distinct(place, total, average)
+```
+
+### Barstool Sports Dataset
+
+Now, let's look another dataset, from [Barstool Sports](https://www.barstoolsports.com/).
+
+```{r barstoolData}
+# reading from github
+pizza_barstool <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-10-01/pizza_barstool.csv")
+
+pizza_barstool %>% 
+  glimpse()
+```
+
+### Basic EDA
+
+Do higher price place makes better evaluated pizzas?
+
+```{r pizzaPriceScore}
+# from places with more than 50 evaluations
+pizza_barstool %>% 
+  top_n(50, review_stats_all_count) %>% 
+  # plot price level vs review
+  ggplot(aes(price_level, review_stats_all_average_score, group=price_level)) +
+  geom_boxplot()
+```
+
+What are the places with best pizzas?
+
+```{r barstoolEDA}
+# from places with more than 50 evaluations
+pizza_barstool %>% 
+  filter(review_stats_all_count>=50) %>% 
+  mutate(name = fct_reorder(name, review_stats_all_average_score)) %>% 
+  ggplot(aes(review_stats_all_average_score, name, size=review_stats_all_count)) +
+  geom_point() +
+  labs(x="Average rating", size="# of review", y="",
+       title="Barstool Sports ratings of pizza places",
+       subtitle = "only places with at least 50 reviews")
+```
+
+Where are these places?
+
+```{r pizzaCitie}
+# What places have best pizzas?
+pizza_barstool %>%
+  filter( review_stats_all_count >= 20 ) %>% 
+  # by city
+  add_count(city) %>% 
+  # cities with at least 6 places
+  filter(n>=6) %>% 
+  mutate( city = glue("{city} ({n})") ) %>% 
+  ggplot(aes(city, review_stats_all_average_score)) +
+  geom_boxplot() +
+  labs(subtitle = "Only pizza places with at least 20 reviews", y="review", x="")
+
+```
+
+Brooklyn has the best pizzas!
+
+### Comparing Reviews
+
+The dataset has two kinds of pizza evaluation, let's check the differences.
+
+```{r}
+# select the reviews
+pizza_barstool %>% 
+  select(place=name,
+         price_level, 
+         contains("review")) %>% 
+  rename_all(~str_remove(., "review_stats_")) %>% 
+  select(-contains("provider")) %>% 
+  select(contains("count")) %>% 
+  gather(key, value) %>% 
+  ggplot(aes(value)) +
+  geom_histogram() +
+  facet_wrap(~key)
+```
+
+Does Barstool Sports' Dave agree with the critics?
+
+```{r daveVsCritics}
+#  taking the name, price and reviews
+pizza_cleaned <- pizza_barstool %>% 
+  select(place=name,
+         price_level, 
+         contains("review")) %>% 
+  # cleaning column names
+  rename_all(~str_remove(., "review_stats_")) %>% 
+  select(-contains("provider"))
+
+# ploting Daves x Critics
+pizza_cleaned %>% 
+  filter(critic_count>0) %>% 
+  ggplot(aes(critic_average_score, dave_average_score)) +
+  geom_point() +
+  geom_abline(color="red", linetype="dashed") + # reference line
+  geom_smooth(method = "lm") +
+  labs(x="Critic average score", y="Dave score", 
+       title="Does Barstool Sports' Dave agree with the critics?")
+  
+```
+
+In overal the evaluations has some correlation. Let's see Community vs Critics
+
+```{r communityVsCritics}
+pizza_cleaned %>% 
+  filter( community_count >=20,
+          critic_count > 0) %>% 
+  ggplot(aes(critic_average_score, community_average_score)) +
+  geom_point() +
+  geom_abline(color="red") +
+  geom_smooth(method="lm")
+  
+```
+
+That is very bad, and Dave vs. Critics?
+
+```{r}
+pizza_cleaned %>% 
+  filter( community_count >=20 ) %>% 
+  ggplot(aes(community_average_score, dave_average_score)) +
+  geom_point(aes( size=community_count)) +
+  geom_abline(color="red", linetype="dashed") +
+  geom_smooth(method="lm") +
+  labs(size="# of community reviews", x="community score", y="Dave score")
+```
+
+Dave score are remarkable close to the community reviews.
