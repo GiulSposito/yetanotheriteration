@@ -386,10 +386,11 @@ horror_movies %>%
   ) %>% 
   arrange(desc(review_rating)) %>% 
   select(title, review_rating, plot, director, budget, language) %>% 
-  head(10) %>% 
-  kable()
+  head(5) %>% 
+  kable() %>% 
+  kable_styling(font_size = 10)
 
-```
+``1
 
 ## Pizza Ratings
 
