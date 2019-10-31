@@ -106,7 +106,7 @@ horror_movies %>%
   scale_x_log10(labels=scales::dollar)
 ```
 
-One of the things I didn't know was how to format the datatype in the chart axis, in the screencast David uses the function `scales::dollar()` to transform the X axis in *money*. The package [`Scales`](https://www.rdocumentation.org/packages/scales/versions/0.2.0) map data to aesthetics, and provide methods for automatically determining breaks and labels for axs and legends, pretty handy,
+One of the things I didn't know was how to format the datatype in the chart axis, in the screencast David uses the function [`scales::dollar()`](https://www.rdocumentation.org/packages/scales/versions/0.4.1/topics/dollar_format) to transform the X axis in *money*. The package [`Scales`](https://www.rdocumentation.org/packages/scales/versions/0.2.0) map data to aesthetics, and provide methods for automatically determining breaks and labels for axs and legends, pretty handy.
 
 Do higher budget movies end up higher rated?
 
@@ -230,8 +230,9 @@ horror_movies_unnested %>%
 Lasso stands for **Least Absolute Shrinkage Selector Operator**, it is a type of regression that allow you to regularize ("shrink") coefficients. This means that the estimated coefficients are pushed towards 0, to make them work better on new data-sets ("optimized for prediction"). This allows you to use complex models and avoid over-fitting at the same time.
 
 You can learn details of this regressions on:
-- [A comprehensive beginners guide for Linear, Ridge and Lasso Regression in Python and R](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/) @ Analytics Vidhya Blog
-- [Regularization: Ridge, Lasso and Elastic Net](https://www.datacamp.com/community/tutorials/tutorial-ridge-lasso-elastic-net) @ Datacamp
+
++ [A comprehensive beginners guide for Linear, Ridge and Lasso Regression in Python and R](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/) @ Analytics Vidhya Blog
++ [Regularization: Ridge, Lasso and Elastic Net](https://www.datacamp.com/community/tutorials/tutorial-ridge-lasso-elastic-net) @ Datacamp
 
 ```{r firstLasso}
 library(glmnet) # lasso
@@ -339,7 +340,7 @@ movie_feature_matrix <- horror_movies_unnested %>%
 dim(movie_feature_matrix)
 ```
 
-With the steps to transform the feature columns in a *&lt;key-value*>*gt; pair* an then colapse them into a *"feature-word"*, allow you add and remove features simply changing the `select` statement in the code above. David uses the convenient [`tidyr::unite()`](https://tidyr.tidyverse.org/reference/unite.html) function to do the concatenation between two columns.
+With the steps to transform the feature columns in a *"key-value pair* an then colapse them into a *"feature-word"*, allow you add and remove features simply changing the `select` statement in the code above. David uses the convenient [`tidyr::unite()`](https://tidyr.tidyverse.org/reference/unite.html) function to do the concatenation between two columns.
 
 ```{r newLassoModel}
 # indexing movie_rating by feature name matrix
