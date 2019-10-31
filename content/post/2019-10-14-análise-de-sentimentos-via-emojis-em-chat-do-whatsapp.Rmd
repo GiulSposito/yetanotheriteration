@@ -39,7 +39,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache=TRUE)
 
 O pacote [`rwhatsapp`](https://cran.r-project.org/web/packages/rwhatsapp/index.html), desenvolvido e disponibilizado por [Johannes Grubber](https://github.com/JBGruber), permite manipular diretamente os arquivos `TXT` (e `ZIP`) de uma conversão exportada pelo aplicativo [`WhatsApp`](https://www.whatsapp.com/), importando os dados para um `data.frame` e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no [`Twitter`](https://twitter.com/JohannesBGruber/status/1176415368820264960) decidi explorar uma conversão de um dos meus grupos de [`WhatsApp`](https://www.whatsapp.com/) e fazer uma análise de sentimentos através dos [Emoji's](https://home.unicode.org/emoji/) enviados pelos remetentes. 
 
-{{< tweet 1176415368820264960 >}}
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">After a year on Github, rwhatsapp was approved by CRAN yesterday. In this post I explain how you can use your own WhatsApp conversations to do some text analysis. Enjoy 😁<a href="https://t.co/6QDucxlxSa">https://t.co/6QDucxlxSa</a></p>&mdash; Johannes Gruber 🇪🇺 (@JohannesBGruber) <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960?ref_src=twsrc%5Etfw">September 24, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ## Obtendo os dados
 
@@ -527,7 +527,7 @@ emoji.authors.sentiment %>%
 
 ```
 
-A imagem acima, mostra a sequencia de membros do grupo ordenados pela "positividade" dos `Emoji's` enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (*owners*) dos times *Sorocaba Wilds Mules* e *Rio Claro Pfeiferias*, respectivamente, os dois últimos na classificação atual da liga. O que podeira explicar a maior proporção de `Emoji's` negativos.
+A imagem acima, mostra a sequencia de membros do grupo ordenados pela "positividade" dos `Emoji's` enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (*owners*) dos times *Sorocaba Wilds Mules* e *Rio Claro Pfeiferias*, respectivamente, os dois últimos na [classificação atual da liga](https://dudesfootball.netlify.com/post/rank-week-5/). O que podeira explicar a maior proporção de `Emoji's` negativos.
 
 ![Ranking da Liga após 5 rodadas](/images/dudesLeagueStanding.png)
 

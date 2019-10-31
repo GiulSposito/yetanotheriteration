@@ -43,10 +43,10 @@ O pacote rwhatsapp, desenvolvido e disponibilizado por Johannes Grubber, permite
 <meta property="og:locale" content="en-us">
 
   
-    <meta property="article:published_time" content="2019-10-14T00:00:00">
+    <meta property="article:published_time" content="2019-10-12T00:00:00">
   
   
-    <meta property="article:modified_time" content="2019-10-14T00:00:00">
+    <meta property="article:modified_time" content="2019-10-12T00:00:00">
   
   
   
@@ -274,9 +274,9 @@ if (!doNotTrack) {
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2019-10-14T00:00:00Z">
+      <time itemprop="datePublished" datetime="2019-10-12T00:00:00Z">
         
-  October 14, 2019
+  October 12, 2019
 
       </time>
     
@@ -299,7 +299,13 @@ if (!doNotTrack) {
 <div id="introducao" class="section level2">
 <h2>Introdução</h2>
 <p>O pacote <a href="https://cran.r-project.org/web/packages/rwhatsapp/index.html"><code>rwhatsapp</code></a>, desenvolvido e disponibilizado por <a href="https://github.com/JBGruber">Johannes Grubber</a>, permite manipular diretamente os arquivos <code>TXT</code> (e <code>ZIP</code>) de uma conversão exportada pelo aplicativo <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a>, importando os dados para um <code>data.frame</code> e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960"><code>Twitter</code></a> decidi explorar uma conversão de um dos meus grupos de <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a> e fazer uma análise de sentimentos através dos <a href="https://home.unicode.org/emoji/">Emoji’s</a> enviados pelos remetentes.</p>
-<p>{{&lt; tweet 1176415368820264960 &gt;}}</p>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+After a year on Github, rwhatsapp was approved by CRAN yesterday. In this post I explain how you can use your own WhatsApp conversations to do some text analysis. Enjoy 😁<a href="https://t.co/6QDucxlxSa">https://t.co/6QDucxlxSa</a>
+</p>
+— Johannes Gruber 🇪🇺 (<span class="citation">@JohannesBGruber</span>) <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960?ref_src=twsrc%5Etfw">September 24, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
 <div id="obtendo-os-dados" class="section level2">
 <h2>Obtendo os dados</h2>
@@ -1848,7 +1854,7 @@ emoji.authors.sentiment %&gt;%
   coord_flip() +
   theme_minimal() </code></pre>
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/emojiSentimentByAuthor-1.png" width="672" /></p>
-<p>A imagem acima, mostra a sequencia de membros do grupo ordenados pela “positividade” dos <code>Emoji's</code> enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (<em>owners</em>) dos times <em>Sorocaba Wilds Mules</em> e <em>Rio Claro Pfeiferias</em>, respectivamente, os dois últimos na classificação atual da liga. O que podeira explicar a maior proporção de <code>Emoji's</code> negativos.</p>
+<p>A imagem acima, mostra a sequencia de membros do grupo ordenados pela “positividade” dos <code>Emoji's</code> enviado nas mensagens (os mais positivos, acima). Interessante notar que os dois últimos membros (Hilton e Vinícius) são donos (<em>owners</em>) dos times <em>Sorocaba Wilds Mules</em> e <em>Rio Claro Pfeiferias</em>, respectivamente, os dois últimos na <a href="https://dudesfootball.netlify.com/post/rank-week-5/">classificação atual da liga</a>. O que podeira explicar a maior proporção de <code>Emoji's</code> negativos.</p>
 <div class="figure">
 <img src="/images/dudesLeagueStanding.png" alt="Ranking da Liga após 5 rodadas" />
 <p class="caption">Ranking da Liga após 5 rodadas</p>
