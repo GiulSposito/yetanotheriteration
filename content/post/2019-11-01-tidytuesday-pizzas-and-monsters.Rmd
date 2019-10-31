@@ -19,11 +19,11 @@ thumbnailImagePosition: left
 metaAlignment: center
 ---
 
-We learn from the masters, doing the **math* by ourselves, so, in this post we just reproduce two data analysis from David Robinson #TidyTuesday screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
+We learn from the masters, doing the *math* by ourselves, so, in this post we reproduce two data analysis from David Robinson's *#TidyTuesday* screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
 
 <!--more-->
 
-In this post we reproduce two data analysis from [David Robinson's](https://twitter.com/drob) [#TidyTuesday](https://github.com/rfordatascience/tidytuesday) screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities.
+In this post we reproduce two data analysis from [David Robinson's](https://twitter.com/drob) [#TidyTuesday](https://github.com/rfordatascience/tidytuesday) screencasts, the first one about the horror movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities.
 
 ```{r setup, echo=FALSE}
 
@@ -37,10 +37,10 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache=TRUE)
 
 Under the halloween influence, we just reproduce the analysis of the [IMDB´s](https://www.imdb.com/) [Horror Movie Dataset](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-22) made by [David Robinson's](https://twitter.com/drob) in one of famous screen cast. The dataset is available in the [#TidyTuesday GitHub Repo](https://github.com/rfordatascience/tidytuesday).
 
-<-- tweet --> 
+<!-- tweet --> 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of horror movie ratings, and use lasso regression to predict ratings based on genre, cast, and plot.<br><br>What&#39;s 😱👍: Indian, animated, and drama films<br><br>What&#39;s 🙄👎: Sharks and Eric Roberts<a href="https://t.co/3qj7NoA4Pf">https://t.co/3qj7NoA4Pf</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> 🧛
 ♂️👻 <a href="https://t.co/OBI6x1O2zX">pic.twitter.com/OBI6x1O2zX</a></p>&mdash; David Robinson (@drob) <a href="https://twitter.com/drob/status/1186659010956713984?ref_src=twsrc%5Etfw">October 22, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<-- tweet --> 
+<!-- tweet --> 
 
 ### Data loading and cleaning
 
@@ -59,13 +59,13 @@ glimpse(horror_movies_raw)
 
 We see here, besides a `release_date` attribute, there is also a *year* information inside the `title` field, let's extract this data into a new `year` column. Also, we have to correctly parsing the `budget` column. Note that the `plot` column also has a strange content.
 
-```{r}
+```{r plotField}
 horror_movies_raw[1,]$plot
 ```
 
 It starts with the director of the movie, the cast and only after that the movie plot, we need to split these infos in diferent columns.
 
-```{r loadData}
+```{r dataCleaning}
 # some data cleaning
 horror_movies <- horror_movies_raw %>% 
   arrange(desc(review_rating)) %>% 
@@ -89,11 +89,13 @@ Let's see some aspects of the dataset
 # how much movies by genres?
 horror_movies %>% 
   count(genres, sort=T) %>% 
+  head(10) %>% 
   kable()
 
 # by language
 horror_movies %>% 
   count(language, sort=T) %>% 
+  head(10) %>% 
   kable()
 
 # how is the bugdet distribution
@@ -116,9 +118,9 @@ horror_movies %>%
   geom_smooth(method="lm")
 ```
 
-No relationshiop between budget and rating. How about movie rating and review?
+No relationshiop between budget and rating. How about `movie rating` (classification of film's suitability for certain audiences based on its content) and the `movie review` (people's movie evaluation)?
 
-```{r movie_x_review}
+```{r ratinge_x_review}
 # let's look movie_rating x review_rating
 horror_movies %>% 
   mutate( movie_rating = fct_lump(movie_rating, 5),
@@ -129,14 +131,24 @@ horror_movies %>%
   coord_flip()
 ```
 
+Two [`forcats`](https://forcats.tidyverse.org/) functions were util here, the [`fct_lump()`](https://forcats.tidyverse.org/reference/fct_lump.html) used to collapse the least frequent values of a factor into “other” and [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html) to reorder the factor `movie_rating` by another variable, in this case, the median (default function) of `movie_rating` itself. Doing this we can put the `movie_rating` in order on the chart.
 
-```{r movie_x_review}
+Seems that there is a relationship between `movie_review` and `movie_rating`, how much?
+
+```{r movie_x_review_anova}
+# Calculates the "anova" of Linear Regration between Rating and Review
 horror_movies %>% 
   filter(!is.na(movie_rating)) %>% 
   mutate( movie_rating = fct_lump(movie_rating, 5) ) %>% 
   lm(review_rating ~ movie_rating, data=.) %>% 
   anova()
+```
 
+Let's plot this in a better way.
+
+```{r movie_x_review_better_plot}
+# plotting the mean and standard deviation of movie reviews
+# for each movie rating
 horror_movies %>% 
   filter(!is.na(movie_rating)) %>% 
   mutate( movie_rating = fct_lump(movie_rating, 5),
@@ -153,9 +165,21 @@ horror_movies %>%
   geom_point() +
   geom_errorbar(aes(ymin=review_rating_mean-review_rating_error, ymax=review_rating_mean+review_rating_error)) 
 ```
+Is there genres better evaluated than others?
+
+```{r}
+horror_movies %>% 
+  separate_rows(genres,sep="\\| ") %>% 
+  filter(!is.na(genres)) %>% 
+  mutate( genres = fct_lump(genres, 5)) %>% 
+  ggplot(aes(genres, review_rating)) +
+  geom_boxplot()
+```
+
+There some preferences, but not too much difference.
 
 ## Pizza Ratings
 
-<-- tweet --> 
+<!-- tweet --> 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of pizza ratings and discover the best and worse 🍕 in NYC and other cities 📊 <a href="https://t.co/ldUUzsV6MU">https://t.co/ldUUzsV6MU</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/nPth3hqdnS">pic.twitter.com/nPth3hqdnS</a></p>&mdash; David Robinson (@drob) <a href="https://twitter.com/drob/status/1179080465162145792?ref_src=twsrc%5Etfw">October 1, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<-- tweet --> 
+<!-- tweet --> 
