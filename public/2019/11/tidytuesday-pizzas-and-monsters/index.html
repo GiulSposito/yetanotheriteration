@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.58.2 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Giuliano Sposito">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+We learn from the masters, doing the math by ourselves, so, in this post we reproduce two data analysis from David Robinson’s #TidyTuesday screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
+">
+
+
+<meta property="og:description" content="
+
+
+
+We learn from the masters, doing the math by ourselves, so, in this post we reproduce two data analysis from David Robinson’s #TidyTuesday screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TidyTuesday: Pizzas and Monsters">
+<meta name="twitter:title" content="TidyTuesday: Pizzas and Monsters">
+<meta property="og:url" content="/2019/11/tidytuesday-pizzas-and-monsters/">
+<meta property="twitter:url" content="/2019/11/tidytuesday-pizzas-and-monsters/">
+<meta property="og:site_name" content="Yet Another Iteration">
+<meta property="og:description" content="
+
+
+
+We learn from the masters, doing the math by ourselves, so, in this post we reproduce two data analysis from David Robinson’s #TidyTuesday screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
+">
+<meta name="twitter:description" content="
+
+
+
+We learn from the masters, doing the math by ourselves, so, in this post we reproduce two data analysis from David Robinson’s #TidyTuesday screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-11-01T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-11-01T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="data science">
+    
+  
+  
+    
+      <meta property="article:tag" content="tidytuesday">
+    
+      <meta property="article:tag" content="tidytext">
+    
+      <meta property="article:tag" content="data analysis">
+    
+      <meta property="article:tag" content="en-US">
+    
+      <meta property="article:tag" content="rstats">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@gsposito">
+
+
+  <meta name="twitter:creator" content="@gsposito">
+
+
+
+
+
+
+  <meta property="og:image" content="/images/horror_pizza_tn.jpg">
+  <meta property="twitter:image" content="/images/horror_pizza_tn.jpg">
+
+
+  <meta property="og:image" content="/images/horror_pizza.jpg">
+  <meta property="twitter:image" content="/images/horror_pizza.jpg">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+
+
+    <title>TidyTuesday: Pizzas and Monsters</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+      <link rel="publisher" href="https://plus.google.com/&#43;giulianosposito">
+    
+
+    <link rel="canonical" href="/2019/11/tidytuesday-pizzas-and-monsters/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-112393378-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/horror_pizza.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      TidyTuesday: Pizzas and Monsters
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-11-01T00:00:00Z">
+        
+  November 1, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>In this post we reproduce two data analysis from <a href="https://twitter.com/drob">David Robinson’s</a> <a href="https://github.com/rfordatascience/tidytuesday">#TidyTuesday</a> screencasts, the first one about the horror movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities.</p>
+<div id="horror-movies" class="section level2">
+<h2>Horror Movies</h2>
+<p>Under the halloween influence, we just reproduce the analysis of the <a href="https://www.imdb.com/">IMDB´s</a> <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-22">Horror Movie Dataset</a> made by <a href="https://twitter.com/drob">David Robinson’s</a> in one of famous screen cast. The dataset is available in the <a href="https://github.com/rfordatascience/tidytuesday">#TidyTuesday GitHub Repo</a>.</p>
+<!-- tweet -->
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of horror movie ratings, and use lasso regression to predict ratings based on genre, cast, and plot.<br><br>What's 😱👍: Indian, animated, and drama films<br><br>What's 🙄👎: Sharks and Eric Roberts<a href="https://t.co/3qj7NoA4Pf">https://t.co/3qj7NoA4Pf</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> 🧛
+♂️👻 <a href="https://t.co/OBI6x1O2zX">pic.twitter.com/OBI6x1O2zX</a>
+</p>
+— David Robinson (<span class="citation">@drob</span>) <a href="https://twitter.com/drob/status/1186659010956713984?ref_src=twsrc%5Etfw">October 22, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<!-- tweet -->
+<div id="data-loading-and-cleaning" class="section level3">
+<h3>Data loading and cleaning</h3>
+<pre class="r"><code># basic setup
+library(tidyverse)
+library(knitr) # for kable
+library(kableExtra) # to change tables font size
+theme_set(theme_minimal()) # changing ggplot2 default theme
+
+# data load
+horror_movies_raw &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-10-22/horror_movies.csv&quot;)
+
+glimpse(horror_movies_raw)</code></pre>
+<pre><code>## Observations: 3,328
+## Variables: 12
+## $ title             &lt;chr&gt; &quot;Gut (2012)&quot;, &quot;The Haunting of Mia Moss (201...
+## $ genres            &lt;chr&gt; &quot;Drama| Horror| Thriller&quot;, &quot;Horror&quot;, &quot;Horror...
+## $ release_date      &lt;chr&gt; &quot;26-Oct-12&quot;, &quot;13-Jan-17&quot;, &quot;21-Oct-17&quot;, &quot;23-A...
+## $ release_country   &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;UK&quot;, ...
+## $ movie_rating      &lt;chr&gt; NA, NA, NA, &quot;NOT RATED&quot;, NA, NA, &quot;NOT RATED&quot;...
+## $ review_rating     &lt;dbl&gt; 3.9, NA, NA, 3.7, 5.8, NA, 5.1, 6.5, 4.6, 5....
+## $ movie_run_time    &lt;chr&gt; &quot;91 min&quot;, NA, NA, &quot;82 min&quot;, &quot;80 min&quot;, &quot;93 mi...
+## $ plot              &lt;chr&gt; &quot;Directed by Elias. With Jason Vail, Nichola...
+## $ cast              &lt;chr&gt; &quot;Jason Vail|Nicholas Wilder|Sarah Schoofs|Ki...
+## $ language          &lt;chr&gt; &quot;English&quot;, &quot;English&quot;, &quot;English&quot;, &quot;English&quot;, ...
+## $ filming_locations &lt;chr&gt; &quot;New York, USA&quot;, NA, &quot;Sudbury, Ontario, Cana...
+## $ budget            &lt;chr&gt; NA, &quot;$30,000&quot;, NA, NA, NA, &quot;$3,400,000&quot;, NA,...</code></pre>
+<p>We see here, besides a <code>release_date</code> attribute, there is also a <em>year</em> information inside the <code>title</code> field, let’s extract this data into a new <code>year</code> column. Also, we have to correctly parsing the <code>budget</code> column. Note that the <code>plot</code> column also has a strange content.</p>
+<pre class="r"><code>horror_movies_raw[1,]$plot</code></pre>
+<pre><code>## [1] &quot;Directed by Elias. With Jason Vail, Nicholas Wilder, Sarah Schoofs, Kirstianna Mueller. Family man Tom has seen something he can&#39;t forget, a mysterious video with an ugly secret that soon spreads into his daily life and threatens to dismantle everything around him.&quot;</code></pre>
+<p>It starts with the director of the movie, the cast and only after that the movie plot, we need to split these infos in diferent columns.</p>
+<pre class="r"><code># some data cleaning
+horror_movies &lt;- horror_movies_raw %&gt;% 
+  arrange(desc(review_rating)) %&gt;% 
+  # remove the &quot;year&quot; from title and put into a &quot;year&quot; column
+  extract(title, &quot;year&quot;, &quot;\\((\\d\\d\\d\\d)\\)$&quot;, remove = F, convert = T) %&gt;% 
+  # using &quot;parse_number&quot; to correctly the buget column
+  mutate(budget=parse_number(budget)) %&gt;% 
+  # Splitting the &quot;plot&quot; info. We split each sentence in diferent columns.
+  # First one to the director, one for the actors and the remaings to the &quot;plot&quot;
+  separate(plot, c(&quot;director&quot;,&quot;cast_sentence&quot;,&quot;plot&quot;), sep=&quot;\\. &quot;, extra=&quot;merge&quot;, fill=&quot;right&quot;) %&gt;% 
+  distinct(title, .keep_all = T)</code></pre>
+<p>Some <em>tidy functions</em> were pretty handy in this manipulation, worth to check the documentation and know how to use <a href="https://tidyr.tidyverse.org/reference/extract.html"><code>tidyr::extract()</code></a>, <a href="https://tidyr.tidyverse.org/reference/separate.html"><code>tidyr::separate()</code></a> and <a href="https://www.rdocumentation.org/packages/readr/versions/1.3.1/topics/parse_number"><code>readr::parse_number()</code></a>.</p>
+</div>
+<div id="exploring-the-data" class="section level3">
+<h3>Exploring the data</h3>
+<p>Let’s see some aspects of the dataset</p>
+<pre class="r"><code># how much movies by genres?
+horror_movies %&gt;% 
+  count(genres, sort=T) %&gt;% 
+  head(10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+genres
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Horror
+</td>
+<td style="text-align:right;">
+1048
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Horror| Thriller
+</td>
+<td style="text-align:right;">
+469
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Comedy| Horror
+</td>
+<td style="text-align:right;">
+245
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Horror| Mystery| Thriller
+</td>
+<td style="text-align:right;">
+171
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Drama| Horror| Thriller
+</td>
+<td style="text-align:right;">
+159
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Drama| Horror
+</td>
+<td style="text-align:right;">
+72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Horror| Sci-Fi| Thriller
+</td>
+<td style="text-align:right;">
+66
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Drama| Horror| Mystery| Thriller
+</td>
+<td style="text-align:right;">
+53
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Action| Horror| Thriller
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Horror| Mystery
+</td>
+<td style="text-align:right;">
+47
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># by language
+horror_movies %&gt;% 
+  count(language, sort=T) %&gt;% 
+  head(10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+language
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+English
+</td>
+<td style="text-align:right;">
+2407
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Spanish
+</td>
+<td style="text-align:right;">
+94
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Japanese
+</td>
+<td style="text-align:right;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hindi
+</td>
+<td style="text-align:right;">
+37
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Filipino|Tagalog
+</td>
+<td style="text-align:right;">
+34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Thai
+</td>
+<td style="text-align:right;">
+34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+English|Spanish
+</td>
+<td style="text-align:right;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Turkish
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+German
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># how is the bugdet distribution
+horror_movies %&gt;% 
+  ggplot(aes(budget)) +
+  geom_histogram() +
+  scale_x_log10(labels=scales::dollar)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/basicEDA-1.png" width="672" /></p>
+<p>One of the things I didn’t know was how to format the datatype in the chart axis, in the screencast David uses the function <code>scales::dollar()</code> to transform the X axis in <em>money</em>. The package <a href="https://www.rdocumentation.org/packages/scales/versions/0.2.0"><code>Scales</code></a> map data to aesthetics, and provide methods for automatically determining breaks and labels for axs and legends, pretty handy,</p>
+<p>Do higher budget movies end up higher rated?</p>
+<pre class="r"><code># plot budget x rating
+horror_movies %&gt;% 
+  ggplot(aes(budget, review_rating)) +
+  geom_point() +
+  scale_x_log10(labels=scales::dollar) +
+  geom_smooth(method=&quot;lm&quot;)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/budget_x_rating-1.png" width="672" /></p>
+<p>No relationshiop between budget and rating. How about <code>movie rating</code> (classification of film’s suitability for certain audiences based on its content) and the <code>movie review</code> (people’s movie evaluation)?</p>
+<pre class="r"><code># let&#39;s look movie_rating x review_rating
+horror_movies %&gt;% 
+  mutate( movie_rating = fct_lump(movie_rating, 5),
+          movie_rating = fct_reorder(movie_rating, review_rating, na.rm=T)
+  ) %&gt;% 
+  ggplot(aes(movie_rating, review_rating)) +
+  geom_boxplot() +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/ratinge_x_review-1.png" width="672" /></p>
+<p>Two <a href="https://forcats.tidyverse.org/"><code>forcats</code></a> functions were util here, the <a href="https://forcats.tidyverse.org/reference/fct_lump.html"><code>fct_lump()</code></a> used to collapse the least frequent values of a factor into “other” and <a href="https://forcats.tidyverse.org/reference/fct_reorder.html"><code>fct_reorder()</code></a> to reorder the factor <code>movie_rating</code> by another variable, in this case, the median (default function) of <code>movie_rating</code> itself. Doing this we can put the <code>movie_rating</code> in order on the chart.</p>
+<p>Seems that there is a relationship between <code>movie_review</code> and <code>movie_rating</code>, how much?</p>
+<pre class="r"><code># Calculates the &quot;anova&quot; of Linear Regration between Rating and Review
+horror_movies %&gt;% 
+  filter(!is.na(movie_rating)) %&gt;% 
+  mutate( movie_rating = fct_lump(movie_rating, 5) ) %&gt;% 
+  lm(review_rating ~ movie_rating, data=.) %&gt;% 
+  anova()</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: review_rating
+##                Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## movie_rating    5   70.05 14.0092  9.1759 1.319e-08 ***
+## Residuals    1424 2174.08  1.5267                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Let’s plot this in a better way.</p>
+<pre class="r"><code># plotting the mean and standard deviation of movie reviews
+# for each movie rating
+horror_movies %&gt;% 
+  filter(!is.na(movie_rating)) %&gt;% 
+  mutate( movie_rating = fct_lump(movie_rating, 5),
+          movie_rating = fct_reorder(movie_rating, review_rating, na.rm=T) ) %&gt;% 
+  group_by(movie_rating) %&gt;% 
+  summarise(
+    review_rating_mean = mean(review_rating, na.rm=T),
+    review_rating_var  = var(review_rating, na.rm=T),
+    review_rating_sd   = sd(review_rating, na.rm=T),
+    review_rating_error = sqrt(review_rating_var/length(review_rating))
+  ) %&gt;% 
+  ungroup() %&gt;% 
+  ggplot(aes(movie_rating, review_rating_mean)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=review_rating_mean-review_rating_error, ymax=review_rating_mean+review_rating_error)) </code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/movie_x_review_better_plot-1.png" width="672" /></p>
+<p>Is there genres better evaluated than others?</p>
+<pre class="r"><code>horror_movies %&gt;% 
+  separate_rows(genres,sep=&quot;\\| &quot;) %&gt;% 
+  filter(!is.na(genres)) %&gt;% 
+  mutate( genres = fct_lump(genres, 5)) %&gt;% 
+  ggplot(aes(genres, review_rating)) +
+  geom_boxplot()</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>There some preferences, but not too much difference.</p>
+</div>
+<div id="textual-analysis" class="section level3">
+<h3>Textual Analysis</h3>
+<p>Let’s explore the <code>plot</code> field throught text analysis. Is there any word that influences the <code>review_rating</code>?</p>
+<pre class="r"><code>library(tidytext) # to tokenize the plot text
+
+# tokenize
+horror_movies_unnested &lt;- horror_movies %&gt;% 
+  # split tokens
+  unnest_tokens(word, plot) %&gt;% 
+  # remove meaningless words
+  anti_join(stop_words, by=&quot;word&quot;) %&gt;% 
+  filter(!is.na(word))
+
+# lets check
+horror_movies_unnested %&gt;% 
+  count(word, sort=T) %&gt;% 
+  head(10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+house
+</td>
+<td style="text-align:right;">
+318
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friends
+</td>
+<td style="text-align:right;">
+313
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+life
+</td>
+<td style="text-align:right;">
+289
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+family
+</td>
+<td style="text-align:right;">
+271
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+night
+</td>
+<td style="text-align:right;">
+256
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:right;">
+254
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+woman
+</td>
+<td style="text-align:right;">
+244
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+horror
+</td>
+<td style="text-align:right;">
+241
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+mysterious
+</td>
+<td style="text-align:right;">
+234
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+town
+</td>
+<td style="text-align:right;">
+217
+</td>
+</tr>
+</tbody>
+</table>
+<p>Visualizing <code>word</code> and the average of <code>review_rating</code>.</p>
+<pre class="r"><code># Visualizing word and the average of review_rating
+horror_movies_unnested %&gt;% 
+  filter(!is.na(review_rating)) %&gt;% 
+  group_by(word) %&gt;% 
+  # by word, count and mean the review_rating
+  summarise(
+    movies=n(),
+    avg_rating = mean(review_rating)
+  ) %&gt;% 
+  arrange(desc(movies)) %&gt;% 
+  # words that appears in the plot of 100 or more movies only
+  filter(movies&gt;=100) %&gt;%
+  mutate(word=fct_reorder(word, avg_rating)) %&gt;% 
+  ggplot(aes(avg_rating, word)) +
+  geom_point()</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/word_x_avg_rating-1.png" width="672" /></p>
+</div>
+<div id="lasso-regression-for-predicting-review-rating-on-words" class="section level3">
+<h3>Lasso Regression for Predicting Review Rating on Words</h3>
+<p>Lasso stands for <strong>Least Absolute Shrinkage Selector Operator</strong>, it is a type of regression that allow you to regularize (“shrink”) coefficients. This means that the estimated coefficients are pushed towards 0, to make them work better on new data-sets (“optimized for prediction”). This allows you to use complex models and avoid over-fitting at the same time.</p>
+<p>You can learn details of this regressions on:
+- <a href="https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/">A comprehensive beginners guide for Linear, Ridge and Lasso Regression in Python and R</a> @ Analytics Vidhya Blog
+- <a href="https://www.datacamp.com/community/tutorials/tutorial-ridge-lasso-elastic-net">Regularization: Ridge, Lasso and Elastic Net</a> @ Datacamp</p>
+<pre class="r"><code>library(glmnet) # lasso
+library(Matrix) # to handle sparse matrixes
+
+# word sparse matrix
+movie_word_matrix &lt;- horror_movies_unnested %&gt;% 
+  filter(!is.na(review_rating)) %&gt;% 
+  add_count(word) %&gt;% 
+  # palavras que apareceram pelo menos 20 vezes
+  filter(n&gt;=20) %&gt;% 
+  count(title, word) %&gt;% 
+  # sparse matrix
+  cast_sparse(title, word, n)
+
+# let&#39;s see how many words are
+dim(movie_word_matrix)</code></pre>
+<pre><code>## [1] 2945  460</code></pre>
+<pre class="r"><code># indexing review_rating by the word in the sparse matrix
+rating &lt;- horror_movies$review_rating[match(rownames(movie_word_matrix), horror_movies$title)]
+
+# fitting the LASSO model
+lasso_model &lt;- cv.glmnet(movie_word_matrix, rating)</code></pre>
+<p>Let’s see the characteristics of the fitted model.</p>
+<pre class="r"><code>library(broom)
+
+# lets see how the coeficient shrink for some &quot;popular&quot; terms
+# conform the &quot;lambda&quot; term rises
+tidy(lasso_model$glmnet.fit) %&gt;% 
+  filter(term %in% c(&quot;friends&quot;,&quot;evil&quot;, &quot;college&quot;, &quot;haunted&quot;, &quot;mother&quot;, &quot;life&quot;,
+                     &quot;woods&quot;,&quot;discover&quot;,&quot;abandoned&quot;, &quot;woods&quot;)) %&gt;% 
+  ggplot(aes(lambda, estimate, color=term)) +
+  geom_line() +
+  scale_x_log10() +
+  geom_hline(yintercept = 0, lty=2)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/checkingTheModel-1.png" width="672" /></p>
+<pre class="r"><code># we are able to visualize the CV performance 
+# in function of lambda parameter
+plot(lasso_model)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/checkingTheModel-2.png" width="672" /></p>
+<pre class="r"><code># the model give us the lambda for optimal performance
+# (min square feet error)
+log(lasso_model$lambda.min)</code></pre>
+<pre><code>## [1] -2.958961</code></pre>
+<pre class="r"><code># at that lambda level, let&#39;s see how each term
+# weighted in the model
+tidy(lasso_model$glmnet.fit) %&gt;% 
+  filter(lambda==lasso_model$lambda.min, 
+         term != &quot;(Intercept)&quot;) %&gt;% 
+  mutate( term = fct_reorder(term, estimate) ) %&gt;% 
+  ggplot(aes(term, estimate)) +
+  geom_col() +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/checkingTheModel-3.png" width="672" /></p>
+<pre class="r"><code># Let&#39;s see how the extrem terms shrink
+# acording lambda
+tidy(lasso_model$glmnet.fit) %&gt;% 
+  filter(
+    term %in% c(
+      &quot;seek&quot;,&quot;quick&quot;,&quot;military&quot;,&quot;army&quot;, &quot;teacher&quot;, &quot;unexpected&quot;, &quot;suddenly&quot;, # extremes
+      &quot;boy&quot;,&quot;move&quot;,&quot;mother&quot;,&quot;chris&quot;,&quot;virus&quot;,&quot;souls&quot;,&quot;hunters&quot;  # intermediary
+  )) %&gt;% 
+  ggplot(aes(lambda, estimate, color=term)) +
+  geom_vline(xintercept=lasso_model$lambda.min) +
+  geom_line() +
+  scale_x_log10() +
+  geom_hline(yintercept = 0, lty=2)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/checkingTheModel-4.png" width="672" /></p>
+</div>
+<div id="lasso-for-words-and-other-features" class="section level3">
+<h3>Lasso for words and other features</h3>
+<p>Throwing everthing into a linear model: director, cast, genre, rating, plot and words. David did a “generic” feature generator where he puts in the word sparse matrix other features as “words”, see the code.</p>
+<pre class="r"><code># this is a generic feature generator
+features &lt;- horror_movies %&gt;% 
+  filter(!is.na(review_rating)) %&gt;% 
+  # features to be added
+  select(title, genres, director, cast, movie_rating, language, release_country) %&gt;% 
+  # clean director column
+  mutate( director = str_remove(director, &quot;Directed by &quot;)) %&gt;% 
+  # transform the info into a key value pair for each movie title
+  # the type is the feature &quot;column&quot;
+  gather(type, value, -title) %&gt;% 
+  filter(!is.na(value)) %&gt;% 
+  # if value field has more than one value (like genres) slip in multiple lines
+  separate_rows(value, sep=&quot;\\| ?&quot;) %&gt;% 
+  # colapse two columns (type and values) in to column feature
+  unite(feature, type, value, sep=&quot;: &quot;) %&gt;% 
+  mutate(n=1)
+
+movie_feature_matrix &lt;- horror_movies_unnested %&gt;% 
+  filter(!is.na(review_rating)) %&gt;% 
+  count(title, feature=paste0(&quot;word: &quot;, word)) %&gt;%
+  bind_rows(features) %&gt;% 
+  add_count(feature) %&gt;% 
+  filter( n&gt;=10 ) %&gt;% 
+  cast_sparse(title, feature)
+    
+dim(movie_feature_matrix)</code></pre>
+<pre><code>## [1] 3051 1142</code></pre>
+<p>With the steps to transform the feature columns in a <em>&lt;key-value</em>&gt;<em>gt; pair</em> an then colapse them into a <em>“feature-word”</em>, allow you add and remove features simply changing the <code>select</code> statement in the code above. David uses the convenient <a href="https://tidyr.tidyverse.org/reference/unite.html"><code>tidyr::unite()</code></a> function to do the concatenation between two columns.</p>
+<pre class="r"><code># indexing movie_rating by feature name matrix
+rating &lt;- horror_movies$review_rating[match(rownames(movie_feature_matrix), horror_movies$title)]
+
+# new model
+feature_lasso_model &lt;- cv.glmnet(movie_feature_matrix, rating)
+plot(feature_lasso_model)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/newLassoModel-1.png" width="672" /></p>
+<p>Let’s see what are the most influent features in the lasso regression, but at this time, we’ll see the coenficients at another level than minimal cross validation erro.</p>
+<p>In the lasso model object, <code>lambda.min</code> is the value of <em>lambda</em> that gives <strong>minimum mean cross-validated error</strong>. The other parameter saved is <code>lambda.1se</code>, which gives the <strong>most regularized model</strong> such that error is within <em>one standard error of the minimum</em>.</p>
+<p>To use that, we only need to replace <code>lambda.min</code> with <code>lambda.1se</code>.</p>
+<pre class="r"><code># extracting the model coeficients
+tidy(feature_lasso_model$glmnet.fit) %&gt;% 
+  # at lambda.1se level
+  filter(lambda==feature_lasso_model$lambda.1se, 
+         term != &quot;(Intercept)&quot;) %&gt;% 
+  mutate( term = fct_reorder(term, estimate) ) %&gt;% 
+  ggplot(aes(term, estimate)) +
+  geom_col() +
+  coord_flip() +
+  labs(x=&quot;&quot;, y=&quot;Coefficent for predicting horror movie ratings&quot;,
+       title=&quot;What affects a horror movie rating?&quot;,
+       subtitle = &quot;Based on a lasso regression to predict IMDb ratings of ~3000 movies&quot;)</code></pre>
+<p><img src="/post/2019-11-01-tidytuesday-pizzas-and-monsters_files/figure-html/featureRank-1.png" width="672" /></p>
+</div>
+<div id="what-am-i-going-to-watch" class="section level3">
+<h3>What am I going to watch?</h3>
+<p>The end this analysis, let’s do a simple query to see what horror movie we could watch.</p>
+<pre class="r"><code># lets take the dataset
+horror_movies %&gt;% 
+  filter(
+    # selecting a horror movie that is also a commedy
+    str_detect(genres, &quot;Comedy&quot;),
+    !is.na(movie_rating), 
+    !is.na(budget), 
+    movie_rating != &quot;PG&quot; 
+  ) %&gt;% 
+  arrange(desc(review_rating)) %&gt;% 
+  select(title, review_rating, plot, director, budget, language) %&gt;% 
+  head(5) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size = 10)</code></pre>
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+title
+</th>
+<th style="text-align:right;">
+review_rating
+</th>
+<th style="text-align:left;">
+plot
+</th>
+<th style="text-align:left;">
+director
+</th>
+<th style="text-align:right;">
+budget
+</th>
+<th style="text-align:left;">
+language
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+What We Do in the Shadows (2014)
+</td>
+<td style="text-align:right;">
+7.6
+</td>
+<td style="text-align:left;">
+A documentary team films the lives of a group of vampires for a few months. The vampires share a house in Wellington, New Zealand. Turns out vampires have their own domestic problems too.
+</td>
+<td style="text-align:left;">
+Directed by Jemaine Clement, Taika Waititi
+</td>
+<td style="text-align:right;">
+1600000
+</td>
+<td style="text-align:left;">
+English|German|Spanish
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Only Lovers Left Alive (2013)
+</td>
+<td style="text-align:right;">
+7.3
+</td>
+<td style="text-align:left;">
+A depressed musician reunites with his lover. Though their romance, which has already endured several centuries, is disrupted by the arrival of her uncontrollable younger sister.
+</td>
+<td style="text-align:left;">
+Directed by Jim Jarmusch
+</td>
+<td style="text-align:right;">
+7000000
+</td>
+<td style="text-align:left;">
+English|French|Arabic|Turkish
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Holla II (2013)
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:left;">
+With Vanessa Bell Calloway, Kiely Williams, Greg Cipes, Trae Ireland. After narrowly escaping with her life at the hands of her mentally ill sister Veronica, Monica, with the help of her Mother, Marion, has taken great measures to ensure her safety, including changing her face and relocating to the South. Six years has past and now she finally believes she is safe from Veronica. Little does she know that death and betrayal still await her and her friends on the eve…
+</td>
+<td style="text-align:left;">
+Directed by H.M
+</td>
+<td style="text-align:right;">
+1000000
+</td>
+<td style="text-align:left;">
+English
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wild Men (2017)
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:left;">
+The inept cast and crew of a surprise hit reality-TV show travel deep into the Adirondack mountains for their second season to find proof that Bigfoot exists. Any remaining skepticism they have is ripped to pieces.
+</td>
+<td style="text-align:left;">
+Directed by Bobby Sansivero
+</td>
+<td style="text-align:right;">
+97948
+</td>
+<td style="text-align:left;">
+English
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Night Terrors (2014)
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:left;">
+A devious older sister fills her brother’s head with bizarre tales of terror, blood soaked memories, and nightmares of perversion after finding out that she has to babysit and miss the party.
+</td>
+<td style="text-align:left;">
+Directed by Alex Lukens, Jason Zink
+</td>
+<td style="text-align:right;">
+5000
+</td>
+<td style="text-align:left;">
+English
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="pizza-ratings" class="section level2">
+<h2>Pizza Ratings</h2>
+<!-- tweet -->
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of pizza ratings and discover the best and worse 🍕 in NYC and other cities 📊 <a href="https://t.co/ldUUzsV6MU">https://t.co/ldUUzsV6MU</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/nPth3hqdnS">pic.twitter.com/nPth3hqdnS</a>
+</p>
+— David Robinson (<span class="citation">@drob</span>) <a href="https://twitter.com/drob/status/1179080465162145792?ref_src=twsrc%5Etfw">October 1, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<!-- tweet -->
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/tidytuesday/">tidytuesday</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/tidytext/">tidytext</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/data-analysis/">data analysis</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/en-us/">en-US</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/an%C3%A1lise-de-sentimentos-via-emojis-em-chat-do-whatsapp/" data-tooltip="Análise de Sentimentos via Emojis em chat do WhatsApp">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/11/tidytuesday-pizzas-and-monsters/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/11/tidytuesday-pizzas-and-monsters/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2019/11/tidytuesday-pizzas-and-monsters/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/an%C3%A1lise-de-sentimentos-via-emojis-em-chat-do-whatsapp/" data-tooltip="Análise de Sentimentos via Emojis em chat do WhatsApp">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/11/tidytuesday-pizzas-and-monsters/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/11/tidytuesday-pizzas-and-monsters/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2019/11/tidytuesday-pizzas-and-monsters/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2019%2F11%2Ftidytuesday-pizzas-and-monsters%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2019%2F11%2Ftidytuesday-pizzas-and-monsters%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2019%2F11%2Ftidytuesday-pizzas-and-monsters%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/11\/tidytuesday-pizzas-and-monsters\/';
+          
+            this.page.identifier = '\/2019\/11\/tidytuesday-pizzas-and-monsters\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
