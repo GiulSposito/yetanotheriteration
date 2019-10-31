@@ -1,0 +1,161 @@
+---
+title: 'TidyTuesday: Pizzas and Monsters'
+author: Giuliano Sposito
+date: '2019-11-01'
+slug: tidytuesday-pizzas-and-monsters
+categories:
+  - data science
+tags:
+  - tidytuesday
+  - tidytext
+  - data analysis
+  - en-US
+  - rstats
+keywords:
+  - tech
+coverImage: /images/horror_pizza.jpg
+thumbnailImage: /images/horror_pizza_tn.jpg
+thumbnailImagePosition: left
+metaAlignment: center
+---
+
+We learn from the masters, doing the **math* by ourselves, so, in this post we just reproduce two data analysis from David Robinson #TidyTuesday screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities. There are goods data handling tricks using tidyverse in these analysis.
+
+<!--more-->
+
+In this post we reproduce two data analysis from [David Robinson's](https://twitter.com/drob) [#TidyTuesday](https://github.com/rfordatascience/tidytuesday) screencasts, the first one about the horro movie ratings dataset where he uses a lasso regression to predict the ratings of a movie based on genre, cast and plot. The second is about a dataset of pizza ratings in NYC and other cities.
+
+```{r setup, echo=FALSE}
+
+# put rnotebook in the same workdir of this project
+knitr::opts_knit$set(root.dir = normalizePath(rprojroot::find_rstudio_root_file())) 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache=TRUE)
+
+```
+
+## Horror Movies
+
+Under the halloween influence, we just reproduce the analysis of the [IMDB´s](https://www.imdb.com/) [Horror Movie Dataset](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-22) made by [David Robinson's](https://twitter.com/drob) in one of famous screen cast. The dataset is available in the [#TidyTuesday GitHub Repo](https://github.com/rfordatascience/tidytuesday).
+
+<-- tweet --> 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of horror movie ratings, and use lasso regression to predict ratings based on genre, cast, and plot.<br><br>What&#39;s 😱👍: Indian, animated, and drama films<br><br>What&#39;s 🙄👎: Sharks and Eric Roberts<a href="https://t.co/3qj7NoA4Pf">https://t.co/3qj7NoA4Pf</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> 🧛
+♂️👻 <a href="https://t.co/OBI6x1O2zX">pic.twitter.com/OBI6x1O2zX</a></p>&mdash; David Robinson (@drob) <a href="https://twitter.com/drob/status/1186659010956713984?ref_src=twsrc%5Etfw">October 22, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<-- tweet --> 
+
+### Data loading and cleaning
+
+```{r loadData}
+# basic setup
+library(tidyverse)
+library(knitr) # for kable
+library(kableExtra) # to change tables font size
+theme_set(theme_minimal()) # changing ggplot2 default theme
+
+# data load
+horror_movies_raw <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-10-22/horror_movies.csv")
+
+glimpse(horror_movies_raw)
+```
+
+We see here, besides a `release_date` attribute, there is also a *year* information inside the `title` field, let's extract this data into a new `year` column. Also, we have to correctly parsing the `budget` column. Note that the `plot` column also has a strange content.
+
+```{r}
+horror_movies_raw[1,]$plot
+```
+
+It starts with the director of the movie, the cast and only after that the movie plot, we need to split these infos in diferent columns.
+
+```{r loadData}
+# some data cleaning
+horror_movies <- horror_movies_raw %>% 
+  arrange(desc(review_rating)) %>% 
+  # remove the "year" from title and put into a "year" column
+  extract(title, "year", "\\((\\d\\d\\d\\d)\\)$", remove = F, convert = T) %>% 
+  # using "parse_number" to correctly the buget column
+  mutate(budget=parse_number(budget)) %>% 
+  # Splitting the "plot" info. We split each sentence in diferent columns.
+  # First one to the director, one for the actors and the remaings to the "plot"
+  separate(plot, c("director","cast_sentence","plot"), sep="\\. ", extra="merge", fill="right") %>% 
+  distinct(title, .keep_all = T)
+```
+
+Some *tidy functions* were pretty handy in this manipulation, worth to check the documentation and know how to use [`tidyr::extract()`](https://tidyr.tidyverse.org/reference/extract.html),  [`tidyr::separate()`](https://tidyr.tidyverse.org/reference/separate.html) and [`readr::parse_number()`](https://www.rdocumentation.org/packages/readr/versions/1.3.1/topics/parse_number).
+
+### Exploring the data
+
+Let's see some aspects of the dataset
+
+```{r basicEDA}
+# how much movies by genres?
+horror_movies %>% 
+  count(genres, sort=T) %>% 
+  kable()
+
+# by language
+horror_movies %>% 
+  count(language, sort=T) %>% 
+  kable()
+
+# how is the bugdet distribution
+horror_movies %>% 
+  ggplot(aes(budget)) +
+  geom_histogram() +
+  scale_x_log10(labels=scales::dollar)
+```
+
+One of the things I didn't know was how to format the datatype in the chart axis, in the screencast David uses the function `scales::dollar()` to transform the X axis in *money*. The package [`Scales`](https://www.rdocumentation.org/packages/scales/versions/0.2.0) map data to aesthetics, and provide methods for automatically determining breaks and labels for axs and legends, pretty handy,
+
+Do higher budget movies end up higher rated?
+
+```{r budget_x_rating}
+# plot budget x rating
+horror_movies %>% 
+  ggplot(aes(budget, review_rating)) +
+  geom_point() +
+  scale_x_log10(labels=scales::dollar) +
+  geom_smooth(method="lm")
+```
+
+No relationshiop between budget and rating. How about movie rating and review?
+
+```{r movie_x_review}
+# let's look movie_rating x review_rating
+horror_movies %>% 
+  mutate( movie_rating = fct_lump(movie_rating, 5),
+          movie_rating = fct_reorder(movie_rating, review_rating, na.rm=T)
+  ) %>% 
+  ggplot(aes(movie_rating, review_rating)) +
+  geom_boxplot() +
+  coord_flip()
+```
+
+
+```{r movie_x_review}
+horror_movies %>% 
+  filter(!is.na(movie_rating)) %>% 
+  mutate( movie_rating = fct_lump(movie_rating, 5) ) %>% 
+  lm(review_rating ~ movie_rating, data=.) %>% 
+  anova()
+
+horror_movies %>% 
+  filter(!is.na(movie_rating)) %>% 
+  mutate( movie_rating = fct_lump(movie_rating, 5),
+          movie_rating = fct_reorder(movie_rating, review_rating, na.rm=T) ) %>% 
+  group_by(movie_rating) %>% 
+  summarise(
+    review_rating_mean = mean(review_rating, na.rm=T),
+    review_rating_var  = var(review_rating, na.rm=T),
+    review_rating_sd   = sd(review_rating, na.rm=T),
+    review_rating_error = sqrt(review_rating_var/length(review_rating))
+  ) %>% 
+  ungroup() %>% 
+  ggplot(aes(movie_rating, review_rating_mean)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=review_rating_mean-review_rating_error, ymax=review_rating_mean+review_rating_error)) 
+```
+
+## Pizza Ratings
+
+<-- tweet --> 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">In this <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> screencast, I analyze a dataset of pizza ratings and discover the best and worse 🍕 in NYC and other cities 📊 <a href="https://t.co/ldUUzsV6MU">https://t.co/ldUUzsV6MU</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/nPth3hqdnS">pic.twitter.com/nPth3hqdnS</a></p>&mdash; David Robinson (@drob) <a href="https://twitter.com/drob/status/1179080465162145792?ref_src=twsrc%5Etfw">October 1, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<-- tweet --> 
