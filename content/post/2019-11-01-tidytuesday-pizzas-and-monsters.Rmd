@@ -305,8 +305,91 @@ tidy(lasso_model$glmnet.fit) %>%
 
 ```
 
+### Lasso for words and other features
 
+Throwing everthing into a linear model: director, cast, genre, rating, plot and words. David did a "generic" feature generator where he puts in the word sparse matrix other features as "words", see the code.
 
+```{r featureMatrix}
+# this is a generic feature generator
+features <- horror_movies %>% 
+  filter(!is.na(review_rating)) %>% 
+  # features to be added
+  select(title, genres, director, cast, movie_rating, language, release_country) %>% 
+  # clean director column
+  mutate( director = str_remove(director, "Directed by ")) %>% 
+  # transform the info into a key value pair for each movie title
+  # the type is the feature "column"
+  gather(type, value, -title) %>% 
+  filter(!is.na(value)) %>% 
+  # if value field has more than one value (like genres) slip in multiple lines
+  separate_rows(value, sep="\\| ?") %>% 
+  # colapse two columns (type and values) in to column feature
+  unite(feature, type, value, sep=": ") %>% 
+  mutate(n=1)
+
+movie_feature_matrix <- horror_movies_unnested %>% 
+  filter(!is.na(review_rating)) %>% 
+  count(title, feature=paste0("word: ", word)) %>%
+  bind_rows(features) %>% 
+  add_count(feature) %>% 
+  filter( n>=10 ) %>% 
+  cast_sparse(title, feature)
+    
+dim(movie_feature_matrix)
+```
+
+With the steps to transform the feature columns in a *&lt;key-value*>*gt; pair* an then colapse them into a *"feature-word"*, allow you add and remove features simply changing the `select` statement in the code above. David uses the convenient [`tidyr::unite()`](https://tidyr.tidyverse.org/reference/unite.html) function to do the concatenation between two columns.
+
+```{r newLassoModel}
+# indexing movie_rating by feature name matrix
+rating <- horror_movies$review_rating[match(rownames(movie_feature_matrix), horror_movies$title)]
+
+# new model
+feature_lasso_model <- cv.glmnet(movie_feature_matrix, rating)
+plot(feature_lasso_model)
+```
+
+Let's see what are the most influent features in the lasso regression, but at this time, we'll see the coenficients at another level than minimal cross validation erro.
+
+In the lasso model object, `lambda.min` is the value of *lambda* that gives **minimum mean cross-validated error**. The other parameter saved is `lambda.1se`, which gives the **most regularized model** such that error is within *one standard error of the minimum*. 
+
+To use that, we only need to replace `lambda.min` with `lambda.1se`.
+
+```{r featureRank}
+# extracting the model coeficients
+tidy(feature_lasso_model$glmnet.fit) %>% 
+  # at lambda.1se level
+  filter(lambda==feature_lasso_model$lambda.1se, 
+         term != "(Intercept)") %>% 
+  mutate( term = fct_reorder(term, estimate) ) %>% 
+  ggplot(aes(term, estimate)) +
+  geom_col() +
+  coord_flip() +
+  labs(x="", y="Coefficent for predicting horror movie ratings",
+       title="What affects a horror movie rating?",
+       subtitle = "Based on a lasso regression to predict IMDb ratings of ~3000 movies")
+```
+
+### What am I going to watch?
+
+The end this analysis, let's do a simple query to see what horror movie we could watch.
+
+```{r watchMovie}
+# lets take the dataset
+horror_movies %>% 
+  filter(
+    # selecting a horror movie that is also a commedy
+    str_detect(genres, "Comedy"),
+    !is.na(movie_rating), 
+    !is.na(budget), 
+    movie_rating != "PG" 
+  ) %>% 
+  arrange(desc(review_rating)) %>% 
+  select(title, review_rating, plot, director, budget, language) %>% 
+  head(10) %>% 
+  kable()
+
+```
 
 ## Pizza Ratings
 
