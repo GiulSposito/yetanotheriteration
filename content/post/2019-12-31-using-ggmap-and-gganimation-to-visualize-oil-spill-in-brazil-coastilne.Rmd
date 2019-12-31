@@ -1,5 +1,5 @@
 ---
-title: Using ggmap and gganimation to visualize oil spill in Brazil coastilne
+title: Using ggmap and gganimation to visualize oil spill in Brazil coastline
 author: Giuliano Sposito
 date: '2019-12-31'
 slug: using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne
@@ -384,7 +384,7 @@ ggmap(gmap) +
 
 Now the last step is to animate the map in the time dimension, we'll do this using the great [`gganimate` package](https://gganimate.com/articles/gganimate.html), adding a transition function in the `ggplot2 + ggmap` stack.
 
-```{r animation, warning=FALSE, message=FALSE}
+```{r animation, warning=FALSE, message=FALSE, cache=TRUE}
 library(gganimate)
 bbox <- make_bbox(lon = stains$lon.degree, lat=stains$lat.degree, f = .1)
 gmap <- get_map(location=bbox, source="google", maptype="terrain")
