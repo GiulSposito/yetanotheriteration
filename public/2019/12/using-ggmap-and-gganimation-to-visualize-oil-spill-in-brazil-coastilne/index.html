@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.58.2 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Giuliano Sposito">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+In 2019, a crude oil spill struck more than 2,000 kilometers off the coast of Brazil’s Northeast and Southeast, affecting more than 400 beaches in more than 200 different municipalities. The first reports of the spill occurred at the end of August with sightings still spreading later this year. This post explores the sighting records available on the IBAMA website to view the impact of the leak using ggmap and gganimation.
+">
+
+
+<meta property="og:description" content="
+
+
+
+In 2019, a crude oil spill struck more than 2,000 kilometers off the coast of Brazil’s Northeast and Southeast, affecting more than 400 beaches in more than 200 different municipalities. The first reports of the spill occurred at the end of August with sightings still spreading later this year. This post explores the sighting records available on the IBAMA website to view the impact of the leak using ggmap and gganimation.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using ggmap and gganimation to visualize oil spill in Brazil coastilne">
+<meta name="twitter:title" content="Using ggmap and gganimation to visualize oil spill in Brazil coastilne">
+<meta property="og:url" content="/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+<meta property="twitter:url" content="/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+<meta property="og:site_name" content="Yet Another Iteration">
+<meta property="og:description" content="
+
+
+
+In 2019, a crude oil spill struck more than 2,000 kilometers off the coast of Brazil’s Northeast and Southeast, affecting more than 400 beaches in more than 200 different municipalities. The first reports of the spill occurred at the end of August with sightings still spreading later this year. This post explores the sighting records available on the IBAMA website to view the impact of the leak using ggmap and gganimation.
+">
+<meta name="twitter:description" content="
+
+
+
+In 2019, a crude oil spill struck more than 2,000 kilometers off the coast of Brazil’s Northeast and Southeast, affecting more than 400 beaches in more than 200 different municipalities. The first reports of the spill occurred at the end of August with sightings still spreading later this year. This post explores the sighting records available on the IBAMA website to view the impact of the leak using ggmap and gganimation.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-12-31T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-12-31T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="data science">
+    
+  
+  
+    
+      <meta property="article:tag" content="animation">
+    
+      <meta property="article:tag" content="en-US">
+    
+      <meta property="article:tag" content="rstats">
+    
+      <meta property="article:tag" content="gganimate">
+    
+      <meta property="article:tag" content="rvest">
+    
+      <meta property="article:tag" content="ggmap">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@gsposito">
+
+
+  <meta name="twitter:creator" content="@gsposito">
+
+
+
+
+
+
+  <meta property="og:image" content="/images/oil_spill_tn.jpg">
+  <meta property="twitter:image" content="/images/oil_spill_tn.jpg">
+
+
+  <meta property="og:image" content="/images/oil_spill.jpg">
+  <meta property="twitter:image" content="/images/oil_spill.jpg">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+
+
+    <title>Using ggmap and gganimation to visualize oil spill in Brazil coastilne</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+      <link rel="publisher" href="https://plus.google.com/&#43;giulianosposito">
+    
+
+    <link rel="canonical" href="/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-112393378-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/oil_spill.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Using ggmap and gganimation to visualize oil spill in Brazil coastilne
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-12-31T00:00:00Z">
+        
+  December 31, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>In 2019, <a href="https://en.wikipedia.org/wiki/2019_Northeast_Brazil_oil_spill">a crude oil spill</a> struck more than 2,000 kilometers off the coast of Brazil’s Northeast and Southeast, affecting more than 400 beaches in more than 200 different municipalities. The first reports of the spill occurred at the end of August with sightings still spreading later this year. More than a thousand tons of oil have already been collected from the beaches, which is the worst oil leak in Brazil’s history and the largest environmental disaster on the Brazilian coastline.</p>
+<p>In this post we will explore <a href="http://www.ibama.gov.br/manchasdeoleo">the oil sighting data</a>, published on the <a href="http://www.ibama.gov.br">IBAMA</a> website (the Brazilian Institute of the Environment and Renewable Natural Resources), a state agency from the <a href="https://www.mma.gov.br/">Ministry of the Environment</a> responsible for implementing federal environmental preservation policies. We’ll try to view the oil spill extension and evolution using the <code>ggmap</code> and<code>gganimation</code> R packages.</p>
+<div id="site-and-dataset" class="section level2">
+<h2>Site and Dataset</h2>
+<p>IBAMA has made the oil spill data and information available on a <a href="http://www.ibama.gov.br/manchasdeoleo-localidades-atingidas">subsection of its site</a>, keeping a <a href="http://www.ibama.gov.br/manchasdeoleo-localidades-atingidas">daily record of status</a> and spotting sightings.</p>
+<p>Part of the records provided are available in excel format, and according with it’s description, the files contain: the name of each spotted location, the county, the date of first sighting, the state, latitude, longitude, date where the location was revisited and oil spill status at the moment.</p>
+</div>
+<div id="data-scrapping" class="section level2">
+<h2>Data Scrapping</h2>
+<p>Although the site offers PDF and XLXS, and it is possible to explore the sightings table within PDF files through the <a href="https://cran.r-project.org/web/packages/tabulizer/vignettes/tabulizer.html"><code>tabulizer</code> package</a>, in this post we’ll only explore the contents of the excel files. The first step to this is to scrap the page that provides the files to download, to extract its links, we’ll use <a href="https://www.datacamp.com/community/tutorials/r-web-scraping-rvest"><code>rvest</code> package</a> to do this job.</p>
+<pre class="r"><code>library(tidyverse)  # of course
+library(rvest)      # to handle html scrapping
+library(lubridate)  # handle datetime formats
+library(glue)       # easily concat texts
+library(knitr)      # markdown output tables
+library(kableExtra) # formate markdown tables
+
+# scrap and build url table
+base_url &lt;- &quot;http://www.ibama.gov.br&quot;
+
+# page with update table
+page &lt;- read_html(&quot;http://www.ibama.gov.br/manchasdeoleo-localidades-atingidas&quot;)
+
+# get the table
+updates &lt;- page %&gt;% 
+  html_table() %&gt;% 
+  .[[1]]
+
+# get the href links
+doc_links &lt;- page %&gt;%
+  html_nodes(xpath = &quot;//td/a&quot;) %&gt;% 
+  html_attr(&quot;href&quot;)
+
+# put then togheter
+doc_list &lt;- updates %&gt;% 
+  set_names(c(&quot;date&quot;,&quot;description&quot;,&quot;items&quot;)) %&gt;% 
+  mutate( type = str_extract(items, &quot;^[\\w]+&quot;) ) %&gt;% 
+  mutate( type = ifelse(type==&quot;XLS&quot;,&quot;XLSX&quot;, type)) %&gt;% # one file with &quot;xls&quot; extension
+  mutate( link = paste0(base_url, doc_links) ) %&gt;% 
+  mutate( date=dmy(date) ) %&gt;%
+  as_tibble()
+
+# save it, just in case we want to recover later
+saveRDS(doc_list,&quot;./data/oil_leakage_doc_list.rds&quot;)
+
+# let&#39;s see the links list
+doc_list %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;% 
+  kableExtra::kable_styling(font_size = 10)</code></pre>
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+items
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+link
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-12-14
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+PDF - 32MB
+</td>
+<td style="text-align:left;">
+PDF
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-14_LOCALIDADES_AFETADAS.pdf" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-14_LOCALIDADES_AFETADAS.pdf</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-14
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 74KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-14_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-14_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-13
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+PDF - 32MB
+</td>
+<td style="text-align:left;">
+PDF
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-13_LOCALIDADES-AFETADAS.pdf" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-13_LOCALIDADES-AFETADAS.pdf</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-13
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 73KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-13_LOCALIDADES-AFETADAS_planilha.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-13_LOCALIDADES-AFETADAS_planilha.xlsx</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+PDF - 31,3MB
+</td>
+<td style="text-align:left;">
+PDF
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-12_LOCALIDADES_AFETADAS.pdf" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-12_LOCALIDADES_AFETADAS.pdf</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 72.2KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-12_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-12_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-11
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+PDF - 31.4MB
+</td>
+<td style="text-align:left;">
+PDF
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-11_LOCALIDADES_AFETADAS.pdf" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-11_LOCALIDADES_AFETADAS.pdf</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-11
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 78KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-11_LOCALIDADES_AFETADAS_planilha.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-11_LOCALIDADES_AFETADAS_planilha.xlsx</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-10
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+PDF - 31MB
+</td>
+<td style="text-align:left;">
+PDF
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-10_LOCALIDADES-AFETADAS.pdf" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-10_LOCALIDADES-AFETADAS.pdf</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-10
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 68KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-10_LOCALIDADES-AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-12-10_LOCALIDADES-AFETADAS.xlsx</a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Now that we have the links in hand, let’s download the XLSX files.</p>
+<pre class="r"><code># check the pre existence of destination folders
+XLSX_DEST_FOLDER &lt;- &quot;./data/oil_leakage_raw&quot;
+if(!file.exists(&quot;./data&quot;)) dir.create(&quot;./data&quot;)
+if(!file.exists(XLSX_DEST_FOLDER)) dir.create(XLSX_DEST_FOLDER)
+
+# download xlsx files
+xlsx_filenames &lt;- doc_list %&gt;% 
+  filter(type==&quot;XLSX&quot;) %&gt;% 
+  select(date, link) %&gt;% 
+  arrange(date) %&gt;% 
+  split(1:nrow(.)) %&gt;% 
+  map_chr(function(.x){
+    filename &lt;- paste0(XLSX_DEST_FOLDER, &quot;/&quot;,as.character(.x$date[1]), &quot;.xlsx&quot;)
+    download.file(url=.x$link[1], destfile = filename, mode = &quot;wb&quot;)
+    return(filename)
+  })
+
+# save an excel filename index
+xlsx_index &lt;- doc_list %&gt;% 
+  filter( type==&quot;XLSX&quot; ) %&gt;% 
+  arrange(date) %&gt;% 
+  mutate( filename = xlsx_filenames )
+
+# save it
+saveRDS(xlsx_index, &quot;./data/excel_file_index.rds&quot;)
+
+# let&#39;s see what we have
+xlsx_index %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size = 9)</code></pre>
+<table class="table" style="font-size: 9px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+items
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+filename
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 15KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-16_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-16_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-16.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-17
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 15KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-17_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-17_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-17.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-18
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 15KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-18_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-18_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-18.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-19
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 44KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-19_LOCALIDADES_AFETADAS_PLANILHA.xls" class="uri">http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-19_LOCALIDADES_AFETADAS_PLANILHA.xls</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-19.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-22
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 17KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-22_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-22_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-22.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-23
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX -17KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-23_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-23_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-23.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-24
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 20KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-24_LOCALIDADES_AFETADAS_GERAL.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-24_LOCALIDADES_AFETADAS_GERAL.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-24.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-25
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 21KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-25_LOCALIDADES_AFETADAS_GERAL.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-25_LOCALIDADES_AFETADAS_GERAL.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-25.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-26
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 18KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-26_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/emergenciasambientais/2019/manchasdeoleo/2019-10-26_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-26.xlsx
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-27
+</td>
+<td style="text-align:left;">
+Localidades Atingidas
+</td>
+<td style="text-align:left;">
+XLSX - 35KB
+</td>
+<td style="text-align:left;">
+XLSX
+</td>
+<td style="text-align:left;">
+<a href="http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-27_LOCALIDADES_AFETADAS.xlsx" class="uri">http://www.ibama.gov.br/phocadownload/notas/2019/2019-10-27_LOCALIDADES_AFETADAS.xlsx</a>
+</td>
+<td style="text-align:left;">
+./data/oil_leakage_raw/2019-10-27.xlsx
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="import-data" class="section level2">
+<h2>Import Data</h2>
+<p>Let’s use the <a href="http://www.sthda.com/english/wiki/r-xlsx-package-a-quick-start-guide-to-manipulate-excel-files-in-r"><code>xlsx</code> package</a> to read excel files and import them into a<code>data.frame</code>. Let’s take a look at one of them.</p>
+<pre class="r"><code>library(xlsx) # import excel files (requires java/rjava)
+
+xlsx_file &lt;- read.xlsx(file = &quot;./data/oil_leakage_raw/2019-12-14.xlsx&quot;,sheetIndex = 1)
+
+xlsx_file %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size = 10)</code></pre>
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+geocodigo
+</th>
+<th style="text-align:left;">
+localidade
+</th>
+<th style="text-align:left;">
+loc_id
+</th>
+<th style="text-align:left;">
+municipio
+</th>
+<th style="text-align:left;">
+estado
+</th>
+<th style="text-align:left;">
+sigla_uf
+</th>
+<th style="text-align:left;">
+Data_Avist
+</th>
+<th style="text-align:left;">
+Data_Revis
+</th>
+<th style="text-align:left;">
+Status
+</th>
+<th style="text-align:left;">
+Latitude
+</th>
+<th style="text-align:left;">
+Longitude
+</th>
+<th style="text-align:left;">
+Hora
+</th>
+<th style="text-align:left;">
+cou
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2925303
+</td>
+<td style="text-align:left;">
+Praia de TaperapuÃ£
+</td>
+<td style="text-align:left;">
+2925303_45
+</td>
+<td style="text-align:left;">
+Porto Seguro
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+2019-11-04
+</td>
+<td style="text-align:left;">
+2019-12-14
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+16Â° 25’ 15.03&quot; S
+</td>
+<td style="text-align:left;">
+39Â° 3’ 13.45&quot; W
+</td>
+<td style="text-align:left;">
+10:14:18
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2925303
+</td>
+<td style="text-align:left;">
+Praia de MucugÃª
+</td>
+<td style="text-align:left;">
+2925303_46
+</td>
+<td style="text-align:left;">
+Porto Seguro
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+2019-10-31
+</td>
+<td style="text-align:left;">
+2019-12-11
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+16Â° 29’ 43.41&quot; S
+</td>
+<td style="text-align:left;">
+39Â° 4’ 7.187&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2805307
+</td>
+<td style="text-align:left;">
+Praia da Ponta dos Mangues
+</td>
+<td style="text-align:left;">
+2805307_26
+</td>
+<td style="text-align:left;">
+Pirambu
+</td>
+<td style="text-align:left;">
+Sergipe
+</td>
+<td style="text-align:left;">
+SE
+</td>
+<td style="text-align:left;">
+2019-11-13
+</td>
+<td style="text-align:left;">
+2019-11-16
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+10Â° 43’ 54.29&quot; S
+</td>
+<td style="text-align:left;">
+36Â° 50’ 24.42&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2925303
+</td>
+<td style="text-align:left;">
+Praia de Itaquena
+</td>
+<td style="text-align:left;">
+2925303_47
+</td>
+<td style="text-align:left;">
+Porto Seguro
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+2019-11-02
+</td>
+<td style="text-align:left;">
+2019-11-19
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+16Â° 39’ 7.314&quot; S
+</td>
+<td style="text-align:left;">
+39Â° 5’ 40.20&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2805307
+</td>
+<td style="text-align:left;">
+Praia Pirambu
+</td>
+<td style="text-align:left;">
+2805307_21
+</td>
+<td style="text-align:left;">
+Pirambu
+</td>
+<td style="text-align:left;">
+Sergipe
+</td>
+<td style="text-align:left;">
+SE
+</td>
+<td style="text-align:left;">
+2019-11-07
+</td>
+<td style="text-align:left;">
+2019-12-07
+</td>
+<td style="text-align:left;">
+Oleada - Vestigios / Esparsos
+</td>
+<td style="text-align:left;">
+10Â° 40’ 55.80&quot; S
+</td>
+<td style="text-align:left;">
+36Â° 46’ 31.49&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2805307
+</td>
+<td style="text-align:left;">
+Praia Pirambu
+</td>
+<td style="text-align:left;">
+2805307_22
+</td>
+<td style="text-align:left;">
+Pirambu
+</td>
+<td style="text-align:left;">
+Sergipe
+</td>
+<td style="text-align:left;">
+SE
+</td>
+<td style="text-align:left;">
+2019-11-09
+</td>
+<td style="text-align:left;">
+2019-11-26
+</td>
+<td style="text-align:left;">
+Oleada - Vestigios / Esparsos
+</td>
+<td style="text-align:left;">
+10Â° 41’ 14.27&quot; S
+</td>
+<td style="text-align:left;">
+36Â° 47’ 2.093&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2805307
+</td>
+<td style="text-align:left;">
+Praia Pirambu
+</td>
+<td style="text-align:left;">
+2805307_23
+</td>
+<td style="text-align:left;">
+Pirambu
+</td>
+<td style="text-align:left;">
+Sergipe
+</td>
+<td style="text-align:left;">
+SE
+</td>
+<td style="text-align:left;">
+2019-12-09
+</td>
+<td style="text-align:left;">
+2019-12-09
+</td>
+<td style="text-align:left;">
+Oleada - Vestigios / Esparsos
+</td>
+<td style="text-align:left;">
+10Â° 41’ 32.37&quot; S
+</td>
+<td style="text-align:left;">
+36Â° 47’ 28.42&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2504603
+</td>
+<td style="text-align:left;">
+Praia do Amor
+</td>
+<td style="text-align:left;">
+2504603_1
+</td>
+<td style="text-align:left;">
+Conde
+</td>
+<td style="text-align:left;">
+ParaÃ­ba
+</td>
+<td style="text-align:left;">
+PB
+</td>
+<td style="text-align:left;">
+2019-09-30
+</td>
+<td style="text-align:left;">
+2019-11-14
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+7Â° 16’ 17.60&quot; S
+</td>
+<td style="text-align:left;">
+34Â° 48’ 8.354&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2504603
+</td>
+<td style="text-align:left;">
+Praia de JacumÃ£
+</td>
+<td style="text-align:left;">
+2504603_2
+</td>
+<td style="text-align:left;">
+Conde
+</td>
+<td style="text-align:left;">
+ParaÃ­ba
+</td>
+<td style="text-align:left;">
+PB
+</td>
+<td style="text-align:left;">
+2019-08-30
+</td>
+<td style="text-align:left;">
+2019-12-12
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+7Â° 16’ 48.85&quot; S
+</td>
+<td style="text-align:left;">
+34Â° 47’ 57.13&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2504603
+</td>
+<td style="text-align:left;">
+Praia de Gramame
+</td>
+<td style="text-align:left;">
+2504603_3
+</td>
+<td style="text-align:left;">
+Conde
+</td>
+<td style="text-align:left;">
+ParaÃ­ba
+</td>
+<td style="text-align:left;">
+PB
+</td>
+<td style="text-align:left;">
+2019-08-30
+</td>
+<td style="text-align:left;">
+2019-11-14
+</td>
+<td style="text-align:left;">
+Oleo Nao Observado
+</td>
+<td style="text-align:left;">
+7Â° 15’ 11.17&quot; S
+</td>
+<td style="text-align:left;">
+34Â° 48’ 21.93&quot; W
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that the file contains: a <em>geocode</em>, the name of each location, a <em>id</em> for that spot, the county name, state name and federation unit acronym, the date of the first spill sighting, the revision date (last status position), the current information about the spill state of the locality, latitude and longitude, plus an “hour” and an unknown <code>cou</code> column.</p>
+<p>Attention: note every excel files has the same format, the code bellow handles some differences between then.</p>
+<p>To read the files and use its data, we have to clean then first: resolving encoding, transforming the status information in a factor class, and turn the degree notations for latitude and longitude into decimal notation.</p>
+<div id="importation" class="section level3">
+<h3>Importation</h3>
+<pre class="r"><code># import each xlsx_file
+files &lt;- xlsx_index %&gt;%
+  split(1:nrow(.)) %&gt;% 
+  map(function(.x){
+    print(.x$filename)
+    read.xlsx(file = .x$filename[1], sheetIndex = 1, colClasses=&quot;character&quot;, stringsAsFactors=F) %&gt;% 
+      as_tibble() %&gt;% 
+      mutate(file.date=.x$date[1])
+  })
+
+# save it as cache
+saveRDS(files, &quot;./data/oil_leakage_imported_raw_excel.rds&quot;)</code></pre>
+</div>
+<div id="data-clean-up" class="section level3">
+<h3>Data Clean-up</h3>
+<pre class="r"><code># auxiliary function to translate the degree coordinates to decimal coordinates
+translateCoord &lt;- function(.coords){
+  
+  # extract orientation (N,S,W,E)
+  directions &lt;- str_extract(.coords,&quot;\\w$&quot;)
+  
+  # split the numbers and rebuilds as xxDyy&#39;zz&quot;
+  numbers &lt;- .coords %&gt;% 
+    str_extract_all(&quot;(\\d\\.*)+&quot;) %&gt;% 
+    purrr::map(~paste0(.x[1],&quot;d&quot;,.x[2],&quot;&#39;&quot;,.x[3],&quot;\&quot;&quot;))
+  
+  # modify char2dms to a safity call
+  safe_char2dms &lt;- safely(sp::char2dms, otherwise = NA)
+  
+  # readd orientation(NSWE) and converts to decimal
+  numbers %&gt;% 
+    purrr::map2(directions, ~paste0(.x, .y)) %&gt;% 
+    purrr::map(safe_char2dms) %&gt;% 
+    purrr::map(purrr::pluck(&quot;result&quot;)) %&gt;% 
+    purrr::map(as.numeric) %&gt;% 
+    unlist() %&gt;% 
+    return()
+}
+
+# clean ant transform status data in to ordenated factor
+statusToFactor &lt;- function(.status){
+  tibble( from_status = tolower(.status) )  %&gt;% 
+    mutate(
+      to_status = case_when(
+        str_detect(from_status, &quot;manchas&quot;)   ~ &quot;stains&quot;,
+        str_detect(from_status, &quot;esparsos&quot;)  ~ &quot;traces/sparse&quot;,
+        str_detect(from_status, &quot;observado&quot;) ~ &quot;not observed&quot;,
+        T ~ as.character(NA)
+      )
+    ) %&gt;% 
+    mutate( fct_status = factor(to_status, levels = c(&quot;not observed&quot;, &quot;traces/sparse&quot;, &quot;stains&quot;), ordered = T) ) %&gt;% 
+    pull(fct_status) %&gt;% 
+    return()
+}
+
+# read the raw excel importation
+files &lt;- readRDS(&quot;./data/oil_leakage_imported_raw_excel.rds&quot;)
+
+# put all the excels in one dataframe
+# perform a data cleanup
+stains_raw &lt;- files %&gt;% 
+  # the file form day 2019-11-06 hasn&#39;t coordinates
+  keep(function(.x){ .x$file.date[1] != &quot;2019-11-06&quot;} ) %&gt;% 
+  # for each &quot;excel&quot; data
+  map_df(function(.x){
+    
+    # some excels have two &quot;municipio&quot; columns
+    if(&quot;municipio_&quot; %in% names(.x)) .x &lt;- select(.x, -municipio)
+    
+    # clean and normalize colnames
+    col.names &lt;- .x %&gt;%
+      names() %&gt;% 
+      tolower() %&gt;%
+      str_replace_all(&quot;munic.+pi.*&quot;, &quot;municipio&quot;) %&gt;% # acento no municipio 
+      str_replace_all(&quot;name&quot;, &quot;localidade&quot;) %&gt;% 
+      str_replace_all(&quot;latitutde&quot;,&quot;latitude&quot;)
+    
+    # rename the cols and select what we&#39;ll use
+    .x %&gt;% 
+      set_names(col.names) %&gt;% 
+      select(file.date, localidade, municipio, 
+             estado, data_avist, data_revis,
+             latitude, longitude, status) %&gt;% 
+      
+      # handle portuguese accents
+      mutate(
+        localidade = iconv(localidade, from=&quot;UTF-8&quot;, to=&quot;LATIN1&quot;),
+        municipio  = iconv(municipio, from=&quot;UTF-8&quot;, to=&quot;LATIN1&quot;),
+        estado     = iconv(estado, from=&quot;UTF-8&quot;, to=&quot;LATIN1&quot;),
+        status     = iconv(status, from=&quot;UTF-8&quot;, to=&quot;LATIN1&quot;),
+        data_avist = ymd(as.character(data_avist)), 
+        data_revis = ymd(as.character(data_revis))
+      ) %&gt;% 
+      return()
+  })
+
+# we have to translate degree coordinates to decimal
+stains_coord &lt;- stains_raw %&gt;%   
+  mutate(
+    lat.degree = translateCoord(latitude),
+    lon.degree = translateCoord(longitude)
+  ) %&gt;% 
+  # in some of the files, the coordinates are indeed in decimal 
+  mutate(
+    lat.degree = ifelse(is.na(lat.degree), as.numeric(latitude), lat.degree),
+    lon.degree = ifelse(is.na(lon.degree), as.numeric(longitude), lon.degree)
+  )
+
+# in some files, the &quot;UF&quot; column has the name of the states 
+# and others the code of states, we handle this making a name&lt;-&gt;code table
+estado_uf &lt;- files %&gt;% 
+  tail(1) %&gt;% 
+  .[[1]] %&gt;% 
+  mutate(
+    estado = iconv(estado, from=&quot;UTF-8&quot;, to=&quot;LATIN1&quot;)
+  ) %&gt;% 
+  select(estado, sigla_uf) %&gt;% 
+  distinct() %&gt;% 
+  arrange(estado)
+
+# join the state name&lt;-&gt;code table
+stains_clean &lt;- stains_coord %&gt;% 
+  left_join(estado_uf, by = &quot;estado&quot;) %&gt;% 
+  # handle when the info is correct/incorrect
+  mutate(sigla_uf = ifelse(is.na(sigla_uf),estado,sigla_uf)) %&gt;% 
+  # there is files without state code
+  filter(!is.na(sigla_uf)) %&gt;% 
+  select(-estado) %&gt;% 
+  # rebuild state name
+  inner_join(estado_uf, by=&quot;sigla_uf&quot;) %&gt;% 
+  # reselect only interesting cols
+  select(file.date, data_avist, data_revis, sigla_uf, estado, municipio, localidade, lat.degree, lon.degree, status)
+
+# transform the &quot;status&quot; info in a factor column
+stains &lt;- stains_clean %&gt;% 
+  mutate( status = statusToFactor(status) ) %&gt;% 
+  filter(complete.cases(.)) %&gt;% 
+  # english col names
+  set_names(c(&quot;file.date&quot;, &quot;sighting_date&quot;,&quot;revision_date&quot;,&quot;uf&quot;,&quot;state&quot;,&quot;county&quot;,
+              &quot;local&quot;,&quot;lat.degree&quot;,&quot;lon.degree&quot;,&quot;status&quot;)) %&gt;% 
+  # last clean-up
+  filter(
+    lon.degree &lt; 0, # anything greater than that is a error
+    revision_date &lt; ymd(20200101), # anything greater than that is a error
+    sighting_date &lt; ymd(20200101), # anything greater than that is a error
+    complete.cases(.) # missing data is not relevant
+  )
+
+# save it, just in case
+saveRDS(stains, &quot;./data/oil_leakage.rds&quot;)</code></pre>
+<p>Now we have all the data from the excel files concatenated, cleaned, treated and stored in a data.frame, let’s look at the final data format.</p>
+<pre class="r"><code>stains &lt;- readRDS(&quot;./data/oil_leakage.rds&quot;)
+
+# checking the final format
+stains %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size = 8)</code></pre>
+<table class="table" style="font-size: 8px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+file.date
+</th>
+<th style="text-align:left;">
+sighting_date
+</th>
+<th style="text-align:left;">
+revision_date
+</th>
+<th style="text-align:left;">
+uf
+</th>
+<th style="text-align:left;">
+state
+</th>
+<th style="text-align:left;">
+county
+</th>
+<th style="text-align:left;">
+local
+</th>
+<th style="text-align:right;">
+lat.degree
+</th>
+<th style="text-align:right;">
+lon.degree
+</th>
+<th style="text-align:left;">
+status
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-09-10
+</td>
+<td style="text-align:left;">
+2019-10-15
+</td>
+<td style="text-align:left;">
+RN
+</td>
+<td style="text-align:left;">
+Rio Grande do Norte
+</td>
+<td style="text-align:left;">
+N¡sia Floresta
+</td>
+<td style="text-align:left;">
+Barra de Tabatinga - Tartarugas
+</td>
+<td style="text-align:right;">
+-6.057081
+</td>
+<td style="text-align:right;">
+-35.09679
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-09-07
+</td>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+Alagoas
+</td>
+<td style="text-align:left;">
+Japaratinga
+</td>
+<td style="text-align:left;">
+Praia de Japaratinga
+</td>
+<td style="text-align:right;">
+-9.093531
+</td>
+<td style="text-align:right;">
+-35.25822
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-09-18
+</td>
+<td style="text-align:left;">
+2019-10-14
+</td>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+Alagoas
+</td>
+<td style="text-align:left;">
+Passo de Camaragibe
+</td>
+<td style="text-align:left;">
+Praia do Carro Quebrado
+</td>
+<td style="text-align:right;">
+-9.341689
+</td>
+<td style="text-align:right;">
+-35.44870
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-09-22
+</td>
+<td style="text-align:left;">
+2019-10-13
+</td>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+Alagoas
+</td>
+<td style="text-align:left;">
+Roteiro
+</td>
+<td style="text-align:left;">
+Praia do Gunga
+</td>
+<td style="text-align:right;">
+-9.903094
+</td>
+<td style="text-align:right;">
+-35.93877
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-09-02
+</td>
+<td style="text-align:left;">
+2019-10-02
+</td>
+<td style="text-align:left;">
+SE
+</td>
+<td style="text-align:left;">
+Sergipe
+</td>
+<td style="text-align:left;">
+Barra dos Coqueiros
+</td>
+<td style="text-align:left;">
+Atalaia Nova
+</td>
+<td style="text-align:right;">
+-10.952222
+</td>
+<td style="text-align:right;">
+-37.02944
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-10-04
+</td>
+<td style="text-align:left;">
+2019-10-05
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+Janda¡ra
+</td>
+<td style="text-align:left;">
+Janda¡ra
+</td>
+<td style="text-align:right;">
+-11.528550
+</td>
+<td style="text-align:right;">
+-37.40157
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-10-04
+</td>
+<td style="text-align:left;">
+2019-10-13
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+Conde
+</td>
+<td style="text-align:left;">
+S¡tio do Conde
+</td>
+<td style="text-align:right;">
+-11.852953
+</td>
+<td style="text-align:right;">
+-37.56399
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-10-07
+</td>
+<td style="text-align:left;">
+2019-10-08
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+Esplanada
+</td>
+<td style="text-align:left;">
+Mamucabo
+</td>
+<td style="text-align:right;">
+-12.163006
+</td>
+<td style="text-align:right;">
+-37.72419
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-09-27
+</td>
+<td style="text-align:left;">
+2019-10-07
+</td>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+Alagoas
+</td>
+<td style="text-align:left;">
+Coruripe
+</td>
+<td style="text-align:left;">
+Lagoa do Pau
+</td>
+<td style="text-align:right;">
+-10.129733
+</td>
+<td style="text-align:right;">
+-36.11001
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-10-16
+</td>
+<td style="text-align:left;">
+2019-10-01
+</td>
+<td style="text-align:left;">
+2019-10-15
+</td>
+<td style="text-align:left;">
+BA
+</td>
+<td style="text-align:left;">
+Bahia
+</td>
+<td style="text-align:left;">
+Mata de SÆo JoÆo
+</td>
+<td style="text-align:left;">
+Santo Ant&quot;nio
+</td>
+<td style="text-align:right;">
+-12.459700
+</td>
+<td style="text-align:right;">
+-37.93229
+</td>
+<td style="text-align:left;">
+stains
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="plotting-as-a-map" class="section level2">
+<h2>Plotting as a Map</h2>
+<p>With the data in hand, we’ll try to visualize the communities affected by the oil spill placing the data in a map. There are several frameworks for plotting maps in R, in this post we will use the <a href="https://www.littlemissdata.com/blog/maps"><code>ggmap</code> package</a>, which we already have used <a href="https://yetanotheriteration.netlify.com/2018/01/ploting-your-mtb-track-with-r/">previously in the past</a>.</p>
+<p>Before to use <code>ggmap</code>, we’ll need to get the Google Map API Key and register it, but the procedure is pretty straightforward, <a href="https://developers.google.com/maps/documentation/embed/get-api-key">just following these instructions</a>. In my code, I always store the keys and others sensible information in <a href="https://en.wikipedia.org/wiki/YAML"><code>yalm</code> files</a> to avoid accidentaly publish then in the GitHub, <a href="https://yetanotheriteration.netlify.com/2019/03/comparing-fitbit-and-polar-h7-heart-rate-data/">I also commented about this strategy in a older post</a>.</p>
+<pre class="r"><code># ggmap
+library(ggmap)
+library(yaml) # used to not version the google&#39;s map key
+
+# before use ggmap with google maps it&#39;s necessary
+# read and register a Key for Google Map API
+config &lt;- yaml::read_yaml(&quot;./config.yml&quot;)
+register_google(key=config$google_map_key)
+
+# get the map area
+bbox &lt;- make_bbox(lon = stains$lon.degree, lat=stains$lat.degree, f = .1)
+gmap &lt;- get_map(location=bbox, source=&quot;google&quot;, maptype=&quot;terrain&quot;)
+
+# plot the data of observations on revision date 2019-11-10
+# of location with stains or sparse residuos
+ggmap(gmap) +
+  geom_point(data=filter(stains, status!=&quot;not observed&quot;, revision_date==ymd(20191110)),
+             aes(x=lon.degree, y=lat.degree, color=status), size=2, alpha=.5) +
+  scale_color_manual(values=c(&quot;orange&quot;,&quot;red&quot;,&quot;green&quot;)) +
+  theme_void() +
+  ggplot2::coord_fixed() </code></pre>
+<p><img src="/post/2019-12-31-using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne_files/figure-html/ggmapTest-1.png" width="672" /></p>
+</div>
+<div id="the-animation" class="section level2">
+<h2>The animation</h2>
+<p>Now the last step is to animate the map in the time dimension, we’ll do this using the great <a href="https://gganimate.com/articles/gganimate.html"><code>gganimate</code> package</a>, adding a transition function in the <code>ggplot2 + ggmap</code> stack.</p>
+<pre class="r"><code>library(gganimate)
+bbox &lt;- make_bbox(lon = stains$lon.degree, lat=stains$lat.degree, f = .1)
+gmap &lt;- get_map(location=bbox, source=&quot;google&quot;, maptype=&quot;terrain&quot;)
+
+p &lt;- ggmap(gmap) +
+  geom_point(data=filter(stains, status!=&quot;not observed&quot;),
+             aes(x=lon.degree, y=lat.degree,
+                 color=status, group=county),
+             size=3, alpha=.5) +
+  scale_color_manual(values=c(&quot;orange&quot;,&quot;red&quot;)) +
+  theme_void()
+
+anim &lt;- p  +
+  theme( legend.position = &quot;bottom&quot; ) +
+  transition_time(revision_date) +
+  labs(title=&quot;Oil Sighting on Brazil Coast&quot;,
+       subtitle = &quot;Date:  {frame_time} - source: IBAMA&quot;) +
+  shadow_wake(wake_length = .15)
+
+anim</code></pre>
+<p><img src="/post/2019-12-31-using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne_files/figure-html/animation-1.gif" /><!-- --></p>
+</div>
+<div id="visualizing-the-spill-evolution-in-one-plot" class="section level2">
+<h2>Visualizing the spill evolution in one plot</h2>
+<p>The animated map view gives us an great idea of the size of the ecological impact of the oil spill off the coast of Brazil. But to analytical purpose the animation does not allow you to see the full evolution history at one same time, allowing us to gauge how the spill is progressing.</p>
+<p>To do this trick, let’s plot the information as a heatmap, where each location will be on the Y axis, indexed by its latitude, and on the X axis we’ll use the date information.</p>
+<pre class="r"><code># let&#39;s organize the &quot;county/locality&quot; by latitude
+stains %&gt;% 
+  select(local, lat.degree, revision_date, status) %&gt;% 
+  group_by(local) %&gt;% 
+  # calculates a unique latitude for local
+  mutate( avg.lat = mean(lat.degree) ) %&gt;% 
+  ungroup() %&gt;% 
+  # put the locals in latitude order
+  mutate( local = fct_reorder(local, avg.lat) ) %&gt;% 
+  select( local, revision_date, status ) %&gt;% 
+  distinct() %&gt;% 
+  # plot as a tile chart (local x date)
+  arrange( local, revision_date ) %&gt;% 
+  ggplot(aes(x=revision_date, y=local)) +
+  geom_tile(aes(fill=status)) +
+  scale_fill_manual(values = c(&quot;lightgreen&quot;, &quot;orange&quot;, &quot;red&quot;)) +
+  theme_minimal() +
+  theme( axis.text.y = element_blank() ) +
+  labs(title=&quot;Oil Sighting by Latitude and Date&quot;, x=&quot;date&quot;, y=&quot;local/latitude&quot;)</code></pre>
+<p><img src="/post/2019-12-31-using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne_files/figure-html/tileChart-1.png" width="672" /></p>
+<p>In this graph, we can visualize how the the oil spill are progressing to the south, following the maritime currents, over the months of October and November, reaching the most extreme point a few days, before December.</p>
+<p>The intermittent nature of the chart shows that information registring is not done daily in all locations, and some communities has more status updates than others we should handle this caracteristic to correctly plot the information, but we’ll leave this to other post.</p>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/animation/">animation</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/en-us/">en-US</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/gganimate/">gganimate</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rvest/">rvest</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/ggmap/">ggmap</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/tidytuesday-pizzas-and-monsters/" data-tooltip="TidyTuesday: Pizzas and Monsters">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/tidytuesday-pizzas-and-monsters/" data-tooltip="TidyTuesday: Pizzas and Monsters">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2019%2F12%2Fusing-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2019%2F12%2Fusing-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2019%2F12%2Fusing-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/12\/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne\/';
+          
+            this.page.identifier = '\/2019\/12\/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

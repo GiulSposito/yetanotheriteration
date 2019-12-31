@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ggmap on Yet Another Iteration</title>
+    <link>/tags/ggmap/</link>
+    <description>Recent content in ggmap on Yet Another Iteration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 31 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/ggmap/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Using ggmap and gganimation to visualize oil spill in Brazil coastilne</title>
+      <link>/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/</link>
+      <pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/using-ggmap-and-gganimation-to-visualize-oil-spill-in-brazil-coastilne/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In 2019, a crude oil spill struck more than 2,000 kilometers off the coast of Brazil’s Northeast and Southeast, affecting more than 400 beaches in more than 200 different municipalities. The first reports of the spill occurred at the end of August with sightings still spreading later this year. This post explores the sighting records available on the IBAMA website to view the impact of the leak using ggmap and gganimation.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
