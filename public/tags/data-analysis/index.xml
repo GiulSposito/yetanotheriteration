@@ -6,10 +6,19 @@
     <description>Recent content in data analysis on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 31 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/data-analysis/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Free Springer Books about Data Science, Statistics and R</title>
+      <link>/2020/04/free-springer-books-about-data-science-statistics-and-r/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/free-springer-books-about-data-science-statistics-and-r/</guid>
+      <description>&lt;p&gt;With the Coronavirus outbreak having an unprecedented impact on education, Springer Nature is launching a global program to support learning and teaching at higher education institutions worldwide, enabling to access for free more than 500 key textbooks across Springer Nature’s eBook subject collections. These books will be available via SpringerLink until at least the end of July. See some Data Science and Statistics (with R) related books we selected.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>TidyTuesday: Pizzas and Monsters</title>
