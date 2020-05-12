@@ -19,12 +19,15 @@ thumbnailImagePosition: left
 metaAlignment: center
 ---
 
-Sempre se comenta a grande versatilidade do *R*, com a sua capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
+Sempre se comenta a grande versatilidade do *R*, com capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
+
+![](/images/dashboard_cover.png)
 
 <!--more-->
 
-Sempre se comenta a grande versatilidade de [*R*](https://www.r-project.org/), com a sua capacidade de participar de todas as etapas de um [fluxo de análise de dados](http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/). Quem conhece [*a linguagem R*](https://pt.wikipedia.org/wiki/R_(linguagem_de_programa%C3%A7%C3%A3o)) não duvida deste potencial, mas não é muito frequente encontramos uma situação em que ele é de fato usado de ponta à ponta, e principalmente em um grande projeto. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
+Sempre se comenta a grande versatilidade de [*R*](https://www.r-project.org/), com capacidade de participar de todas as etapas de um [fluxo de análise de dados](http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/). Quem conhece [*a linguagem R*](https://pt.wikipedia.org/wiki/R_(linguagem_de_programa%C3%A7%C3%A3o)) não duvida deste potencial, mas não é muito frequente encontramos uma situação em que ele é de fato usado de ponta à ponta, e principalmente em um grande projeto. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
 
+![](/images/dashboard_cover.png)
 
 ## Contexto
 
@@ -32,7 +35,7 @@ Em 2017 comecei um trabalho de consultoria num grande banco brasileiro, dentro d
 
 Parte deste trabalho é sobre aculturamento do time, ou seja, as *squads* precisam conhecer, entender e começar a usar as métricas e indicadores ágeis dentro do seu dia-a-dia. Se acostumar com esses números, valorizar a informação e então passar a tomar decisão baseadas nos dados obtidos. Para aumentar o engajamento dos líderes e das *squads* deveríamos, então, expô-los às métricas e indicadores definidos corporativamente desde o primeiro dia. Isso é um movimento chave para o sucesso no que diz respeito a adoção das métricas. 
 
-![Conjuntos e Reports Gerados em R e Divulgados para os Líderes de Squad](./reports.png)
+![Conjuntos e Reports Gerados em R e Divulgados para os Líderes de Squad](/images/reports.png)
 
 ## R como Solução
 
@@ -40,7 +43,7 @@ Para agilizar esse aspecto da consultoria, sem ter que demandar e especificar um
 
 Para automatizar, orquestrar, otimizar os custos e facilitar a integração dessas atividades montamos uma espécie de *Pipeline para Continuos Data Science* baseando-se em uma infraestrutura de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD) clássica de engenharia de software.
 
-![Visão Consolidada de Indicadores Corporativos](./dash_corporativo.png)
+![Visão Consolidada de Indicadores Corporativos](/images/dash_corporativo.png)
 
 Essa abordagem foi inspirada nos grupos de desafios do [*kaggle*](https://www.kaggle.com/) que tínhamos na empresa de vez em quando. Neste desafios tínhamos um grupo de 3 ou 4 pessoas trabalhando simultaneamente no desafio, construindo em paralelo e simultaneamente as etapas de [Exploração dos Dados](https://pt.wikipedia.org/wiki/An%C3%A1lise_explorat%C3%B3ria_de_dados), [Limpeza e Organização dos Datasets](https://en.wikipedia.org/wiki/Tidy_data), [Engenharia de Features](https://en.wikipedia.org/wiki/Feature_engineering), [Treinar um modelo](https://docs.microsoft.com/en-us/azure/machine-learning/studio-module-reference/train-model) e [Avaliação de Performance](https://www.analyticsvidhya.com/blog/2019/08/11-important-model-evaluation-error-metrics/). Essa solução permitia que cientistas de dados trabalhando em pontos diferentes do *pipeline* e ao *comitar* um novo código no controlador de versão, a partes afetadas do fluxo fossem executadas automaticamente. Isso nos dava bastante agilidade e independência durante os trabalhos no desafio.
 
@@ -50,7 +53,7 @@ De maneira oportuna, além da consultoria de desenvolvimento ágil, também tín
 
 O ambiente de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD) para automatizar o *pipeline* era composto das entidades abaixo descritas, e foram usadas da seguinte maneira:
 
-![](./jira_r_components.png)
+![](/images/jira_r_components.png)
 
 1. [**Jenkins**](https://www.jenkins.io/): Jenkins é um servidor de automação gratuito e de código aberto. Ajuda a automatizar as partes do desenvolvimento de software relacionadas à construção, teste e implantação, facilitando a integração contínua e a entrega contínua, funcionando grosseiramente falando, como um orquestrador de [taréfas (ou *jobs*)](https://www.guru99.com/create-builds-jenkins-freestyle-project.html). Era usado para orquestrar os *jobs* do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)), instanciando os containers dentro dos [slaves](https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/) e executando os scripts que efetuavam as atividades do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)). Neste caso, todos os *jobs* rodavam por esquema de [agendamento](https://www.baeldung.com/jenkins-job-schedule).
 1. [**Jira**](https://www.atlassian.com/br/software/jira): A principal ferramenta de software usada pelas equipes ágeis para o monitoramento de tarefas e acompanhamento de projetos. Tem como objetivo principal garantir o gerenciamento (e rastreamento) de todas as suas atividades em único lugar. Tudo que uma equipe ágil faz acaba sendo registrada no *Jira*, assim para acompanhar a performance de um time basta acessar o histórico de atividades registradas na ferramenta e a partir dele calcular indicadores *Leadtime*, Esforço por História, Taxas de Defeitos dos Projetos, *Throughput*, etc. O acesso às essas informações era feita pela [REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/) disponível.
@@ -72,7 +75,7 @@ Uma conjunto grande de pacotes foi usado para garantir o [*pipeline*](https://en
 
 ## Flexdashboard + Plotly
 
-![Flexdashboard e Plotly](./dashboard_panel01.png)
+![Flexdashboard e Plotly](/images/dashboard_panel01.png)
 
 A combinação do *flexdashboard* com *plotly* foi um grande diferencial. Os reports pareciam verdadeiros painéis de BI, veja [este exemplo](/docs/project_dashboard.html). Além disso, eles tinham como vantagem de poderem ser compartilhados e distribuídos aos envolvidos e interessados, sem restrição de acesso (autenticação e rede) ou número de licenças, problemas que são comumente encontrados quando se resolve de maneira tradicional. 
 
@@ -276,7 +279,7 @@ jira_model %>%
   dm_create_graph(rankdir = "LR", col_attr = c("column", "type"))
 ```
 
-![](./jira_transitions.png)
+![](/images/jira_transitions.png)
 
 
 A estrutura do *ChangeLog* do *Jira* é praticamente um metamodelo, pois rastreia as informações de *update* de todos as atributos de uma *Issue*. A sequencia de transformação não é trivial, uma vez feita, um *tibble* de saída era gerado e adicionado ao conjunto de artefatos que são exportados para o *Nexus* para ser eventualmente utilizados em *jobs* subsequentes.

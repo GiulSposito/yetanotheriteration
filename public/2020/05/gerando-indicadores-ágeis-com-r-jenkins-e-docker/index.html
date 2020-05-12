@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.58.2 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Giuliano Sposito">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+
+
+
+
+
+
+
+Sempre se comenta a grande versatilidade do R, com capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um pipeline de aquisição, análise e divulgação de dados sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando R e automatizado através de Jenkins, Docker, GitLab e Nexus.
+
+">
+
+
+<meta property="og:description" content="
+
+
+
+
+
+
+
+
+
+
+Sempre se comenta a grande versatilidade do R, com capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um pipeline de aquisição, análise e divulgação de dados sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando R e automatizado através de Jenkins, Docker, GitLab e Nexus.
+
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gerando Indicadores Ágeis com R, Jenkins e Docker">
+<meta name="twitter:title" content="Gerando Indicadores Ágeis com R, Jenkins e Docker">
+<meta property="og:url" content="/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+<meta property="twitter:url" content="/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+<meta property="og:site_name" content="Yet Another Iteration">
+<meta property="og:description" content="
+
+
+
+
+
+
+
+
+
+
+Sempre se comenta a grande versatilidade do R, com capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um pipeline de aquisição, análise e divulgação de dados sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando R e automatizado através de Jenkins, Docker, GitLab e Nexus.
+
+">
+<meta name="twitter:description" content="
+
+
+
+
+
+
+
+
+
+
+Sempre se comenta a grande versatilidade do R, com capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um pipeline de aquisição, análise e divulgação de dados sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando R e automatizado através de Jenkins, Docker, GitLab e Nexus.
+
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-05-13T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2020-05-13T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="data science">
+    
+      <meta property="article:section" content="agile">
+    
+  
+  
+    
+      <meta property="article:tag" content="data analysis">
+    
+      <meta property="article:tag" content="rstats">
+    
+      <meta property="article:tag" content="pt-BR">
+    
+      <meta property="article:tag" content="agile">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@gsposito">
+
+
+  <meta name="twitter:creator" content="@gsposito">
+
+
+
+
+
+
+  <meta property="og:image" content="/images/jira_pipeline_tn.png">
+  <meta property="twitter:image" content="/images/jira_pipeline_tn.png">
+
+
+  <meta property="og:image" content="/images/jira_pipeline_cover.jpg">
+  <meta property="twitter:image" content="/images/jira_pipeline_cover.jpg">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+
+
+    <title>Gerando Indicadores Ágeis com R, Jenkins e Docker</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+      <link rel="publisher" href="https://plus.google.com/&#43;giulianosposito">
+    
+
+    <link rel="canonical" href="/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-112393378-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/jira_pipeline_cover.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Gerando Indicadores Ágeis com R, Jenkins e Docker
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-05-13T00:00:00Z">
+        
+  May 13, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>, 
+    
+      <a class="category-link" href="/categories/agile">agile</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Sempre se comenta a grande versatilidade de <a href="https://www.r-project.org/"><em>R</em></a>, com capacidade de participar de todas as etapas de um <a href="http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/">fluxo de análise de dados</a>. Quem conhece <a href="https://pt.wikipedia.org/wiki/R_(linguagem_de_programa%C3%A7%C3%A3o)"><em>a linguagem R</em></a> não duvida deste potencial, mas não é muito frequente encontramos uma situação em que ele é de fato usado de ponta à ponta, e principalmente em um grande projeto. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um <em>pipeline de aquisição, análise e divulgação de dados</em> sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando <em>R</em> e automatizado através de <em>Jenkins</em>, <em>Docker</em>, <em>GitLab</em> e <em>Nexus</em>.</p>
+<p><img src="/images/dashboard_cover.png" /></p>
+<div id="contexto" class="section level2">
+<h2>Contexto</h2>
+<p>Em 2017 comecei um trabalho de consultoria num grande banco brasileiro, dentro de um projeto maior de transformação ágil, implantação de técnicas de desenvolvimento baseadas em <a href="https://pt.wikipedia.org/wiki/Scrum_(desenvolvimento_de_software)"><em>Scrum</em></a> e <a href="https://pt.wikipedia.org/wiki/Kanban"><em>Kanban</em></a>. Nesse grande projeto, que envolvia toda a TI do banco, eu trabalhava prioritariamente na normalização e uniformização de técnicas ágeis para geração de <a href="https://pt.wikipedia.org/wiki/M%C3%A9trica_de_software">métricas e indicadores de desenvolvimento</a>, que auxiliariam o time e a gestão corporativa a ter uma visão da produtividade, qualidade e previsibilidade dos <em>Squads</em>. A iniciativa também era importante dentro dos ciclos de PDCA das próprias <em>Squads</em>, pois permitira uma discussão embasada por dados para melhoria de performance.</p>
+<p>Parte deste trabalho é sobre aculturamento do time, ou seja, as <em>squads</em> precisam conhecer, entender e começar a usar as métricas e indicadores ágeis dentro do seu dia-a-dia. Se acostumar com esses números, valorizar a informação e então passar a tomar decisão baseadas nos dados obtidos. Para aumentar o engajamento dos líderes e das <em>squads</em> deveríamos, então, expô-los às métricas e indicadores definidos corporativamente desde o primeiro dia. Isso é um movimento chave para o sucesso no que diz respeito a adoção das métricas.</p>
+<div class="figure">
+<img src="/images/reports.png" alt="Conjuntos e Reports Gerados em R e Divulgados para os Líderes de Squad" />
+<p class="caption">Conjuntos e Reports Gerados em R e Divulgados para os Líderes de Squad</p>
+</div>
+</div>
+<div id="r-como-solução" class="section level2">
+<h2>R como Solução</h2>
+<p>Para agilizar esse aspecto da consultoria, sem ter que demandar e especificar uma outra equipe de <a href="https://pt.wikipedia.org/wiki/Extract,_transform,_load">ETL</a>/<a href="https://en.wikipedia.org/wiki/Business_intelligence_software">BI</a>, começamos a extrair manualmente os dados do <em>Jira</em> e gerar as métricas e indicadores rapidamente usando <em>R scripts</em>, e o impacto foi muito grande. A materialização dos artefatos analíticos, entregue na mão das <em>Squads</em> foi bem positiva e rapidamente eles entenderam as informações e ficaram dependentes dos reports que gerávamos para tomada de ações imediatas no dia-a-dia. Esse sucesso criou um outro problema, automatizar a geração dessas informações para que elas sempre estivessem disponíveis e não dependessem de alguém para gerá-las.</p>
+<p>Para automatizar, orquestrar, otimizar os custos e facilitar a integração dessas atividades montamos uma espécie de <em>Pipeline para Continuos Data Science</em> baseando-se em uma infraestrutura de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> clássica de engenharia de software.</p>
+<div class="figure">
+<img src="/images/dash_corporativo.png" alt="Visão Consolidada de Indicadores Corporativos" />
+<p class="caption">Visão Consolidada de Indicadores Corporativos</p>
+</div>
+<p>Essa abordagem foi inspirada nos grupos de desafios do <a href="https://www.kaggle.com/"><em>kaggle</em></a> que tínhamos na empresa de vez em quando. Neste desafios tínhamos um grupo de 3 ou 4 pessoas trabalhando simultaneamente no desafio, construindo em paralelo e simultaneamente as etapas de <a href="https://pt.wikipedia.org/wiki/An%C3%A1lise_explorat%C3%B3ria_de_dados">Exploração dos Dados</a>, <a href="https://en.wikipedia.org/wiki/Tidy_data">Limpeza e Organização dos Datasets</a>, <a href="https://en.wikipedia.org/wiki/Feature_engineering">Engenharia de Features</a>, <a href="https://docs.microsoft.com/en-us/azure/machine-learning/studio-module-reference/train-model">Treinar um modelo</a> e <a href="https://www.analyticsvidhya.com/blog/2019/08/11-important-model-evaluation-error-metrics/">Avaliação de Performance</a>. Essa solução permitia que cientistas de dados trabalhando em pontos diferentes do <em>pipeline</em> e ao <em>comitar</em> um novo código no controlador de versão, a partes afetadas do fluxo fossem executadas automaticamente. Isso nos dava bastante agilidade e independência durante os trabalhos no desafio.</p>
+<p>De maneira oportuna, além da consultoria de desenvolvimento ágil, também tínhamos uma outra iniciativa no banco, desta vez trabalhando na definição e construção do ambiente de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> corporativo. No momento que nos questionamos como automatizar mais rápido e fácil, a geração dos indicadores e métricas, então a opção de usar a mesma estratégia ficou evidente. Além disso, poderíamos evoluir os relatórios e indicadores a medida que a implantação de métricas e indicadores ágeis ganhava consistência e maturidade, sem ter que manter disponível disponível e alocada, uma terceira equipe de <a href="https://pt.wikipedia.org/wiki/Extract,_transform,_load">ETL</a> e <a href="(https://en.wikipedia.org/wiki/Business_intelligence_software)">BI</a> no banco.</p>
+<div id="componentes-da-solução" class="section level3">
+<h3>Componentes da Solução</h3>
+<p>O ambiente de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> para automatizar o <em>pipeline</em> era composto das entidades abaixo descritas, e foram usadas da seguinte maneira:</p>
+<p><img src="/images/jira_r_components.png" /></p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.jenkins.io/"><strong>Jenkins</strong></a>: Jenkins é um servidor de automação gratuito e de código aberto. Ajuda a automatizar as partes do desenvolvimento de software relacionadas à construção, teste e implantação, facilitando a integração contínua e a entrega contínua, funcionando grosseiramente falando, como um orquestrador de <a href="https://www.guru99.com/create-builds-jenkins-freestyle-project.html">taréfas (ou <em>jobs</em>)</a>. Era usado para orquestrar os <em>jobs</em> do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>, instanciando os containers dentro dos <a href="https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/">slaves</a> e executando os scripts que efetuavam as atividades do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>. Neste caso, todos os <em>jobs</em> rodavam por esquema de <a href="https://www.baeldung.com/jenkins-job-schedule">agendamento</a>.</li>
+<li><a href="https://www.atlassian.com/br/software/jira"><strong>Jira</strong></a>: A principal ferramenta de software usada pelas equipes ágeis para o monitoramento de tarefas e acompanhamento de projetos. Tem como objetivo principal garantir o gerenciamento (e rastreamento) de todas as suas atividades em único lugar. Tudo que uma equipe ágil faz acaba sendo registrada no <em>Jira</em>, assim para acompanhar a performance de um time basta acessar o histórico de atividades registradas na ferramenta e a partir dele calcular indicadores <em>Leadtime</em>, Esforço por História, Taxas de Defeitos dos Projetos, <em>Throughput</em>, etc. O acesso às essas informações era feita pela <a href="https://developer.atlassian.com/cloud/jira/platform/rest/v3/">REST API</a> disponível.</li>
+<li><a href="https://about.gitlab.com/"><strong>GitLab</strong></a>: é um gerenciador de repositório de software baseado em <a href="https://pt.wikipedia.org/wiki/Git"><em>Git</em></a>, com suporte a <em>Wiki</em>, gerenciamento de tarefas e integração com outras ferramentas de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a>. <em>GitLab</em> é similar ao <em>GitHub</em>, mas permite que os desenvolvedores armazenem o código em seus próprios servidores ao invés de servidores de terceiros. Foi usado para armazenar o próprio código de scripts do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> de dados.</li>
+<li><a href="https://www.docker.com/"><strong>Docker</strong></a>: Os scripts de builds rodavam dentro de ambientes de integração em <a href="https://www.docker.com/resources/what-container">containers</a> que eram instanciados em um <em>pool</em> de <a href="https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/"><em>slaves</em></a>) em máquinas na <a href="https://www.redhat.com/pt-br/technologies/cloud-computing/cloud-suite">Cloud Red Hat</a> interna do banco. Assim um <em>job</em> do Jenkins inicializava, ele sempre acionava um <a href="https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/"><em>slave</em></a>, que instanciava um <em>container</em> responsável pelo ambiente daquele projeto e então executava os <em>scripts</em> de <em>Build</em>. No nosso caso, uma <a href="https://searchitoperations.techtarget.com/definition/Docker-image">imagem docker</a> foi criada, com o ambiente R instalado com os principais pacotes e outras bibliotecas e softwares necessários, como Pandoc, Java entre outros, para permitir a execução dos <em>scripts</em> do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> de dados.</li>
+<li><a href="https://www.sonatype.com/product-nexus-repository"><strong>Nexus Repository</strong></a>: é um gerenciador de repositório para artefatos de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a>, facilitando a distribuição de software. Era usado para armazenar e disponibilizar para outros desenvolvedores os artefatos produzidos nos <em>pipelines</em> de <em>build</em> do Jenkins. No nosso caso, usamos para armazenar os dados extraídos do Jira e processados pelos <em>R Scripts</em> em formato RDS exatamente como um artefato de build. O armazenamento e recuperação dos artefatos era feita via <a href="https://help.sonatype.com/repomanager3/rest-and-integration-api">REST API</a></li>
+<li><a href="https://www.atlassian.com/software/confluence"><strong>Confluence</strong></a>: é a ferramenta de colaboração de conteúdo da <a href="https://www.atlassian.com/">Atlassian</a> usada pelas equipes para compartilhar e formalizar conhecimento de suas atividades e projetos. No <em>Confluence</em>, o conteúdo é criado e organizado usando espaços, páginas e blogs, permitindo que os usuários escrevam, editem, comentem e realizem trabalhos juntos na mesma interface. Em nosso <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>, os relatórios de cada squad que eram gerados pelos <em>scripts</em> eram publicados nos <a href="https://confluence.atlassian.com/doc/spaces-139459.html">spaces</a> dos próprios projetos fazendo uso das <a href="https://developer.atlassian.com/server/confluence/confluence-server-rest-api/">APIs</a>.</li>
+</ol>
+</div>
+<div id="pacotes-r-usados" class="section level3">
+<h3>Pacotes R usados</h3>
+<p>Uma conjunto grande de pacotes foi usado para garantir o <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> de análise de ponta à ponta (<a href="(http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/)">da importação dos dados à publicação de resultados</a>), mas podemos destacar alguns dos principais usados nos momentos chaves do fluxo de informação.</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.tidyverse.org/"><strong>tidyverse</strong></a>: Toda a manipulação de dados foi usando <em>dplyr</em>, <em>tidyr</em>, <em>purrr</em> e demais pacotes do <em>tidyverse</em>. Na verdade, o <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> começou a ser escrito com <a href="https://cran.r-project.org/web/packages/data.table/index.html"><em>data.table</em></a> visando inicialmente conter eventuais problemas de performance no futuro, mas mudei a abordagem para “facilidade da leitura do código” nos fluxos de manipulação e cálculo, e <a href="https://dplyr.tidyverse.org/"><em>dplyr</em></a> c/ <a href="https://magrittr.tidyverse.org/"><em>magrittr</em></a> são imbatíveis neste quesito.</li>
+<li><a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html"><strong>httr</strong></a> e <a href="https://cran.r-project.org/web/packages/jsonlite/index.html"><strong>jsonlite</strong></a>: usados para construir as chamadas às <em>REST APIs</em> e manipular o <em>json</em> de retorno.</li>
+<li><a href="http://www.sthda.com/english/wiki/r-xlsx-package-a-quick-start-guide-to-manipulate-excel-files-in-r"><strong>xlsx</strong></a> e <a href="http://www.sthda.com/english/wiki/create-and-format-powerpoint-documents-from-r-software"><strong>ReporteRs</strong></a>: foram usados tanto para leitura e escrita de arquivos <a href="https://pt.wikipedia.org/wiki/Microsoft_Excel"><em>Excel</em></a> e geração de dois relatórios específicos em formato <a href="https://pt.wikipedia.org/wiki/Microsoft_PowerPoint"><em>Powerpoint</em></a>, mas maioria dos reports usaram <a href="https://rmarkdown.rstudio.com/"><em>RMarkdown</em></a> renderizando para HTML ou PDF.</li>
+<li><a href="https://github.com/joshkatz/needs"><strong>needs</strong></a>: Embora o <em>container</em> R criado para o <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> tenha todos os principais pacotes usados instalados, para dar liberdade ao desenvolvimento incorporar novos pacotes sem ter que refazer a imagem docker do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> a todo momento, usei o pacote <em>needs</em>. Ele faz uma gestão de pacotes instalados na instância de maneira bem transparente. <em>Needs</em> ao tentar carregar o pacote para uso no <em>script</em>, verifica antes se ele está presente na instância e caso não esteja, faz o download e sua instalação e então carrega pacote e segue o fluxo de execução. Isso facilita muito a incorporação e testes de pacote no ambiente produtivo. Claro que para as instâncias não ficarem instalando pacotes a cada execução era necessário usar um truque: mapear um volume do container para uma pasta comum de bibliotecas na instância, assim a instância mantinha uma pasta de Libs instaladas “fora do container” e não precisava ficar reinstalando pacotes cada vez que o container subia. Funcionou muito bem em quase todos os casos (nos que não precisavam instalar ferramentas nativas via linha de comando).</li>
+<li><a href="https://rmarkdown.rstudio.com/flexdashboard/"><strong>flexdashboard</strong></a>: Um item de destaque e diferencial neste projeto. Os relatórios publicados continham várias páginas com gráficos e informações sobre indicadores distintos, para não parecer um relatório paginado longo e para se assemelhar a um dashboard analítico usei o <em>flexdashboard</em>. O impacto nos <em>stakeholders</em> foi imediato, embora fosse um documento estático, os usuários consumidores das informações se sentiam consultando uma <a href="https://en.wikipedia.org/wiki/Business_intelligence_software">ferramenta de BI</a>. Veja o exemplo abaixo.</li>
+<li><a href="https://plotly.com/r/"><strong>plotly</strong></a>: Outra incrível ferramenta quando se quer construir gráficos com iteratividade. Com uma <a href="https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf"><em>API</em> semelhante</a> à do <a href="https://ggplot2.tidyverse.org/"><em>ggplot</em></a>, e até com uma <a href="https://www.rdocumentation.org/packages/plotly/versions/4.9.2.1/topics/ggplotly">função de conversão entre ggplot e plotly</a>, é muito fácil de aprender e usar, e realmente adiciona um impacto visual incrível em <a href="https://rmarkdown.rstudio.com/docs/index.html">relatórios html</a> gerados em conjunto com o <em>flexdashboard</em>.</li>
+</ol>
+</div>
+</div>
+<div id="flexdashboard-plotly" class="section level2">
+<h2>Flexdashboard + Plotly</h2>
+<div class="figure">
+<img src="/images/dashboard_panel01.png" alt="Flexdashboard e Plotly" />
+<p class="caption">Flexdashboard e Plotly</p>
+</div>
+<p>A combinação do <em>flexdashboard</em> com <em>plotly</em> foi um grande diferencial. Os reports pareciam verdadeiros painéis de BI, veja <a href="/docs/project_dashboard.html">este exemplo</a>. Além disso, eles tinham como vantagem de poderem ser compartilhados e distribuídos aos envolvidos e interessados, sem restrição de acesso (autenticação e rede) ou número de licenças, problemas que são comumente encontrados quando se resolve de maneira tradicional.</p>
+</div>
+<div id="descrição-do-pipeline" class="section level2">
+<h2>Descrição do <em>pipeline</em></h2>
+<div id="jobs" class="section level3">
+<h3><em>Jobs</em></h3>
+<p>O <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> é então orquestrado través de <a href="https://www.baeldung.com/jenkins-job-schedule"><em>Jobs ‘Schedulados’</em></a>, ou seja, de execução periódica agendada no <em>Jenkins</em>, que são responsáveis por etapas que a grosso modo são:</p>
+<ol style="list-style-type: decimal">
+<li>Importação de Dados do Jira</li>
+<li>Calculo das Métricas e Indicadores das Squad Ágeis</li>
+<li>Geração e Publicação dos Relatórios.</li>
+<li>Exportação dos Dados para Outros Formatos</li>
+</ol>
+<p>Quando cada um dos <em>Jobs</em> se inicia, o <em>Jenkins</em> primeiro verifica no <em>GitLab</em> se há um código mais atual do pipeline disponível (“comitado” na branch principal) e, neste caso, aplica a mudança em um dos <em>Slave</em> que irá executar o <em>Job</em> naquele momento. Feito isso, ele dispara no <em>Slave</em> um <a href="https://en.wikipedia.org/wiki/Shell_script"><em>shell script</em></a> que inicializa um <em>docker container</em> com uma imagem específica para suportar a execução dos <em>R scripts</em> deste pipeline.</p>
+<p>Dentro do container um <em>shell script</em> também era sempre responsável por, primeiro, trazer o contexto de execução do <em>Nexus</em>, fazendo o download dos artefatos de estado (arquivos <em>RDS</em> produzidos em <em>jobs</em> anteriores) para o disco local (&quot;dentro do <em>container</em>) antes de invocar o <a href="https://cran.r-project.org/doc/contrib/Lemon-kickstart/kr_scrpt.html"><em>R Script</em></a> de execução. Esse shell também garantia a volta dos artefatos processados (arquivos <em>RDS</em> produzidos pelo <em>job</em>) para o <em>Nexus</em> ao final da execução. A comunicação com o <em>Nexus</em> era feita por <em>REST API</em> usando <a href="https://www.geeksforgeeks.org/curl-command-in-linux-with-examples/"><em>curl command line</em></a>.</p>
+<p>Exemplo do <em>Shell script</em> para compactar a pasta de dados, contendo os <em>data.frames</em> em formato <em>RDS</em> para enviar ao <em>Nexus</em>:</p>
+<pre class="bash"><code>echo &quot;&quot;
+echo &quot;==========================================================&quot;
+echo &quot;= Storing dataset to nexus                      =&quot;
+echo &quot;==========================================================&quot;
+
+echo &quot;&quot;
+echo &quot;(1) Compressing datasets &gt;&gt;&gt;&quot;
+tar czvf ./grandebanco-indicadores/data/jira_datasets.tar.gz ./grandebanco-indicadores/data/*.rds
+
+echo &quot;&quot;
+echo &quot;(2) Uploading to Nexus &gt;&gt;&gt;&quot;
+curl -I --user $NEXUS_CRED --upload-file ./grandebanco-indicadores/data/jira_datasets.tar.gz http://nexus.redeinterna.corp/repository/jira-r-scripts/jira_datasets.tar.gz</code></pre>
+<p>O <em>R Script</em> recebe por <a href="https://www.r-bloggers.com/passing-arguments-to-an-r-script-from-command-lines/">parâmetros de linha de comando</a> passados pelo <em>job</em> do <em>Jenkins</em> as informações específicas para executar uma determinada etapa do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>, realiza as atividades daquela etapa e então salva o resultado do processamento localmente como arquivos RDS (nas etapas de importação e processamento) e arquivos <a href="https://pt.wikipedia.org/wiki/HTML"><em>HTML</em></a>, <em>XLSX</em>, <em>PPTS</em> e <em>CSVs</em>, nas etapas de exportação de dados e geração de relatórios.</p>
+<p><em>R Script</em> invocado pelo <em>Jenkins</em> dentro do <em>container</em>:</p>
+<pre class="r"><code>#!/usr/bin/env Rscript
+## Script to wrap the container environment
+
+# Set the persistent folder for library installations
+.libPaths(&quot;/R/lib&quot;)
+
+# check the NEEDS package
+packs &lt;- installed.packages()
+if (!(&quot;needs&quot; %in% packs[,1])){
+  install.packages(&#39;needs&#39;, repos=&#39;http://cran.us.r-project.org&#39;)
+}
+
+# load need
+library(needs)
+
+# =============================
+# ==== R ENVIRONMENT CHECK ====
+# =============================
+
+# ==== SESSION INFO ====
+sessionInfo()
+
+# ==== PACKAGES ====
+names(packs[,1])
+
+# ==== LIB PATHs ====
+.libPaths()
+
+# ==== WORKDIR ====
+getwd()
+
+# ============================
+# ==== EXECUTION PIPELINE ====
+# ============================
+
+# ==== COMMAND LINES ====
+commandArgs(trailingOnly = TRUE)
+
+# executa comando
+args &lt;- print(commandArgs(trailingOnly = TRUE)) 
+source(&quot;./R/pipeline/pipeline.R&quot;)
+execPipeline(args) # executa pipeline</code></pre>
+<p>Vamos detalhar cada um dos <em>jobs</em> fazem.</p>
+<div id="job-de-importação-de-dados-do-jira" class="section level4">
+<h4>(1) Job de Importação de Dados do Jira</h4>
+<p>O primeiro <em>Job</em> é responsável pela importação dos dados do Jira, se conectando à <a href="https://developer.atlassian.com/cloud/jira/platform/rest/v3/"><em>REST API</em> do <em>Jira</em></a> utilizando o pacote <a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html"><em>httr</em></a>. Para cada projeto ( <a href="https://confluence.atlassian.com/adminjiraserver/changing-the-project-key-format-938847081.html"><em>Jira Key</em></a> ) cadastrado do Jira, são importados os dados das Issues, Subissues, Sprints, Worklogs e Changelogs. A <em>REST API</em> responde a consulta com os dados em formato <em>json</em>, contendo <a href="https://en.wikipedia.org/wiki/Nesting_(computing)"><em>estruturas aninhadas</em></a>. Os dados são processados usando <a href="https://cran.r-project.org/web/packages/jsonlite/index.html"><em>jsonlite</em></a>, organizados de <a href="https://garrettgman.github.io/tidying/">maneira tabular</a> com a tipagem corrigida. São convertidos em <a href="https://tibble.tidyverse.org/"><em>tibbles</em></a> e então gravados localmente como <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/readRDS">arquivos RDS</a>.</p>
+<p>Como último passo desta etapa, os arquivos RDS eram então enviados para o <em>Nexus</em> também via <em>REST API</em> como último passo do <em>shell script + curl</em> dentro do container. Usamos <em>shell</em> porque é mais performático e natural na atribuição de manipulação de arquivos.</p>
+<pre class="r"><code># usando o pacote &#39;DiagrammeR&#39; para ilustrar a sequencia de atividades
+# de cada etapa usando Mermaid/DOT para desenhar um diagrama de sequência
+library(DiagrammeR)
+
+# Import Job
+mermaid(&quot;
+sequenceDiagram
+  Jenkins -&gt;&gt; +Slave: start \&quot;import job\&quot;
+  Slave -&gt;&gt; Gitlab: get code changes
+  Gitlab --&gt;&gt; Slave: pipeline code updated
+  Slave -&gt;&gt; +Docker: start R docker
+  Slave -&gt;&gt; Docker: run \&quot;jira-import.R\&quot;
+  Docker -&gt;&gt; Jira: https/get API 
+  Jira --&gt;&gt; Docker: json data
+  Docker -&gt;&gt; Docker: parse and tidy data
+  Docker -&gt;&gt; Docker: save RDS data files
+  Docker -&gt;&gt; Nexus: store RDS data artifacts
+  Nexus --&gt;&gt; Docker: stored
+  Docker --&gt;&gt; -Slave: script ends
+  Slave --&gt;&gt; -Jenkins: job ends
+&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"import job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"jira-import.R\"\n  Docker ->> Jira: https/get API \n  Jira -->> Docker: json data\n  Docker ->> Docker: parse and tidy data\n  Docker ->> Docker: save RDS data files\n  Docker ->> Nexus: store RDS data artifacts\n  Nexus -->> Docker: stored\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p>Trecho de código da importação que fazia uma busca por dados de um projeto específico no <em>Jira</em>:</p>
+<pre class="r"><code># script to declare a function to import project data from jira projects
+# setup ----
+library(needs)
+needs(jsonlite)
+needs(httr)
+
+# get Jira Project data fom key
+QueryProject &lt;- function(key, userAuth=NULL){
+  
+  # http basic authentication
+  if(is.null(userAuth)) userAuth = .getUserAuth()
+
+  # end point
+  url &lt;- paste0(.jira_base_url,&quot;/rest/api/2/project/&quot;,key)
+  
+  # history,version,changelog,versionedRepresentations,names
+  resp &lt;- httr::GET(url=url,
+                    httr::add_headers(
+                      Authorization = paste0(&quot;Basic &quot;,userAuth[1])
+                      #app_token = token,
+                    ),
+                    httr::config( ssl_verifypeer = 0L, timeout = 240 ),
+                    httr::timeout(240))
+    
+  if (resp$status_code==200) {
+    # converting from text, to json, to R
+    txt &lt;- httr::content(resp, as = &quot;text&quot;) # body
+    json &lt;- fromJSON(txt) # convert json
+  } else {
+    # something was wrong
+    stop(paste0(&quot;Project Import HTTP Error (&quot;,resp$status_code,&quot;) getting Project [&quot;,key,&quot;] information.&quot;))
+  }
+    
+  return(json)
+}</code></pre>
+</div>
+<div id="job-de-calculo-de-métricas-e-indicadores" class="section level4">
+<h4>(2) Job de Calculo de Métricas e Indicadores</h4>
+<p>Um <em>job</em> específico para o passo de transformação e cálculo de métricas e indicadores foi criado. Após recuperar o contexto de execução dos dados importados do <em>Nexus</em> para o <em>container local</em> e realiza uma série de transformações e cálculos, gerando também outros <em>RDSs de “saída”</em> no disco local que também eram armazenados no <em>Nexus</em> no passo final, disponibilizando-as para as próximas etapas do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>.</p>
+<pre class="r"><code># Calc Job
+mermaid(&quot;
+sequenceDiagram
+  Jenkins -&gt;&gt; +Slave: start \&quot;calc job\&quot;
+  Slave -&gt;&gt; Gitlab: get code changes
+  Gitlab --&gt;&gt; Slave: pipeline code updated
+  Slave -&gt;&gt; +Docker: start R docker
+  Slave -&gt;&gt; Docker: run \&quot;calc-indicators.R\&quot;
+  Docker -&gt;&gt; Nexus: recover RDS data artifacts
+  Nexus --&gt;&gt; Docker: RDS data files
+  Docker -&gt;&gt; Docker: process data
+  Docker -&gt;&gt; Docker: save RDS result files
+  Docker -&gt;&gt; Nexus: store RDS result artifacts
+  Nexus --&gt;&gt; Docker: stored
+  Docker --&gt;&gt; -Slave: script ends
+  Slave --&gt;&gt; -Jenkins: job ends
+&quot;)</code></pre>
+<div id="htmlwidget-2" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"calc job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"calc-indicators.R\"\n  Docker ->> Nexus: recover RDS data artifacts\n  Nexus -->> Docker: RDS data files\n  Docker ->> Docker: process data\n  Docker ->> Docker: save RDS result files\n  Docker ->> Nexus: store RDS result artifacts\n  Nexus -->> Docker: stored\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p>Embora a maioria das manipulações são de indicadores simples, que basicamente eram agrupamentos, somatórias e cálculos de taxa, algumas transformações eram bem sofisticadas. Por exemplo, para gerar informações sobre <a href="https://pt.wikipedia.org/wiki/Lead_time"><em>Leadtime</em></a> e <a href="https://kanbanize.com/kanban-resources/kanban-analytics/flow-efficiency"><em>Flow Efficiency</em></a> das Squads ágeis é necessário filtrar e transformar as informações de <a href="https://confluence.atlassian.com/fisheye/viewing-the-changelog-960155331.html"><em>ChangeLog</em></a> das <a href="https://support.atlassian.com/jira-software-cloud/docs/what-is-an-issue/"><em>Issues</em></a> do <em>Jira</em> (as histórias de usuário), em um diagrama de <a href="https://confluence.atlassian.com/adminjiracloud/working-with-workflows-776636540.html"><em>transição de estados</em></a> e medir os tempos de transição entre eles.</p>
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+library(datamodelr)
+
+changelogs &lt;- readRDS(&quot;./data/jira_changelogs.rds&quot;)
+transitions &lt;- readRDS(&quot;./data/calc_jira_transitions.rds&quot;)
+
+jira_model &lt;- dm_from_data_frames(changelogs, transitions)
+ref_keys &lt;- c(&quot;project.id&quot;,&quot;project.key&quot;,&quot;jira.id&quot;,&quot;jira.key&quot;)
+
+jira_model %&gt;% 
+  dm_add_reference_(&quot;changelogs&quot;, ref_keys, &quot;transitions&quot;, ref_keys) %&gt;% 
+  dm_create_graph(rankdir = &quot;LR&quot;, col_attr = c(&quot;column&quot;, &quot;type&quot;))</code></pre>
+<p><img src="/images/jira_transitions.png" /></p>
+<p>A estrutura do <em>ChangeLog</em> do <em>Jira</em> é praticamente um metamodelo, pois rastreia as informações de <em>update</em> de todos as atributos de uma <em>Issue</em>. A sequencia de transformação não é trivial, uma vez feita, um <em>tibble</em> de saída era gerado e adicionado ao conjunto de artefatos que são exportados para o <em>Nexus</em> para ser eventualmente utilizados em <em>jobs</em> subsequentes.</p>
+</div>
+<div id="job-de-publicação-de-resultados" class="section level4">
+<h4>(3) Job de Publicação de Resultados</h4>
+<p>Último passo do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a> e um dos mais relevantes, pois decide qual é o formato que a informação vai ter ao chegar na mão das <em>Squads</em> e dos gestores do banco. O <em>job</em> de geração de relatório funciona como os demais, recupera o contexto deixado pelos <em>jobs</em> anteriores, recuperando os artefatos <em>RDSs</em> do <em>Nexus</em>, e a partir daí gerar uma série de relatórios, usando principalmente <a href="https://rmarkdown.rstudio.com/"><em>RMarkdown</em></a> e uma combinação de <a href="https://rmarkdown.rstudio.com/flexdashboard/"><em>flexdashboard</em></a> com <a href="https://plotly.com/r/"><em>plotly</em></a>, quase sempre <a href="https://rmarkdown.rstudio.com/docs/reference/render.html"><em>renderizados</em></a> para <a href="https://pt.wikipedia.org/wiki/HTML"><em>HTML</em></a>. Também eram gerados alguns arquivos XSLX, PPT e PDFs, mas a maioria absoluta dos relatórios estava em formato <a href="https://pt.wikipedia.org/wiki/HTML"><em>HTML</em></a>.</p>
+<pre class="r"><code># Report Job
+mermaid(&quot;
+sequenceDiagram
+  Jenkins -&gt;&gt; +Slave: start \&quot;report job\&quot;
+  Slave -&gt;&gt; Gitlab: get code changes
+  Gitlab --&gt;&gt; Slave: pipeline code updated
+  Slave -&gt;&gt; +Docker: start R docker
+  Slave -&gt;&gt; Docker: run \&quot;render-reports.R\&quot;
+  Docker -&gt;&gt; Nexus: recover RDS artifacts
+  Nexus --&gt;&gt; Docker: RDS files
+  Docker -&gt;&gt; Docker: render markdown reports
+  Docker -&gt;&gt; Confluence: https/post API
+  Confluence --&gt;&gt; Docker: published
+  Docker -&gt;&gt; MailServer: send updated reports e-mails
+  MailServer --&gt;&gt; Docker: e-mails sent
+  Docker --&gt;&gt; -Slave: script ends
+  Slave --&gt;&gt; -Jenkins: job ends
+&quot;)</code></pre>
+<div id="htmlwidget-3" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"report job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"render-reports.R\"\n  Docker ->> Nexus: recover RDS artifacts\n  Nexus -->> Docker: RDS files\n  Docker ->> Docker: render markdown reports\n  Docker ->> Confluence: https/post API\n  Confluence -->> Docker: published\n  Docker ->> MailServer: send updated reports e-mails\n  MailServer -->> Docker: e-mails sent\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p>Os principais artefatos gerados nesta etapa eram:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Dashboard de Projeto</strong>: um <em>flexdashboard</em> consolidando visão de performance de um <a href="https://confluence.atlassian.com/adminjiraserver/changing-the-project-key-format-938847081.html">projeto no jira</a>. Veja <a href="/docs/project_dashboard.html">este exemplo</a>.</li>
+<li><strong>Squad Dashboard</strong>: um <em>flexdashboard</em> consolidando a visão de métricas de indicadores de uma <em>Squad Ágil</em> identificada por <a href="https://support.atlassian.com/jira-software-cloud/docs/what-is-a-sprint/"><em>Jira Sprint</em></a>.</li>
+<li><strong>Baseline Dashboad</strong>: Também um <em>flexdashboard</em> contendo a visão consolidada de indicadores de todas as <em>Squads</em> e <em>Projetos</em> dos banco.</li>
+<li><strong>Squad Compliance Report</strong>: Um <em>HTML</em> por <em>sprint</em> ativo, informando aspectos da própria saúde da coleta de dados, como volume de horas reportado por usuário por dia, completude dos campos informativos das <em>Issues</em>, identificação e classificação de defeitos, etc.</li>
+<li><strong>Compliance Map</strong>: Um <em>HTML</em> consolidando a visão de <em>compliance</em> das <em>Squads</em> e projetos do banco.</li>
+<li><strong>Evolution Report</strong>: Um <em>PPT</em> executivo gerado semanalmente para ser enviado por e-mail contendo uma visão de evolução do <em>compliance</em> e de produtividade das <em>squads</em>.</li>
+</ol>
+<p>Trecho de código que renderizava um dos relatórios:</p>
+<pre class="r"><code># renderiza um dashboard de projeto (jira.key)
+renderProjectDashboard &lt;- function(pkey, compressFile = T) {
+  # define nome do artefato de saida
+  filename &lt;- paste0(&quot;./dashboard/project_dashboard_&quot;,pkey,&quot;.html&quot;)
+  
+  # pasta de &quot;Dashs&quot; exportados
+  outFilePath &lt;- paste0(&quot;../.&quot;,filename)
+  
+  # renderiza report
+  rmarkdown::render(&quot;./R/dashboard/projectDashboard.Rmd&quot;,
+                    output_file=outFilePath,
+                    params=list(project_key = pkey),
+                    encoding = &quot;latin1&quot;)
+  
+  # comprime para ZIP ou deixa HTML?
+  if (compressFile) filename &lt;- .compressFile(filename)
+  
+  # retorna pathname do relatorio gerado
+  return(filename)
+}</code></pre>
+<p>Antes do <em>R script</em> encerrar, ele envia os relatórios gerados para o <em>Conluence</em> como anexos de páginas dos projetos, através de uma <em>REST API</em> e do <em>httr</em> package. Além disso, disparava uma série de e-mails para os líderes e aos gestores do banco, informando da disponibilização dos relatórios atualizados, bem como as respectivas <a href="https://pt.wikipedia.org/wiki/URL"><em>URLs</em></a> para consultá-los.</p>
+</div>
+<div id="job-de-exportação-de-dados" class="section level4">
+<h4>(4) Job de Exportação de Dados</h4>
+<p>Para permitir aos gestores e líderes manipularem diretamente os dados extraídos e gerados pelo pipeline, a fim de criar outras visões particulares e específicas, adicionamos uma etapa de exportação dos <a href="https://en.wikipedia.org/wiki/Raw_data">dados brutos</a> (<em>raw data</em>) em planilhas <em>excel</em>, que era a ferramenta mais acessível e popular no banco.</p>
+<p>Os principais artefatos em formato <em>excel</em> gerados era:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Metrics Spreadsheet</strong>: Versão <em>raw</em> do <em>Dashbord de Projetos</em>, contendo os dados de origem e as métricas calculadas para cada projeto exportadas em um <em>excel</em>, para facilitar o entendimento pelos líderes de <em>Squad</em> sobre e também permitir que eles fizessem outros tipos de agrupamento e filtros.</li>
+<li><strong>KPI Spreadsheet</strong>: Versão <em>raw</em> do <em>Baseline Dashboard</em>, contendo os dados de origem e indicadores calculados para permitir ao banco filtrar e pivotar os dados de maneira diferente.</li>
+<li><strong>Execution Worklog</strong>: Um <em>excel</em> gerado por projeto e <em>sprint</em> para que os líderes de <em>Squad</em> possam analisar facilmente inconsistências em apontamento de horas de seus times.</li>
+</ol>
+<p>Esses artefatos também eram publicados em uma página específica do <em>Confluence</em>.</p>
+<pre class="r"><code># Export Job
+mermaid(&quot;
+sequenceDiagram
+  Jenkins -&gt;&gt; +Slave: start \&quot;export job\&quot;
+  Slave -&gt;&gt; Gitlab: get code changes
+  Gitlab --&gt;&gt; Slave: pipeline code updated
+  Slave -&gt;&gt; +Docker: start R docker
+  Slave -&gt;&gt; Docker: run \&quot;export-data.R\&quot;
+  Docker -&gt;&gt; Nexus: recover RDS artifacts
+  Nexus --&gt;&gt; Docker: RDS files
+  Docker -&gt;&gt; Docker: export data files
+  Docker -&gt;&gt; Confluence: https/post API
+  Confluence --&gt;&gt; Docker: published
+  Docker -&gt;&gt; Database: write database
+  Database --&gt;&gt; Docker: exported
+  Docker --&gt;&gt; -Slave: script ends
+  Slave --&gt;&gt; -Jenkins: job ends
+&quot;)</code></pre>
+<div id="htmlwidget-4" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"export job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"export-data.R\"\n  Docker ->> Nexus: recover RDS artifacts\n  Nexus -->> Docker: RDS files\n  Docker ->> Docker: export data files\n  Docker ->> Confluence: https/post API\n  Confluence -->> Docker: published\n  Docker ->> Database: write database\n  Database -->> Docker: exported\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p>Mais tarde durante o nosso trabalho de consultoria ágil e com a popularização do uso dos indicadores e métricas pelo banco, foi adicionado um último passo no processo de exportação. Para que <a href="https://en.wikipedia.org/wiki/Business_intelligence_software">Analistas de BIs</a> pudessem acessar os dados atualizados de forma mais direta, sem se preocupar com a atualização manual de dados-fontes vindo de arquivos <em>excel</em>, finalmente adicionamos um banco de dados à solução e incluímos uma exportação/escrita dos dados ao database.</p>
+<p>Exportação era feita para um banco de dados <a href="https://pt.wikipedia.org/wiki/MySQL"><em>MySQL</em></a> utilizando (na época) os pacotes <a href="https://db.rstudio.com/dbi/"><em>DBI</em></a> e <a href="https://github.com/r-dbi/rmysql"><em>RMySQL</em></a>, e as tabelas salvas no banco eram exatamente o conjunto de arquivos <em>RDS</em> (os <em>data.frames</em>) que compunham o conjunto de dados exportados do <em>Jira</em> e calculados e gerados pelo <em>pipeline</em>.</p>
+<p>Código de escrita ao banco de dados:</p>
+<pre class="r"><code># script to export the whole local database to a MySQL
+
+# setup
+library(needs)
+needs(DBI)
+needs(RMySQL)
+needs(lubridate)
+source(&quot;./R/acquire/jira_datasets.R&quot;)
+
+# connect to DB
+.getDBConnection &lt;- function(isProduction=F){
+
+  # develop database
+  .printf(&quot;Connecting to %s @ %s:%s&quot;, .settings$export_db$name,.settings$export_db$host,.settings$export_db$port)
+  dbc  &lt;- dbConnect(RMySQL::MySQL(),
+                    host     = .settings$export_db$host,
+                    port     = .settings$export_db$port,
+                    dbname   = .settings$export_db$name,
+                    user     = .settings$export_db$user,
+                    password = .settings$export_db$pass )
+  
+  return(dbc)
+  
+}
+
+.toDB &lt;- function(connection, name, value){
+  t &lt;- system.time({
+    dbWriteTable(connection, name, value, row.names = F, overwrite=T)
+  })
+  .printf(&quot;%s (%d x %d) EXPORTED in %g s&quot;, name, nrow(value), ncol(value), t[[3]])
+}
+
+exportToDB &lt;- function(){
+  
+  # obtem conexao
+  db &lt;- .getDBConnection()
+  
+  # realiza as exportacoes
+
+  .printf(&quot;DB_EXPORT START @ %s&quot;, now())
+  
+  ## configuracao e logs
+  .toDB(db, &quot;JIRA_IMPORT_CONFIG&quot;, getConfig())
+  .toDB(db, &quot;JIRA_IMPORT_LOGS&quot;, getImportLogs())
+  
+
+  ## dominios
+  .toDB(db, &quot;JIRA_ISSUE_RESOLUTIONS&quot;, .issueResolution)
+  .toDB(db, &quot;JIRA_ISSUE_STATUS&quot;, .issueStatus)
+  .toDB(db, &quot;JIRA_ISSUE_TYPES&quot;, .issueTypes)
+  
+  ## projects
+  .toDB(db, &quot;JIRA_PROJECTS&quot;, getProjects())
+
+  ## Issues
+  e &lt;- getEpics()
+  e &lt;- e[, epic.summary := iconv(epic.summary, to = &quot;iso-8859-1&quot;)]
+  .toDB(db, &quot;JIRA_EPICS&quot;, e)
+  
+  i &lt;- getIssues()
+  i &lt;- i[, issue.summary := iconv(issue.summary, to = &quot;iso-8859-1&quot;)  ]
+  .toDB(db, &quot;JIRA_ISSUES&quot;, i)
+  
+  s &lt;- getSubissues()
+  s &lt;- s[, subissue.summary := iconv(subissue.summary, to = &quot;iso-8859-1&quot;) ]
+  .toDB(db, &quot;JIRA_SUB_ISSUES&quot;, s)
+
+  rm(e,i,s); gc()
+  
+  ## Sprint, Sprint Issues e Links
+  .toDB(db, &quot;JIRA_SPRINTS&quot;, getSprints())
+  .toDB(db, &quot;JIRA_SPRINT_ISSUES&quot;, getSprintIssues())
+  .toDB(db, &quot;JIRA_ISSUE_LINKS&quot;, getIssueLinks())
+
+  ## Dashs e  Versions
+  d &lt;- getDashboards()
+  d[, dashboard.name := iconv(dashboard.name, to = &quot;iso-8859-1&quot; )]
+  .toDB(db, &quot;JIRA_DASHBOARDS&quot;, d)
+
+  v &lt;- getVersions()
+  v[, version.name := iconv(version.name, to = &quot;iso-8859-1&quot;) ]
+  v[, version.description := iconv(version.description, to = &quot;iso-8859-1&quot;) ]
+  .toDB(db, &quot;JIRA_VERSIONS&quot;, v)
+  .toDB(db, &quot;JIRA_VERSION_ISSUES&quot;, getVersionIssues())
+
+  rm(d,v); gc()
+
+  ## Changelogs e Transitions
+  .toDB(db, &quot;JIRA_CHANGELOGS&quot;, getChangeLogs())
+  .toDB(db, &quot;JIRA_TRANSITIONS&quot;, getJiraTransitions())
+
+  ## Worklogs
+  .toDB(db, &quot;JIRA_WORKLOGS&quot;, getWorklogs())
+
+  ## metricas
+  m &lt;- getMetrics()
+  .toDB(db, &quot;JIRA_METRIC_INTEGRITY&quot;, m$metric.quality)
+  .toDB(db, &quot;JIRA_METRIC_SPRINTS&quot;, m$sprint.metrics)
+  
+  # reduz o tamanho do nome das colunas
+  defs &lt;- m$sprint.deffects
+  names(defs) &lt;- strtrim(names(defs),64)
+  .toDB(db, &quot;JIRA_METRIC_DEFFECTS&quot;, defs)
+  
+  .toDB(db, &quot;JIRA_METRIC_ISSUES&quot;, m$issue.metrics)
+  .toDB(db, &quot;JIRA_METRIC_ISSUE_FLOWS&quot;, m$issue.flow)
+  .toDB(db, &quot;JIRA_METRIC_PROJECT&quot;, m$monthly.stat)
+  
+  rm(defs);gc();
+  
+  .printf(&quot;DB_EXPORT END @ %s&quot;, now())
+  
+  # fecha conexao  
+  dbDisconnect(db)
+  
+}
+
+## Script to wrap the container environment
+runExportDB &lt;- function(){
+  t &lt;- system.time({exportToDB()})
+  .printf(&quot;DB_EXPORT in %g s&quot;, t[[3]])
+}</code></pre>
+<p>Claro que se o banco de dados estivesse disponível desde o início, ele seria a base para manter o contexto comum entre os <em>jobs</em>, porém ele foi disponibilizado bem mais tarde no trabalho da consultoria enquanto o <em>Nexus</em> estava disponível desde o primeiro dia.</p>
+</div>
+</div>
+</div>
+<div id="conclusão" class="section level2">
+<h2>Conclusão</h2>
+<p>Vimos neste post como foi possível usar uma infra-estrutura <em>open-source</em> de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> para orquestrar um <em>data pipeline</em> de importação, transformação, análise e disponibilização de dados usando <em>R Scripts</em> de ponta à ponta.</p>
+<p>Uma das vantagens dessa abordagem é que é uma solução sem servidor dedicado, os <em>slaves</em> e <em>containers</em> são instanciados somente quando necessário, processam as informações e então são desativados, permitindo a redução de custos e otimização de recursos.</p>
+<p>A descrição acima é uma simplificação do trabalho, por exemplo, há <em>jobs</em> diferentes para importação de dados que trabalhavam em momentos diferentes e consultando recortes diferentes no <em>Jira</em>. Mesma situação para os <em>jobs</em> de cálculo de métricas e geração de relatórios, pois a frequência de atualização de relatórios variava de acordo com a necessidade do banco e ritmos de projeto. Além disso, outros truques de como manter a configuração de execução (quais projetos buscar no <em>Jira</em>, quais as <em>urls</em> do <em>Jira</em> do <em>Nexus</em>, etc.) bem como a geração de um relatório <em>rmarkdown</em> com o próprio log de execução a fim de verificar a saúde do <em>pipeline</em>, ou comunicar o suporte do banco em caso de falha, foram omitidos acima para simplificar a descrição da solução e focar na estrutura geral montada.</p>
+<p>A complexidade do modelo de dados do <em>Jira</em> vale um <em>post</em> no futuro. Poderíamos fazer uma análise exploratória dos dados importados do <em>Jira</em> e avaliar como tirar algumas conclusões tomando como base as informações de traqueamento das <em>Squads</em> Ágeis, mostrando em parte, o que os <em>scripts</em> de transformação e cálculo de indicadores faziam. See you soon!</p>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/data-analysis/">data analysis</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/pt-br/">pt-BR</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/agile/">agile</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/free-springer-books-about-data-science-statistics-and-r/" data-tooltip="Free Springer Books about Data Science, Statistics and R">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/free-springer-books-about-data-science-statistics-and-r/" data-tooltip="Free Springer Books about Data Science, Statistics and R">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2020/05/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2020%2F05%2Fgerando-indicadores-%25C3%25A1geis-com-r-jenkins-e-docker%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2020%2F05%2Fgerando-indicadores-%25C3%25A1geis-com-r-jenkins-e-docker%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2020%2F05%2Fgerando-indicadores-%25C3%25A1geis-com-r-jenkins-e-docker%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<br/>Masters in Tech Innovation Mgt<br/>Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<br/><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2020\/05\/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker\/';
+          
+            this.page.identifier = '\/2020\/05\/gerando-indicadores-%C3%A1geis-com-r-jenkins-e-docker\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
