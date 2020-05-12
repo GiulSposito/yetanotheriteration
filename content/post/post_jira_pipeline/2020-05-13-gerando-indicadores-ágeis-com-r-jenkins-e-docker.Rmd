@@ -1,0 +1,523 @@
+---
+title: Gerando Indicadores Ágeis com R, Jenkins e Docker
+author: Giuliano Sposito
+date: '2020-05-13'
+slug: gerando-indicadores-ágeis-com-r-jenkins-e-docker
+categories:
+  - data science
+  - agile
+tags:
+  - data analysis
+  - rstats
+  - pt-BR
+  - agile
+keywords:
+  - tech
+coverImage: /images/jira_pipeline_cover.jpg
+thumbnailImage: /images/jira_pipeline_tn.png
+thumbnailImagePosition: left
+metaAlignment: center
+---
+
+Sempre se comenta a grande versatilidade do *R*, com a sua capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
+
+<!--more-->
+
+Sempre se comenta a grande versatilidade de [*R*](https://www.r-project.org/), com a sua capacidade de participar de todas as etapas de um [fluxo de análise de dados](http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/). Quem conhece [*a linguagem R*](https://pt.wikipedia.org/wiki/R_(linguagem_de_programa%C3%A7%C3%A3o)) não duvida deste potencial, mas não é muito frequente encontramos uma situação em que ele é de fato usado de ponta à ponta, e principalmente em um grande projeto. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
+
+
+## Contexto
+
+Em 2017 comecei um trabalho de consultoria num grande banco brasileiro, dentro de um projeto maior de transformação ágil, implantação de técnicas de desenvolvimento baseadas em [*Scrum*](https://pt.wikipedia.org/wiki/Scrum_(desenvolvimento_de_software)) e [*Kanban*](https://pt.wikipedia.org/wiki/Kanban). Nesse grande projeto, que envolvia toda a TI do banco, eu trabalhava prioritariamente na normalização e uniformização de técnicas ágeis para geração de [métricas e indicadores de desenvolvimento](https://pt.wikipedia.org/wiki/M%C3%A9trica_de_software), que auxiliariam o time e a gestão corporativa a ter uma visão da produtividade, qualidade e previsibilidade dos *Squads*. A iniciativa também era importante dentro dos ciclos de PDCA das próprias *Squads*, pois permitira uma discussão embasada por dados para melhoria de performance.
+
+Parte deste trabalho é sobre aculturamento do time, ou seja, as *squads* precisam conhecer, entender e começar a usar as métricas e indicadores ágeis dentro do seu dia-a-dia. Se acostumar com esses números, valorizar a informação e então passar a tomar decisão baseadas nos dados obtidos. Para aumentar o engajamento dos líderes e das *squads* deveríamos, então, expô-los às métricas e indicadores definidos corporativamente desde o primeiro dia. Isso é um movimento chave para o sucesso no que diz respeito a adoção das métricas. 
+
+![Conjuntos e Reports Gerados em R e Divulgados para os Líderes de Squad](./reports.png)
+
+## R como Solução
+
+Para agilizar esse aspecto da consultoria, sem ter que demandar e especificar uma outra equipe de [ETL](https://pt.wikipedia.org/wiki/Extract,_transform,_load)/[BI](https://en.wikipedia.org/wiki/Business_intelligence_software), começamos a extrair manualmente os dados do *Jira* e gerar as métricas e indicadores rapidamente usando *R scripts*, e o impacto foi muito grande. A materialização dos artefatos analíticos, entregue na mão das *Squads* foi bem positiva e rapidamente eles entenderam as informações e ficaram dependentes dos reports que gerávamos para tomada de ações imediatas no dia-a-dia. Esse sucesso criou um outro problema, automatizar a geração dessas informações para que elas sempre estivessem disponíveis e não dependessem de alguém para gerá-las.
+
+Para automatizar, orquestrar, otimizar os custos e facilitar a integração dessas atividades montamos uma espécie de *Pipeline para Continuos Data Science* baseando-se em uma infraestrutura de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD) clássica de engenharia de software.
+
+![Visão Consolidada de Indicadores Corporativos](./dash_corporativo.png)
+
+Essa abordagem foi inspirada nos grupos de desafios do [*kaggle*](https://www.kaggle.com/) que tínhamos na empresa de vez em quando. Neste desafios tínhamos um grupo de 3 ou 4 pessoas trabalhando simultaneamente no desafio, construindo em paralelo e simultaneamente as etapas de [Exploração dos Dados](https://pt.wikipedia.org/wiki/An%C3%A1lise_explorat%C3%B3ria_de_dados), [Limpeza e Organização dos Datasets](https://en.wikipedia.org/wiki/Tidy_data), [Engenharia de Features](https://en.wikipedia.org/wiki/Feature_engineering), [Treinar um modelo](https://docs.microsoft.com/en-us/azure/machine-learning/studio-module-reference/train-model) e [Avaliação de Performance](https://www.analyticsvidhya.com/blog/2019/08/11-important-model-evaluation-error-metrics/). Essa solução permitia que cientistas de dados trabalhando em pontos diferentes do *pipeline* e ao *comitar* um novo código no controlador de versão, a partes afetadas do fluxo fossem executadas automaticamente. Isso nos dava bastante agilidade e independência durante os trabalhos no desafio.
+
+De maneira oportuna, além da consultoria de desenvolvimento ágil, também tínhamos uma outra iniciativa no banco, desta vez trabalhando na definição e construção do ambiente de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD) corporativo. No momento que nos questionamos como automatizar mais rápido e fácil, a geração dos indicadores e métricas, então a opção de usar a mesma estratégia ficou evidente. Além disso, poderíamos evoluir os relatórios e indicadores a medida que a implantação de métricas e indicadores ágeis ganhava consistência e maturidade, sem ter que manter disponível disponível e alocada, uma terceira equipe de [ETL](https://pt.wikipedia.org/wiki/Extract,_transform,_load) e [BI]((https://en.wikipedia.org/wiki/Business_intelligence_software)) no banco.
+
+### Componentes da Solução
+
+O ambiente de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD) para automatizar o *pipeline* era composto das entidades abaixo descritas, e foram usadas da seguinte maneira:
+
+![](./jira_r_components.png)
+
+1. [**Jenkins**](https://www.jenkins.io/): Jenkins é um servidor de automação gratuito e de código aberto. Ajuda a automatizar as partes do desenvolvimento de software relacionadas à construção, teste e implantação, facilitando a integração contínua e a entrega contínua, funcionando grosseiramente falando, como um orquestrador de [taréfas (ou *jobs*)](https://www.guru99.com/create-builds-jenkins-freestyle-project.html). Era usado para orquestrar os *jobs* do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)), instanciando os containers dentro dos [slaves](https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/) e executando os scripts que efetuavam as atividades do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)). Neste caso, todos os *jobs* rodavam por esquema de [agendamento](https://www.baeldung.com/jenkins-job-schedule).
+1. [**Jira**](https://www.atlassian.com/br/software/jira): A principal ferramenta de software usada pelas equipes ágeis para o monitoramento de tarefas e acompanhamento de projetos. Tem como objetivo principal garantir o gerenciamento (e rastreamento) de todas as suas atividades em único lugar. Tudo que uma equipe ágil faz acaba sendo registrada no *Jira*, assim para acompanhar a performance de um time basta acessar o histórico de atividades registradas na ferramenta e a partir dele calcular indicadores *Leadtime*, Esforço por História, Taxas de Defeitos dos Projetos, *Throughput*, etc. O acesso às essas informações era feita pela [REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/) disponível.
+1. [**GitLab**](https://about.gitlab.com/): é um gerenciador de repositório de software baseado em [*Git*](https://pt.wikipedia.org/wiki/Git), com suporte a *Wiki*, gerenciamento de tarefas e integração com outras ferramentas de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD). *GitLab* é similar ao *GitHub*, mas permite que os desenvolvedores armazenem o código em seus próprios servidores ao invés de servidores de terceiros. Foi usado para armazenar o próprio código de scripts do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) de dados.
+1. [**Docker**](https://www.docker.com/): Os scripts de builds rodavam dentro de ambientes de integração em [containers](https://www.docker.com/resources/what-container) que eram instanciados em um *pool* de [*slaves*](https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/)) em máquinas na [Cloud Red Hat](https://www.redhat.com/pt-br/technologies/cloud-computing/cloud-suite) interna do banco. Assim um *job* do Jenkins inicializava, ele sempre acionava um [*slave*](https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/), que instanciava um *container* responsável pelo ambiente daquele projeto e então executava os *scripts* de *Build*. No nosso caso, uma [imagem docker](https://searchitoperations.techtarget.com/definition/Docker-image) foi criada, com o ambiente R instalado com os principais pacotes e outras bibliotecas e softwares necessários, como Pandoc, Java entre outros, para permitir a execução dos *scripts* do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) de dados.
+1. [**Nexus Repository**](https://www.sonatype.com/product-nexus-repository): é um gerenciador de repositório para artefatos de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD), facilitando a distribuição de software. Era usado para armazenar e disponibilizar para outros desenvolvedores os artefatos produzidos nos *pipelines* de *build* do Jenkins. No nosso caso, usamos para armazenar os dados extraídos do Jira e processados pelos *R Scripts* em formato RDS exatamente como um artefato de build. O armazenamento e recuperação dos artefatos era feita via [REST API](https://help.sonatype.com/repomanager3/rest-and-integration-api) 
+1. [**Confluence**](https://www.atlassian.com/software/confluence): é a ferramenta de colaboração de conteúdo da [Atlassian](https://www.atlassian.com/) usada pelas equipes para compartilhar e formalizar conhecimento de suas atividades e projetos. No *Confluence*, o conteúdo é criado e organizado usando espaços, páginas e blogs, permitindo que os usuários escrevam, editem, comentem e realizem trabalhos juntos na mesma interface. Em nosso [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)), os relatórios de cada squad que eram gerados pelos *scripts* eram publicados nos [spaces](https://confluence.atlassian.com/doc/spaces-139459.html) dos próprios projetos fazendo uso das [APIs](https://developer.atlassian.com/server/confluence/confluence-server-rest-api/).
+
+### Pacotes R usados 
+
+Uma conjunto grande de pacotes foi usado para garantir o [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) de análise de ponta à ponta ([da importação dos dados à publicação de resultados]((http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/))), mas podemos destacar alguns dos principais usados nos momentos chaves do fluxo de informação.
+
+1. [**tidyverse**](https://www.tidyverse.org/): Toda a manipulação de dados foi usando *dplyr*, *tidyr*, *purrr* e demais pacotes do *tidyverse*. Na verdade, o [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) começou a ser escrito com [*data.table*](https://cran.r-project.org/web/packages/data.table/index.html) visando inicialmente conter eventuais problemas de performance no futuro, mas mudei a abordagem para "facilidade da leitura do código" nos fluxos de manipulação e cálculo, e [*dplyr*](https://dplyr.tidyverse.org/) c/ [*magrittr*](https://magrittr.tidyverse.org/) são imbatíveis neste quesito.
+1. [**httr**](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) e [**jsonlite**](https://cran.r-project.org/web/packages/jsonlite/index.html): usados para construir as chamadas às *REST APIs* e manipular o *json* de retorno.
+1. [**xlsx**](http://www.sthda.com/english/wiki/r-xlsx-package-a-quick-start-guide-to-manipulate-excel-files-in-r) e [**ReporteRs**](http://www.sthda.com/english/wiki/create-and-format-powerpoint-documents-from-r-software): foram usados tanto para leitura e escrita de arquivos [*Excel*](https://pt.wikipedia.org/wiki/Microsoft_Excel) e geração de dois relatórios específicos em formato [*Powerpoint*](https://pt.wikipedia.org/wiki/Microsoft_PowerPoint), mas maioria dos reports usaram [*RMarkdown*](https://rmarkdown.rstudio.com/) renderizando para HTML ou PDF.
+1. [**needs**](https://github.com/joshkatz/needs): Embora o *container* R criado para o [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) tenha todos os principais pacotes usados instalados, para dar liberdade ao desenvolvimento incorporar novos pacotes sem ter que refazer a imagem docker do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) a todo momento, usei o pacote *needs*. Ele faz uma gestão de pacotes instalados na instância de maneira bem transparente. *Needs* ao tentar carregar o pacote para uso no *script*, verifica antes se ele está presente na instância e caso não esteja, faz o download e sua instalação e então carrega pacote e segue o fluxo de execução. Isso facilita muito a incorporação e testes de pacote no ambiente produtivo. Claro que para as instâncias não ficarem instalando pacotes a cada execução era necessário usar um truque: mapear um volume do container para uma pasta comum de bibliotecas na instância, assim a instância mantinha uma pasta de Libs instaladas "fora do container" e não precisava ficar reinstalando pacotes cada vez que o container subia. Funcionou muito bem em quase todos os casos (nos que não precisavam instalar ferramentas nativas via linha de comando).
+1. [**flexdashboard**](https://rmarkdown.rstudio.com/flexdashboard/): Um item de destaque e diferencial neste projeto. Os relatórios publicados continham várias páginas com gráficos e informações sobre indicadores distintos, para não parecer um relatório paginado longo e para se assemelhar a um dashboard analítico usei o *flexdashboard*. O impacto nos *stakeholders* foi imediato, embora fosse um documento estático, os usuários consumidores das informações se sentiam consultando uma [ferramenta de BI](https://en.wikipedia.org/wiki/Business_intelligence_software). Veja o exemplo abaixo.
+1. [**plotly**](https://plotly.com/r/): Outra incrível ferramenta quando se quer construir gráficos com iteratividade. Com uma [*API* semelhante](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) à do [*ggplot*](https://ggplot2.tidyverse.org/), e até com uma [função de conversão entre ggplot e plotly](https://www.rdocumentation.org/packages/plotly/versions/4.9.2.1/topics/ggplotly), é muito fácil de aprender e usar, e realmente adiciona um impacto visual incrível em [relatórios html](https://rmarkdown.rstudio.com/docs/index.html) gerados em conjunto com o *flexdashboard*.
+
+## Flexdashboard + Plotly
+
+![Flexdashboard e Plotly](./dashboard_panel01.png)
+
+A combinação do *flexdashboard* com *plotly* foi um grande diferencial. Os reports pareciam verdadeiros painéis de BI, veja [este exemplo](/docs/project_dashboard.html). Além disso, eles tinham como vantagem de poderem ser compartilhados e distribuídos aos envolvidos e interessados, sem restrição de acesso (autenticação e rede) ou número de licenças, problemas que são comumente encontrados quando se resolve de maneira tradicional. 
+
+## Descrição do *pipeline*
+
+### *Jobs*
+
+O [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) é então orquestrado través de [*Jobs 'Schedulados'*](https://www.baeldung.com/jenkins-job-schedule), ou seja, de execução periódica agendada no *Jenkins*, que são responsáveis por etapas que a grosso modo são:
+
+1. Importação de Dados do Jira
+1. Calculo das Métricas e Indicadores das Squad Ágeis
+1. Geração e Publicação dos Relatórios. 
+1. Exportação dos Dados para Outros Formatos
+
+Quando cada um dos *Jobs* se inicia, o *Jenkins* primeiro verifica no *GitLab* se há um código mais atual do pipeline disponível ("comitado" na branch principal) e, neste caso, aplica a mudança em um dos *Slave* que irá executar o *Job* naquele momento. Feito isso, ele dispara no *Slave* um [*shell script*](https://en.wikipedia.org/wiki/Shell_script) que inicializa um *docker container* com uma imagem específica para suportar a execução dos *R scripts* deste pipeline. 
+
+Dentro do container um *shell script* também era sempre responsável por, primeiro, trazer o contexto de execução do *Nexus*, fazendo o download dos artefatos de estado (arquivos *RDS* produzidos em *jobs* anteriores) para o disco local ("dentro do *container*) antes de invocar o [*R Script*](https://cran.r-project.org/doc/contrib/Lemon-kickstart/kr_scrpt.html) de execução. Esse shell também garantia a volta dos artefatos processados (arquivos *RDS* produzidos pelo *job*) para o *Nexus* ao final da execução. A comunicação com o *Nexus* era feita por *REST API* usando [*curl command line*](https://www.geeksforgeeks.org/curl-command-in-linux-with-examples/).
+
+Exemplo do *Shell script* para compactar a pasta de dados, contendo os *data.frames* em formato *RDS* para enviar ao *Nexus*:
+
+```{r, engine = 'bash', eval = FALSE}
+echo ""
+echo "=========================================================="
+echo "= Storing dataset to nexus                      ="
+echo "=========================================================="
+
+echo ""
+echo "(1) Compressing datasets >>>"
+tar czvf ./grandebanco-indicadores/data/jira_datasets.tar.gz ./grandebanco-indicadores/data/*.rds
+
+echo ""
+echo "(2) Uploading to Nexus >>>"
+curl -I --user $NEXUS_CRED --upload-file ./grandebanco-indicadores/data/jira_datasets.tar.gz http://nexus.redeinterna.corp/repository/jira-r-scripts/jira_datasets.tar.gz
+```
+
+O *R Script* recebe por [parâmetros de linha de comando](https://www.r-bloggers.com/passing-arguments-to-an-r-script-from-command-lines/) passados pelo *job* do *Jenkins* as informações específicas para executar uma determinada etapa do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)), realiza as atividades daquela etapa e então salva o resultado do processamento localmente como arquivos RDS (nas etapas de importação e processamento) e arquivos [*HTML*](https://pt.wikipedia.org/wiki/HTML), *XLSX*, *PPTS* e *CSVs*, nas etapas de exportação de dados e geração de relatórios.
+
+*R Script* invocado pelo *Jenkins* dentro do *container*:
+```{r, eval=FALSE}
+#!/usr/bin/env Rscript
+## Script to wrap the container environment
+
+# Set the persistent folder for library installations
+.libPaths("/R/lib")
+
+# check the NEEDS package
+packs <- installed.packages()
+if (!("needs" %in% packs[,1])){
+  install.packages('needs', repos='http://cran.us.r-project.org')
+}
+
+# load need
+library(needs)
+
+# =============================
+# ==== R ENVIRONMENT CHECK ====
+# =============================
+
+# ==== SESSION INFO ====
+sessionInfo()
+
+# ==== PACKAGES ====
+names(packs[,1])
+
+# ==== LIB PATHs ====
+.libPaths()
+
+# ==== WORKDIR ====
+getwd()
+
+# ============================
+# ==== EXECUTION PIPELINE ====
+# ============================
+
+# ==== COMMAND LINES ====
+commandArgs(trailingOnly = TRUE)
+
+# executa comando
+args <- print(commandArgs(trailingOnly = TRUE)) 
+source("./R/pipeline/pipeline.R")
+execPipeline(args) # executa pipeline
+
+```
+
+Vamos detalhar cada um dos *jobs* fazem.
+
+#### (1) Job de Importação de Dados do Jira
+
+O primeiro *Job* é responsável pela importação dos dados do Jira, se conectando à [*REST API* do *Jira*](https://developer.atlassian.com/cloud/jira/platform/rest/v3/) utilizando o pacote [*httr*](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html). Para cada projeto ( [*Jira Key*](https://confluence.atlassian.com/adminjiraserver/changing-the-project-key-format-938847081.html) ) cadastrado do Jira, são importados os dados das Issues, Subissues, Sprints, Worklogs e Changelogs. A *REST API* responde a consulta com os dados em formato *json*, contendo [*estruturas aninhadas*](https://en.wikipedia.org/wiki/Nesting_(computing)). Os dados são processados usando [*jsonlite*](https://cran.r-project.org/web/packages/jsonlite/index.html), organizados de [maneira tabular](https://garrettgman.github.io/tidying/) com a tipagem corrigida. São convertidos em [*tibbles*](https://tibble.tidyverse.org/) e então gravados localmente como [arquivos RDS](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/readRDS).
+
+Como último passo desta etapa, os arquivos RDS eram então enviados para o *Nexus* também via *REST API* como último passo do *shell script + curl* dentro do container. Usamos *shell* porque é mais performático e natural na atribuição de manipulação de arquivos.
+
+```{r importSeqDiag, warning=FALSE, fig.width=9} 
+
+# usando o pacote 'DiagrammeR' para ilustrar a sequencia de atividades
+# de cada etapa usando Mermaid/DOT para desenhar um diagrama de sequência
+library(DiagrammeR)
+
+# Import Job
+mermaid("
+sequenceDiagram
+  Jenkins ->> +Slave: start \"import job\"
+  Slave ->> Gitlab: get code changes
+  Gitlab -->> Slave: pipeline code updated
+  Slave ->> +Docker: start R docker
+  Slave ->> Docker: run \"jira-import.R\"
+  Docker ->> Jira: https/get API 
+  Jira -->> Docker: json data
+  Docker ->> Docker: parse and tidy data
+  Docker ->> Docker: save RDS data files
+  Docker ->> Nexus: store RDS data artifacts
+  Nexus -->> Docker: stored
+  Docker -->> -Slave: script ends
+  Slave -->> -Jenkins: job ends
+")
+```
+
+Trecho de código da importação que fazia uma busca por dados de um projeto específico no *Jira*:
+
+```{r, eval=FALSE}
+# script to declare a function to import project data from jira projects
+# setup ----
+library(needs)
+needs(jsonlite)
+needs(httr)
+
+# get Jira Project data fom key
+QueryProject <- function(key, userAuth=NULL){
+  
+  # http basic authentication
+  if(is.null(userAuth)) userAuth = .getUserAuth()
+
+  # end point
+  url <- paste0(.jira_base_url,"/rest/api/2/project/",key)
+  
+  # history,version,changelog,versionedRepresentations,names
+  resp <- httr::GET(url=url,
+                    httr::add_headers(
+                      Authorization = paste0("Basic ",userAuth[1])
+                      #app_token = token,
+                    ),
+                    httr::config( ssl_verifypeer = 0L, timeout = 240 ),
+                    httr::timeout(240))
+    
+  if (resp$status_code==200) {
+    # converting from text, to json, to R
+    txt <- httr::content(resp, as = "text") # body
+    json <- fromJSON(txt) # convert json
+  } else {
+    # something was wrong
+    stop(paste0("Project Import HTTP Error (",resp$status_code,") getting Project [",key,"] information."))
+  }
+    
+  return(json)
+}
+
+```
+
+#### (2) Job de Calculo de Métricas e Indicadores
+
+Um *job* específico para o passo de transformação e cálculo de métricas e indicadores foi criado. Após recuperar o contexto de execução dos dados importados do *Nexus* para o *container local* e realiza uma série de transformações e cálculos, gerando também outros *RDSs de "saída"* no disco local que também eram armazenados no *Nexus* no passo final, disponibilizando-as para as próximas etapas do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)).
+
+```{r calSeqDiag, fig.width=9}
+
+# Calc Job
+mermaid("
+sequenceDiagram
+  Jenkins ->> +Slave: start \"calc job\"
+  Slave ->> Gitlab: get code changes
+  Gitlab -->> Slave: pipeline code updated
+  Slave ->> +Docker: start R docker
+  Slave ->> Docker: run \"calc-indicators.R\"
+  Docker ->> Nexus: recover RDS data artifacts
+  Nexus -->> Docker: RDS data files
+  Docker ->> Docker: process data
+  Docker ->> Docker: save RDS result files
+  Docker ->> Nexus: store RDS result artifacts
+  Nexus -->> Docker: stored
+  Docker -->> -Slave: script ends
+  Slave -->> -Jenkins: job ends
+")
+```
+
+
+Embora a maioria das manipulações são de indicadores simples, que basicamente eram agrupamentos, somatórias e cálculos de taxa, algumas transformações eram bem sofisticadas. Por exemplo, para gerar informações sobre [*Leadtime*](https://pt.wikipedia.org/wiki/Lead_time) e [*Flow Efficiency*](https://kanbanize.com/kanban-resources/kanban-analytics/flow-efficiency) das Squads ágeis é necessário filtrar e transformar as informações de [*ChangeLog*](https://confluence.atlassian.com/fisheye/viewing-the-changelog-960155331.html) das [*Issues*](https://support.atlassian.com/jira-software-cloud/docs/what-is-an-issue/) do *Jira* (as histórias de usuário), em um diagrama de [*transição de estados*](https://confluence.atlassian.com/adminjiracloud/working-with-workflows-776636540.html) e medir os tempos de transição entre eles.
+
+
+```{r, eval=FALSE}
+library(tidyverse)
+library(knitr)
+library(datamodelr)
+
+changelogs <- readRDS("./data/jira_changelogs.rds")
+transitions <- readRDS("./data/calc_jira_transitions.rds")
+
+jira_model <- dm_from_data_frames(changelogs, transitions)
+ref_keys <- c("project.id","project.key","jira.id","jira.key")
+
+jira_model %>% 
+  dm_add_reference_("changelogs", ref_keys, "transitions", ref_keys) %>% 
+  dm_create_graph(rankdir = "LR", col_attr = c("column", "type"))
+```
+
+![](./jira_transitions.png)
+
+
+A estrutura do *ChangeLog* do *Jira* é praticamente um metamodelo, pois rastreia as informações de *update* de todos as atributos de uma *Issue*. A sequencia de transformação não é trivial, uma vez feita, um *tibble* de saída era gerado e adicionado ao conjunto de artefatos que são exportados para o *Nexus* para ser eventualmente utilizados em *jobs* subsequentes.
+
+#### (3) Job de Publicação de Resultados
+
+Último passo do [*pipeline*](https://en.wikipedia.org/wiki/Pipeline_(computing)) e um dos mais relevantes, pois decide qual é o formato que a informação vai ter ao chegar na mão das *Squads* e dos gestores do banco. O *job* de geração de relatório funciona como os demais, recupera o contexto deixado pelos *jobs* anteriores, recuperando os artefatos *RDSs* do *Nexus*, e a partir daí gerar uma série de relatórios, usando principalmente [*RMarkdown*](https://rmarkdown.rstudio.com/) e uma combinação de [*flexdashboard*](https://rmarkdown.rstudio.com/flexdashboard/) com [*plotly*](https://plotly.com/r/), quase sempre [*renderizados*](https://rmarkdown.rstudio.com/docs/reference/render.html) para [*HTML*](https://pt.wikipedia.org/wiki/HTML). Também eram gerados alguns arquivos XSLX, PPT e PDFs, mas a maioria absoluta dos relatórios estava em formato [*HTML*](https://pt.wikipedia.org/wiki/HTML). 
+
+```{r reportSeqDiag, fig.width=9}
+# Report Job
+mermaid("
+sequenceDiagram
+  Jenkins ->> +Slave: start \"report job\"
+  Slave ->> Gitlab: get code changes
+  Gitlab -->> Slave: pipeline code updated
+  Slave ->> +Docker: start R docker
+  Slave ->> Docker: run \"render-reports.R\"
+  Docker ->> Nexus: recover RDS artifacts
+  Nexus -->> Docker: RDS files
+  Docker ->> Docker: render markdown reports
+  Docker ->> Confluence: https/post API
+  Confluence -->> Docker: published
+  Docker ->> MailServer: send updated reports e-mails
+  MailServer -->> Docker: e-mails sent
+  Docker -->> -Slave: script ends
+  Slave -->> -Jenkins: job ends
+")
+```
+
+
+Os principais artefatos gerados nesta etapa eram:
+
+1. **Dashboard de Projeto**: um *flexdashboard* consolidando visão de performance de um [projeto no jira](https://confluence.atlassian.com/adminjiraserver/changing-the-project-key-format-938847081.html). Veja [este exemplo](/docs/project_dashboard.html).
+1. **Squad Dashboard**: um *flexdashboard* consolidando a visão de métricas de indicadores de uma *Squad Ágil* identificada por [*Jira Sprint*](https://support.atlassian.com/jira-software-cloud/docs/what-is-a-sprint/).
+1. **Baseline Dashboad**: Também um *flexdashboard* contendo a visão consolidada de indicadores de todas as *Squads* e *Projetos* dos banco.
+1. **Squad Compliance Report**: Um *HTML* por *sprint* ativo, informando aspectos da própria saúde da coleta de dados, como volume de horas reportado por usuário por dia, completude dos campos informativos das *Issues*, identificação e classificação de defeitos, etc. 
+1. **Compliance Map**: Um *HTML* consolidando a visão de *compliance* das *Squads* e projetos do banco. 
+1. **Evolution Report**: Um *PPT* executivo gerado semanalmente para ser enviado por e-mail contendo uma visão de evolução do *compliance* e de produtividade das *squads*.
+
+Trecho de código que renderizava um dos relatórios:
+
+```{r eval=FALSE}
+
+# renderiza um dashboard de projeto (jira.key)
+renderProjectDashboard <- function(pkey, compressFile = T) {
+  # define nome do artefato de saida
+  filename <- paste0("./dashboard/project_dashboard_",pkey,".html")
+  
+  # pasta de "Dashs" exportados
+  outFilePath <- paste0("../.",filename)
+  
+  # renderiza report
+  rmarkdown::render("./R/dashboard/projectDashboard.Rmd",
+                    output_file=outFilePath,
+                    params=list(project_key = pkey),
+                    encoding = "latin1")
+  
+  # comprime para ZIP ou deixa HTML?
+  if (compressFile) filename <- .compressFile(filename)
+  
+  # retorna pathname do relatorio gerado
+  return(filename)
+}
+
+```
+
+Antes do *R script* encerrar, ele envia os relatórios gerados para o *Conluence* como anexos de páginas dos projetos, através de uma *REST API* e do *httr* package. Além disso, disparava uma série de e-mails para os líderes e aos gestores do banco, informando da disponibilização dos relatórios atualizados, bem como as respectivas [*URLs*](https://pt.wikipedia.org/wiki/URL) para consultá-los.
+
+#### (4) Job de Exportação de Dados
+
+Para permitir aos gestores e líderes manipularem diretamente os dados extraídos e gerados pelo pipeline, a fim de criar outras visões particulares e específicas, adicionamos uma etapa de exportação dos [dados brutos](https://en.wikipedia.org/wiki/Raw_data) (*raw data*) em planilhas *excel*, que era a ferramenta mais acessível e popular no banco. 
+
+Os principais artefatos em formato *excel* gerados era:
+
+1. **Metrics Spreadsheet**: Versão *raw* do *Dashbord de Projetos*, contendo os dados de origem e as métricas calculadas para cada projeto exportadas em um *excel*, para facilitar o entendimento pelos líderes de *Squad* sobre e também permitir que eles fizessem outros tipos de agrupamento e filtros.
+1. **KPI Spreadsheet**: Versão *raw* do *Baseline Dashboard*, contendo os dados de origem e indicadores calculados para permitir ao banco filtrar e pivotar os dados de maneira diferente.
+1. **Execution Worklog**: Um *excel* gerado por projeto e *sprint* para que os líderes de *Squad* possam analisar facilmente inconsistências em apontamento de horas de seus times.
+
+Esses artefatos também eram publicados em uma página específica do *Confluence*.
+
+
+```{r exportSeqDiag, fig.width=9}
+# Export Job
+mermaid("
+sequenceDiagram
+  Jenkins ->> +Slave: start \"export job\"
+  Slave ->> Gitlab: get code changes
+  Gitlab -->> Slave: pipeline code updated
+  Slave ->> +Docker: start R docker
+  Slave ->> Docker: run \"export-data.R\"
+  Docker ->> Nexus: recover RDS artifacts
+  Nexus -->> Docker: RDS files
+  Docker ->> Docker: export data files
+  Docker ->> Confluence: https/post API
+  Confluence -->> Docker: published
+  Docker ->> Database: write database
+  Database -->> Docker: exported
+  Docker -->> -Slave: script ends
+  Slave -->> -Jenkins: job ends
+")
+```
+
+Mais tarde durante o nosso trabalho de consultoria ágil e com a popularização do uso dos indicadores e métricas pelo banco, foi adicionado um último passo no processo de exportação. Para que [Analistas de BIs](https://en.wikipedia.org/wiki/Business_intelligence_software) pudessem acessar os dados atualizados de forma mais direta, sem se preocupar com a atualização manual de dados-fontes vindo de arquivos *excel*, finalmente adicionamos um banco de dados à solução e incluímos uma exportação/escrita dos dados ao database.
+
+Exportação era feita para um banco de dados [*MySQL*](https://pt.wikipedia.org/wiki/MySQL) utilizando (na época) os pacotes [*DBI*](https://db.rstudio.com/dbi/) e [*RMySQL*](https://github.com/r-dbi/rmysql), e as tabelas salvas no banco eram exatamente o conjunto de arquivos *RDS* (os *data.frames*) que compunham o conjunto de dados exportados do *Jira* e calculados e gerados pelo *pipeline*.
+
+Código de escrita ao banco de dados:
+```{r eval=FALSE}
+# script to export the whole local database to a MySQL
+
+# setup
+library(needs)
+needs(DBI)
+needs(RMySQL)
+needs(lubridate)
+source("./R/acquire/jira_datasets.R")
+
+# connect to DB
+.getDBConnection <- function(isProduction=F){
+
+  # develop database
+  .printf("Connecting to %s @ %s:%s", .settings$export_db$name,.settings$export_db$host,.settings$export_db$port)
+  dbc  <- dbConnect(RMySQL::MySQL(),
+                    host     = .settings$export_db$host,
+                    port     = .settings$export_db$port,
+                    dbname   = .settings$export_db$name,
+                    user     = .settings$export_db$user,
+                    password = .settings$export_db$pass )
+  
+  return(dbc)
+  
+}
+
+.toDB <- function(connection, name, value){
+  t <- system.time({
+    dbWriteTable(connection, name, value, row.names = F, overwrite=T)
+  })
+  .printf("%s (%d x %d) EXPORTED in %g s", name, nrow(value), ncol(value), t[[3]])
+}
+
+exportToDB <- function(){
+  
+  # obtem conexao
+  db <- .getDBConnection()
+  
+  # realiza as exportacoes
+
+  .printf("DB_EXPORT START @ %s", now())
+  
+  ## configuracao e logs
+  .toDB(db, "JIRA_IMPORT_CONFIG", getConfig())
+  .toDB(db, "JIRA_IMPORT_LOGS", getImportLogs())
+  
+
+  ## dominios
+  .toDB(db, "JIRA_ISSUE_RESOLUTIONS", .issueResolution)
+  .toDB(db, "JIRA_ISSUE_STATUS", .issueStatus)
+  .toDB(db, "JIRA_ISSUE_TYPES", .issueTypes)
+  
+  ## projects
+  .toDB(db, "JIRA_PROJECTS", getProjects())
+
+  ## Issues
+  e <- getEpics()
+  e <- e[, epic.summary := iconv(epic.summary, to = "iso-8859-1")]
+  .toDB(db, "JIRA_EPICS", e)
+  
+  i <- getIssues()
+  i <- i[, issue.summary := iconv(issue.summary, to = "iso-8859-1")  ]
+  .toDB(db, "JIRA_ISSUES", i)
+  
+  s <- getSubissues()
+  s <- s[, subissue.summary := iconv(subissue.summary, to = "iso-8859-1") ]
+  .toDB(db, "JIRA_SUB_ISSUES", s)
+
+  rm(e,i,s); gc()
+  
+  ## Sprint, Sprint Issues e Links
+  .toDB(db, "JIRA_SPRINTS", getSprints())
+  .toDB(db, "JIRA_SPRINT_ISSUES", getSprintIssues())
+  .toDB(db, "JIRA_ISSUE_LINKS", getIssueLinks())
+
+  ## Dashs e  Versions
+  d <- getDashboards()
+  d[, dashboard.name := iconv(dashboard.name, to = "iso-8859-1" )]
+  .toDB(db, "JIRA_DASHBOARDS", d)
+
+  v <- getVersions()
+  v[, version.name := iconv(version.name, to = "iso-8859-1") ]
+  v[, version.description := iconv(version.description, to = "iso-8859-1") ]
+  .toDB(db, "JIRA_VERSIONS", v)
+  .toDB(db, "JIRA_VERSION_ISSUES", getVersionIssues())
+
+  rm(d,v); gc()
+
+  ## Changelogs e Transitions
+  .toDB(db, "JIRA_CHANGELOGS", getChangeLogs())
+  .toDB(db, "JIRA_TRANSITIONS", getJiraTransitions())
+
+  ## Worklogs
+  .toDB(db, "JIRA_WORKLOGS", getWorklogs())
+
+  ## metricas
+  m <- getMetrics()
+  .toDB(db, "JIRA_METRIC_INTEGRITY", m$metric.quality)
+  .toDB(db, "JIRA_METRIC_SPRINTS", m$sprint.metrics)
+  
+  # reduz o tamanho do nome das colunas
+  defs <- m$sprint.deffects
+  names(defs) <- strtrim(names(defs),64)
+  .toDB(db, "JIRA_METRIC_DEFFECTS", defs)
+  
+  .toDB(db, "JIRA_METRIC_ISSUES", m$issue.metrics)
+  .toDB(db, "JIRA_METRIC_ISSUE_FLOWS", m$issue.flow)
+  .toDB(db, "JIRA_METRIC_PROJECT", m$monthly.stat)
+  
+  rm(defs);gc();
+  
+  .printf("DB_EXPORT END @ %s", now())
+  
+  # fecha conexao  
+  dbDisconnect(db)
+  
+}
+
+## Script to wrap the container environment
+runExportDB <- function(){
+  t <- system.time({exportToDB()})
+  .printf("DB_EXPORT in %g s", t[[3]])
+}
+
+```
+
+Claro que se o banco de dados estivesse disponível desde o início, ele seria a base para manter o contexto comum entre os *jobs*, porém ele foi disponibilizado bem mais tarde no trabalho da consultoria enquanto o *Nexus* estava disponível desde o primeiro dia.
+
+## Conclusão
+
+Vimos neste post como foi possível usar uma infra-estrutura *open-source* de [*CI/CD*](https://en.wikipedia.org/wiki/CI/CD) para orquestrar um *data pipeline* de importação, transformação, análise e disponibilização de dados usando *R Scripts* de ponta à ponta. 
+
+Uma das vantagens dessa abordagem é que é uma solução sem servidor dedicado, os *slaves* e *containers* são instanciados somente quando necessário, processam as informações e então são desativados, permitindo a redução de custos e otimização de recursos.
+
+A descrição acima é uma simplificação do trabalho, por exemplo, há *jobs* diferentes para importação de dados que trabalhavam em momentos diferentes e consultando recortes diferentes no *Jira*. Mesma situação para os *jobs* de cálculo de métricas e geração de relatórios, pois a frequência de atualização de relatórios variava de acordo com a necessidade do banco e ritmos de projeto. Além disso, outros truques de como manter a configuração de execução (quais projetos buscar no *Jira*, quais as *urls* do *Jira* do *Nexus*, etc.) bem como a geração de um relatório *rmarkdown* com o próprio log de execução a fim de verificar a saúde do *pipeline*, ou comunicar o suporte do banco em caso de falha, foram omitidos acima para simplificar a descrição da solução e focar na estrutura geral montada.
+
+A complexidade do modelo de dados do *Jira* vale um *post* no futuro. Poderíamos fazer uma análise exploratória dos dados importados do *Jira* e avaliar como tirar algumas conclusões tomando como base as informações de traqueamento das *Squads* Ágeis, mostrando em parte, o que os *scripts* de transformação e cálculo de indicadores faziam. See you soon!
