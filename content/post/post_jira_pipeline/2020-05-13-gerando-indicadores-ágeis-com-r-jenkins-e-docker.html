@@ -19,14 +19,6 @@ thumbnailImagePosition: left
 metaAlignment: center
 ---
 
-<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
-<script src="/rmarkdown-libs/d3/d3.min.js"></script>
-<script src="/rmarkdown-libs/dagre/dagre-d3.min.js"></script>
-<link href="/rmarkdown-libs/mermaid/dist/mermaid.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/mermaid/dist/mermaid.slim.min.js"></script>
-<link href="/rmarkdown-libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/chromatography/chromatography.js"></script>
-<script src="/rmarkdown-libs/DiagrammeR-binding/DiagrammeR.js"></script>
 
 
 <p>Sempre se comenta a grande versatilidade do <em>R</em>, com capacidade de participar de todas as etapas de um fluxo de análise de dados. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um <em>pipeline de aquisição, análise e divulgação de dados</em> sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando <em>R</em> e automatizado através de <em>Jenkins</em>, <em>Docker</em>, <em>GitLab</em> e <em>Nexus</em>.</p>
@@ -46,17 +38,23 @@ metaAlignment: center
 <div id="r-como-solução" class="section level2">
 <h2>R como Solução</h2>
 <p>Para agilizar esse aspecto da consultoria, sem ter que demandar e especificar uma outra equipe de <a href="https://pt.wikipedia.org/wiki/Extract,_transform,_load">ETL</a>/<a href="https://en.wikipedia.org/wiki/Business_intelligence_software">BI</a>, começamos a extrair manualmente os dados do <em>Jira</em> e gerar as métricas e indicadores rapidamente usando <em>R scripts</em>, e o impacto foi muito grande. A materialização dos artefatos analíticos, entregue na mão das <em>Squads</em> foi bem positiva e rapidamente eles entenderam as informações e ficaram dependentes dos reports que gerávamos para tomada de ações imediatas no dia-a-dia. Esse sucesso criou um outro problema, automatizar a geração dessas informações para que elas sempre estivessem disponíveis e não dependessem de alguém para gerá-las.</p>
-<p>Para automatizar, orquestrar, otimizar os custos e facilitar a integração dessas atividades montamos uma espécie de <em>Pipeline para Continuos Data Science</em> baseando-se em uma infraestrutura de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> clássica de engenharia de software.</p>
+Para automatizar, orquestrar, otimizar os custos e facilitar a integração dessas atividades montamos uma espécie de <em>Pipeline para Continuos Data Science</em> baseando-se em uma infraestrutura de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> clássica de engenharia de software.
+<p>
+</p>
 <div class="figure">
 <img src="/images/dash_corporativo.png" alt="Visão Consolidada de Indicadores Corporativos" />
 <p class="caption">Visão Consolidada de Indicadores Corporativos</p>
 </div>
 <p>Essa abordagem foi inspirada nos grupos de desafios do <a href="https://www.kaggle.com/"><em>kaggle</em></a> que tínhamos na empresa de vez em quando. Neste desafios tínhamos um grupo de 3 ou 4 pessoas trabalhando simultaneamente no desafio, construindo em paralelo e simultaneamente as etapas de <a href="https://pt.wikipedia.org/wiki/An%C3%A1lise_explorat%C3%B3ria_de_dados">Exploração dos Dados</a>, <a href="https://en.wikipedia.org/wiki/Tidy_data">Limpeza e Organização dos Datasets</a>, <a href="https://en.wikipedia.org/wiki/Feature_engineering">Engenharia de Features</a>, <a href="https://docs.microsoft.com/en-us/azure/machine-learning/studio-module-reference/train-model">Treinar um modelo</a> e <a href="https://www.analyticsvidhya.com/blog/2019/08/11-important-model-evaluation-error-metrics/">Avaliação de Performance</a>. Essa solução permitia que cientistas de dados trabalhando em pontos diferentes do <em>pipeline</em> e ao <em>comitar</em> um novo código no controlador de versão, a partes afetadas do fluxo fossem executadas automaticamente. Isso nos dava bastante agilidade e independência durante os trabalhos no desafio.</p>
-<p>De maneira oportuna, além da consultoria de desenvolvimento ágil, também tínhamos uma outra iniciativa no banco, desta vez trabalhando na definição e construção do ambiente de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> corporativo. No momento que nos questionamos como automatizar mais rápido e fácil, a geração dos indicadores e métricas, então a opção de usar a mesma estratégia ficou evidente. Além disso, poderíamos evoluir os relatórios e indicadores a medida que a implantação de métricas e indicadores ágeis ganhava consistência e maturidade, sem ter que manter disponível disponível e alocada, uma terceira equipe de <a href="https://pt.wikipedia.org/wiki/Extract,_transform,_load">ETL</a> e <a href="(https://en.wikipedia.org/wiki/Business_intelligence_software)">BI</a> no banco.</p>
+De maneira oportuna, além da consultoria de desenvolvimento ágil, também tínhamos uma outra iniciativa no banco, desta vez trabalhando na definição e construção do ambiente de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> corporativo. No momento que nos questionamos como automatizar mais rápido e fácil, a geração dos indicadores e métricas, então a opção de usar a mesma estratégia ficou evidente. Além disso, poderíamos evoluir os relatórios e indicadores a medida que a implantação de métricas e indicadores ágeis ganhava consistência e maturidade, sem ter que manter disponível disponível e alocada, uma terceira equipe de <a href="https://pt.wikipedia.org/wiki/Extract,_transform,_load">ETL</a> e <a href="(https://en.wikipedia.org/wiki/Business_intelligence_software)">BI</a> no banco.
+<p>
+</p>
 <div id="componentes-da-solução" class="section level3">
 <h3>Componentes da Solução</h3>
 <p>O ambiente de <a href="https://en.wikipedia.org/wiki/CI/CD"><em>CI/CD</em></a> para automatizar o <em>pipeline</em> era composto das entidades abaixo descritas, e foram usadas da seguinte maneira:</p>
-<p><img src="/images/jira_r_components.png" /></p>
+<img src="/images/jira_r_components.png" />
+<p>
+</p>
 <ol style="list-style-type: decimal">
 <li><a href="https://www.jenkins.io/"><strong>Jenkins</strong></a>: Jenkins é um servidor de automação gratuito e de código aberto. Ajuda a automatizar as partes do desenvolvimento de software relacionadas à construção, teste e implantação, facilitando a integração contínua e a entrega contínua, funcionando grosseiramente falando, como um orquestrador de <a href="https://www.guru99.com/create-builds-jenkins-freestyle-project.html">taréfas (ou <em>jobs</em>)</a>. Era usado para orquestrar os <em>jobs</em> do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>, instanciando os containers dentro dos <a href="https://www.edureka.co/blog/jenkins-master-and-slave-architecture-a-complete-guide/">slaves</a> e executando os scripts que efetuavam as atividades do <a href="https://en.wikipedia.org/wiki/Pipeline_(computing)"><em>pipeline</em></a>. Neste caso, todos os <em>jobs</em> rodavam por esquema de <a href="https://www.baeldung.com/jenkins-job-schedule">agendamento</a>.</li>
 <li><a href="https://www.atlassian.com/br/software/jira"><strong>Jira</strong></a>: A principal ferramenta de software usada pelas equipes ágeis para o monitoramento de tarefas e acompanhamento de projetos. Tem como objetivo principal garantir o gerenciamento (e rastreamento) de todas as suas atividades em único lugar. Tudo que uma equipe ágil faz acaba sendo registrada no <em>Jira</em>, assim para acompanhar a performance de um time basta acessar o histórico de atividades registradas na ferramenta e a partir dele calcular indicadores <em>Leadtime</em>, Esforço por História, Taxas de Defeitos dos Projetos, <em>Throughput</em>, etc. O acesso às essas informações era feita pela <a href="https://developer.atlassian.com/cloud/jira/platform/rest/v3/">REST API</a> disponível.</li>
@@ -167,7 +165,7 @@ execPipeline(args) # executa pipeline</code></pre>
 library(DiagrammeR)
 
 # Import Job
-mermaid(&quot;
+m &lt;- mermaid(&quot;
 sequenceDiagram
   Jenkins -&gt;&gt; +Slave: start \&quot;import job\&quot;
   Slave -&gt;&gt; Gitlab: get code changes
@@ -183,8 +181,7 @@ sequenceDiagram
   Docker --&gt;&gt; -Slave: script ends
   Slave --&gt;&gt; -Jenkins: job ends
 &quot;)</code></pre>
-<div id="htmlwidget-1" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"import job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"jira-import.R\"\n  Docker ->> Jira: https/get API \n  Jira -->> Docker: json data\n  Docker ->> Docker: parse and tidy data\n  Docker ->> Docker: save RDS data files\n  Docker ->> Nexus: store RDS data artifacts\n  Nexus -->> Docker: stored\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p><img src="/images/jiradocker_seq01.png" /></p>
 <p>Trecho de código da importação que fazia uma busca por dados de um projeto específico no <em>Jira</em>:</p>
 <pre class="r"><code># script to declare a function to import project data from jira projects
 # setup ----
@@ -221,6 +218,8 @@ QueryProject &lt;- function(key, userAuth=NULL){
     
   return(json)
 }</code></pre>
+<p>
+</p>
 </div>
 <div id="job-de-calculo-de-métricas-e-indicadores" class="section level4">
 <h4>(2) Job de Calculo de Métricas e Indicadores</h4>
@@ -242,8 +241,7 @@ sequenceDiagram
   Docker --&gt;&gt; -Slave: script ends
   Slave --&gt;&gt; -Jenkins: job ends
 &quot;)</code></pre>
-<div id="htmlwidget-2" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"calc job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"calc-indicators.R\"\n  Docker ->> Nexus: recover RDS data artifacts\n  Nexus -->> Docker: RDS data files\n  Docker ->> Docker: process data\n  Docker ->> Docker: save RDS result files\n  Docker ->> Nexus: store RDS result artifacts\n  Nexus -->> Docker: stored\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p><img src="/images/jiradocker_seq02.png" /></p>
 <p>Embora a maioria das manipulações são de indicadores simples, que basicamente eram agrupamentos, somatórias e cálculos de taxa, algumas transformações eram bem sofisticadas. Por exemplo, para gerar informações sobre <a href="https://pt.wikipedia.org/wiki/Lead_time"><em>Leadtime</em></a> e <a href="https://kanbanize.com/kanban-resources/kanban-analytics/flow-efficiency"><em>Flow Efficiency</em></a> das Squads ágeis é necessário filtrar e transformar as informações de <a href="https://confluence.atlassian.com/fisheye/viewing-the-changelog-960155331.html"><em>ChangeLog</em></a> das <a href="https://support.atlassian.com/jira-software-cloud/docs/what-is-an-issue/"><em>Issues</em></a> do <em>Jira</em> (as histórias de usuário), em um diagrama de <a href="https://confluence.atlassian.com/adminjiracloud/working-with-workflows-776636540.html"><em>transição de estados</em></a> e medir os tempos de transição entre eles.</p>
 <pre class="r"><code>library(tidyverse)
 library(knitr)
@@ -260,6 +258,8 @@ jira_model %&gt;%
   dm_create_graph(rankdir = &quot;LR&quot;, col_attr = c(&quot;column&quot;, &quot;type&quot;))</code></pre>
 <p><img src="/images/jira_transitions.png" /></p>
 <p>A estrutura do <em>ChangeLog</em> do <em>Jira</em> é praticamente um metamodelo, pois rastreia as informações de <em>update</em> de todos as atributos de uma <em>Issue</em>. A sequencia de transformação não é trivial, uma vez feita, um <em>tibble</em> de saída era gerado e adicionado ao conjunto de artefatos que são exportados para o <em>Nexus</em> para ser eventualmente utilizados em <em>jobs</em> subsequentes.</p>
+<p>
+</p>
 </div>
 <div id="job-de-publicação-de-resultados" class="section level4">
 <h4>(3) Job de Publicação de Resultados</h4>
@@ -282,8 +282,7 @@ sequenceDiagram
   Docker --&gt;&gt; -Slave: script ends
   Slave --&gt;&gt; -Jenkins: job ends
 &quot;)</code></pre>
-<div id="htmlwidget-3" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"report job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"render-reports.R\"\n  Docker ->> Nexus: recover RDS artifacts\n  Nexus -->> Docker: RDS files\n  Docker ->> Docker: render markdown reports\n  Docker ->> Confluence: https/post API\n  Confluence -->> Docker: published\n  Docker ->> MailServer: send updated reports e-mails\n  MailServer -->> Docker: e-mails sent\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p><img src="/images/jiradocker_seq03.png" /></p>
 <p>Os principais artefatos gerados nesta etapa eram:</p>
 <ol style="list-style-type: decimal">
 <li><strong>Dashboard de Projeto</strong>: um <em>flexdashboard</em> consolidando visão de performance de um <a href="https://confluence.atlassian.com/adminjiraserver/changing-the-project-key-format-938847081.html">projeto no jira</a>. Veja <a href="/docs/project_dashboard.html">este exemplo</a>.</li>
@@ -315,6 +314,8 @@ renderProjectDashboard &lt;- function(pkey, compressFile = T) {
   return(filename)
 }</code></pre>
 <p>Antes do <em>R script</em> encerrar, ele envia os relatórios gerados para o <em>Conluence</em> como anexos de páginas dos projetos, através de uma <em>REST API</em> e do <em>httr</em> package. Além disso, disparava uma série de e-mails para os líderes e aos gestores do banco, informando da disponibilização dos relatórios atualizados, bem como as respectivas <a href="https://pt.wikipedia.org/wiki/URL"><em>URLs</em></a> para consultá-los.</p>
+<p>
+</p>
 </div>
 <div id="job-de-exportação-de-dados" class="section level4">
 <h4>(4) Job de Exportação de Dados</h4>
@@ -344,8 +345,7 @@ sequenceDiagram
   Docker --&gt;&gt; -Slave: script ends
   Slave --&gt;&gt; -Jenkins: job ends
 &quot;)</code></pre>
-<div id="htmlwidget-4" style="width:864px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"export job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"export-data.R\"\n  Docker ->> Nexus: recover RDS artifacts\n  Nexus -->> Docker: RDS files\n  Docker ->> Docker: export data files\n  Docker ->> Confluence: https/post API\n  Confluence -->> Docker: published\n  Docker ->> Database: write database\n  Database -->> Docker: exported\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<p><img src="/images/jiradocker_seq04.png" /></p>
 <p>Mais tarde durante o nosso trabalho de consultoria ágil e com a popularização do uso dos indicadores e métricas pelo banco, foi adicionado um último passo no processo de exportação. Para que <a href="https://en.wikipedia.org/wiki/Business_intelligence_software">Analistas de BIs</a> pudessem acessar os dados atualizados de forma mais direta, sem se preocupar com a atualização manual de dados-fontes vindo de arquivos <em>excel</em>, finalmente adicionamos um banco de dados à solução e incluímos uma exportação/escrita dos dados ao database.</p>
 <p>Exportação era feita para um banco de dados <a href="https://pt.wikipedia.org/wiki/MySQL"><em>MySQL</em></a> utilizando (na época) os pacotes <a href="https://db.rstudio.com/dbi/"><em>DBI</em></a> e <a href="https://github.com/r-dbi/rmysql"><em>RMySQL</em></a>, e as tabelas salvas no banco eram exatamente o conjunto de arquivos <em>RDS</em> (os <em>data.frames</em>) que compunham o conjunto de dados exportados do <em>Jira</em> e calculados e gerados pelo <em>pipeline</em>.</p>
 <p>Código de escrita ao banco de dados:</p>

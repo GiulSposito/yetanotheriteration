@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<script src="DiagrammeR_libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="DiagrammeR_libs/d3/d3.min.js"></script>
+<script src="DiagrammeR_libs/dagre/dagre-d3.min.js"></script>
+<link href="DiagrammeR_libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+<script src="DiagrammeR_libs/mermaid/dist/mermaid.slim.min.js"></script>
+<link href="DiagrammeR_libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="DiagrammeR_libs/chromatography/chromatography.js"></script>
+<script src="DiagrammeR_libs/DiagrammeR-binding/DiagrammeR.js"></script>
+<script src="DiagrammeR_libs/pymjs/pym.v1.min.js"></script>
+  <title>DiagrammeR</title>
+</head>
+<body>
+<div id="htmlwidget_container">
+  <div id="htmlwidget-4029db36c7d956bf992e" style="width:100%;height:500px;" class="DiagrammeR html-widget"></div>
+  <script>HTMLWidgets.pymChild = new pym.Child();HTMLWidgets.addPostRenderHandler(function(){
+                                setTimeout(function(){HTMLWidgets.pymChild.sendHeight();},100);
+                            });</script>
+</div>
+<script type="application/json" data-for="htmlwidget-4029db36c7d956bf992e">{"x":{"diagram":"\nsequenceDiagram\n  Jenkins ->> +Slave: start \"import job\"\n  Slave ->> Gitlab: get code changes\n  Gitlab -->> Slave: pipeline code updated\n  Slave ->> +Docker: start R docker\n  Slave ->> Docker: run \"jira-import.R\"\n  Docker ->> Jira: https/get API \n  Jira -->> Docker: json data\n  Docker ->> Docker: parse and tidy data\n  Docker ->> Docker: save RDS data files\n  Docker ->> Nexus: store RDS data artifacts\n  Nexus -->> Docker: stored\n  Docker -->> -Slave: script ends\n  Slave -->> -Jenkins: job ends\n"},"evals":[],"jsHooks":[]}</script>
+<script type="application/htmlwidget-sizing" data-for="htmlwidget-4029db36c7d956bf992e">{"viewer":{"width":"100%","height":350,"padding":0,"fill":false},"browser":{"width":"100%","height":500,"padding":0,"fill":false}}</script>
+</body>
+</html>
