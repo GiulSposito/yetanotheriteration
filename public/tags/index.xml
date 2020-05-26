@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Yet Another Iteration</title>
@@ -35,6 +35,15 @@
       <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/pt-br/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstat</title>
+      <link>/tags/rstat/</link>
+      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rstat/</guid>
       <description></description>
     </item>
     
@@ -156,6 +165,15 @@
     </item>
     
     <item>
+      <title>lean</title>
+      <link>/tags/lean/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lean/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>lean transformation</title>
       <link>/tags/lean-transformation/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
@@ -233,15 +251,6 @@
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/culture-change/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lean</title>
-      <link>/tags/lean/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/lean/</guid>
       <description></description>
     </item>
     
@@ -440,15 +449,6 @@
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rstat</title>
-      <link>/tags/rstat/</link>
-      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rstat/</guid>
       <description></description>
     </item>
     

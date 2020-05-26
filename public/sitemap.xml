@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/categories/agile/</loc>
+    <loc>/tags/agile/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/agile/</loc>
+    <loc>/categories/agile/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
@@ -43,17 +43,17 @@
   </url>
   
   <url>
+    <loc>/tags/rstat/</loc>
+    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/rstats/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
@@ -143,6 +143,11 @@
   </url>
   
   <url>
+    <loc>/tags/lean/</loc>
+    <lastmod>2019-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/lean-transformation/</loc>
     <lastmod>2019-09-16T00:00:00+00:00</lastmod>
   </url>
@@ -194,11 +199,6 @@
   
   <url>
     <loc>/tags/culture-change/</loc>
-    <lastmod>2019-02-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/lean/</loc>
     <lastmod>2019-02-03T00:00:00+00:00</lastmod>
   </url>
   
@@ -363,11 +363,6 @@
   </url>
   
   <url>
-    <loc>/tags/rstat/</loc>
-    <lastmod>2018-01-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/sna/</loc>
     <lastmod>2018-01-21T00:00:00+00:00</lastmod>
   </url>
@@ -433,6 +428,11 @@
   </url>
   
   <url>
+    <loc>/</loc>
+    <lastmod>2018-01-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2018/01/curse-of-dimensionalityrmd/</loc>
     <lastmod>2018-01-12T00:00:00+00:00</lastmod>
   </url>
@@ -445,11 +445,6 @@
   <url>
     <loc>/2018/01/we-have-a-blog/</loc>
     <lastmod>2018-01-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/1/01/</loc>
-    <priority>0</priority>
   </url>
   
   <url>

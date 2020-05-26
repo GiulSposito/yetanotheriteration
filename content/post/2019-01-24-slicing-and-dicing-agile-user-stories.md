@@ -34,7 +34,9 @@ Esta disciplina realmente muda o patamar de desempenho de um time e incorpora a 
 
 ## Apresentação
 
-<iframe src="https://www.slideshare.net/slideshow/embed_code/key/CtvRJDGOWZ6CYB" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/GiulianoSposito/slicing-dicing-user-store-quebrando-histrias-de-usurio" title="Quebrando Histórias de Usuário" target="_blank">Quebrando Histórias de Usuário</a> </strong> from <strong><a href="https://www.slideshare.net/GiulianoSposito" target="_blank">Giuliano Sposito</a></strong> </div>
+![](/images/slice_and_dicing_cover.jpg)
+
+[Quebrando Histórias de Usuário](https://www.slideshare.net/GiulianoSposito/slicing-dicing-user-store-quebrando-histrias-de-usurio) from [Giuliano Sposito](https://www.slideshare.net/GiulianoSposito)
 
 ## Referências
 
