@@ -105,13 +105,12 @@ chat %>%
 Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num `data.frame`, contendo informações de *timestamp*, quem é o contato remetente, a mensagem enviada e a "*fonte de dados*" (arquivo importado). Além disso, de forma destacada da mensagem e aninhado ([*nested*](https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/)) à linha, temos informações sobre os [Emoji's](https://home.unicode.org/emoji/) que estão presentes em cada mensagem enviada, tanto o caracter [Unicode](https://home.unicode.org/) como o nome do `Emoji`.
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- emoji_ads_01 -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
      data-ad-client="ca-pub-5624634479725935"
-     data-ad-slot="9462454685"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
+     data-ad-slot="2804837832"></ins>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>

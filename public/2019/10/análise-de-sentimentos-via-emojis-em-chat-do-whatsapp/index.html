@@ -296,7 +296,7 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p><img src="/images/emoji_whatsapp_header.jpg" /></p>
-<div id="introducao" class="section level2">
+<div id="introdução" class="section level2">
 <h2>Introdução</h2>
 <p>O pacote <a href="https://cran.r-project.org/web/packages/rwhatsapp/index.html"><code>rwhatsapp</code></a>, desenvolvido e disponibilizado por <a href="https://github.com/JBGruber">Johannes Grubber</a>, permite manipular diretamente os arquivos <code>TXT</code> (e <code>ZIP</code>) de uma conversão exportada pelo aplicativo <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a>, importando os dados para um <code>data.frame</code> e disponibilizando-os para análise de maneira simples e direta. Ao esbarrar com esse pacote no <a href="https://twitter.com/JohannesBGruber/status/1176415368820264960"><code>Twitter</code></a> decidi explorar uma conversão de um dos meus grupos de <a href="https://www.whatsapp.com/"><code>WhatsApp</code></a> e fazer uma análise de sentimentos através dos <a href="https://home.unicode.org/emoji/">Emoji’s</a> enviados pelos remetentes.</p>
 <blockquote class="twitter-tweet">
@@ -516,17 +516,16 @@ character(0)
 </table>
 <p>Como você pode ver a importação é bem rápida e direta, e devolve as mensagens como linhas num <code>data.frame</code>, contendo informações de <em>timestamp</em>, quem é o contato remetente, a mensagem enviada e a “<em>fonte de dados</em>” (arquivo importado). Além disso, de forma destacada da mensagem e aninhado (<a href="https://blog.rstudio.com/2016/02/02/tidyr-0-4-0/"><em>nested</em></a>) à linha, temos informações sobre os <a href="https://home.unicode.org/emoji/">Emoji’s</a> que estão presentes em cada mensagem enviada, tanto o caracter <a href="https://home.unicode.org/">Unicode</a> como o nome do <code>Emoji</code>.</p>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- emoji_ads_01 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5624634479725935" data-ad-slot="9462454685" data-ad-format="auto" data-full-width-responsive="true">
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-5624634479725935" data-ad-slot="2804837832">
 </ins>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </div>
-<div id="avaliando-frequencia-das-mensagens" class="section level2">
+<div id="avaliando-frequência-das-mensagens" class="section level2">
 <h2>Avaliando Frequência das Mensagens</h2>
 <p>A análise inicial, e também a mais direta e simples, que pode ser feita nesses dados é de frequência, podemos visualizar o volume diário de mensagens, que horas e dias das semana são mais utilizados no grupo, bem como quem é o membro do grupo mais comunicativo.</p>
-<div id="mensagens-enviadas-no-periodo" class="section level3">
+<div id="mensagens-enviadas-no-período" class="section level3">
 <h3>Mensagens enviadas no período</h3>
 <p>Para deixar a informação mais rica, podemos comparar os volumes de envio no tempo com as etapas do campeonato de NFL, que é inclusive caracterizada por uma longa intertemporda. Então vamos criar uma informação de <em>fase</em>, que diz em que etapa do campeonato pertence aquela mensagem, podemos fazer isso simplesmente segregando o <em>timestamp</em> nas seguintes datas:</p>
 <ul>
@@ -885,7 +884,7 @@ plot.data %&gt;%
 </script>
 </div>
 </div>
-<div id="analise-de-palavras" class="section level2">
+<div id="análise-de-palavras" class="section level2">
 <h2>Análise de Palavras</h2>
 <p>Assim como fizemos com os <code>Emoji´s</code>, podemos fazar a análise de frequência das palavras mais utilizadas no grupo bem como é para cada um dos membros. O pacote <code>tidytext</code> deixa essa análise bem simples e direta de aplicar.</p>
 <div id="ranking-de-palavras" class="section level3">
@@ -947,7 +946,7 @@ chat %&gt;%
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/wordsByAuthor-1.png" width="672" /></p>
 </div>
 </div>
-<div id="analise-de-sentimentos" class="section level2">
+<div id="análise-de-sentimentos" class="section level2">
 <h2>Análise de Sentimentos</h2>
 <p>Como a conversa vem de um grupo de uma liga de <em>Fantasy</em>, seria interessante analisar as mensagens do ponto de vista emocional. Como as pessoas reagem de acordo com a sua performance no jogo ou para os times que torcem? Iremos fazer isso de duas maneiras, a primeira é utilizando o <a href="https://www.clarin.si/repository/xmlui/handle/11356/1048">Emoji Sentimental Rank</a> e o outro, também com base nos Emojis, usaremos o seus “nomes” para cruzar com bases léxicas de classificação de palavras, para avaliar os sentimentos e intensidades envolvidas.</p>
 <div id="emoji-sentiment-rank" class="section level3">
@@ -2984,7 +2983,7 @@ chat.sentiment %&gt;%
 <p><img src="/post/2019-10-14-análise-de-sentimentos-via-emojis-em-chat-do-whatsapp_files/figure-html/mostFreqSentiment-1.png" width="672" /></p>
 </div>
 </div>
-<div id="referencias" class="section level2">
+<div id="referências" class="section level2">
 <h2>Referências</h2>
 <ul>
 <li><a href="https://www.johannesbgruber.eu/post/introducing-rwhatsapp/">Introducing rwhatsapp</a></li>
