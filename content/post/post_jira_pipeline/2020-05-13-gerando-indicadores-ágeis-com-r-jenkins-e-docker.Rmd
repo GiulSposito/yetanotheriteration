@@ -25,6 +25,8 @@ Sempre se comenta a grande versatilidade do *R*, com capacidade de participar de
 
 <!--more-->
 
+<script data-ad-client="ca-pub-5624634479725935" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
 Sempre se comenta a grande versatilidade de [*R*](https://www.r-project.org/), com capacidade de participar de todas as etapas de um [fluxo de análise de dados](http://statseducation.com/Introduction-to-R/modules/getting%20started/workflow/). Quem conhece [*a linguagem R*](https://pt.wikipedia.org/wiki/R_(linguagem_de_programa%C3%A7%C3%A3o)) não duvida deste potencial, mas não é muito frequente encontramos uma situação em que ele é de fato usado de ponta à ponta, e principalmente em um grande projeto. Neste post descrevo um trabalho de implantação de técnicas ágeis de desenvolvimento de software em um grande banco brasileiro que também acabou implementando um *pipeline de aquisição, análise e divulgação de dados* sobre métricas e indicadores de produtividade, qualidade e previsibilidade que foi todo implementando usando *R* e automatizado através de *Jenkins*, *Docker*, *GitLab* e *Nexus*. 
 
 ![](/images/dashboard_cover.png)
