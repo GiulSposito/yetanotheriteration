@@ -6,10 +6,46 @@
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>data handling</title>
+      <link>/tags/data-handling/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-handling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>en-US</title>
+      <link>/tags/en-us/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/en-us/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstats</title>
+      <link>/tags/rstats/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rstats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidyverse</title>
+      <link>/tags/tidyverse/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tidyverse/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>agile</title>
@@ -39,24 +75,6 @@
     </item>
     
     <item>
-      <title>rstat</title>
-      <link>/tags/rstat/</link>
-      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rstat/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rstats</title>
-      <link>/tags/rstats/</link>
-      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rstats/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>books</title>
       <link>/tags/books/</link>
       <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
@@ -71,15 +89,6 @@
       <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-science/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>en-US</title>
-      <link>/tags/en-us/</link>
-      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/en-us/</guid>
       <description></description>
     </item>
     
@@ -165,15 +174,6 @@
     </item>
     
     <item>
-      <title>lean</title>
-      <link>/tags/lean/</link>
-      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/lean/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>lean transformation</title>
       <link>/tags/lean-transformation/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
@@ -251,6 +251,15 @@
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/culture-change/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lean</title>
+      <link>/tags/lean/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lean/</guid>
       <description></description>
     </item>
     
@@ -449,6 +458,15 @@
       <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstat</title>
+      <link>/tags/rstat/</link>
+      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rstat/</guid>
       <description></description>
     </item>
     
