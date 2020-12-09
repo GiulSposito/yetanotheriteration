@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.74.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Giuliano Sposito">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+
+
+Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the ‘Advent of Code 2020’ puzzles, from day 4 to day 6, using R.
+">
+
+
+<meta property="og:description" content="
+
+
+
+
+
+Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the ‘Advent of Code 2020’ puzzles, from day 4 to day 6, using R.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Advent of Code 2020 | Days 4 to 6">
+<meta name="twitter:title" content="Advent of Code 2020 | Days 4 to 6">
+<meta property="og:url" content="/2020/12/advent-of-code-2020-part_02/">
+<meta property="twitter:url" content="/2020/12/advent-of-code-2020-part_02/">
+<meta property="og:site_name" content="Yet Another Iteration">
+<meta property="og:description" content="
+
+
+
+
+
+Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the ‘Advent of Code 2020’ puzzles, from day 4 to day 6, using R.
+">
+<meta name="twitter:description" content="
+
+
+
+
+
+Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the ‘Advent of Code 2020’ puzzles, from day 4 to day 6, using R.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-12-08T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2020-12-08T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="data science">
+    
+  
+  
+    
+      <meta property="article:tag" content="data handling">
+    
+      <meta property="article:tag" content="data science">
+    
+      <meta property="article:tag" content="rstats">
+    
+      <meta property="article:tag" content="en-US">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@gsposito">
+
+
+  <meta name="twitter:creator" content="@gsposito">
+
+
+
+
+
+
+  <meta property="og:image" content="/images/advent_of_code_tn.jpg">
+  <meta property="twitter:image" content="/images/advent_of_code_tn.jpg">
+
+
+  <meta property="og:image" content="/images/advent_of_code_header.jpg">
+  <meta property="twitter:image" content="/images/advent_of_code_header.jpg">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+
+
+    <title>Advent of Code 2020 | Days 4 to 6</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+      <link rel="publisher" href="https://plus.google.com/&#43;giulianosposito">
+    
+
+    <link rel="canonical" href="/2020/12/advent-of-code-2020-part_02/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-112393378-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<!-- raw HTML omitted -->Masters in Tech Innovation Mgt<!-- raw HTML omitted -->Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/advent_of_code_header.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Advent of Code 2020 | Days 4 to 6
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-12-08T00:00:00Z">
+        
+  December 8, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>This post continues the <a href="/2020/12/advent-of-code-2020-part_01/">Advent Of Code 2020 series</a> an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the ‘Advent of Code 2020’ puzzles, from day 4 to day 6, using R.</p>
+<div id="day-4-passport-processing" class="section level2">
+<h2>Day 4: Passport Processing</h2>
+<div id="part-one" class="section level3">
+<h3>Part One</h3>
+<p>You arrive at the airport only to realize that you grabbed your North Pole Credentials instead of your passport. While these documents are extremely similar, North Pole Credentials aren’t issued by a country and therefore aren’t actually valid documentation for travel in most of the world.</p>
+<p>It seems like you’re not the only one having problems, though; a very long line has formed for the automatic passport scanners, and the delay could upset your travel itinerary.</p>
+<p>Due to some questionable network security, you realize you might be able to solve both of these problems at the same time.</p>
+<p>The automatic passport scanners are slow because they’re having trouble detecting which passports have all required fields. The expected fields are as follows:</p>
+<pre><code>byr (Birth Year)
+iyr (Issue Year)
+eyr (Expiration Year)
+hgt (Height)
+hcl (Hair Color)
+ecl (Eye Color)
+pid (Passport ID)
+cid (Country ID)</code></pre>
+<p>Passport data is validated in batch files (your puzzle input). Each passport is represented as a sequence of key:value pairs separated by spaces or newlines. Passports are separated by blank lines.</p>
+<p>Here is an example batch file containing four passports:</p>
+<pre><code>ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+byr:1937 iyr:2017 cid:147 hgt:183cm
+
+iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
+hcl:#cfa07d byr:1929
+
+hcl:#ae17e1 iyr:2013
+eyr:2024
+ecl:brn pid:760753108 byr:1931
+hgt:179cm
+
+hcl:#cfa07d eyr:2025 pid:166559648
+iyr:2011 ecl:brn hgt:59in</code></pre>
+<p>The first passport is valid - all eight fields are present. The second passport is invalid - it is missing hgt (the Height field).</p>
+<p>The third passport is interesting; the only missing field is <code>cid</code>, so it looks like data from North Pole Credentials, not a passport at all! Surely, nobody would mind if you made the system temporarily ignore missing <code>cid</code> fields. Treat this “passport” as valid.</p>
+<p>The fourth passport is missing two fields, <code>cid</code> and <code>byr</code>. Missing <code>cid</code> is fine, but missing any other field is not, so this passport is invalid.</p>
+<p>According to the above rules, your improved system would report 2 valid passports.</p>
+<p>Count the number of valid passports - those that have all required fields. Treat <code>cid</code> as optional. In your batch file, how many passports are valid?</p>
+<div id="solution" class="section level4">
+<h4>Solution</h4>
+<p>In R, the solution is straightforward, we process the text, transforming into a list of passport, each element has the matrix of field names and values. In this first part we just count with we have enough fields in the passport register.</p>
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# read data as text (vector of string by lines)
+input &lt;- read_lines(&quot;./day04_input.txt&quot;)
+
+# change a empty line to &quot;|&quot; (trick to split later)
+input[input==&quot;&quot;] &lt;- &quot;|&quot;
+
+# collapses the data and splits the data 
+# into a list of passports
+passports &lt;- input %&gt;% 
+  # collapses into one string
+  str_c(collapse = &quot; &quot;) %&gt;% 
+  # splits each passport data
+  str_split(&quot;\\|&quot;) %&gt;% 
+  unlist() %&gt;% 
+  # for each passport splits the fields
+  str_split(&quot; &quot;) %&gt;% 
+  # pre-process the fields into a matrix (field, value)
+  map(function(line){
+    # clean empty values
+    line[line!=&quot;&quot;] %&gt;% 
+      str_split(&quot;:&quot;, simplify = T) %&gt;% 
+      return()
+  })
+
+# function to check if the passport register has enough fields
+is.valid.passdata &lt;- function(pass.data){
+  fields &lt;- pass.data[,1]
+  # has all fields
+  if (length(fields) == 8) return(T)
+  # has all fields but cid
+  if (length(fields)==7 &amp; length(fields[fields==&quot;cid&quot;])==0 ) return(T)
+  return(F)
+}
+
+# checks all passport data and counts the valid ones
+passports %&gt;% 
+  map_lgl(is.valid.passdata) %&gt;% 
+  sum()</code></pre>
+<pre><code>## [1] 254</code></pre>
+</div>
+</div>
+<div id="part-two" class="section level3">
+<h3>Part two</h3>
+<p>The line is moving more quickly now, but you overhear airport security talking about how passports with invalid data are getting through. Better add some data validation, quick!</p>
+<p>You can continue to ignore the cid field, but each other field has strict rules about what values are valid for automatic validation:</p>
+<pre><code>byr (Birth Year) - four digits; at least 1920 and at most 2002.
+iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+hgt (Height) - a number followed by either cm or in:
+ - If cm, the number must be at least 150 and at most 193.
+ - If in, the number must be at least 59 and at most 76.
+hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
+ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+pid (Passport ID) - a nine-digit number, including leading zeroes.
+cid (Country ID) - ignored, missing or not.</code></pre>
+<p>Your job is to count the passports where all required fields are both present and valid according to the above rules. Here are some example values:</p>
+<pre><code>byr valid:   2002
+byr invalid: 2003
+
+hgt valid:   60in
+hgt valid:   190cm
+hgt invalid: 190in
+hgt invalid: 190
+
+hcl valid:   #123abc
+hcl invalid: #123abz
+hcl invalid: 123abc
+
+ecl valid:   brn
+ecl invalid: wat
+
+pid valid:   000000001
+pid invalid: 0123456789</code></pre>
+<p>Here are some invalid passports:</p>
+<pre><code>eyr:1972 cid:100
+hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
+
+iyr:2019
+hcl:#602927 eyr:1967 hgt:170cm
+ecl:grn pid:012533040 byr:1946
+
+hcl:dab227 iyr:2012
+ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277
+
+hgt:59cm ecl:zzz
+eyr:2038 hcl:74454a iyr:2023
+pid:3556412378 byr:2007</code></pre>
+<p>Here are some valid passports:</p>
+<pre><code>pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
+hcl:#623a2f
+
+eyr:2029 ecl:blu cid:129 byr:1989
+iyr:2014 pid:896056539 hcl:#a97842 hgt:165cm
+
+hcl:#888785
+hgt:164cm byr:2001 iyr:2015 cid:88
+pid:545766238 ecl:hzl
+eyr:2022
+
+iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719</code></pre>
+<p>Count the number of valid passports - those that have all required fields and valid values. Continue to treat cid as optional. In your batch file, how many passports are valid?</p>
+<div id="solution-1" class="section level4">
+<h4>Solution</h4>
+<p>Same approach as part one, but here we’ll have to verify each passport field, in this time we transform the input text into a full data frame (tibble) with a passport each row and its fields in column (tidy data). After that we verify the validation of each field (at same time in the whole data.frame).</p>
+<pre class="r"><code># reads data as text (vector of string by lines)
+input &lt;- read_lines(&quot;day04_input.txt&quot;)
+
+# change a empty line to &quot;|&quot; (trick to split later)
+input[input==&quot;&quot;] &lt;- &quot;|&quot;
+
+# collapse the string and splits the data 
+# into a list of fields x value
+passports &lt;- input %&gt;% 
+  # collapses into one string
+  str_c(collapse = &quot; &quot;) %&gt;% 
+  # splits each passport data
+  str_split(&quot;\\|&quot;) %&gt;% 
+  unlist() %&gt;% 
+  # for each passport splits the fields
+  str_split(&quot; &quot;) %&gt;% 
+  # pre-process the fields into a tibble
+  map(function(line){
+    # remove empty strings and split into &quot;name&quot;:&quot;value pair matrix
+    pd &lt;- str_split(line[line!=&quot;&quot;], &quot;:&quot;, simplify = T)
+    # return a list of fields
+    pd[,2] %&gt;% 
+      # build an tibble with the fields and values of the passport
+      split(1:length(.)) %&gt;% 
+      set_names(pd[,1]) %&gt;% 
+      as_tibble() %&gt;% 
+      return()
+  })
+
+# puts the data into a tibble
+pass.check &lt;- tibble(
+    pdata = passports
+  ) %&gt;% 
+  # unnests
+  unnest(pdata)
+
+# let&#39;s see what we got
+head(pass.check) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size=10)</code></pre>
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+iyr
+</th>
+<th style="text-align:left;">
+ecl
+</th>
+<th style="text-align:left;">
+hgt
+</th>
+<th style="text-align:left;">
+pid
+</th>
+<th style="text-align:left;">
+byr
+</th>
+<th style="text-align:left;">
+hcl
+</th>
+<th style="text-align:left;">
+eyr
+</th>
+<th style="text-align:left;">
+cid
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2010
+</td>
+<td style="text-align:left;">
+gry
+</td>
+<td style="text-align:left;">
+181cm
+</td>
+<td style="text-align:left;">
+591597745
+</td>
+<td style="text-align:left;">
+1920
+</td>
+<td style="text-align:left;">
+#6b5442
+</td>
+<td style="text-align:left;">
+2029
+</td>
+<td style="text-align:left;">
+123
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+177cm
+</td>
+<td style="text-align:left;">
+404183620
+</td>
+<td style="text-align:left;">
+1927
+</td>
+<td style="text-align:left;">
+#602927
+</td>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+223
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2014
+</td>
+<td style="text-align:left;">
+hzl
+</td>
+<td style="text-align:left;">
+166cm
+</td>
+<td style="text-align:left;">
+594143498
+</td>
+<td style="text-align:left;">
+1998
+</td>
+<td style="text-align:left;">
+#a97842
+</td>
+<td style="text-align:left;">
+2030
+</td>
+<td style="text-align:left;">
+178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:left;">
+hzl
+</td>
+<td style="text-align:left;">
+157cm
+</td>
+<td style="text-align:left;">
+795349208
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+#de745c
+</td>
+<td style="text-align:left;">
+2024
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:left;">
+hzl
+</td>
+<td style="text-align:left;">
+159cm
+</td>
+<td style="text-align:left;">
+364060467
+</td>
+<td style="text-align:left;">
+1978
+</td>
+<td style="text-align:left;">
+#18171d
+</td>
+<td style="text-align:left;">
+2025
+</td>
+<td style="text-align:left;">
+117
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2012
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+182cm
+</td>
+<td style="text-align:left;">
+374679609
+</td>
+<td style="text-align:left;">
+1925
+</td>
+<td style="text-align:left;">
+#cfa07d
+</td>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:left;">
+338
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># validates each field rule
+pass.check &lt;- pass.check %&gt;% 
+  # byr (Birth Year) - four digits; at least 1920 and at most 2002.
+  mutate( byr = as.integer(byr) ) %&gt;% 
+  mutate( chk.byr = (!is.na(byr) &amp; byr&gt;=1920 &amp; byr&lt;=2002) ) %&gt;% 
+  # iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+  mutate( iyr = as.integer(iyr) ) %&gt;% 
+  mutate( chk.iyr = (!is.na(iyr) &amp; iyr&gt;=2010 &amp; iyr&lt;=2020) ) %&gt;% 
+  # eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+  mutate( eyr = as.integer(eyr) ) %&gt;% 
+  mutate( chk.eyr = (!is.na(eyr) &amp; eyr&gt;=2020 &amp; eyr&lt;=2030)) %&gt;% 
+  # hgt (Height) - a number followed by either cm or in:
+  mutate( hgt.fmt.chk = (!is.na(hgt) &amp; str_detect(hgt,&quot;[0-9]+(in|cm)&quot;)) ) %&gt;% 
+  # separates value of unit to check the ranges
+  mutate( hgt.val = as.integer(str_extract(hgt,&quot;[0-9]+&quot;)),
+          hgt.unit = str_extract(hgt,&quot;(in|cm)&quot;)) %&gt;% 
+  mutate( chk.hgt = case_when(
+    # invalid format or empty field
+    !hgt.fmt.chk ~ F,
+    # - If cm, the number must be at least 150 and at most 193.
+    hgt.unit == &quot;cm&quot; ~ (hgt.val&gt;=150 &amp; hgt.val&lt;=193),
+    # - If in, the number must be at least 59 and at most 76.
+    hgt.unit == &quot;in&quot; ~ (hgt.val&gt;=59 &amp; hgt.val&lt;=76),
+    T ~ F # otherwise?
+  )) %&gt;% 
+  # hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
+  mutate( chk.hcl = (!is.na(hcl) &amp; str_detect(hcl, &quot;#[0-9a-f]{6}&quot;) &amp; nchar(hcl)==7) ) %&gt;% 
+  # ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+  mutate( chk.ecl = (!is.na(ecl) &amp; ecl %in% c(&quot;amb&quot;,&quot;blu&quot;,&quot;brn&quot;,&quot;gry&quot;,&quot;grn&quot;,&quot;hzl&quot;,&quot;oth&quot;))) %&gt;% 
+  # pid (Passport ID) - a nine-digit number, including leading zeroes.
+  mutate( chk.pid = (!is.na(pid) &amp; str_detect(pid,&quot;[0-9]{9}&quot;) * nchar(pid)==9) ) %&gt;%
+  # cid (Country ID) - ignored, missing or not. 
+  # check all policies
+  mutate( is.valid = (chk.byr &amp; chk.iyr &amp; chk.eyr &amp; chk.hgt &amp; chk.hcl &amp; chk.ecl &amp; chk.pid))
+
+# let&#39;s see what we got
+head(pass.check) %&gt;% 
+  kable() %&gt;% 
+  kable_styling(font_size=8)</code></pre>
+<table class="table" style="font-size: 8px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+iyr
+</th>
+<th style="text-align:left;">
+ecl
+</th>
+<th style="text-align:left;">
+hgt
+</th>
+<th style="text-align:left;">
+pid
+</th>
+<th style="text-align:right;">
+byr
+</th>
+<th style="text-align:left;">
+hcl
+</th>
+<th style="text-align:right;">
+eyr
+</th>
+<th style="text-align:left;">
+cid
+</th>
+<th style="text-align:left;">
+chk.byr
+</th>
+<th style="text-align:left;">
+chk.iyr
+</th>
+<th style="text-align:left;">
+chk.eyr
+</th>
+<th style="text-align:left;">
+hgt.fmt.chk
+</th>
+<th style="text-align:right;">
+hgt.val
+</th>
+<th style="text-align:left;">
+hgt.unit
+</th>
+<th style="text-align:left;">
+chk.hgt
+</th>
+<th style="text-align:left;">
+chk.hcl
+</th>
+<th style="text-align:left;">
+chk.ecl
+</th>
+<th style="text-align:left;">
+chk.pid
+</th>
+<th style="text-align:left;">
+is.valid
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:left;">
+gry
+</td>
+<td style="text-align:left;">
+181cm
+</td>
+<td style="text-align:left;">
+591597745
+</td>
+<td style="text-align:right;">
+1920
+</td>
+<td style="text-align:left;">
+#6b5442
+</td>
+<td style="text-align:right;">
+2029
+</td>
+<td style="text-align:left;">
+123
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+181
+</td>
+<td style="text-align:left;">
+cm
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+177cm
+</td>
+<td style="text-align:left;">
+404183620
+</td>
+<td style="text-align:right;">
+1927
+</td>
+<td style="text-align:left;">
+#602927
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:left;">
+223
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+177
+</td>
+<td style="text-align:left;">
+cm
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+hzl
+</td>
+<td style="text-align:left;">
+166cm
+</td>
+<td style="text-align:left;">
+594143498
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:left;">
+#a97842
+</td>
+<td style="text-align:right;">
+2030
+</td>
+<td style="text-align:left;">
+178
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+166
+</td>
+<td style="text-align:left;">
+cm
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:left;">
+hzl
+</td>
+<td style="text-align:left;">
+157cm
+</td>
+<td style="text-align:left;">
+795349208
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+#de745c
+</td>
+<td style="text-align:right;">
+2024
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+157
+</td>
+<td style="text-align:left;">
+cm
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:left;">
+hzl
+</td>
+<td style="text-align:left;">
+159cm
+</td>
+<td style="text-align:left;">
+364060467
+</td>
+<td style="text-align:right;">
+1978
+</td>
+<td style="text-align:left;">
+#18171d
+</td>
+<td style="text-align:right;">
+2025
+</td>
+<td style="text-align:left;">
+117
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+159
+</td>
+<td style="text-align:left;">
+cm
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+182cm
+</td>
+<td style="text-align:left;">
+374679609
+</td>
+<td style="text-align:right;">
+1925
+</td>
+<td style="text-align:left;">
+#cfa07d
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:left;">
+338
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+182
+</td>
+<td style="text-align:left;">
+cm
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># how many is valid?
+sum(1*pass.check$is.valid)</code></pre>
+<pre><code>## [1] 184</code></pre>
+</div>
+</div>
+</div>
+<div id="day-5-binary-boarding" class="section level2">
+<h2>Day 5: Binary Boarding</h2>
+<div id="part-1" class="section level3">
+<h3>Part 1</h3>
+<p>You board your plane only to discover a new problem: you dropped your boarding pass! You aren’t sure which seat is yours, and all of the flight attendants are busy with the flood of people that suddenly made it through passport control.</p>
+<p>You write a quick program to use your phone’s camera to scan all of the nearby boarding passes (your puzzle input); perhaps you can find your seat through process of elimination.</p>
+<p>Instead of zones or groups, this airline uses binary space partitioning to seat people. A seat might be specified like <code>FBFBBFFRLR</code>, where <code>F</code> means “<code>front</code>”, <code>B</code> means “<code>back</code>”, <code>L</code> means “<code>left</code>”, and <code>R</code> means “<code>right</code>”.</p>
+<p>The <code>first 7</code> characters will either be <code>F</code> or <code>B</code>; these specify <code>exactly one of the 128 rows on the plane</code> (numbered 0 through 127). <code>Each letter tells you which half of a region the given seat is in</code>. Start with the whole list of rows; the first letter indicates whether the seat is in the front (0 through 63) or the back (64 through 127). The next letter indicates which half of that region the seat is in, and so on until you’re left with exactly one row.</p>
+<p>For example, consider just the first seven characters of <code>FBFBBFFRLR</code>:</p>
+<pre><code>Start by considering the whole range, rows 0 through 127.
+F means to take the lower half, keeping rows 0 through 63.
+B means to take the upper half, keeping rows 32 through 63.
+F means to take the lower half, keeping rows 32 through 47.
+B means to take the upper half, keeping rows 40 through 47.
+B keeps rows 44 through 47.
+F keeps rows 44 through 45.
+The final F keeps the lower of the two, row 44.</code></pre>
+<p>The <code>last three</code> characters will be either <code>L</code> or <code>R</code>; these specify exactly <code>one of the 8 columns of seats</code> on the plane (numbered 0 through 7). The same process as above proceeds again, this time with only three steps. <code>L</code> means to keep <code>the lower half</code>, while <code>R</code> means to keep <code>the upper half</code>.</p>
+<p>For example, consider just the last 3 characters of <code>FBFBBFFRLR</code>:</p>
+<pre><code>Start by considering the whole range, columns 0 through 7.
+R means to take the upper half, keeping columns 4 through 7.
+L means to take the lower half, keeping columns 4 through 5.
+The final R keeps the upper of the two, column 5.
+So, decoding FBFBBFFRLR reveals that it is the seat at row 44, column 5.</code></pre>
+<p>Every seat also has a <code>unique seat ID</code>: multiply the row by 8, then add the column. In this example, the seat has <code>ID 44 * 8 + 5 = 357</code>.</p>
+<p>Here are some other boarding passes:</p>
+<pre><code>BFFFBBFRRR: row 70, column 7, seat ID 567.
+FFFBBBFRRR: row 14, column 7, seat ID 119.
+BBFFBBFRLL: row 102, column 4, seat ID 820.</code></pre>
+<p>As a sanity check, look through your list of boarding passes. What is the highest seat ID on a boarding pass?</p>
+<div id="solution-2" class="section level4">
+<h4>Solution</h4>
+<p>The solution consist in interpret the seat code as a series of step-instruction (B, F, L, R…) to choose parts of array, representing the rows and columns in the airplane. The code bellow is already factorized, so I programmed a function that receives the sequence of steps (for columns or rows) and a full map of positions (columns or rows) and iterate in the steps to find the exact position.</p>
+<pre class="r"><code># function to find the row (or the column) in the code instruction
+# steps - array of instruction (BFLR...)
+# pos.map - array to be used in the search
+# lower.code - with char in the step must be interpreted as &quot;get the lower half&quot; of the map
+findInMap &lt;- function(steps, pos.map, lower.code){
+
+  # for each char in the steps sequence
+  for (step in steps){
+    
+    # we must get the lower or higher half of the map
+    if(step==lower.code){
+      index &lt;- 1:(length(pos.map)/2)
+    } else {
+      index &lt;- ((length(pos.map)/2)+1):length(pos.map)
+    }
+    
+    # selects the correct half
+    pos.map &lt;- pos.map[index]
+    
+  }
+  
+  # returns the value found
+  return(pos.map)
+}
+
+# auxiliary funcion to transform a seat CODE into a seat ID
+calcSeatId &lt;- function(code){
+  # transforms the string into a char vector
+  seat.code &lt;- unlist(strsplit(code,&quot;&quot;))
+  # the first 7 chars identifies the row
+  seat.row.code &lt;- seat.code[1:7]
+  # the last 3 chars identifies the column
+  seat.col.code &lt;- seat.code[8:10]
+  
+  # finds the right row
+  rnum &lt;- findInMap(seat.row.code, 0:127, &quot;F&quot;)
+  # finds the right col
+  cnum &lt;- findInMap(seat.col.code, 0:7, &quot;L&quot;)
+  # calculates the id
+  return(rnum*8+cnum)
+}
+
+# reads the input data
+input &lt;- readr::read_lines(&quot;day05_input.txt&quot;)
+
+# apply the calcSeatId in the codes
+ids &lt;- sapply(input, calcSeatId)
+
+# get the highest seat ID on a boarding pass...
+max(ids)</code></pre>
+<pre><code>## [1] 880</code></pre>
+</div>
+</div>
+<div id="part-two-1" class="section level3">
+<h3>Part Two</h3>
+<p>Ding! The “fasten seat belt” signs have turned on. Time to find your seat.</p>
+<p>It’s a completely full flight, so your seat should be the only missing boarding pass in your list. However, there’s a catch: some of the seats at the very front and back of the plane don’t exist on this aircraft, so they’ll be missing from your list as well.</p>
+<p>Your seat wasn’t at the very front or back, though; the seats with IDs +1 and -1 from yours will be in your list.</p>
+<p>What is the ID of your seat?</p>
+<div id="solution-3" class="section level4">
+<h4>Solution</h4>
+<p>It’s a simple problem, we just verify which Seat ID is missing in the boarding pass sequence, the fligh is full so, the missing one is our number.</p>
+<pre class="r"><code># what are the initial and final seat code numbers?
+min.seat &lt;- min(ids)
+max.seat &lt;- max(ids)
+
+# generate the whole sequence between
+full.seats &lt;- min.seat:max.seat
+
+# check if there is a difference between the full sequence and the ids we have calculated 
+setdiff(full.seats, ids)</code></pre>
+<pre><code>## [1] 731</code></pre>
+</div>
+</div>
+</div>
+<div id="day-6-custom-customs" class="section level2">
+<h2>Day 6: Custom Customs</h2>
+<div id="part-one-1" class="section level3">
+<h3>Part One</h3>
+<p>As your flight approaches the regional airport where you’ll switch to a much larger plane, customs declaration forms are distributed to the passengers.</p>
+<p>The form asks a series of 26 yes-or-no questions marked a through z. All you need to do is identify the questions for which anyone in your group answers “yes”. Since your group is just you, this doesn’t take very long.</p>
+<p>However, the person sitting next to you seems to be experiencing a language barrier and asks if you can help. For each of the people in their group, you write down the questions for which they answer “yes”, one per line. For example:</p>
+<pre><code>abcx
+abcy
+abcz</code></pre>
+<p>In this group, there are 6 questions to which anyone answered “yes”: a, b, c, x, y, and z. (Duplicate answers to the same question don’t count extra; each question counts at most once.)</p>
+<p>Another group asks for your help, then another, and eventually you’ve collected answers from every group on the plane (your puzzle input). Each group’s answers are separated by a blank line, and within each group, each person’s answers are on a single line. For example:</p>
+<pre><code>abc
+
+a
+b
+c
+
+ab
+ac
+
+a
+a
+a
+a
+
+b</code></pre>
+<p>This list represents answers from five groups:</p>
+<pre><code>The first group contains one person who answered &quot;yes&quot; to 3 questions: a, b, and c.
+The second group contains three people; combined, they answered &quot;yes&quot; to 3 questions: a, b, and c.
+The third group contains two people; combined, they answered &quot;yes&quot; to 3 questions: a, b, and c.
+The fourth group contains four people; combined, they answered &quot;yes&quot; to only 1 question, a.
+The last group contains one person who answered &quot;yes&quot; to only 1 question, b.
+In this example, the sum of these counts is 3 + 3 + 3 + 1 + 1 = 11.</code></pre>
+<p>For each group, count the number of questions to which anyone answered “yes”. What is the sum of those counts</p>
+<div id="solution-4" class="section level4">
+<h4>Solution</h4>
+<p>The solution for this part one is really simple, we process the text separating the group responses, for each group responses we count the distinct answers and them sum up.</p>
+<pre class="r"><code># reads the input data as array of lines
+input &lt;- readr::read_lines(&quot;day06_input.txt&quot;)
+
+# for each empty line we change to a &quot;|&quot; (trick to split in groups latter)
+input[input==&quot;&quot;] &lt;- &quot;|&quot;
+
+# process the data
+input %&gt;% 
+  # collapses into a single string
+  str_c(collapse = &quot;&quot;) %&gt;% 
+  # now splits in groups
+  str_split(&quot;\\|&quot;) %&gt;% 
+  unlist() %&gt;% # a vector of groups
+  # for each group answer (a string of all answers)
+  map_int(function(.x){
+    # splits in a char vector
+    .x %&gt;% 
+      strsplit(&quot;&quot;) %&gt;% 
+      unlist() %&gt;% 
+      # gets the unique values
+      unique() %&gt;% 
+      # returns the count
+      length() %&gt;% 
+      return()
+  }) %&gt;% 
+  # sum them
+  sum()</code></pre>
+<pre><code>## [1] 6763</code></pre>
+</div>
+</div>
+<div id="part-two-2" class="section level3">
+<h3>Part Two</h3>
+<p>As you finish the last group’s customs declaration, you notice that you misread one word in the instructions:</p>
+<p>You don’t need to identify the questions to which anyone answered “yes”; you need to identify the questions to which everyone answered “yes”!</p>
+<p>Using the same example as above:</p>
+<pre><code>abc
+
+a
+b
+c
+
+ab
+ac
+
+a
+a
+a
+a
+
+b</code></pre>
+<p>This list represents answers from five groups:</p>
+<pre><code>In the first group, everyone (all 1 person) answered &quot;yes&quot; to 3 questions: a, b, and c.
+In the second group, there is no question to which everyone answered &quot;yes&quot;.
+In the third group, everyone answered yes to only 1 question, a. Since some people did not answer &quot;yes&quot; to b or c, they don&#39;t count.
+In the fourth group, everyone answered yes to only 1 question, a.
+In the fifth group, everyone (all 1 person) answered &quot;yes&quot; to 1 question, b.
+In this example, the sum of these counts is 3 + 0 + 1 + 1 + 1 = 6.</code></pre>
+<p>For each group, count the number of questions to which everyone answered “yes”. What is the sum of those counts?</p>
+<div id="solution-5" class="section level4">
+<h4>Solution</h4>
+<p>This one is more tricky. We have to keep the individual response separated, count the occurrences of a question in each individual response in the group and then check how many occurrences are equal to the number individuals in the group.</p>
+<pre class="r"><code>library(tidyverse)
+
+# reads de input file as a vector of strings
+input &lt;- readr::read_lines(&quot;day06_input.txt&quot;)
+
+# replace empty lines with a separator (to split it latter)
+input[input==&quot;&quot;] = &quot;|&quot;
+
+# handles the dataset to create a list of groups and individuals responses
+in.data &lt;- input %&gt;%
+  # concats the strings marking the individual responses
+  str_c(collapse = &quot;&gt;&quot;) %&gt;% 
+  # split in vector of groups
+  str_split(&quot;\\|&quot;) %&gt;% 
+  unlist() %&gt;% 
+  # builds a list of groups with a vector of individual responses
+  map(function(.x){
+    resp &lt;- unlist(str_split(.x, &quot;&gt;&quot;))
+    return(resp[resp!=&quot;&quot;])
+  })
+
+# puts the group in a tibble
+tibble(
+    responses = in.data
+  ) %&gt;% 
+  # adds an &quot;ID&quot; for each group
+  mutate( g.id = row_number() ) %&gt;% 
+  # for each group create a tibble if individual question
+  mutate( questions = map(responses, function(.r){
+    tibble(
+      # counts the number of individual responses in each group
+      n.group  = length(.r),
+      question = unlist(strsplit(.r,&quot;&quot;))
+      ) %&gt;% 
+        # counts the common question between them
+        add_count(question) %&gt;% 
+        # gets the only common question
+        filter(n.group==n) %&gt;%
+        # returns a tibble with the questions common in the individual
+        # responses inside agroup
+        select(question) %&gt;% 
+        distinct() %&gt;% 
+        return()
+  })) %&gt;% 
+  # count the common questions for each group
+  unnest(questions) %&gt;% 
+  count(g.id) %&gt;% 
+  # sum then up
+  summarise( resp=sum(n))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##    resp
+##   &lt;int&gt;
+## 1  3512</code></pre>
+</div>
+</div>
+</div>
+<div id="to-be-continued" class="section level2">
+<h2>To be continued…</h2>
+<p>I’ll make the rest of puzzles in the next days and publish them here, see you…</p>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/data-handling/">data handling</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/data-science/">data science</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/en-us/">en-US</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/12/advent-of-code-2020-part_01/" data-tooltip="Advent Of Code 2020 | Day 1 to 3">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2020/12/advent-of-code-2020-part_02/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/12/advent-of-code-2020-part_02/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2020/12/advent-of-code-2020-part_02/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/12/advent-of-code-2020-part_01/" data-tooltip="Advent Of Code 2020 | Day 1 to 3">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2020/12/advent-of-code-2020-part_02/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/12/advent-of-code-2020-part_02/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2020/12/advent-of-code-2020-part_02/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2020%2F12%2Fadvent-of-code-2020-part_02%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2020%2F12%2Fadvent-of-code-2020-part_02%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2020%2F12%2Fadvent-of-code-2020-part_02%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<!-- raw HTML omitted -->Masters in Tech Innovation Mgt<!-- raw HTML omitted -->Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<!-- raw HTML omitted --><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2020\/12\/advent-of-code-2020-part_02\/';
+          
+            this.page.identifier = '\/2020\/12\/advent-of-code-2020-part_02\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
