@@ -335,7 +335,7 @@ A light red bag, which can hold bright white and muted yellow bags, either of wh
 <p>So, in this example, the number of bag colors that can eventually contain at least one shiny gold bag is 4.</p>
 <div id="the-graph-approach" class="section level4">
 <h4>The graph approach</h4>
-<p>Before try to resolve the puzzle directly, let’s try with the test scenario above. To do so, we can interpret the <em>bag regulations</em> as a <a href="https://en.wikipedia.org/wiki/Graph_theory">Metwork</a> of relationships where <code>one bag type+color</code> can contains <code>N bags of other type+color</code> and each one, by itself, can have others bags accordingly to the rules.</p>
+<p>Before try to resolve the puzzle directly, let’s try with the test scenario above. To do so, we can interpret the <em>bag regulations</em> as a <a href="https://en.wikipedia.org/wiki/Graph_theory">network</a> of relationships where <code>one bag type+color</code> can contains <code>N bags of other type+color</code> and each one, by itself, can have others bags accordingly to the rules.</p>
 <p>Once we build the network we can “navigate” thought it from a starting point (<em>our bag is shiny gold</em>) and see where the path goes to get which type of bag can contain at least one shiny gold.</p>
 <p>First, let’s interpret the <em>bag regulations</em> into a data frame of <code>bag type+color -&gt; N bags type_color</code> contains rules.</p>
 <pre class="r"><code>library(tidyverse)
@@ -358,7 +358,7 @@ decodeBagRules &lt;- function(.input){
   mutate( contains =  map(data,~unlist(str_split(.x,&quot;, &quot;))) ) %&gt;% 
   unnest(contains) %&gt;% 
   select(-data) %&gt;% 
-  # now we splt the bag type and color 
+  # now we split the bag type and color 
   separate(bag, into = c(&quot;bag.type&quot;,&quot;bag.color&quot;), sep = &quot; &quot;, extra = &quot;drop&quot;) %&gt;%
   # also for the content rule
   separate(contains, into = c(&quot;ctn.bag.qtd&quot;,&quot;ctn.bag.type&quot;,&quot;ctn.bag.color&quot;), sep=&quot; &quot;, extra = &quot;drop&quot;) %&gt;% 
@@ -658,7 +658,7 @@ NA
 <pre class="r"><code>library(tidygraph)
 
 # we build a graph, first create a &quot;from-&gt;to&quot; edge list
-# In this part one we want to find with bag can contains a specifig type+color bag
+# In this part one we want to find with bag can contains a specific type+color bag
 # so we create a network &#39;contains&#39; -&gt; &#39;bag&#39;
 bag.graph &lt;- bag.rules %&gt;% 
   transmute( from = paste0(ctn.bag.type,&quot;_&quot;,ctn.bag.color),
@@ -722,27 +722,27 @@ paths &lt;- bag.graph %&gt;%
 # Let&#39;s see
 paths </code></pre>
 <pre><code>## [[1]]
-## + 2/9 vertices, named, from b65d639:
+## + 2/9 vertices, named, from a3f89be:
 ## [1] shiny_gold   bright_white
 ## 
 ## [[2]]
-## + 3/9 vertices, named, from b65d639:
+## + 3/9 vertices, named, from a3f89be:
 ## [1] shiny_gold   bright_white light_red   
 ## 
 ## [[3]]
-## + 3/9 vertices, named, from b65d639:
+## + 3/9 vertices, named, from a3f89be:
 ## [1] shiny_gold   bright_white dark_orange 
 ## 
 ## [[4]]
-## + 2/9 vertices, named, from b65d639:
+## + 2/9 vertices, named, from a3f89be:
 ## [1] shiny_gold   muted_yellow
 ## 
 ## [[5]]
-## + 3/9 vertices, named, from b65d639:
+## + 3/9 vertices, named, from a3f89be:
 ## [1] shiny_gold   muted_yellow light_red   
 ## 
 ## [[6]]
-## + 3/9 vertices, named, from b65d639:
+## + 3/9 vertices, named, from a3f89be:
 ## [1] shiny_gold   muted_yellow dark_orange</code></pre>
 <p>The puzzle is ask for <em>how many bags</em> can contain an <code>shiny_gold</code> bag, the answer is simple, we look the end of each possible path starting from node <code>shiny_gold</code> and count the unique bags.</p>
 <pre class="r"><code># we query the graph asking for all paths from the &quot;shiny_old&quot; node
@@ -769,7 +769,7 @@ input &lt;- readLines(&quot;./day07_input.txt&quot;)
 bag.rules &lt;- decodeBagRules(input)
 
 # we build a graph, first create a &quot;from-&gt;to&quot; edge list
-# In this part one we want to find with bag can contains a specifig type+color bag
+# In this part one we want to find with bag can contains a specific type+color bag
 # so we create a network &#39;contains&#39; -&gt; &#39;bag&#39;
 bag.graph &lt;- bag.rules %&gt;% 
   transmute( from = paste0(ctn.bag.type,&quot;_&quot;,ctn.bag.color),
@@ -811,7 +811,7 @@ dark violet bags contain no other bags.</code></pre>
 </div>
 <div id="the-graph-approach-1" class="section level4">
 <h4>The Graph Approach</h4>
-<p>It’s the same here, we can buid a network to follow the “contains” path this time, and explore the path starting fom <code>shiny_gold</code> nodes, but we are interesting in the <code>edges</code> of the path, that inform us about the number of the bags. Let’s do this in the test case above.</p>
+<p>It’s the same here, we can build a network to follow the “contains” path this time, and explore the path starting from <code>shiny_gold</code> nodes, but we are interesting in the <code>edges</code> of the path, that inform us about the number of the bags. Let’s do this in the test case above.</p>
 <pre class="r"><code># reads the input as a vector of strings
 input &lt;- readLines(&quot;./day07_test_02.txt&quot;)
 
@@ -852,7 +852,7 @@ paths %&gt;%
   # finally, sum the capacity of the paths
   sum()</code></pre>
 <pre><code>## [1] 126</code></pre>
-<p>We got the correct awnser, so we repiclate this to the input data.</p>
+<p>We got the correct answer, so we replicate this to the input data.</p>
 <pre class="r"><code># reads the input as a vector of strings
 input &lt;- readLines(&quot;./day07_input.txt&quot;)
 

@@ -64,7 +64,7 @@ So, in this example, the number of bag colors that can eventually contain at lea
 
 #### The graph approach
 
-Before try to resolve the puzzle directly, let's try with the test scenario above. To do so, we can interpret the _bag regulations_ as a [Metwork](https://en.wikipedia.org/wiki/Graph_theory) of relationships where `one bag type+color` can contains `N bags of other type+color` and each one, by itself, can have others bags accordingly to the rules. 
+Before try to resolve the puzzle directly, let's try with the test scenario above. To do so, we can interpret the _bag regulations_ as a [network](https://en.wikipedia.org/wiki/Graph_theory) of relationships where `one bag type+color` can contains `N bags of other type+color` and each one, by itself, can have others bags accordingly to the rules. 
 
 Once we build the network we can "navigate" thought it from a starting point (_our bag is shiny gold_) and see where the path goes to get which type of bag can contain at least one shiny gold.
 
@@ -91,7 +91,7 @@ decodeBagRules <- function(.input){
   mutate( contains =  map(data,~unlist(str_split(.x,", "))) ) %>% 
   unnest(contains) %>% 
   select(-data) %>% 
-  # now we splt the bag type and color 
+  # now we split the bag type and color 
   separate(bag, into = c("bag.type","bag.color"), sep = " ", extra = "drop") %>%
   # also for the content rule
   separate(contains, into = c("ctn.bag.qtd","ctn.bag.type","ctn.bag.color"), sep=" ", extra = "drop") %>% 
@@ -117,7 +117,7 @@ Now, with the role in this format, let's try to build (and visualize) the relati
 library(tidygraph)
 
 # we build a graph, first create a "from->to" edge list
-# In this part one we want to find with bag can contains a specifig type+color bag
+# In this part one we want to find with bag can contains a specific type+color bag
 # so we create a network 'contains' -> 'bag'
 bag.graph <- bag.rules %>% 
   transmute( from = paste0(ctn.bag.type,"_",ctn.bag.color),
@@ -203,7 +203,7 @@ input <- readLines("./day07_input.txt")
 bag.rules <- decodeBagRules(input)
 
 # we build a graph, first create a "from->to" edge list
-# In this part one we want to find with bag can contains a specifig type+color bag
+# In this part one we want to find with bag can contains a specific type+color bag
 # so we create a network 'contains' -> 'bag'
 bag.graph <- bag.rules %>% 
   transmute( from = paste0(ctn.bag.type,"_",ctn.bag.color),
@@ -260,7 +260,7 @@ How many individual bags are required inside your single shiny gold bag?
 
 #### The Graph Approach
 
-It's the same here, we can buid a network to follow the "contains" path this time, and explore the path starting fom `shiny_gold` nodes, but we are interesting in the `edges` of the path, that inform us about the number of the bags. Let's do this in the test case above.
+It's the same here, we can build a network to follow the "contains" path this time, and explore the path starting from `shiny_gold` nodes, but we are interesting in the `edges` of the path, that inform us about the number of the bags. Let's do this in the test case above.
 
 
 ```{r message=FALSE, warnign=F}
@@ -306,7 +306,7 @@ paths %>%
   sum()
 
 ```
-We got the correct awnser, so we repiclate this to the input data.
+We got the correct answer, so we replicate this to the input data.
 
 ```{r message=FALSE, warnign=F}
 # reads the input as a vector of strings
