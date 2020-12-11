@@ -156,7 +156,7 @@ plotGraph(bag.graph)
 
 ```
 
-So, we can see our network, built to represent which bag (type+color) (_a node_) can be stored (_an edge_) inside other (_a node_). To find the puzzle So, finally, it's easy ask to the network with paths are possible starting from the node `shiny gold`, it's a similar to ask what are the nodes we can reach starting from node `shiny_gold`? The function `all_simple_paths` from `igraph` package do the job.
+So, we can see our network, built to represent which bag (type+color) (_a node_) can be stored (_an edge_) inside other (_a node_). So, finally, it's easy to ask the network: "What are all the possible paths starting from the node `shiny gold`?", this is similar to ask "What are the nodes we can reach starting from node `shiny_gold`?", that is equivalent to "Which bag types can contain a `shine_gold` bag?". The function `all_simple_paths` from `igraph` package do the job.
 
 ```{r fig.width=2, fig.height=2, message=FALSE, warning=FALSE}
 library(igraph)
@@ -172,7 +172,7 @@ paths
 
 ```
 
-The puzzle is ask for *how many bags* can contain an `shiny_gold` bag, the answer is simple, we look the end of each possible path starting from node `shiny_gold` and count the unique bags.
+The puzzle asks for *how many bags* can contain an `shiny_gold` bag, the answer is simple, we look the end of each possible path starting from node `shiny_gold` and count the unique bag types.
 
 ```{r}
 
@@ -193,11 +193,14 @@ As you see, we got the correct number.
 
 #### Puzzle's Sollution
 
-How many bag colors can eventually contain at least one shiny gold bag? (The list of rules is quite long; make sure you get all of it.). Let's apply the same strategy.
+How many bag colors can eventually contain at least one shiny gold bag in the full input dataset? Let's apply the same strategy.
 
 ```{r}
 # reads the input as a vector of strings
 input <- readLines("./day07_input.txt")
+
+# there is a lot of rules...
+length(input)
 
 # transforms the strings in a data frame with the rules
 bag.rules <- decodeBagRules(input)
@@ -214,6 +217,10 @@ bag.graph <- bag.rules %>%
   # keep the capacity (as weight) and directed
   as_tbl_graph(bag.graph, directed = T)
 
+# Wow it's a big graph!!
+# A tbl_graph: 594 nodes (unique bag types) and 1419 edges (unique rules)
+bag.graph
+
 # we query the graph asking for all paths from the "shiny_old" node
 bag.graph %>% 
   all_simple_paths(from="shiny_gold") %>% 
@@ -223,9 +230,8 @@ bag.graph %>%
   # counts it
   length()
 
-
 ```
---- Part Two ---
+## Part Two
 
 It's getting pretty expensive to fly these days - not because of ticket prices, but because of the ridiculous number of bags you need to buy!
 
@@ -260,7 +266,7 @@ How many individual bags are required inside your single shiny gold bag?
 
 #### The Graph Approach
 
-It's the same here, we can build a network to follow the "contains" path this time, and explore the path starting from `shiny_gold` nodes, but we are interesting in the `edges` of the path, that inform us about the number of the bags. Let's do this in the test case above.
+It's the same here, we can build a network to follow the "contains" path this time, and explore the path starting from `shiny_gold` nodes, but we are interesting in the `edges` of the path. The `edges` inform us about the number of the bags can be stored. Let's do this in the test case above first.
 
 
 ```{r message=FALSE, warnign=F}
@@ -306,6 +312,7 @@ paths %>%
   sum()
 
 ```
+
 We got the correct answer, so we replicate this to the input data.
 
 ```{r message=FALSE, warnign=F}
@@ -347,7 +354,7 @@ paths %>%
 
 ```
 
-And that's it! All possible combinations of bag starting from a `shiny_gold` bag in accordance with the _bag regulations_.
+And that's it! The capacity of all possible combinations of bags starting from a `shiny_gold` bag in accordance with the _bag regulations_.
 
 ## To be continued…
 

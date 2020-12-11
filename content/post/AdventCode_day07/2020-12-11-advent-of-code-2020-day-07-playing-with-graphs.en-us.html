@@ -428,7 +428,7 @@ plotGraph &lt;- function(.g){
 
 plotGraph(bag.graph)</code></pre>
 <p><img src="/post/AdventCode_day07/2020-12-11-advent-of-code-2020-day-07-playing-with-graphs.en-us_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>So, we can see our network, built to represent which bag (type+color) (<em>a node</em>) can be stored (<em>an edge</em>) inside other (<em>a node</em>). To find the puzzle So, finally, it’s easy ask to the network with paths are possible starting from the node <code>shiny gold</code>, it’s a similar to ask what are the nodes we can reach starting from node <code>shiny_gold</code>? The function <code>all_simple_paths</code> from <code>igraph</code> package do the job.</p>
+<p>So, we can see our network, built to represent which bag (type+color) (<em>a node</em>) can be stored (<em>an edge</em>) inside other (<em>a node</em>). So, finally, it’s easy to ask the network: “What are all the possible paths starting from the node <code>shiny gold</code>?”, this is similar to ask “What are the nodes we can reach starting from node <code>shiny_gold</code>?”, that is equivalent to “Which bag types can contain a <code>shine_gold</code> bag?”. The function <code>all_simple_paths</code> from <code>igraph</code> package do the job.</p>
 <pre class="r"><code>library(igraph)
 
 # we query the graph asking for all paths from the &quot;shiny_old&quot; node
@@ -439,29 +439,29 @@ paths &lt;- bag.graph %&gt;%
 # Let&#39;s see
 paths </code></pre>
 <pre><code>## [[1]]
-## + 2/9 vertices, named, from a3f89be:
+## + 2/9 vertices, named, from a52cade:
 ## [1] shiny_gold   bright_white
 ## 
 ## [[2]]
-## + 3/9 vertices, named, from a3f89be:
+## + 3/9 vertices, named, from a52cade:
 ## [1] shiny_gold   bright_white light_red   
 ## 
 ## [[3]]
-## + 3/9 vertices, named, from a3f89be:
+## + 3/9 vertices, named, from a52cade:
 ## [1] shiny_gold   bright_white dark_orange 
 ## 
 ## [[4]]
-## + 2/9 vertices, named, from a3f89be:
+## + 2/9 vertices, named, from a52cade:
 ## [1] shiny_gold   muted_yellow
 ## 
 ## [[5]]
-## + 3/9 vertices, named, from a3f89be:
+## + 3/9 vertices, named, from a52cade:
 ## [1] shiny_gold   muted_yellow light_red   
 ## 
 ## [[6]]
-## + 3/9 vertices, named, from a3f89be:
+## + 3/9 vertices, named, from a52cade:
 ## [1] shiny_gold   muted_yellow dark_orange</code></pre>
-<p>The puzzle is ask for <em>how many bags</em> can contain an <code>shiny_gold</code> bag, the answer is simple, we look the end of each possible path starting from node <code>shiny_gold</code> and count the unique bags.</p>
+<p>The puzzle asks for <em>how many bags</em> can contain an <code>shiny_gold</code> bag, the answer is simple, we look the end of each possible path starting from node <code>shiny_gold</code> and count the unique bag types.</p>
 <pre class="r"><code># we query the graph asking for all paths from the &quot;shiny_old&quot; node
 bag.graph %&gt;% 
   all_simple_paths(from=&quot;shiny_gold&quot;) %&gt;% 
@@ -478,11 +478,14 @@ bag.graph %&gt;%
 </div>
 <div id="puzzles-sollution" class="section level4">
 <h4>Puzzle’s Sollution</h4>
-<p>How many bag colors can eventually contain at least one shiny gold bag? (The list of rules is quite long; make sure you get all of it.). Let’s apply the same strategy.</p>
+<p>How many bag colors can eventually contain at least one shiny gold bag in the full input dataset? Let’s apply the same strategy.</p>
 <pre class="r"><code># reads the input as a vector of strings
 input &lt;- readLines(&quot;./day07_input.txt&quot;)
 
-# transforms the strings in a data frame with the rules
+# there is a lot of rules...
+length(input)</code></pre>
+<pre><code>## [1] 594</code></pre>
+<pre class="r"><code># transforms the strings in a data frame with the rules
 bag.rules &lt;- decodeBagRules(input)
 
 # we build a graph, first create a &quot;from-&gt;to&quot; edge list
@@ -497,7 +500,32 @@ bag.graph &lt;- bag.rules %&gt;%
   # keep the capacity (as weight) and directed
   as_tbl_graph(bag.graph, directed = T)
 
-# we query the graph asking for all paths from the &quot;shiny_old&quot; node
+# Wow it&#39;s a big graph!!
+# A tbl_graph: 594 nodes (unique bag types) and 1419 edges (unique rules)
+bag.graph</code></pre>
+<pre><code>## # A tbl_graph: 594 nodes and 1419 edges
+## #
+## # A directed acyclic simple graph with 1 component
+## #
+## # Node Data: 594 x 1 (active)
+##   name         
+##   &lt;chr&gt;        
+## 1 light_violet 
+## 2 light_yellow 
+## 3 striped_teal 
+## 4 plaid_green  
+## 5 mirrored_gold
+## 6 faded_blue   
+## # ... with 588 more rows
+## #
+## # Edge Data: 1,419 x 3
+##    from    to     n
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1     1   429     5
+## 2     2   429     1
+## 3     3   185     2
+## # ... with 1,416 more rows</code></pre>
+<pre class="r"><code># we query the graph asking for all paths from the &quot;shiny_old&quot; node
 bag.graph %&gt;% 
   all_simple_paths(from=&quot;shiny_gold&quot;) %&gt;% 
   # get only the &quot;end&quot; node of each path
@@ -506,7 +534,11 @@ bag.graph %&gt;%
   # counts it
   length()</code></pre>
 <pre><code>## [1] 205</code></pre>
-<p>— Part Two —</p>
+</div>
+</div>
+</div>
+<div id="part-two" class="section level2">
+<h2>Part Two</h2>
 <p>It’s getting pretty expensive to fly these days - not because of ticket prices, but because of the ridiculous number of bags you need to buy!</p>
 <p>Consider again your shiny gold bag and the rules from the above example:</p>
 <pre><code>faded blue bags contain 0 other bags.
@@ -525,10 +557,9 @@ dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags.</code></pre>
 <p>In this example, a single shiny gold bag must contain 126 other bags.</p>
 <p>How many individual bags are required inside your single shiny gold bag?</p>
-</div>
 <div id="the-graph-approach-1" class="section level4">
 <h4>The Graph Approach</h4>
-<p>It’s the same here, we can build a network to follow the “contains” path this time, and explore the path starting from <code>shiny_gold</code> nodes, but we are interesting in the <code>edges</code> of the path, that inform us about the number of the bags. Let’s do this in the test case above.</p>
+<p>It’s the same here, we can build a network to follow the “contains” path this time, and explore the path starting from <code>shiny_gold</code> nodes, but we are interesting in the <code>edges</code> of the path. The <code>edges</code> inform us about the number of the bags can be stored. Let’s do this in the test case above first.</p>
 <pre class="r"><code># reads the input as a vector of strings
 input &lt;- readLines(&quot;./day07_test_02.txt&quot;)
 
@@ -606,8 +637,7 @@ paths %&gt;%
   # finally, sum the capacity of the paths
   sum()</code></pre>
 <pre><code>## [1] 323974</code></pre>
-<p>And that’s it! All possible combinations of bag starting from a <code>shiny_gold</code> bag in accordance with the <em>bag regulations</em>.</p>
-</div>
+<p>And that’s it! The capacity of all possible combinations of bags starting from a <code>shiny_gold</code> bag in accordance with the <em>bag regulations</em>.</p>
 </div>
 </div>
 <div id="to-be-continued" class="section level2">
