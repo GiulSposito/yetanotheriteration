@@ -1,0 +1,354 @@
+---
+title: "Advent of Code 2020 | Day 07 | Playing with Graphs"
+author: "Giuliano Sposito"
+date: '2020-12-11'
+slug: advent-of-code-2020-day-07-playing-with-graphs.en-us
+categories:
+- data science
+tags:
+- graph
+- tidygraph
+- network analysis
+- data analysis
+keywords:
+- tech
+coverImage: /images/advent_of_code_bags_header.jpg
+thumbnailImage: /images/advent_of_code_bags_tn.jpg
+thumbnailImagePosition: left
+metaAlignment: center
+---
+
+In this post, we explore the day 7 puzzles of the Advent Of Code 2020 using network analysis through `tidygraph` package, allowing us generate a simple, direct and small code to solve them.
+
+<!--more-->
+
+This post continues the [Advent Of Code 2020 series](/2020/12/advent-of-code-2020-part_02/) an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. In this post, we explore the characteristics of day 7 puzzles to explore the use of  [Graphs](https://en.wikipedia.org/wiki/Graph_theory) in R. Interpreting the _bag regulations_ as a _network_ we are capable to solve the puzzles with simple few lines of code.
+
+## Day 7: Handy Haversacks
+
+### Part One
+
+You land at the regional airport in time for your next flight. In fact, it looks like you'll even have time to grab some food: all flights are currently delayed due to issues in luggage processing.
+
+Due to recent aviation regulations, many rules (your puzzle input) are being enforced about bags and their contents; bags must be color-coded and must contain specific quantities of other color-coded bags. Apparently, nobody responsible for these regulations considered how long they would take to enforce!
+
+For example, consider the following rules:
+
+```
+light red bags contain 1 bright white bag, 2 muted yellow bags.
+dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+bright white bags contain 1 shiny gold bag.
+muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
+shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
+dark olive bags contain 3 faded blue bags, 4 dotted black bags.
+vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
+faded blue bags contain no other bags.
+dotted black bags contain no other bags.
+```
+
+
+These rules specify the required contents for 9 bag types. In this example, every faded blue bag is empty, every vibrant plum bag contains 11 bags (5 faded blue and 6 dotted black), and so on.
+
+You have a `shiny gold bag`. If you wanted to carry it in at least one other bag, how many different bag colors would be valid for the outermost bag? (In other words: how many colors can, eventually, contain at least `one shiny gold bag`?)
+
+In the above rules, the following options would be available to you:
+
+```
+A bright white bag, which can hold your shiny gold bag directly.
+A muted yellow bag, which can hold your shiny gold bag directly, plus some other bags.
+A dark orange bag, which can hold bright white and muted yellow bags, either of which could then hold your shiny gold bag.
+A light red bag, which can hold bright white and muted yellow bags, either of which could then hold your shiny gold bag.
+```
+
+So, in this example, the number of bag colors that can eventually contain at least one shiny gold bag is 4.
+
+#### The graph approach
+
+Before try to resolve the puzzle directly, let's try with the test scenario above. To do so, we can interpret the _bag regulations_ as a [Metwork](https://en.wikipedia.org/wiki/Graph_theory) of relationships where `one bag type+color` can contains `N bags of other type+color` and each one, by itself, can have others bags accordingly to the rules. 
+
+Once we build the network we can "navigate" thought it from a starting point (_our bag is shiny gold_) and see where the path goes to get which type of bag can contain at least one shiny gold.
+
+First, let's interpret the _bag regulations_ into a data frame of `bag type+color -> N bags type_color` contains rules.
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# reads the input as a vector of strings
+input <- readLines("./day07_test_01.txt")
+
+# function to decode the string bag rules in a tibble
+decodeBagRules <- function(.input){
+  tibble(input=.input) %>% 
+  # separates the bag from the content rule
+  separate(input, into=c("bag","contains"), sep=" contain ") %>% 
+  # for each back split the rule in different types of bag
+  # we build a 'tidy' dataset, each line maps from a bag to a content
+  group_by(bag) %>% 
+  nest() %>% 
+  ungroup() %>% 
+  mutate( contains =  map(data,~unlist(str_split(.x,", "))) ) %>% 
+  unnest(contains) %>% 
+  select(-data) %>% 
+  # now we splt the bag type and color 
+  separate(bag, into = c("bag.type","bag.color"), sep = " ", extra = "drop") %>%
+  # also for the content rule
+  separate(contains, into = c("ctn.bag.qtd","ctn.bag.type","ctn.bag.color"), sep=" ", extra = "drop") %>% 
+  # some adjust to bags with no content
+  mutate( ctn.bag.qtd = if_else(ctn.bag.qtd=="no","0",ctn.bag.qtd) ) %>% 
+  mutate( ctn.bag.qtd = as.integer(ctn.bag.qtd), 
+          ctn.bag.type = if_else( ctn.bag.qtd==0, as.character(NA), ctn.bag.type),
+          ctn.bag.color = if_else( ctn.bag.qtd==0, as.character(NA), ctn.bag.color) )
+}
+
+# transforms the strings in a data frame with the rules
+bag.rules <- decodeBagRules(input)
+
+# let's see what we have
+bag.rules %>% 
+  kable() %>% 
+  kable_styling(font_size = 10)
+```
+
+Now, with the role in this format, let's try to build (and visualize) the relationship network. We'll use the [`tidygraph` package](https://www.data-imaginist.com/2017/introducing-tidygraph/).
+
+```{r warning=FALSE, message=FALSE}
+library(tidygraph)
+
+# we build a graph, first create a "from->to" edge list
+# In this part one we want to find with bag can contains a specifig type+color bag
+# so we create a network 'contains' -> 'bag'
+bag.graph <- bag.rules %>% 
+  transmute( from = paste0(ctn.bag.type,"_",ctn.bag.color),
+             to = paste0(bag.type,"_",bag.color),
+             n = ctn.bag.qtd) %>% 
+  # remove bags with no content
+  filter(n!=0) %>% 
+  # keep the capacity (as weight) and directed
+  as_tbl_graph(bag.graph, directed = T)
+
+# what we have?
+bag.graph
+
+```
+
+We can see the network using `ggraph` package.
+
+```{r warning=FALSE, message=FALSE}
+library(ggraph)
+
+# auxiliary function to ggplot a graph
+plotGraph <- function(.g){
+  
+  # plot it
+  .g %>% 
+    ggraph(layout = "kk") +
+      geom_edge_fan(aes(label=n), alpha=0.5, arrow = arrow(type="closed", angle=10, length = unit(5,units = "mm") ))+
+      geom_node_point(alpha=0.7, size=8, color="navy") +
+      geom_node_text(aes(label=name), color="black") +
+      theme_void()
+
+}
+
+plotGraph(bag.graph)
+
+
+```
+
+So, we can see our network, built to represent which bag (type+color) (_a node_) can be stored (_an edge_) inside other (_a node_). To find the puzzle So, finally, it's easy ask to the network with paths are possible starting from the node `shiny gold`, it's a similar to ask what are the nodes we can reach starting from node `shiny_gold`? The function `all_simple_paths` from `igraph` package do the job.
+
+```{r fig.width=2, fig.height=2, message=FALSE, warning=FALSE}
+library(igraph)
+
+# we query the graph asking for all paths from the "shiny_old" node
+paths <- bag.graph %>% 
+  all_simple_paths(from="shiny_gold") 
+
+# this function returns a list of nodes of all simple paths
+# Let's see
+paths 
+  
+
+```
+
+The puzzle is ask for *how many bags* can contain an `shiny_gold` bag, the answer is simple, we look the end of each possible path starting from node `shiny_gold` and count the unique bags.
+
+```{r}
+
+# we query the graph asking for all paths from the "shiny_old" node
+bag.graph %>% 
+  all_simple_paths(from="shiny_gold") %>% 
+  # get only the "end" node of each path
+  map_chr(~names(tail(.x,1))) %>% 
+  unique() %T>%
+  # what are?
+  print() %>% 
+  # counts it
+  length()
+
+```
+
+As you see, we got the correct number.
+
+#### Puzzle's Sollution
+
+How many bag colors can eventually contain at least one shiny gold bag? (The list of rules is quite long; make sure you get all of it.). Let's apply the same strategy.
+
+```{r}
+# reads the input as a vector of strings
+input <- readLines("./day07_input.txt")
+
+# transforms the strings in a data frame with the rules
+bag.rules <- decodeBagRules(input)
+
+# we build a graph, first create a "from->to" edge list
+# In this part one we want to find with bag can contains a specifig type+color bag
+# so we create a network 'contains' -> 'bag'
+bag.graph <- bag.rules %>% 
+  transmute( from = paste0(ctn.bag.type,"_",ctn.bag.color),
+             to = paste0(bag.type,"_",bag.color),
+             n = ctn.bag.qtd) %>% 
+  # remove bags with no content
+  filter(n!=0) %>% 
+  # keep the capacity (as weight) and directed
+  as_tbl_graph(bag.graph, directed = T)
+
+# we query the graph asking for all paths from the "shiny_old" node
+bag.graph %>% 
+  all_simple_paths(from="shiny_gold") %>% 
+  # get only the "end" node of each path
+  map_chr(~names(tail(.x,1))) %>% 
+  unique() %>% 
+  # counts it
+  length()
+
+
+```
+--- Part Two ---
+
+It's getting pretty expensive to fly these days - not because of ticket prices, but because of the ridiculous number of bags you need to buy!
+
+Consider again your shiny gold bag and the rules from the above example:
+
+```
+faded blue bags contain 0 other bags.
+dotted black bags contain 0 other bags.
+vibrant plum bags contain 11 other bags: 5 faded blue bags and 6 dotted black bags.
+dark olive bags contain 7 other bags: 3 faded blue bags and 4 dotted black bags.
+```
+
+So, a single shiny gold bag must contain 1 dark olive bag (and the 7 bags within it) plus 2 vibrant plum bags (and the 11 bags within each of those): 1 + 1*7 + 2 + 2*11 = 32 bags!
+
+Of course, the actual rules have a small chance of going several levels deeper than this example; be sure to count all of the bags, even if the nesting becomes topologically impractical!
+
+Here's another example:
+
+```
+shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags.
+```
+
+In this example, a single shiny gold bag must contain 126 other bags.
+
+How many individual bags are required inside your single shiny gold bag?
+
+#### The Graph Approach
+
+It's the same here, we can buid a network to follow the "contains" path this time, and explore the path starting fom `shiny_gold` nodes, but we are interesting in the `edges` of the path, that inform us about the number of the bags. Let's do this in the test case above.
+
+
+```{r message=FALSE, warnign=F}
+
+# reads the input as a vector of strings
+input <- readLines("./day07_test_02.txt")
+
+bag.rules <- decodeBagRules(input)
+
+# transforms the bag rules into a graph from bag to contains
+bag.graph <- bag.rules %>% 
+  transmute( from = paste0(bag.type,"_",bag.color),
+             to = paste0(ctn.bag.type,"_",ctn.bag.color),
+             n = ctn.bag.qtd ) %>% # we keep the number of bags here !!
+  # remove bags that not contains any bag
+  filter(n!=0) %>% 
+  # keep the capacity (as n) and directed
+  as_tbl_graph(bag.graph, directed = T)
+
+# Let's see?
+# it's a simple chain
+plotGraph(bag.graph)
+
+# finds all paths starting 
+paths <- bag.graph %>% 
+  all_simple_paths(from = "shiny_gold")
+
+# for each path 
+paths %>% 
+  map_dbl(function(.p,.g){
+    # get the subgraph, 
+    to_subgraph(.g, name %in% names(.p)) %>%
+      .[[1]] %E>%
+        # get the edges
+        as_tibble() %>%
+        # get the capacity (n)
+        .$n %>%
+        # multiply then to find the
+        # sequence storage capacity
+        prod()
+    }, .g=bag.graph) %>% 
+  # finally, sum the capacity of the paths
+  sum()
+
+```
+We got the correct awnser, so we repiclate this to the input data.
+
+```{r message=FALSE, warnign=F}
+# reads the input as a vector of strings
+input <- readLines("./day07_input.txt")
+
+bag.rules <- decodeBagRules(input)
+
+# transforms the bag rules into a graph from bag to contains
+bag.graph <- bag.rules %>% 
+  transmute( from = paste0(bag.type,"_",bag.color),
+             to = paste0(ctn.bag.type,"_",ctn.bag.color),
+             n = ctn.bag.qtd ) %>% # we keep the number of bags here !!
+  # remove bags that not contains any bag
+  filter(n!=0) %>% 
+  # keep the capacity (as n) and directed
+  as_tbl_graph(bag.graph, directed = T)
+
+# finds all paths starting 
+paths <- bag.graph %>% 
+  all_simple_paths(from = "shiny_gold")
+
+# for each path 
+paths %>% 
+  map_dbl(function(.p,.g){
+    # get the subgraph, 
+    to_subgraph(.g, name %in% names(.p)) %>%
+      .[[1]] %E>%
+        # get the edges
+        as_tibble() %>%
+        # get the capacity (n)
+        .$n %>%
+        # multiply then to find the
+        # sequence storage capacity
+        prod()
+    }, .g=bag.graph) %>% 
+  # finally, sum the capacity of the paths
+  sum()
+
+```
+
+And that's it! All possible combinations of bag starting from a `shiny_gold` bag in accordance with the _bag regulations_.
+
+## To be continued…
+
+I’ll make the rest of puzzles in the next days and publish them here, see you!

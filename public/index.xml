@@ -6,10 +6,26 @@
     <description>Recent content on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 11 Dec 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Advent of Code 2020 | Day 07 | Playing with Graphs</title>
+      <link>/2020/12/advent-of-code-2020-day-07-playing-with-graphs.en-us/</link>
+      <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/advent-of-code-2020-day-07-playing-with-graphs.en-us/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+
+
+&lt;p&gt;In this post, we explore the day 7 puzzles of the Advent Of Code 2020 using network analysis through &lt;code&gt;tidygraph&lt;/code&gt; package, allowing us generate a simple, direct and small code to solve them.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Advent of Code 2020 | Days 4 to 6</title>
