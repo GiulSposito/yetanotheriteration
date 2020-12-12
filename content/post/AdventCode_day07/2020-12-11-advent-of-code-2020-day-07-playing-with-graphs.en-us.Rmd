@@ -80,26 +80,19 @@ input <- readLines("./day07_test_01.txt")
 
 # function to decode the string bag rules in a tibble
 decodeBagRules <- function(.input){
+  # puts the input in a single column
   tibble(input=.input) %>% 
-  # separates the bag from the content rule
-  separate(input, into=c("bag","contains"), sep=" contain ") %>% 
-  # for each back split the rule in different types of bag
-  # we build a 'tidy' dataset, each line maps from a bag to a content
-  group_by(bag) %>% 
-  nest() %>% 
-  ungroup() %>% 
-  mutate( contains =  map(data,~unlist(str_split(.x,", "))) ) %>% 
-  unnest(contains) %>% 
-  select(-data) %>% 
-  # now we split the bag type and color 
-  separate(bag, into = c("bag.type","bag.color"), sep = " ", extra = "drop") %>%
-  # also for the content rule
-  separate(contains, into = c("ctn.bag.qtd","ctn.bag.type","ctn.bag.color"), sep=" ", extra = "drop") %>% 
-  # some adjust to bags with no content
-  mutate( ctn.bag.qtd = if_else(ctn.bag.qtd=="no","0",ctn.bag.qtd) ) %>% 
-  mutate( ctn.bag.qtd = as.integer(ctn.bag.qtd), 
-          ctn.bag.type = if_else( ctn.bag.qtd==0, as.character(NA), ctn.bag.type),
-          ctn.bag.color = if_else( ctn.bag.qtd==0, as.character(NA), ctn.bag.color) )
+    # removes "bags" from the text
+    mutate(input=str_remove_all(input, " bag[s]*[\\.]*")) %>% 
+    # separates the bag from the content rule
+    separate(input, into=c("bag","contains"), sep=" contain ") %>% 
+    # transforms in "tidy data" one rule by line
+    separate_rows(contains, sep = ", ") %>% 
+    # separate the quantity information from bag tyhpe
+    extract(contains, into = c("ctn.qtd", "ctn.bag"), regex = "([0-9]+) (.*)", convert = T) %>% 
+    # remove bag with no content
+    filter(complete.cases(.)) %>% 
+    return()
 }
 
 # transforms the strings in a data frame with the rules
@@ -111,7 +104,7 @@ bag.rules %>%
   kable_styling(font_size = 10)
 ```
 
-Now, with the role in this format, let's try to build (and visualize) the relationship network. We'll use the [`tidygraph` package](https://www.data-imaginist.com/2017/introducing-tidygraph/).
+Now, with the rules in this format, let's try to build (and visualize) the relationship network. We'll use the [`tidygraph package`](https://www.data-imaginist.com/2017/introducing-tidygraph/).
 
 ```{r warning=FALSE, message=FALSE}
 library(tidygraph)
@@ -120,11 +113,9 @@ library(tidygraph)
 # In this part one we want to find with bag can contains a specific type+color bag
 # so we create a network 'contains' -> 'bag'
 bag.graph <- bag.rules %>% 
-  transmute( from = paste0(ctn.bag.type,"_",ctn.bag.color),
-             to = paste0(bag.type,"_",bag.color),
-             n = ctn.bag.qtd) %>% 
-  # remove bags with no content
-  filter(n!=0) %>% 
+  transmute( from = ctn.bag,
+             to   = bag,
+             n    = ctn.qtd) %>% 
   # keep the capacity (as weight) and directed
   as_tbl_graph(bag.graph, directed = T)
 
@@ -163,7 +154,7 @@ library(igraph)
 
 # we query the graph asking for all paths from the "shiny_old" node
 paths <- bag.graph %>% 
-  all_simple_paths(from="shiny_gold") 
+  all_simple_paths(from="shiny gold") 
 
 # this function returns a list of nodes of all simple paths
 # Let's see
@@ -172,15 +163,18 @@ paths
 
 ```
 
-The puzzle asks for *how many bags* can contain an `shiny_gold` bag, the answer is simple, we look the end of each possible path starting from node `shiny_gold` and count the unique bag types.
+The puzzle asks for *how many bags* can contain an `shiny gold` bag, the answer is simple, we count the unique bag types in the paths.
 
 ```{r}
 
 # we query the graph asking for all paths from the "shiny_old" node
 bag.graph %>% 
-  all_simple_paths(from="shiny_gold") %>% 
+  all_simple_paths(from="shiny gold") %>% 
   # get only the "end" node of each path
-  map_chr(~names(tail(.x,1))) %>% 
+  map(names) %>% 
+  unlist() %>% 
+  # remove the "shiny gold" itself
+  .[.!="shiny gold"] %>% 
   unique() %T>%
   # what are?
   print() %>% 
@@ -209,11 +203,9 @@ bag.rules <- decodeBagRules(input)
 # In this part one we want to find with bag can contains a specific type+color bag
 # so we create a network 'contains' -> 'bag'
 bag.graph <- bag.rules %>% 
-  transmute( from = paste0(ctn.bag.type,"_",ctn.bag.color),
-             to = paste0(bag.type,"_",bag.color),
-             n = ctn.bag.qtd) %>% 
-  # remove bags with no content
-  filter(n!=0) %>% 
+  transmute( from = ctn.bag,
+             to   = bag,
+             n    = ctn.qtd) %>% 
   # keep the capacity (as weight) and directed
   as_tbl_graph(bag.graph, directed = T)
 
@@ -223,10 +215,13 @@ bag.graph
 
 # we query the graph asking for all paths from the "shiny_old" node
 bag.graph %>% 
-  all_simple_paths(from="shiny_gold") %>% 
+  all_simple_paths(from="shiny gold") %>% 
   # get only the "end" node of each path
-  map_chr(~names(tail(.x,1))) %>% 
+  map(names) %>% 
+  unlist() %>% 
   unique() %>% 
+  # remove the "shiny gold" itself
+  .[.!="shiny gold"] %>% 
   # counts it
   length()
 
@@ -278,11 +273,9 @@ bag.rules <- decodeBagRules(input)
 
 # transforms the bag rules into a graph from bag to contains
 bag.graph <- bag.rules %>% 
-  transmute( from = paste0(bag.type,"_",bag.color),
-             to = paste0(ctn.bag.type,"_",ctn.bag.color),
-             n = ctn.bag.qtd ) %>% # we keep the number of bags here !!
-  # remove bags that not contains any bag
-  filter(n!=0) %>% 
+  transmute( from = bag,
+             to   = ctn.bag,
+             n    = ctn.qtd ) %>% # we keep the number of bags here !!
   # keep the capacity (as n) and directed
   as_tbl_graph(bag.graph, directed = T)
 
@@ -292,7 +285,7 @@ plotGraph(bag.graph)
 
 # finds all paths starting 
 paths <- bag.graph %>% 
-  all_simple_paths(from = "shiny_gold")
+  all_simple_paths(from = "shiny gold")
 
 # for each path 
 paths %>% 
@@ -323,17 +316,15 @@ bag.rules <- decodeBagRules(input)
 
 # transforms the bag rules into a graph from bag to contains
 bag.graph <- bag.rules %>% 
-  transmute( from = paste0(bag.type,"_",bag.color),
-             to = paste0(ctn.bag.type,"_",ctn.bag.color),
-             n = ctn.bag.qtd ) %>% # we keep the number of bags here !!
-  # remove bags that not contains any bag
-  filter(n!=0) %>% 
+  transmute( from = bag,
+             to   = ctn.bag,
+             n    = ctn.qtd ) %>% # we keep the number of bags here !!
   # keep the capacity (as n) and directed
   as_tbl_graph(bag.graph, directed = T)
 
 # finds all paths starting 
 paths <- bag.graph %>% 
-  all_simple_paths(from = "shiny_gold")
+  all_simple_paths(from = "shiny gold")
 
 # for each path 
 paths %>% 
