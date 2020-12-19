@@ -9,6 +9,7 @@ tags:
 - graph
 - tidygraph
 - network analysis
+- Advent Of Code 
 - data analysis
 keywords:
 - tech
@@ -312,27 +313,27 @@ paths &lt;- bag.graph %&gt;%
 # Let&#39;s see
 paths </code></pre>
 <pre><code>## [[1]]
-## + 2/9 vertices, named, from 93f6eaa:
+## + 2/9 vertices, named, from 990104c:
 ## [1] shiny gold   bright white
 ## 
 ## [[2]]
-## + 3/9 vertices, named, from 93f6eaa:
+## + 3/9 vertices, named, from 990104c:
 ## [1] shiny gold   bright white light red   
 ## 
 ## [[3]]
-## + 3/9 vertices, named, from 93f6eaa:
+## + 3/9 vertices, named, from 990104c:
 ## [1] shiny gold   bright white dark orange 
 ## 
 ## [[4]]
-## + 2/9 vertices, named, from 93f6eaa:
+## + 2/9 vertices, named, from 990104c:
 ## [1] shiny gold   muted yellow
 ## 
 ## [[5]]
-## + 3/9 vertices, named, from 93f6eaa:
+## + 3/9 vertices, named, from 990104c:
 ## [1] shiny gold   muted yellow light red   
 ## 
 ## [[6]]
-## + 3/9 vertices, named, from 93f6eaa:
+## + 3/9 vertices, named, from 990104c:
 ## [1] shiny gold   muted yellow dark orange</code></pre>
 <p>The puzzle asks for <em>how many bags</em> can contain an <code>shiny gold</code> bag, the answer is simple, we count the unique bag types in the paths.</p>
 <pre class="r"><code># we query the graph asking for all paths from the &quot;shiny_old&quot; node

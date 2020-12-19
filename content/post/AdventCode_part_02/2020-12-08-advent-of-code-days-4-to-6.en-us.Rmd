@@ -9,12 +9,13 @@ tags:
   - data handling
   - data science
   - rstats
+  - Advent Of Code
   - en-US
 keywords:
   - tech
 coverImage: /images/advent_of_code_header.jpg
 thumbnailImage: /images/advent_of_code_tn.jpg
-thumbnailImagePosition: left
+thumbnailImagePosition: right
 metaAlignment: center
 ---
 

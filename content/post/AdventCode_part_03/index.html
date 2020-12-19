@@ -1,0 +1,658 @@
+---
+title: "Advent of Code 2020 | Days 8 to 10"
+author: "Giuliano Sposito"
+date: '2020-12-19'
+slug: AdventCode_part_03
+categories:
+- data science
+tags:
+- data handling
+- en-US
+- Advent Of Code 
+- rstats
+keywords:
+- tech
+coverImage: /images/advent_of_code_header.jpg
+thumbnailImage: /images/advent_of_code_02_tn.jpg
+thumbnailImagePosition: right
+metaAlignment: center
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the ‘Advent of Code 2020’ puzzles, from day 8 to day 10, using R.</p>
+<!--more-->
+<p>This post continues the <a href="/2020/12/advent-of-code-2020-day-07-playing-with-graphs.en-us/">Advent Of Code 2020 series</a> an advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. These are my six solutions to the puzzles from day 8 to day 10, using R.</p>
+<div id="day-8-handheld-halting" class="section level2">
+<h2>Day 8: Handheld Halting</h2>
+<div id="part-one" class="section level3">
+<h3>Part One</h3>
+<p>Your flight to the major airline hub reaches cruising altitude without incident. While you consider checking the in-flight menu for one of those drinks that come with a little umbrella, you are interrupted by the kid sitting next to you.</p>
+<p>Their handheld game console won’t turn on! They ask if you can take a look.</p>
+<p>You narrow the problem down to a strange infinite loop in the boot code (your puzzle input) of the device. You should be able to fix it, but first you need to be able to run the code in isolation.</p>
+<p>The boot code is represented as a text file with one instruction per line of text. Each instruction consists of an operation (<code>acc</code>, <code>jmp</code>, or <code>nop</code>) and an argument (a signed number like <code>+4</code> or <code>-20</code>).</p>
+<p><code>acc</code> increases or decreases a single global value called the accumulator by the value given in the argument. For example, <code>acc +7</code> would increase the accumulator by <code>7</code>. <em>The accumulator starts at 0</em>. After an <code>acc</code> instruction, the instruction immediately below it is executed next.
+<code>jmp</code> jumps to a new instruction relative to itself. The next instruction to execute is found using the argument as an offset from the <code>jmp</code> instruction; for example, <code>jmp +2</code> would skip the next instruction, <code>jmp +1</code> would continue to the instruction immediately below it, and <code>jmp -20</code> would cause the instruction 20 lines above to be executed next.
+<code>nop</code> stands for No OPeration - it does nothing. The instruction immediately below it is executed next.
+For example, consider the following program:</p>
+<pre><code>nop +0
+acc +1
+jmp +4
+acc +3
+jmp -3
+acc -99
+acc +1
+jmp -4
+acc +6</code></pre>
+<p>These instructions are visited in this order:</p>
+<pre><code>nop +0  | 1
+acc +1  | 2, 8(!)
+jmp +4  | 3
+acc +3  | 6
+jmp -3  | 7
+acc -99 |
+acc +1  | 4
+jmp -4  | 5
+acc +6  |</code></pre>
+<p>First, the <code>nop +0</code> does nothing. Then, the accumulator is increased from 0 to 1 (<code>acc +1</code>) and <code>jmp +4</code> sets the next instruction to the other <code>acc +1</code> near the bottom. After it increases the accumulator from 1 to 2, <code>jmp -4</code> executes, setting the next instruction to the only <code>acc +3</code>. It sets the accumulator to 5, and <code>jmp -3</code> causes the program to continue back at the first <code>acc +1</code>.</p>
+<p>This is an infinite loop: with this sequence of jumps, the program will run forever. The moment the program tries to run any instruction a second time, you know it will never terminate.</p>
+<p>Immediately before the program would run an instruction a second time, the value in the accumulator is 5.</p>
+<p>Run your copy of the boot code. Immediately before any instruction is executed a second time, what value is in the accumulator?</p>
+<div id="solution" class="section level4">
+<h4>Solution</h4>
+<p>This is fun remembers me my old assembly classes in the college.</p>
+<p>We’ll create a function to decode the input text in to a data frame of commands and arguments and a execution counter, to check if that command was already executed and so detect a loop. And we’ll <em>run</em> the data frame processing each command (row) until the end it or to find a loop. We update the execution counter for each row executed.</p>
+<pre class="r"><code>library(tidyverse)
+
+input &lt;- readLines(&quot;./day08_test_01.txt&quot;)
+
+# Parses the array of string into a dataframe with columns &quot;cmd&quot; and &quot;arg&quot;
+decodeProgram &lt;- function(.input) {
+  tibble(input=.input) %&gt;% 
+    separate(input, into = c(&quot;cmd&quot;,&quot;arg&quot;), sep=&quot; &quot;, convert = T) %&gt;% 
+    mutate( exec = 0 ) %&gt;% 
+    return()
+}
+
+program &lt;- decodeProgram(input)
+
+# start conditions
+acc &lt;- 0
+ptr &lt;- 1
+
+# run the program until before a command be executed a second time
+while( ptr &lt;= nrow(program) &amp;&amp; program[ptr, ]$exec!=1 ){
+
+    # get the command and arg
+  cmd &lt;- program[ptr,]$cmd
+  arg &lt;- program[ptr,]$arg
+  
+  # update acc
+  acc &lt;- case_when(
+    cmd==&quot;acc&quot; ~ acc + arg,
+    T ~ acc
+  )
+  
+  # mark command execution
+  program[ptr,]$exec &lt;- 1
+  
+  # update the pointer
+  ptr &lt;- case_when(
+    cmd==&quot;jmp&quot; ~ ptr+arg,
+    T ~ ptr + 1
+  )
+  
+}
+
+# what are the accumulator?
+acc</code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
+</div>
+<div id="part-two" class="section level3">
+<h3>Part Two</h3>
+<p>After some careful analysis, you believe that exactly one instruction is corrupted.</p>
+<p>Somewhere in the program, either a <code>jmp</code> is supposed to be a <code>nop</code>, or a <code>nop</code> is supposed to be a <code>jmp.</code> (No <code>acc</code> instructions were harmed in the corruption of this boot code.)</p>
+<p><em>The program is supposed to terminate by attempting to execute an instruction immediately after the last instruction in the file</em>. By changing exactly one <code>jmp</code> or <code>nop</code>, you can repair the boot code and make it terminate correctly.</p>
+<p>For example, consider the same program from above:</p>
+<pre><code>nop +0
+acc +1
+jmp +4
+acc +3
+jmp -3
+acc -99
+acc +1
+jmp -4
+acc +6</code></pre>
+<p>If you change the first instruction from <code>nop +0</code> to <code>jmp +0</code>, it would create a single-instruction infinite loop, never leaving that instruction. If you change almost any of the <code>jmp</code> instructions, the program will still eventually find another <code>jmp</code> instruction and loop forever.</p>
+<p>However, if you change the second-to-last instruction (from <code>jmp -4</code> to <code>nop -4</code>), the program terminates! The instructions are visited in this order:</p>
+<pre><code>nop +0  | 1
+acc +1  | 2
+jmp +4  | 3
+acc +3  |
+jmp -3  |
+acc -99 |
+acc +1  | 4
+nop -4  | 5
+acc +6  | 6</code></pre>
+<p>After the last instruction (<code>acc +6</code>), the program terminates by attempting to run the instruction below the last instruction in the file. With this change, after the program terminates, the accumulator contains the value 8 (<code>acc +</code>1, <code>acc +1</code>, <code>acc +6</code>).</p>
+<p>Fix the program so that it terminates normally by changing exactly one <code>jmp</code> (to <code>nop</code>) or <code>nop</code> (to <code>jmp</code>). What is the value of the accumulator after the program terminates?</p>
+<div id="solution-1" class="section level4">
+<h4>Solution</h4>
+<p>We’ll use the same idea to part one, but here let’s put the code that <em>runs</em> a program (the code data frame) in a more sophisticated function. This function will returns if a program ended if with a error (jump to a invalid position), with a loop (executed the same instruction twice) or with success (run the last command).</p>
+<p>To find which command we need to change, we just find with positions of instructions <code>nop</code> or <code>jmp</code> in the original code, and for each one, change it, run the changed program and check the outcome, until we find a programa that works.</p>
+<pre class="r"><code># Emulates the execution of a code returning:  
+# ERROR if the execution jumps to a invalid position
+# LOOP, if executes the same instruction twice
+# END if run the last command nicelly
+executeProgram &lt;- function(.program, acc=0, ptr=1, canChange=F){
+
+  # run the program until..
+  while( ptr &gt; 0 &amp;&amp;                # ptr jumps outside the bordering -&gt; its a error
+         ptr &lt;= nrow(.program) &amp;&amp;  # ptr jumps outside the bordering -&gt; its a error or finishes
+         .program[ptr, ]$exec!=1 ) { # ptr points to a command already executed -&gt; its a loop
+  
+      # get the command and arg
+    cmd &lt;- .program[ptr,]$cmd
+    arg &lt;- .program[ptr,]$arg
+    
+    # update acc
+    acc &lt;- case_when(
+      cmd==&quot;acc&quot; ~ acc + arg,
+      T ~ acc
+    )
+    
+    # mark command execution
+    .program[ptr,]$exec &lt;- 1
+    
+    # update the pointer
+    ptr &lt;- case_when(
+      cmd==&quot;jmp&quot; ~ ptr+arg,
+      T ~ ptr + 1
+    )
+  }
+  
+  
+  # verify the exit state
+  result &lt;- case_when(
+    ptr &lt; 1                     ~ &quot;error&quot;,
+    ptr &lt;= nrow(.program)       ~ &quot;loop&quot;,
+    ptr == (nrow(.program) + 1) ~ &quot;end&quot;,
+    T ~&quot;error&quot;
+  )
+  
+  # return
+  return(list(exit=result, acc=acc))
+    
+}
+
+# read the input as an array of string
+input &lt;- readLines(&quot;./day08_input.txt&quot;)
+
+# parses the input data
+program &lt;- decodeProgram(input)
+
+# execut3 the program as is
+result &lt;- executeProgram(program)
+
+# locate the possible changes in the program
+changeIndex &lt;- which(program$cmd %in% c(&quot;jmp&quot;,&quot;nop&quot;))
+i &lt;- 1
+
+# for each one, change the command and test
+while( result$exit!=&quot;end&quot; &amp;&amp;        # until we found a change that works
+       i &lt;= length(changeIndex) ){  # until the end of possibilities
+  
+  # get an step to be changed
+  step &lt;- program[changeIndex[i],]
+  
+  # modify the program
+  chg.program &lt;- program 
+  chg.program[changeIndex[i],1] &lt;-  case_when(
+    step$cmd==&quot;jmp&quot; ~ &quot;nop&quot;,                # change &#39;jmp&#39; to &#39;nop&#39;
+    step$cmd==&quot;nop&quot; &amp;&amp; step$arg!=0 ~ &quot;jmp&quot;, # change &#39;nop&#39; to &#39;jmp&#39; (when args is not zero: loop)
+    T ~ chg.program[changeIndex[i],]$cmd    # not change anything
+  )
+  
+  # execute the changed program
+  result &lt;- executeProgram(chg.program)
+  
+  # next change...
+  i &lt;- i +1
+}
+
+# check the result
+result</code></pre>
+<pre><code>## $exit
+## [1] &quot;end&quot;
+## 
+## $acc
+## [1] 1532</code></pre>
+<p>That is our response.</p>
+</div>
+</div>
+</div>
+<div id="day-9-encoding-error" class="section level2">
+<h2>Day 9: Encoding Error</h2>
+<div id="parte-one" class="section level3">
+<h3>Parte One</h3>
+<p>With your neighbor happily enjoying their video game, you turn your attention to an open data port on the little screen in the seat in front of you.</p>
+<p>Though the port is non-standard, you manage to connect it to your computer through the clever use of several paperclips. Upon connection, the port outputs a series of numbers (your puzzle input).</p>
+<p>The data appears to be encrypted with the eXchange-Masking Addition System (XMAS) which, conveniently for you, is an old cypher with an important weakness.</p>
+<p>XMAS starts by transmitting a <em>preamble of 25 numbers</em>. After that, each number you receive <em>should be the sum of any two of the 25 immediately previous numbers</em>. The two numbers will have different values, and there might be more than one such pair.</p>
+<p>For example, suppose your preamble consists of the numbers 1 through 25 in a random order. To be valid, the next number must be the sum of two of those numbers:</p>
+<pre><code>26 would be a valid next number, as it could be 1 plus 25 (or many other pairs, like 2 and 24).
+49 would be a valid next number, as it is the sum of 24 and 25.
+100 would not be valid; no two of the previous 25 numbers sum to 100.
+50 would also not be valid; although 25 appears in the previous 25 numbers, the two numbers in the pair must be different.</code></pre>
+<p>Suppose the 26th number is 45, and the first number (no longer an option, as it is more than 25 numbers ago) was 20. Now, for the next number to be valid, there needs to be some pair of numbers among 1-19, 21-25, or 45 that add up to it:</p>
+<pre><code>26 would still be a valid next number, as 1 and 25 are still within the previous 25 numbers.
+65 would not be valid, as no two of the available numbers sum to it.
+64 and 66 would both be valid, as they are the result of 19+45 and 21+45 respectively.</code></pre>
+<p>Here is a larger example which only considers the previous 5 numbers (and has a preamble of length 5):</p>
+<pre><code>35
+20
+15
+25
+47
+40
+62
+55
+65
+95
+102
+117
+150
+182
+127
+219
+299
+277
+309
+576</code></pre>
+<p>In this example, after the 5-number preamble, almost every number is the sum of two of the previous 5 numbers; the only number that does not follow this rule is <em>127</em>.</p>
+<p>The first step of attacking the weakness in the XMAS data is to find the first number in the list (after the preamble) which is not the sum of two of the 25 numbers before it. What is the first number that does not have this property?</p>
+<div id="solution-2" class="section level4">
+<h4>Solution</h4>
+<p>The solutions is pretty straighforward, we use the preamble as a <em>slide window</em> along the transmission data and do a combination of two from the preamble and sum it, so we check if the next number is one of the possible value from it.</p>
+<pre class="r"><code>library(purrr)
+library(magrittr)
+
+# reads the input data as an array of numbers
+input &lt;- as.double(readLines(&quot;./day09_input.txt&quot;))
+
+# function that checks if a number is the sum
+# of all combinations of two from the preamble
+checkData &lt;- function(.preamble, .number) {
+  return(.number %in% colSums(combn(.preamble,2)))
+}
+  
+# preamble size
+pre.size &lt;- 25
+
+# checks, along the data it there is a sum in the preamble
+# numCheck return an array of result check for all data
+numChecked &lt;- (pre.size+1):length(input) %&gt;% # the range of the data (input-preamble)
+  map_lgl(function(.i, .d, .ps){
+    # calc the preamble and the number to be checked
+    checkData(.d[(.i-.ps):(.i-1)], .d[.i]) %&gt;% 
+      return()
+  }, .d=input, .ps=pre.size)
+
+# once checked all number, get the first index that fail and
+# returns that input value at this position
+input[min(pre.size + which(numChecked==FALSE))]</code></pre>
+<pre><code>## [1] 88311122</code></pre>
+</div>
+</div>
+<div id="part-two-1" class="section level3">
+<h3>Part Two</h3>
+<p>The final step in breaking the XMAS encryption relies on the invalid number you just found: <em>you must find a contiguous set of at least two numbers in your list which sum to the invalid number from step 1</em>.</p>
+<p>Again consider the above example:</p>
+<pre><code>35
+20
+15
+25
+47
+40
+62
+55
+65
+95
+102
+117
+150
+182
+127
+219
+299
+277
+309
+576</code></pre>
+<p>In this list, adding up all of the numbers from 15 through 40 produces the invalid number from step 1, 127. (Of course, the contiguous set of numbers in your actual list might be much longer.)</p>
+<p>To find the encryption weakness, add together the smallest and largest number in this contiguous range; in this example, these are 15 and 47, producing 62.</p>
+<p>What is the encryption weakness in your XMAS-encrypted list of numbers?</p>
+<div id="solution-3" class="section level4">
+<h4>Solution</h4>
+<p>We’ll apply the same idea from part 1, to find which value is invalid. After that we create a array of continuous values from one to size of transmission, combine then, sum and find which ones are equal to the invalid value found.</p>
+<pre class="r"><code>library(magrittr)
+
+# reads the input data as an array of numbers
+input &lt;- as.double(readLines(&quot;./day09_input.txt&quot;))
+
+# function that checks if a number is the sum
+# of all combinations of two from the preamble
+checkData &lt;- function(.preamble, .number) {
+  return(.number %in% colSums(combn(.preamble,2)))
+}
+  
+# preamble size
+pre.size &lt;- 25
+
+# checks, along the data it there is a sum in the preamble
+# numCheck return an array of result check for all data
+numChecked &lt;- (pre.size+1):length(input) %&gt;% # the range of the data (input-preamble)
+  map_lgl(function(.i, .d, .ps){
+    # calc the preamble and the number to be checked
+    checkData(.d[(.i-.ps):(.i-1)], .d[.i]) %&gt;% 
+      return()
+  }, .d=input, .ps=pre.size)
+
+# once checked all number, get the first index that fail and
+# returns that input value at this position
+# store the answer in the &#39;step1&#39; var to be used in sequence
+step1 &lt;- input[min(pre.size + which(numChecked==FALSE))]
+
+# Now we must find a continuous range of values which the sum is equal
+# the value found in step 1
+
+# Calculates all possible &quot;continuous&quot; range index
+rangeComb &lt;- combn(1:length(input),2)
+
+# for each, check if the sum of its values match the target value
+# we test all then and store the test result
+rngChecked &lt;- rangeComb %&gt;% 
+  apply(2,function(.range, .data, .numCheck){
+    return(sum(.data[.range[1]:.range[2]])==.numCheck)
+  }, .data=input, .numCheck=step1)
+
+# get the index range which the range matched the sum
+answerRange &lt;- rangeComb[,which(rngChecked==T)]
+
+# get the values in this range
+contRange &lt;- input[answerRange[1]:answerRange[2]]
+
+# sum the smallest and the largest value in this range
+resp &lt;- min(contRange) + max(contRange)
+
+# this is our answer
+resp</code></pre>
+<pre><code>## [1] 13549369</code></pre>
+<p>There is it!</p>
+</div>
+</div>
+</div>
+<div id="day-10-adapter-array" class="section level2">
+<h2>Day 10: Adapter Array</h2>
+<div id="part-one-1" class="section level3">
+<h3>Part One</h3>
+<p>Patched into the aircraft’s data port, you discover weather forecasts of a massive tropical storm. Before you can figure out whether it will impact your vacation plans, however, your device suddenly turns off!</p>
+<p>Its battery is dead.</p>
+<p>You’ll need to plug it in. There’s only one problem: the charging outlet near your seat produces the wrong number of jolts. Always prepared, you make a list of all of the joltage adapters in your bag.</p>
+<p>Each of your joltage adapters is rated for a specific output joltage (your puzzle input). Any given adapter can take an input 1, 2, or 3 jolts lower than its rating and still produce its rated output joltage.</p>
+<p>In addition, your device has a built-in joltage adapter rated for 3 jolts higher than the highest-rated adapter in your bag. (If your adapter list were 3, 9, and 6, your device’s built-in adapter would be rated for 12 jolts.)</p>
+<p>Treat the charging outlet near your seat as having an effective joltage rating of 0.</p>
+<p>Since you have some time to kill, you might as well test all of your adapters. Wouldn’t want to get to your resort and realize you can’t even charge your device!</p>
+<p>If you use every adapter in your bag at once, what is the distribution of joltage differences between the charging outlet, the adapters, and your device?</p>
+<p>For example, suppose that in your bag, you have adapters with the following joltage ratings:</p>
+<pre><code>16
+10
+15
+5
+1
+11
+7
+19
+6
+12
+4</code></pre>
+<p>With these adapters, your device’s built-in joltage adapter would be rated for 19 + 3 = 22 jolts, 3 higher than the highest-rated adapter.</p>
+<p>Because adapters can only connect to a source 1-3 jolts lower than its rating, in order to use every adapter, you’d need to choose them like this:</p>
+<ul>
+<li>The charging outlet has an effective rating of 0 jolts, so the only adapters that could connect to it directly would need to have a joltage rating of 1, 2, or 3 jolts. Of these, only one you have is an adapter rated 1 jolt (difference of 1).</li>
+<li>From your 1-jolt rated adapter, the only choice is your 4-jolt rated adapter (difference of 3).</li>
+<li>From the 4-jolt rated adapter, the adapters rated 5, 6, or 7 are valid choices. However, in order to not skip any adapters, you have to pick the adapter rated 5 jolts (difference of 1).</li>
+<li>Similarly, the next choices would need to be the adapter rated 6 and then the adapter rated 7 (with difference of 1 and 1).</li>
+<li>The only adapter that works with the 7-jolt rated adapter is the one rated 10 jolts (difference of 3).</li>
+<li>From 10, the choices are 11 or 12; choose 11 (difference of 1) and then 12 (difference of 1).</li>
+<li>After 12, only valid adapter has a rating of 15 (difference of 3), then 16 (difference of 1), then 19 (difference of 3).</li>
+<li>Finally, your device’s built-in adapter is always 3 higher than the highest adapter, so its rating is 22 jolts (always a difference of 3).</li>
+</ul>
+<p>In this example, when using every adapter, there are 7 differences of 1 jolt and 5 differences of 3 jolts.</p>
+<p>Here is a larger example:</p>
+<pre><code>28
+33
+18
+42
+31
+14
+46
+20
+48
+47
+24
+23
+49
+45
+19
+38
+39
+11
+1
+32
+25
+35
+8
+17
+7
+9
+4
+2
+34
+10
+3</code></pre>
+<p>In this larger example, in a chain that uses all of the adapters, there are 22 differences of 1 jolt and 10 differences of 3 jolts.</p>
+<p>Find a chain that uses all of your adapters to connect the charging outlet to your device’s built-in adapter and count the joltage differences between the charging outlet, the adapters, and your device. What is the number of 1-jolt differences multiplied by the number of 3-jolt differences?</p>
+<div id="solution-4" class="section level4">
+<h4>Solution</h4>
+<p>This is simple, we sort a sequence of adapters, calculate the difference between then and just count the differences of 1 and 3 jolts.</p>
+<pre class="r"><code># using just r-base
+# finds the # of differences of 1 and 3 jolts
+countJoltageDiff &lt;- function(.input){
+  # adds the outlet and the device joltages and sort it
+  joltages &lt;- sort(c(0, input, max(.input)+3))
+  
+  # calc the differences
+  jolt_diffs &lt;- diff(joltages)
+  
+  # count joltages diff 1 and joltages diff 3
+  return(list(&quot;1&quot;=sum(jolt_diffs==1),&quot;3&quot;=sum(jolt_diffs==3)))
+}
+
+# reads the input as a array of integers
+input &lt;- as.integer(readLines(&quot;./day10_test_01.txt&quot;))
+countJoltageDiff(input)</code></pre>
+<pre><code>## $`1`
+## [1] 7
+## 
+## $`3`
+## [1] 5</code></pre>
+<pre class="r"><code>input &lt;- as.integer(readLines(&quot;./day10_test_02.txt&quot;))
+countJoltageDiff(input)</code></pre>
+<pre><code>## $`1`
+## [1] 22
+## 
+## $`3`
+## [1] 10</code></pre>
+<pre class="r"><code>input &lt;- input &lt;- as.integer(readLines(&quot;./day10_input.txt&quot;))
+jdiffs &lt;- countJoltageDiff(input)
+
+# response (# of diffs 1 * # of diffs 3)
+jdiffs$`1` * jdiffs$`3`</code></pre>
+<pre><code>## [1] 2775</code></pre>
+</div>
+</div>
+<div id="part-two-2" class="section level3">
+<h3>Part Two</h3>
+<p>To completely determine whether you have enough adapters, you’ll need to figure out how many different ways they can be arranged. Every arrangement needs to connect the charging outlet to your device. The previous rules about when adapters can successfully connect still apply.</p>
+<p>The first example above (the one that starts with 16, 10, 15) supports the following arrangements:</p>
+<pre><code>(0), 1, 4, 5, 6, 7, 10, 11, 12, 15, 16, 19, (22)
+(0), 1, 4, 5, 6, 7, 10, 12, 15, 16, 19, (22)
+(0), 1, 4, 5, 7, 10, 11, 12, 15, 16, 19, (22)
+(0), 1, 4, 5, 7, 10, 12, 15, 16, 19, (22)
+(0), 1, 4, 6, 7, 10, 11, 12, 15, 16, 19, (22)
+(0), 1, 4, 6, 7, 10, 12, 15, 16, 19, (22)
+(0), 1, 4, 7, 10, 11, 12, 15, 16, 19, (22)
+(0), 1, 4, 7, 10, 12, 15, 16, 19, (22)</code></pre>
+<p>(The charging outlet and your device’s built-in adapter are shown in parentheses.) Given the adapters from the first example, the total number of arrangements that connect the charging outlet to your device is 8.</p>
+<p>The second example above (the one that starts with 28, 33, 18) has many arrangements. Here are <em>a few</em>:</p>
+<pre><code>(0), 1, 2, 3, 4, 7, 8, 9, 10, 11, 14, 17, 18, 19, 20, 23, 24, 25, 28, 31, 32, 33, 34, 35, 38, 39, 42, 45, 46, 47, 48, 49, (52)
+(0), 1, 2, 3, 4, 7, 8, 9, 10, 11, 14, 17, 18, 19, 20, 23, 24, 25, 28, 31, 32, 33, 34, 35, 38, 39, 42, 45, 46, 47, 49, (52)
+(0), 1, 2, 3, 4, 7, 8, 9, 10, 11, 14, 17, 18, 19, 20, 23, 24, 25, 28, 31, 32, 33, 34, 35, 38, 39, 42, 45, 46, 48, 49, (52)
+(0), 1, 2, 3, 4, 7, 8, 9, 10, 11, 14, 17, 18, 19, 20, 23, 24, 25, 28, 31, 32, 33, 34, 35, 38, 39, 42, 45, 46, 49, (52)
+(0), 1, 2, 3, 4, 7, 8, 9, 10, 11, 14, 17, 18, 19, 20, 23, 24, 25, 28, 31, 32, 33, 34, 35, 38, 39, 42, 45, 47, 48, 49, (52)
+(0), 3, 4, 7, 10, 11, 14, 17, 20, 23, 25, 28, 31, 34, 35, 38, 39, 42, 45, 46, 48, 49, (52)
+(0), 3, 4, 7, 10, 11, 14, 17, 20, 23, 25, 28, 31, 34, 35, 38, 39, 42, 45, 46, 49, (52)
+(0), 3, 4, 7, 10, 11, 14, 17, 20, 23, 25, 28, 31, 34, 35, 38, 39, 42, 45, 47, 48, 49, (52)
+(0), 3, 4, 7, 10, 11, 14, 17, 20, 23, 25, 28, 31, 34, 35, 38, 39, 42, 45, 47, 49, (52)
+(0), 3, 4, 7, 10, 11, 14, 17, 20, 23, 25, 28, 31, 34, 35, 38, 39, 42, 45, 48, 49, (52)</code></pre>
+<p>In total, this set of adapters can connect the charging outlet to your device in 19208 distinct arrangements.</p>
+<p>You glance back down at your bag and try to remember why you brought so many adapters; there must be more than a trillion valid ways to arrange them! Surely, there must be an efficient way to count the arrangements.</p>
+<p>What is the total number of distinct ways you can arrange the adapters to connect the charging outlet to your device?</p>
+<div id="solution-5" class="section level4">
+<h4>Solution</h4>
+<p>We’ll have to iterate recursively the adapters to find total ways to combine then. So the idea is, start from the beginning (from 0 to the whole sorted sequence of adapters until the device), step to step, find the next possible adapters and for each one, create a new path (the possible one and the rest of the adapters) do the same recursively, and count the distinct paths. Let’s do it, with the cases above.</p>
+<pre class="r"><code>library(tidyverse)
+
+# this function chose, at next position (.i+1) in the adapters sequence
+# which adapter can be used next (3 joltage range)
+getNexts &lt;- function(.dt, .i) {
+
+  # indexes before the position of analysis
+  .before &lt;- 1:.i
+  # what are the next adapters available in the joltage range (+3)
+  .now &lt;- (1:length(.dt))[which(.dt &gt;= (.dt[.i]+1) &amp; .dt &lt;= (.dt[.i]+3))]
+
+  # build maps of options
+  indexes &lt;- .now %&gt;% 
+    map(function(.n, .b, .s){
+      c(.b,.n:.s)
+    }, .b=.before, .s=length(.dt))
+  
+  # returns the adapters sequence
+  indexes %&gt;% 
+    map(~.dt[.x]) %&gt;% 
+    return()
+}
+
+# this is a recursive function to iterate the adapters sequence
+# to find all possible combinatinos
+findAdapterComb &lt;- function(.dt, .i=1){
+  
+  # if we are at the end of the sequence return NULL
+  if(.i==length(.dt)) return(NULL)
+  
+  # find the combinations available at position .i
+  comb.1 &lt;- unique(getNexts(.dt, .i))
+  
+  # for each combination, find the combinations at position .i
+  comb.2 &lt;- comb.1 %&gt;% 
+    map(findAdapterComb, .i=.i+1) %&gt;% 
+    # removes the list levels and get unique values
+    flatten() %&gt;% 
+    unique() 
+  
+  # combine the options and returns
+  c(comb.1, comb.2) %&gt;% 
+    unique() %&gt;% 
+    return()
+}
+
+
+# test case 01 = 8 possible answers 
+
+# reads the input as a vector of integers
+input &lt;- as.integer(readLines(&quot;./day10_test_01.txt&quot;))
+
+# adds the outlet and the device joltages and sort it
+joltages &lt;- sort(c(0, input, max(input)+3))
+
+# counts the possible combinations
+length(findAdapterComb(joltages))</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code># test case 02 = 19208 possible answers 
+
+# reads the input as a vector of integers
+input &lt;- as.integer(readLines(&quot;./day10_test_02.txt&quot;))
+
+# adds the outlet and the device joltages and sort it
+joltages &lt;- sort(c(0, input, max(input)+3))
+
+# counts the possible combinations
+length(findAdapterComb(joltages))</code></pre>
+<pre><code>## [1] 19208</code></pre>
+<p>All is working, now let’s do with the input data.</p>
+<pre class="r"><code># input data
+
+# reads the input as a vector of integers
+input &lt;- as.integer(readLines(&quot;./day10_input.txt&quot;))
+
+# adds the outlet and the device joltages and sort it
+joltages &lt;- sort(c(0, input, max(input)+3))
+
+# counts the possible combinations
+# length(findAdapterComb(joltages)) &gt;&gt; YEAH, THIS DIDN&#39;T WORK, TOO MANY TIME TO PROCESS</code></pre>
+<p>Impossible!!! There is a more than 100 trillions of function call here, it will take ages, we need a better code.</p>
+<p>In this case I consulted the masters and found the <a href="https://twitter.com/drob/status/1337103174868611074?s=20">puzzle answer from David Robinson</a> that came with a more clean and compact code and a great optimization:</p>
+<ol style="list-style-type: decimal">
+<li>We doesn’t return the adapters path along the calls, we need just count it (obviously). In this way save time returning data between the recursive calls.</li>
+<li>He came with the use of [<code>memoise package</code>] that transform a function in <em>memoised function</em>, a function that caches function calls so that if a previously seen set of inputs is seen, it can return the previously computed output.</li>
+</ol>
+<p>First I didn’t get why, in a recursive call sequence, this would be a vantage, but printing the parameters at start the call we can see that the same path of adapters is “calculated” over and over changing only the first adapter, so we can make some gains here, although takes a lot of time to process the input from this puzzles.</p>
+<p>Let’s see the David’s code:</p>
+<pre class="r"><code>library(memoise)
+library(purrr)
+
+# we creates a &quot;cached version&quot; of the function
+countComb &lt;- memoise(
+  # this function return the # of possible combinations 
+  # of adapters, it calculates the nexts possibles adapters from the start element
+  # and calls itself from one of each.
+  function(x){
+    # if there is one element, returns there is *one* path
+    if (length(x)==1) return(1)
+    
+    # which are the next possible adapters?
+    alts &lt;- which(x[2:length(x)]-x[1]&lt;=3)
+    
+    # from each one call itself sum the answers and returns
+    # tail do the trick to start from one of possible next adapters
+    return(sum(map_dbl(alts, ~countComb(tail(x, -.))))) 
+  })
+
+
+# reads the input as a vector of integers
+input &lt;- as.integer(readLines(&quot;./day10_input.txt&quot;))
+
+# adds the outlet and the device joltages and sort it
+joltages &lt;- sort(c(0, input, max(input)+3))
+
+resp &lt;- countComb(joltages)
+format(resp,scientific=FALSE)</code></pre>
+<pre><code>## [1] &quot;518344341716992&quot;</code></pre>
+<p>This is amazing, is really, really fast! So, always consult <a href="https://twitter.com/drob">the masters</a>, you can learn a lot!</p>
+<p>To be continued…</p>
+</div>
+</div>
+</div>

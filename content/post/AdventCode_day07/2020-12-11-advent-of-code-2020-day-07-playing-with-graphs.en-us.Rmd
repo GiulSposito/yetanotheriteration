@@ -9,6 +9,7 @@ tags:
 - graph
 - tidygraph
 - network analysis
+- Advent Of Code 
 - data analysis
 keywords:
 - tech
