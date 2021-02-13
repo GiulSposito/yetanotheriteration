@@ -462,7 +462,7 @@ fig3a %&gt;%
 <div id="part-d" class="section level4">
 <h4>Part D</h4>
 <p>Recreate figure 3a (main figure), but change the y-axis to be the raw mention count (not the rate of mentions).</p>
-<pre class="r"><code># ploting the ngram_count instead frequency
+<pre class="r"><code># plotting the ngram_count instead frequency
 fig3a %&gt;% 
   select(ngram, year, ngram_count, frequency) %&gt;% 
   ggplot(aes(x=year, y=ngram_count, color=ngram)) +
@@ -482,7 +482,7 @@ fig3a %&gt;%
 <p>Now, using the proportion of mentions, replicate the inset of figure 3a. That is, for each year <strong>between 1875 and 1975</strong>, calculate the half-life of that year. <strong>The half-life is defined to be the number of years that pass before the proportion of mentions reaches half its peak value</strong>. Note that Michel et al. (2011) do something more complicated to estimate the half-life (see section III.6 of their Supporting Online Information) but they claim that both approaches produce similar results. Does version 2 of the NGram data produce similar results to those presented in Michel et al. (2011), which are based on version 1 data? (Hint: Don’t be surprised if it doesn’t.)</p>
 <pre class="r"><code>half_life &lt;- raw1gram %&gt;% 
   select(ngram, year, ngram_count=match_count) %&gt;% 
-  # selects only the ngrams of &#39;years&#39; and countings after 1950
+  # selects only the ngrams of &#39;years&#39; and counting after 1950
   filter(ngram %in% as.character(1875:2012), year&gt;=1850) %&gt;% 
   # to make it easy, converts the year-grams into integer
   mutate(ngram = as.integer(ngram)) %&gt;% 
@@ -497,7 +497,7 @@ fig3a %&gt;%
   mutate( peak_freq = max(frequency) ) %&gt;% 
   ungroup()
 
-# We want eliminates &quot;half-peaks&quot; before de peaks
+# We want eliminates &quot;half-peaks&quot; before the peaks
 half_life &lt;- half_life %&gt;% 
   # find the &quot;peak year&quot;
   filter(peak_freq==frequency) %&gt;% 
@@ -562,34 +562,10 @@ half_life[which(half_life$half_life &gt; upper_limit),] %&gt;%
 ##   &lt;int&gt;     &lt;int&gt;
 ## 1  1900        24
 ## 2  1910        19</code></pre>
-<p>The 1900 is a “millenial” year, and 1910 was the year of the aviation (and comet Harley appearance), but I was thinking that the year of WWI and WWII was particurlaly slowly to forget. Let’s compare:</p>
+<p>The 1900 is a “millennial” year, and 1910 was the year of the aviation (and comet Harley appearance), but I was thinking that the year of WWI and WWII was particularly slowly to forget. Let’s compare:</p>
 <pre class="r"><code># the two outliers compare with the years of wars, 
-# moon landing, fall of berlin&#39;s wall, and of ussr?
+# moon landing, fall of Berlin&#39;s wall, and of USSR?
 half_life %&gt;% 
-  filter( ngram %in% c(1900, 1910, 1914:1918, 1939:1945, 1969, 1989, 1991) ) %&gt;% 
-  select(ngram, half_life) %&gt;% 
-  arrange(ngram)</code></pre>
-<pre><code>## # A tibble: 17 x 2
-##    ngram half_life
-##    &lt;int&gt;     &lt;int&gt;
-##  1  1900        24
-##  2  1910        19
-##  3  1914        15
-##  4  1915         8
-##  5  1916         8
-##  6  1917         7
-##  7  1918         6
-##  8  1939        13
-##  9  1940        14
-## 10  1941         9
-## 11  1942         5
-## 12  1943        11
-## 13  1944        10
-## 14  1945        14
-## 15  1969        14
-## 16  1989        11
-## 17  1991        11</code></pre>
-<pre class="r"><code>half_life %&gt;% 
   mutate(
     notable_year = ngram %in% c(1900, 1910, 1914:1918, 1939:1945, 1969, 1989, 1991, 2000),
   ) %&gt;% 
