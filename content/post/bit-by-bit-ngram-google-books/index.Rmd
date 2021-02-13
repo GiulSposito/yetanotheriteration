@@ -1,0 +1,236 @@
+---
+title: 'Bit-by-bit: NGram Google Books'
+author: "Giuliano Sposito"
+date: '2021-02-14'
+slug: bit-by-bit-ngram-google-books
+categories: data science
+tags:
+- data analysis
+- en-US
+- bit-by-bit
+keywords: tech
+coverImage: /images/advent_of_code_bags_header.jpg
+thumbnailImage: /images/advent_of_code_bags_tn.jpg
+thumbnailImagePosition: left
+metaAlignment: center
+---
+
+In a widely discussed paper, [Michel and colleagues (2011)](https://dash.harvard.edu/bitstream/handle/1/8899722/MichelScience2011.pdf) analyzed the content of more than five million digitized books in an attempt to identify long-term cultural trends. The data that they used has now been released as the Google NGrams dataset, and so we can use the data to replicate and extend some of their work.
+
+<!--more-->
+
+In a widely discussed paper, [Michel and colleagues (2011)](https://dash.harvard.edu/bitstream/handle/1/8899722/MichelScience2011.pdf) analyzed the content of more than five million digitized books in an attempt to identify long-term cultural trends. The data that they used has now been released as the Google NGrams dataset, and so we can use the data to replicate and extend some of their work.
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+
+In one of the many results in the paper, Michel and colleagues argued that we are forgetting faster and faster. For a particular year, say “1883,” they calculated the proportion of 1-grams published in each year **between 1875 and 1975** that were “1883.” They reasoned that this proportion is a measure of the interest in events that happened in that year. In their figure 3a, they plotted the usage trajectories for three years: 1883, 1910, and 1950. These three years share a common pattern: little use before that year, then a spike, then decay. Next, to quantify the rate of decay for each year, Michel and colleagues calculated the “half-life” of each year for all years between 1875 and 1975. In their figure 3a (inset), they showed that the half-life of each year is decreasing, and they argued that this means that we are forgetting the past faster and faster. They used version 1 of the English language corpus, but subsequently Google has released a second version of the corpus. Please read all the parts of the question before you begin coding.
+
+![figure 3a](./figure_3a.png)
+
+This activity will give you practice writing reusable code, interpreting results, and data wrangling (such as working with awkward files and handling missing data). This activity will also help you get up and running with a rich and interesting dataset.
+
+a) Get the [raw data](http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-1gram-20120701-1.gz) from the Google Books NGram Viewer website (http://storage.googleapis.com/books/ngrams/books/datasetsv2.html). In particular, you should use version 2 of the English language corpus, which was released on July 1, 2012. Uncompressed, this file is 1.4 GB. 
+
+```{r import, eval=FALSE}
+library(tidyverse)
+
+# traditional CSV "tab separated" (it's big)
+raw1gram <- read_delim("./googlebooks-eng-all-1gram-20120701-1.txt", delim = "\t",
+                       col_names = c("ngram","year","match_count","volume_count"),
+                       col_types = "ciii")
+
+# lets see
+head(raw1gram) %>% 
+  knitr::kable()
+  
+```
+
+
+```{r readData, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE, cache.lazy = FALSE}
+# traditional CSV "tab separated" (it's big)
+raw1gram <- readRDS("./raw1gram.rds")
+
+# lets see
+head(raw1gram) %>% 
+  knitr::kable()
+```
+
+
+b) Recreate the main part of figure 3a of Michel et al. (2011). To recreate this figure, you will need two files: the one you downloaded in part (a) and the [“total counts” file](http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-totalcounts-20120701.txt), which you can use to convert the raw counts into proportions. Note that the total counts file has a structure that may make it a bit hard to read in. Does version 2 of the NGram data produce similar results to those presented in Michel et al. (2011), which are based on version 1 data?
+
+```{r importTotalCount, warning=FALSE, message=FALSE}
+
+# totalcount has an unique line, with registers separated by "tab" and columns
+# separated by "," (WTF?)
+totalCount <- tibble(
+    # read this line an put in a tibble (one row, one column)
+    txt = str_trim(read_lines("./googlebooks-eng-all-totalcounts-20120701.txt"))
+  ) %>% 
+    # separates into rows
+    separate_rows(txt, sep="\t") %>% 
+    # separate into columns
+    separate(txt, sep = ",", 
+             into = c("year","match_count","page_count","volume_count"),
+             convert = T)
+
+# lets see
+head(totalCount) %>% 
+  knitr::kable()
+
+```
+
+
+```{r repoFig3A}
+
+# let's filter the dataset
+fig3a <- raw1gram %>% 
+  # taking some years
+  filter(year>=1850, year <= 2000) %>% 
+  select(ngram, year, ngram_count=match_count) %>% 
+  # the selected years "1grams"
+  filter(ngram %in% c("1883","1910", "1950")) %>% 
+  # join with totalCount and calculates the frequency
+  inner_join(totalCount, by="year") %>% 
+  mutate(frequency=ngram_count/match_count) 
+
+# plot it
+fig3a %>% 
+  select(ngram, year, ngram_count, frequency) %>% 
+  ggplot(aes(x=year, y=frequency, color=ngram)) +
+  geom_line(size=1) +
+  theme_light()
+
+```
+
+c) Now check your graph against the [graph created by the NGram Viewer](https://books.google.com/ngrams/graph?content=1883%2C1910%2C1950&year_start=1850&year_end=2000&corpus=26&smoothing=0) (https://books.google.com/ngrams).
+
+`Pretty the same.`
+
+d) Recreate figure 3a (main figure), but change the y-axis to be the raw mention count (not the rate of mentions).
+
+```{r fig3Count}
+# ploting the ngram_count instead frequency
+fig3a %>% 
+  select(ngram, year, ngram_count, frequency) %>% 
+  ggplot(aes(x=year, y=ngram_count, color=ngram)) +
+  geom_line(size=1) +
+  theme_light()
+
+```
+
+e) Does the difference between (b) and (d) lead you to reevaluate any of the results of Michel et al. (2011). Why or why not?
+
+`Well, are the years really forgotten?`
+
+f) Now, using the proportion of mentions, replicate the inset of figure 3a. That is, for each year **between 1875 and 1975**, calculate the half-life of that year. **The half-life is defined to be the number of years that pass before the proportion of mentions reaches half its peak value**. Note that  Michel et al. (2011) do something more complicated to estimate the half-life (see section III.6 of their Supporting Online Information) but they claim that both approaches produce similar results. Does version 2 of the NGram data produce similar results to those presented in Michel et al. (2011), which are based on version 1 data? (Hint: Don’t be surprised if it doesn’t.)
+
+```{r halfLife}
+
+half_life <- raw1gram %>% 
+  select(ngram, year, ngram_count=match_count) %>% 
+  # selects only the ngrams of 'years' and countings after 1950
+  filter(ngram %in% as.character(1875:2012), year>=1850) %>% 
+  # to make it easy, converts the year-grams into integer
+  mutate(ngram = as.integer(ngram)) %>% 
+  # off course gets only counting 'after' (year) that specific year (ngram)
+  filter(year>=ngram) %>% 
+  # join totalCount and calculates the frequency
+  inner_join(select(totalCount, year, total_count=match_count), by="year") %>% 
+  mutate(frequency=ngram_count/total_count) %>% 
+  # for each year (ngram)
+  group_by(ngram) %>% 
+  # find the "max peak" and calculates actual frequency
+  mutate( peak_freq = max(frequency) ) %>% 
+  ungroup()
+
+# We want eliminates "half-peaks" before de peaks
+half_life <- half_life %>% 
+  # find the "peak year"
+  filter(peak_freq==frequency) %>% 
+  select(ngram, peak_year=year) %>% 
+  inner_join(half_life, by="ngram") %>% 
+  filter(year >= peak_year) %>% 
+  # filter when the frequency is at half (or bellow) the peak
+  filter( frequency <= peak_freq/2 ) %>% 
+  group_by( ngram ) %>% 
+  # get the first year which this occurs
+  filter( year == min(year) ) %>% 
+  ungroup() %>% 
+  mutate( half_life = year-ngram )
+
+half_life %>% 
+  ggplot(aes(x=ngram, y=half_life)) +
+  geom_point() +
+  theme_light()
+
+```
+
+
+g) Were there any years that were outliers, such as years that were forgotten particularly quickly or particularly slowly? Briefly speculate about possible reasons for that pattern and explain how you identified the outliers. 
+
+```{r hlIsNormal}
+# what is a half_life?
+summary(half_life$half_life)
+
+# Lets check what is an outlier
+# the half life has an normal distribution?
+half_life %>% 
+  ggplot(aes(x=half_life)) +
+  geom_histogram() +
+  theme_light()
+
+# its normal distributed?
+shapiro.test(half_life$half_life)
+```
+
+Let's use two standard deviations (~95% of the points) around the mean as "regular half life" values.
+
+```{r ci95}
+
+upper_limit <- mean(half_life$half_life) + 2*sd(half_life$half_life)
+lower_limit <- mean(half_life$half_life) - 2*sd(half_life$half_life)
+
+# year forgotten quickly
+half_life[which(half_life$half_life < lower_limit),] %>% 
+  select(ngram, half_life)
+```
+
+It's strange that 1918 (last year of WW I, and the year of russian revolution) and 1942 (a year in the WW II) are easily forgotten.
+
+```{r slowlyFog}
+# year forgotten slowly?
+half_life[which(half_life$half_life > upper_limit),] %>% 
+  select(ngram, half_life)
+
+```
+
+The 1900 is a "millenial" year, and 1910 was the year of the aviation (and comet Harley appearance), but I was thinking that the year of WWI and WWII was particurlaly slowly to forget. Let's compare:
+
+```{r notableYears}
+
+# the two outliers compare with the years of wars, 
+# moon landing, fall of berlin's wall, and of ussr?
+half_life %>% 
+  filter( ngram %in% c(1900, 1910, 1914:1918, 1939:1945, 1969, 1989, 1991) ) %>% 
+  select(ngram, half_life) %>% 
+  arrange(ngram)
+
+half_life %>% 
+  mutate(
+    notable_year = ngram %in% c(1900, 1910, 1914:1918, 1939:1945, 1969, 1989, 1991, 2000),
+  ) %>% 
+  select(ngram, half_life, notable_year) %>% 
+  ggplot(aes(x=ngram, y=half_life, color=notable_year)) +
+  geom_point() +
+  scale_color_manual(values=c("blue","red")) +
+  geom_hline(yintercept = upper_limit, linetype="dashed") +
+  geom_hline(yintercept = lower_limit, linetype="dashed") +
+  ylim(0,max(half_life$half_life)) +
+  theme_light()
+
+
+```
+
