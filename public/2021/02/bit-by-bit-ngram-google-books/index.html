@@ -311,6 +311,7 @@ if (!doNotTrack) {
 <h4>Part A</h4>
 <p>Get the <a href="http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-1gram-20120701-1.gz">raw data</a> from the Google Books NGram Viewer website (<a href="http://storage.googleapis.com/books/ngrams/books/datasetsv2.html" class="uri">http://storage.googleapis.com/books/ngrams/books/datasetsv2.html</a>). In particular, you should use version 2 of the English language corpus, which was released on July 1, 2012. Uncompressed, this file is 1.4 GB.</p>
 <pre class="r"><code>library(tidyverse)
+library(glue)
 
 # traditional CSV &quot;tab separated&quot; (it&#39;s big)
 raw1gram &lt;- read_delim(&quot;./googlebooks-eng-all-1gram-20120701-1.txt&quot;, delim = &quot;\t&quot;,
@@ -578,6 +579,427 @@ half_life %&gt;%
   ylim(0,max(half_life$half_life)) +
   theme_light()</code></pre>
 <p><img src="/post/bit-by-bit-ngram-google-books/index_files/figure-html/notableYears-1.png" width="672" /></p>
+</div>
+<div id="extra" class="section level2">
+<h2>Extra</h2>
+<p>After doing the analyzes proposed by the book, I was intrigued if it was possible to reproduce the results of the original article using the original data (google ngram dataset v1) and how we could do this using R.</p>
+<div id="download-and-importing-the-dataset" class="section level3">
+<h3>Download and Importing the Dataset</h3>
+<p>First we need to download and load the data, unlike version 2, in the first version of the data the tokens of the years are spread over 10 CSV files, so it is necessary to download and import the data.</p>
+<pre class="r"><code># download each one of 10 csv (zipped) files
+downloaded_files &lt;- 0:9 %&gt;% 
+  map(function(.x){
+    download.file(
+      glue(&quot;http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-1gram-20090715-{.x}.csv.zip&quot;),
+      glue(&quot;./import/googlebooks-eng-all-1gram-20090715-{.x}.csv.zip&quot;))
+  })
+
+# import only the &quot;years&quot; tokens from each of 10 csv files
+raw1gram &lt;- 0:9 %&gt;% 
+  map_df(function(.x){
+    # traditional CSV &quot;tab separated&quot; (it&#39;s big)
+    raw1gram &lt;- read_delim(
+      glue(&quot;./import/googlebooks-eng-all-1gram-20090715-{.x}.csv.zip&quot;),
+      delim = &quot;\t&quot;,
+      col_names = c(&quot;ngram&quot;,&quot;year&quot;,&quot;word.count&quot;,&quot;page.count&quot;,&quot;book.count&quot;),
+      col_types = &quot;cinnn&quot;
+    )
+    
+    # keep only the tokens of interest
+    raw1gram %&gt;%
+      filter( ngram %in% as.character(1850:2010) ) %&gt;% 
+      return()
+  })
+
+# store it to be used latter if necessary
+saveRDS(raw1gram,&quot;./data/ngrams_v1_years.rds&quot;)
+
+# what we have
+head(raw1gram) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ngram</th>
+<th align="right">year</th>
+<th align="right">word.count</th>
+<th align="right">page.count</th>
+<th align="right">book.count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1574</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1575</td>
+<td align="right">12</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1584</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1592</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1637</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1638</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>As we did in the first analysis, we need the total word counting to calculates the frequency.</p>
+<pre class="r"><code># Import the csv file download from ngram dataset site
+totalCounts &lt;- read_delim(&quot;./googlebooks-eng-all-totalcounts-20090715.txt&quot;, 
+                          delim=&quot;\t&quot;, skip=1, col_types = &quot;innn&quot;,
+                          col_names=c(&quot;year&quot;,&quot;total.words&quot;,&quot;total.pages&quot;,&quot;total.books&quot;))
+
+head(totalCounts) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">total.words</th>
+<th align="right">total.pages</th>
+<th align="right">total.books</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1520</td>
+<td align="right">51191</td>
+<td align="right">112</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1527</td>
+<td align="right">4384</td>
+<td align="right">18</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1541</td>
+<td align="right">5056</td>
+<td align="right">27</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1574</td>
+<td align="right">60089</td>
+<td align="right">345</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1575</td>
+<td align="right">374033</td>
+<td align="right">1059</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">1576</td>
+<td align="right">26278</td>
+<td align="right">81</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="prepare-the-dataset" class="section level3">
+<h3>Prepare the dataset</h3>
+<p>Let’s prepare the data for analysis calculating the frequency</p>
+<pre class="r"><code># join the total counting and calculates the frequency
+years &lt;- raw1gram %&gt;% 
+  filter( ngram %in% 1850:2010 ) %&gt;% 
+  inner_join(totalCounts, by=&quot;year&quot;) %&gt;% 
+  select(ngram, year, word.count, total.words) %&gt;% 
+  mutate(word.freq = word.count/total.words)
+
+head(years) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ngram</th>
+<th align="right">year</th>
+<th align="right">word.count</th>
+<th align="right">total.words</th>
+<th align="right">word.freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1574</td>
+<td align="right">1</td>
+<td align="right">60089</td>
+<td align="right">1.66e-05</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1575</td>
+<td align="right">12</td>
+<td align="right">374033</td>
+<td align="right">3.21e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1584</td>
+<td align="right">3</td>
+<td align="right">382341</td>
+<td align="right">7.80e-06</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1592</td>
+<td align="right">2</td>
+<td align="right">253381</td>
+<td align="right">7.90e-06</td>
+</tr>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1637</td>
+<td align="right">5</td>
+<td align="right">383892</td>
+<td align="right">1.30e-05</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1638</td>
+<td align="right">2</td>
+<td align="right">118459</td>
+<td align="right">1.69e-05</td>
+</tr>
+</tbody>
+</table>
+<p>Also, as we did in the first analysis, let’s check if we can reproduce the <code>fig 3A</code> from the original article.</p>
+<pre class="r"><code>years %&gt;% 
+  # taking the years of analysis
+  filter(year&gt;=1850, year &lt;=2000) %&gt;% 
+  # filters the years of interest
+  filter(ngram %in% c(1883,1910,1950)) %&gt;% 
+  # plot it
+  ggplot(aes(x=year, y=word.freq, color=ngram)) +
+    geom_line(size=1) +
+    theme_light()</code></pre>
+<p><img src="/post/bit-by-bit-ngram-google-books/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="exponencial-decay" class="section level3">
+<h3>Exponencial Decay</h3>
+<p>We will try to redo year half life calculation, but this time we will do this by fitting an exponential decay model for each <code>token year</code>, starting from its peak frequency.</p>
+<p>First, let’s slice each year data from its peak.</p>
+<pre class="r"><code># for each &#39;token year&#39; find its peak in frequency
+peaks &lt;- years %&gt;% 
+  # the peak has to be in the &quot;future&quot; of that year
+  filter( year &gt;= as.integer(ngram) ) %&gt;% 
+  group_by(ngram) %&gt;% 
+  # which year each token year peaked
+  filter( word.freq == max(word.freq) ) %&gt;% 
+  select(ngram, max.year=year, max.freq=word.freq) %&gt;% 
+  ungroup()
+
+# let&#39;s see
+head(peaks) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ngram</th>
+<th align="right">max.year</th>
+<th align="right">max.freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1868</td>
+<td align="right">0.0000456</td>
+</tr>
+<tr class="even">
+<td align="left">1875</td>
+<td align="right">1876</td>
+<td align="right">0.0000440</td>
+</tr>
+<tr class="odd">
+<td align="left">1892</td>
+<td align="right">1893</td>
+<td align="right">0.0000515</td>
+</tr>
+<tr class="even">
+<td align="left">1897</td>
+<td align="right">1898</td>
+<td align="right">0.0000477</td>
+</tr>
+<tr class="odd">
+<td align="left">1899</td>
+<td align="right">1900</td>
+<td align="right">0.0000546</td>
+</tr>
+<tr class="even">
+<td align="left">1953</td>
+<td align="right">1955</td>
+<td align="right">0.0001415</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># so we filter the frequency data from the peak of each token year
+decay.data &lt;- years %&gt;% 
+  inner_join(peaks, by=&quot;ngram&quot;) %&gt;% 
+  # remove years before peak
+  filter( year &gt;= max.year )
+
+# what we have?
+head(decay.data) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ngram</th>
+<th align="right">year</th>
+<th align="right">word.count</th>
+<th align="right">total.words</th>
+<th align="right">word.freq</th>
+<th align="right">max.year</th>
+<th align="right">max.freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1868</td>
+<td align="right">20707</td>
+<td align="right">454334293</td>
+<td align="right">4.56e-05</td>
+<td align="right">1868</td>
+<td align="right">4.56e-05</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1869</td>
+<td align="right">17231</td>
+<td align="right">500425460</td>
+<td align="right">3.44e-05</td>
+<td align="right">1868</td>
+<td align="right">4.56e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1870</td>
+<td align="right">11691</td>
+<td align="right">451706276</td>
+<td align="right">2.59e-05</td>
+<td align="right">1868</td>
+<td align="right">4.56e-05</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1871</td>
+<td align="right">12085</td>
+<td align="right">488849680</td>
+<td align="right">2.47e-05</td>
+<td align="right">1868</td>
+<td align="right">4.56e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">1867</td>
+<td align="right">1872</td>
+<td align="right">13639</td>
+<td align="right">503182681</td>
+<td align="right">2.71e-05</td>
+<td align="right">1868</td>
+<td align="right">4.56e-05</td>
+</tr>
+<tr class="even">
+<td align="left">1867</td>
+<td align="right">1873</td>
+<td align="right">10112</td>
+<td align="right">520267515</td>
+<td align="right">1.94e-05</td>
+<td align="right">1868</td>
+<td align="right">4.56e-05</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># let&#39;s plot some random year to check if we got what we want
+decay.data %&gt;% 
+  filter( ngram %in% as.character(sample(1850:1980, 10))) %&gt;% 
+  ggplot(aes(x=year, y=word.freq, color=ngram)) +
+  geom_line()+
+  theme_minimal()</code></pre>
+<p><img src="/post/bit-by-bit-ngram-google-books/index_files/figure-html/sliceFromPeak-1.png" width="672" /></p>
+<p>Now, for each year we have the frequency decay from its peak, and yes, the data seems a exponential decay. So, let’s calculates each year ‘half-life’. To do so, we’ll fit and exponential equation of this format:</p>
+<p>$$</p>
+<p>y(t) = y_f + (y_f-y_0) e^{- t}</p>
+<p>$$</p>
+<p>We are interest in the <span class="math inline">\(\alpha\)</span> coefficient, the decay rate, from it we can get the year half-life:</p>
+<p><span class="math display">\[ y(t) = Ce^{-\alpha t} \]</span></p>
+<p>Calculating half-life:</p>
+<p><span class="math display">\[ \frac{1}{2}C =  Ce^{-\alpha t}\]</span>
+<span class="math display">\[ \frac{1}{2} =  e^{-\alpha t} \]</span></p>
+<p><span class="math display">\[ ln(\frac{1}{2}) = -\alpha t \]</span></p>
+<p><span class="math display">\[ t_{half-life} = -\frac {ln(\frac{1}{2})}{\alpha} \]</span></p>
+<p>We’ll use the function <code>SSasymp</code> to make the exponencial equation to use in <code>nls</code> function, this keep us to have to define initial values for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(y_0\)</span> and <span class="math inline">\(y_t\)</span>.</p>
+<pre class="r"><code># create a funtion to fit an exp model and calc the half-life from it
+calcHalfLife &lt;- function(dt){
+  
+  # fit a exp model
+  model &lt;- nls(word.freq ~ SSasymp(year, yf, y0, log_alpha), data=dt)
+  # by definition SSasymp uses &quot;ln(alpha)&quot; not alpha itself in the model
+  alpha &lt;- exp(coef(model)[3])
+  halflife.val &lt;- -log(1/2)/alpha
+  names(halflife.val) &lt;- &quot;half.life&quot;
+  return(halflife.val)
+}
+
+# lets create a safer version because some year can&#39;t be fitted in the exp decay
+sf_calcHalfLIfe &lt;- safely(calcHalfLife, NA, quiet = T)
+
+# lets apply the half-life function in your data for each year
+hl &lt;- decay.data %&gt;% 
+  group_by(ngram) %&gt;% 
+  nest() %&gt;% 
+  arrange(ngram) %&gt;% 
+  mutate( hl_calc = map(data, sf_calcHalfLIfe)) %&gt;% 
+  mutate( half_life = map_dbl(hl_calc, pluck, 1)) %&gt;% 
+  filter( !is.na(half_life) ) %&gt;% 
+  ungroup()</code></pre>
+<p>Finally, lets see how the years half-life progress along the time</p>
+<pre class="r"><code>hl %&gt;% 
+  mutate(ngram=as.integer(ngram)) %&gt;% 
+  # years analyzed in the article
+  filter(ngram &gt;= 1850, ngram &lt;= 1975 ) %&gt;% 
+  ggplot(aes(x=ngram, y=half_life)) + 
+  geom_point() +
+  ylim(0,100) +
+  theme_minimal()</code></pre>
+<p><img src="/post/bit-by-bit-ngram-google-books/index_files/figure-html/halflifePlot-1.png" width="672" /></p>
+<p>Well, the graph does not seem to be similar to the one found in the original article. Looking the plot, we can see that are a faster forgetfulness in the first year, the frequency of an year are mentioned decay at faster rate along the time, but this occurs only in the beginning.</p>
+<p>After 1925 the years keep a constant half-life (and so, a constant decay rate), so by this data we are not forgetting faster.</p>
+</div>
 </div>
 
               

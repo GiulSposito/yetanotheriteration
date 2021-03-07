@@ -292,7 +292,7 @@ head(raw1gram) %>%
   knitr::kable()
 ```
 
-```{r realImportV1 echo=FALSE}
+```{r realImportV1, echo=FALSE}
 # read from imported files
 raw1gram <- readRDS("./ngrams_v1_years.rds")
 # what we have
@@ -411,7 +411,7 @@ $$ t_{half-life} = -\frac {ln(\frac{1}{2})}{\alpha} $$
 
 We'll use the function `SSasymp` to make the exponencial equation to use in `nls` function, this keep us to have to define initial values for $\alpha$, $y_0$ and $y_t$.
 
-```{r calcHalfLife}
+```{r calcHalfLife, warning=FALSE, message=FALSE, error=FALSE}
 
 # create a funtion to fit an exp model and calc the half-life from it
 calcHalfLife <- function(dt){
@@ -438,15 +438,11 @@ hl <- decay.data %>%
   filter( !is.na(half_life) ) %>% 
   ungroup()
 
-# what we have
-head(hl) %>% 
-  knitr::kable()
-
 ```
 
 Finally, lets see how the years half-life progress along the time
 
-```{r halflifePlot}
+```{r halflifePlot, warning=FALSE}
 
 hl %>% 
   mutate(ngram=as.integer(ngram)) %>% 
@@ -460,4 +456,6 @@ hl %>%
 
 ```
 
-Looking the plot, we can see that are a faster forgetfulness in the first year, the frequency of an year are mentioned decay at faster rate along the time, but this occurs only in the beginning. 
+Well, the graph does not seem to be similar to the one found in the original article. Looking the plot, we can see that are a faster forgetfulness in the first year, the frequency of an year are mentioned decay at faster rate along the time, but this occurs only in the beginning.
+
+After 1925 the years keep a constant half-life (and so, a constant decay rate), so by this data we are not forgetting faster.
