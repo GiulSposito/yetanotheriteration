@@ -1,6 +1,6 @@
 ---
-title: 'Bit-by-bit: NGram Google Books'
-subtitle: 'Are we forgetting our past faster?'
+title: 'Are we forgetting our past faster?'
+subtitle: 'Bit-by-bit: NGram Google Books'
 author: "Giuliano Sposito"
 date: '2021-02-14'
 slug: bit-by-bit-ngram-google-books
