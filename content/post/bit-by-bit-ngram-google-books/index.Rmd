@@ -1,5 +1,6 @@
 ---
 title: 'Bit-by-bit: NGram Google Books'
+subtitle: 'Are we forgetting our past faster?'
 author: "Giuliano Sposito"
 date: '2021-02-14'
 slug: bit-by-bit-ngram-google-books
@@ -27,6 +28,7 @@ In a widely discussed paper, [Michel and colleagues (2011)](https://dash.harvard
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(glue)
 ```
 
 
@@ -44,6 +46,7 @@ Get the [raw data](http://storage.googleapis.com/books/ngrams/books/googlebooks-
 
 ```{r import, eval=FALSE}
 library(tidyverse)
+library(glue)
 
 # traditional CSV "tab separated" (it's big)
 raw1gram <- read_delim("./googlebooks-eng-all-1gram-20120701-1.txt", delim = "\t",
@@ -246,3 +249,215 @@ half_life %>%
 
 ```
 
+## Extra
+
+After doing the analyzes proposed by the book, I was intrigued if it was possible to reproduce the results of the original article using the original data (google ngram dataset v1) and how we could do this using R.
+
+### Download and Importing the Dataset
+
+First we need to download and load the data, unlike version 2, in the first version of the data the tokens of the years are spread over 10 CSV files, so it is necessary to download and import the data.
+
+```{r importV1, eval=FALSE}
+
+# download each one of 10 csv (zipped) files
+downloaded_files <- 0:9 %>% 
+  map(function(.x){
+    download.file(
+      glue("http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-1gram-20090715-{.x}.csv.zip"),
+      glue("./import/googlebooks-eng-all-1gram-20090715-{.x}.csv.zip"))
+  })
+
+# import only the "years" tokens from each of 10 csv files
+raw1gram <- 0:9 %>% 
+  map_df(function(.x){
+    # traditional CSV "tab separated" (it's big)
+    raw1gram <- read_delim(
+      glue("./import/googlebooks-eng-all-1gram-20090715-{.x}.csv.zip"),
+      delim = "\t",
+      col_names = c("ngram","year","word.count","page.count","book.count"),
+      col_types = "cinnn"
+    )
+    
+    # keep only the tokens of interest
+    raw1gram %>%
+      filter( ngram %in% as.character(1850:2010) ) %>% 
+      return()
+  })
+
+# store it to be used latter if necessary
+saveRDS(raw1gram,"./data/ngrams_v1_years.rds")
+
+# what we have
+head(raw1gram) %>% 
+  knitr::kable()
+```
+
+```{r realImportV1 echo=FALSE}
+# read from imported files
+raw1gram <- readRDS("./ngrams_v1_years.rds")
+# what we have
+head(raw1gram) %>% 
+  knitr::kable()
+```
+
+As we did in the first analysis, we need the total word counting to calculates the frequency.
+
+```{r importTotalV1}
+
+# Import the csv file download from ngram dataset site
+totalCounts <- read_delim("./googlebooks-eng-all-totalcounts-20090715.txt", 
+                          delim="\t", skip=1, col_types = "innn",
+                          col_names=c("year","total.words","total.pages","total.books"))
+
+head(totalCounts) %>% 
+  knitr::kable()
+
+```
+
+### Prepare the dataset
+
+Let's prepare the data for analysis calculating the frequency
+
+```{r prepV1}
+
+# join the total counting and calculates the frequency
+years <- raw1gram %>% 
+  filter( ngram %in% 1850:2010 ) %>% 
+  inner_join(totalCounts, by="year") %>% 
+  select(ngram, year, word.count, total.words) %>% 
+  mutate(word.freq = word.count/total.words)
+
+head(years) %>% 
+  knitr::kable()
+
+```
+
+Also, as we did in the first analysis, let's check if we can reproduce the `fig 3A` from the original article.
+
+```{r}
+years %>% 
+  # taking the years of analysis
+  filter(year>=1850, year <=2000) %>% 
+  # filters the years of interest
+  filter(ngram %in% c(1883,1910,1950)) %>% 
+  # plot it
+  ggplot(aes(x=year, y=word.freq, color=ngram)) +
+    geom_line(size=1) +
+    theme_light()
+
+```
+
+### Exponencial Decay
+
+We will try to redo year half life calculation, but this time we will do this by fitting an exponential decay model for each `token year`, starting from its peak frequency.
+
+First, let's slice each year data from its peak.
+
+```{r sliceFromPeak}
+
+# for each 'token year' find its peak in frequency
+peaks <- years %>% 
+  # the peak has to be in the "future" of that year
+  filter( year >= as.integer(ngram) ) %>% 
+  group_by(ngram) %>% 
+  # which year each token year peaked
+  filter( word.freq == max(word.freq) ) %>% 
+  select(ngram, max.year=year, max.freq=word.freq) %>% 
+  ungroup()
+
+# let's see
+head(peaks) %>% 
+  knitr::kable()
+
+# so we filter the frequency data from the peak of each token year
+decay.data <- years %>% 
+  inner_join(peaks, by="ngram") %>% 
+  # remove years before peak
+  filter( year >= max.year )
+
+# what we have?
+head(decay.data) %>% 
+  knitr::kable()
+
+# let's plot some random year to check if we got what we want
+decay.data %>% 
+  filter( ngram %in% as.character(sample(1850:1980, 10))) %>% 
+  ggplot(aes(x=year, y=word.freq, color=ngram)) +
+  geom_line()+
+  theme_minimal()
+
+```
+
+Now, for each year we have the frequency decay from its peak, and yes, the data seems a exponential decay. So, let's calculates each year 'half-life'. To do so, we'll fit and exponential equation of this format:
+
+$$
+
+y(t) = y_f + (y_f-y_0) e^{- \alpha t}
+
+$$
+
+We are interest in the $\alpha$ coefficient, the decay rate, from it we can get the year half-life:
+
+$$ y(t) = Ce^{-\alpha t} $$
+
+Calculating half-life:
+
+$$ \frac{1}{2}C =  Ce^{-\alpha t}$$
+$$ \frac{1}{2} =  e^{-\alpha t} $$
+
+$$ ln(\frac{1}{2}) = -\alpha t $$
+
+$$ t_{half-life} = -\frac {ln(\frac{1}{2})}{\alpha} $$
+
+We'll use the function `SSasymp` to make the exponencial equation to use in `nls` function, this keep us to have to define initial values for $\alpha$, $y_0$ and $y_t$.
+
+```{r calcHalfLife}
+
+# create a funtion to fit an exp model and calc the half-life from it
+calcHalfLife <- function(dt){
+  
+  # fit a exp model
+  model <- nls(word.freq ~ SSasymp(year, yf, y0, log_alpha), data=dt)
+  # by definition SSasymp uses "ln(alpha)" not alpha itself in the model
+  alpha <- exp(coef(model)[3])
+  halflife.val <- -log(1/2)/alpha
+  names(halflife.val) <- "half.life"
+  return(halflife.val)
+}
+
+# lets create a safer version because some year can't be fitted in the exp decay
+sf_calcHalfLIfe <- safely(calcHalfLife, NA, quiet = T)
+
+# lets apply the half-life function in your data for each year
+hl <- decay.data %>% 
+  group_by(ngram) %>% 
+  nest() %>% 
+  arrange(ngram) %>% 
+  mutate( hl_calc = map(data, sf_calcHalfLIfe)) %>% 
+  mutate( half_life = map_dbl(hl_calc, pluck, 1)) %>% 
+  filter( !is.na(half_life) ) %>% 
+  ungroup()
+
+# what we have
+head(hl) %>% 
+  knitr::kable()
+
+```
+
+Finally, lets see how the years half-life progress along the time
+
+```{r halflifePlot}
+
+hl %>% 
+  mutate(ngram=as.integer(ngram)) %>% 
+  # years analyzed in the article
+  filter(ngram >= 1850, ngram <= 1975 ) %>% 
+  ggplot(aes(x=ngram, y=half_life)) + 
+  geom_point() +
+  ylim(0,100) +
+  theme_minimal()
+
+
+```
+
+Looking the plot, we can see that are a faster forgetfulness in the first year, the frequency of an year are mentioned decay at faster rate along the time, but this occurs only in the beginning. 
