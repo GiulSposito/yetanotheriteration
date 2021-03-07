@@ -952,9 +952,7 @@ decay.data %&gt;%
   theme_minimal()</code></pre>
 <p><img src="/post/bit-by-bit-ngram-google-books/index_files/figure-html/sliceFromPeak-1.png" width="672" /></p>
 <p>Now, for each year we have the frequency decay from its peak, and yes, the data seems a exponential decay. So, let’s calculates each year ‘half-life’. To do so, we’ll fit and exponential equation of this format:</p>
-<p>$$</p>
-<p>y(t) = y_f + (y_f-y_0) e^{- t}</p>
-<p>$$</p>
+<p><span class="math display">\[ y(t) = y_f + (y_f-y_0) e^{- \alpha t} \]</span></p>
 <p>We are interest in the <span class="math inline">\(\alpha\)</span> coefficient, the decay rate, from it we can get the year half-life:</p>
 <p><span class="math display">\[ y(t) = Ce^{-\alpha t} \]</span></p>
 <p>Calculating half-life:</p>
