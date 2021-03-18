@@ -1,0 +1,1093 @@
+---
+title: Chilling Effect Resulting from Mass Surveillance
+author: Giuliano Sposito
+date: '2021-03-19'
+slug: chilling-effect-resulting-from-mass-surveillance.en-us
+categories:
+- data science
+tags:
+- bit-by-bit
+- data analysis
+- model
+- en-US
+keywords:
+- tech
+coverImage: /images/books_cover.png
+thumbnailImage: /images/mass_surveillance_tn.png
+thumbnailImagePosition: left
+metaAlignment: center
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
+
+
+<p><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645">Jon Penney (2016)</a> explored whether the widespread publicity about NSA/PRISM surveillance (i.e., <em>the Snowden revelations</em>) in June 2013 was associated with a sharp and sudden decrease in traffic to Wikipedia articles on topics that raise privacy concerns. This post tries to reproduct some of this findings.</p>
+<!--more-->
+<p>This post is based in one exercise of Matthew J. Salganik’s book <a href="https://www.amazon.com/Bit-Social-Research-Digital-Age/dp/0691158649">Bit by Bit: Social Research in the Digital Age</a>, from chapter 2.</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645">Penney (2016)</a> explored whether the widespread publicity about <a href="https://en.wikipedia.org/wiki/PRISM_(surveillance_program)">NSA/PRISM</a> surveillance (i.e., the Snowden revelations) in June 2013 was associated with a sharp and sudden decrease in traffic to Wikipedia articles on topics that raise privacy concerns. If so, this change in behavior would be consistent with a chilling effect resulting from mass surveillance. The approach of Penney (2016) is sometimes called an <a href="https://ds4ps.org/pe4ps-textbook/docs/p-020-time-series.html">interrupted time series design</a>.</p>
+<p>To choose the topic keywords, Penney referred to the list used by the US Department of Homeland Security for tracking and monitoring social media. The DHS list categorizes certain search terms into a range of issues, i.e., “Health Concern,” “Infrastructure Security,” and “Terrorism.” For the study group, Penney used the 48 keywords related to “Terrorism” (see appendix <a href="./keywords_table8.txt">table 8</a>). He then aggregated Wikipedia article view counts on a monthly basis for the corresponding 48 Wikipedia articles over a 32-month period from the beginning of January 2012 to the end of August 2014. To strengthen his argument, he also created several comparison groups by tracking article views on other topics.</p>
+<p>Now, we are going to replicate and extend <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645">Penney (2016)</a>. All the raw data that you will need for this activity is available from Wikipedia (<a href="https://dumps.wikimedia.org/other/pagecounts-raw/" class="uri">https://dumps.wikimedia.org/other/pagecounts-raw/</a>). Or we can get it from the R-package wikipediatrend (Meissner and Team 2016).</p>
+</div>
+<div id="testing-wikipediatrend-package" class="section level2">
+<h2>Testing wikipediatrend package</h2>
+<pre class="r"><code>library(tidyverse)
+library(wikipediatrend)
+library(lubridate)
+library(kableExtra)
+
+# download pageviews from R and Python languages
+trend_data &lt;-   wp_trend(
+  page = c(&quot;R_(programming_language)&quot;,&quot;Python_(programming_language)&quot;), 
+  lang = c(&quot;en&quot;), 
+  from = now()-years(2),
+  to   = now()
+)
+
+# what we have?
+head(trend_data) %&gt;% 
+  knitr::kable() %&gt;% 
+  kable_styling(font_size = 10)</code></pre>
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+language
+</th>
+<th style="text-align:left;">
+article
+</th>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:right;">
+views
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+732
+</td>
+<td style="text-align:left;">
+en
+</td>
+<td style="text-align:left;">
+python_(programming_language)
+</td>
+<td style="text-align:left;">
+2019-03-18
+</td>
+<td style="text-align:right;">
+7341
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+en
+</td>
+<td style="text-align:left;">
+r_(programming_language)
+</td>
+<td style="text-align:left;">
+2019-03-18
+</td>
+<td style="text-align:right;">
+4542
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+733
+</td>
+<td style="text-align:left;">
+en
+</td>
+<td style="text-align:left;">
+python_(programming_language)
+</td>
+<td style="text-align:left;">
+2019-03-19
+</td>
+<td style="text-align:right;">
+7880
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+en
+</td>
+<td style="text-align:left;">
+r_(programming_language)
+</td>
+<td style="text-align:left;">
+2019-03-19
+</td>
+<td style="text-align:right;">
+3860
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+734
+</td>
+<td style="text-align:left;">
+en
+</td>
+<td style="text-align:left;">
+python_(programming_language)
+</td>
+<td style="text-align:left;">
+2019-03-20
+</td>
+<td style="text-align:right;">
+7469
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+en
+</td>
+<td style="text-align:left;">
+r_(programming_language)
+</td>
+<td style="text-align:left;">
+2019-03-20
+</td>
+<td style="text-align:right;">
+3663
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># ploting
+trend_data %&gt;% 
+  ggplot(aes(x=date, y=views, color=article)) +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = &quot;bottom&quot;) + 
+  ylim(0,25000) + 
+  labs(title=&quot;Daily Page Views&quot;,subtitle = &quot;Last 2 Years for articles of R and Python in english language&quot;)</code></pre>
+<p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/wikiPackage-1.png" width="672" /></p>
+</div>
+<div id="reproduction" class="section level2">
+<h2>Reproduction</h2>
+<div id="part-a" class="section level3">
+<h3>Part A</h3>
+<p>Read <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645">Penney (2016)</a> and replicate his figure 2, which shows the page views for “Terrorism”-related pages before and after the Snowden revelations. Interpret the findings.</p>
+<div class="figure">
+<img src="fig2.png" alt="" />
+<p class="caption">fig2</p>
+</div>
+<pre class="r"><code># loading DHS keywords listed as relating to “terrorism”
+keywords &lt;- read.delim(&quot;./keywords_table8.txt&quot;) %&gt;% 
+  janitor::clean_names()
+
+# lets see it
+head(keywords) %&gt;% 
+  knitr::kable() %&gt;% 
+  kable_styling(font_size = 11)</code></pre>
+<table class="table" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+topic_keyword
+</th>
+<th style="text-align:left;">
+wikipedia_articles
+</th>
+<th style="text-align:right;">
+government_trouble
+</th>
+<th style="text-align:right;">
+browser_delete
+</th>
+<th style="text-align:right;">
+privacy_sensitive
+</th>
+<th style="text-align:right;">
+avoidance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Al Qaeda
+</td>
+<td style="text-align:left;">
+<a href="http://en.wikipedia.org/wiki/Al-Qaeda" class="uri">http://en.wikipedia.org/wiki/Al-Qaeda</a>
+</td>
+<td style="text-align:right;">
+2.20
+</td>
+<td style="text-align:right;">
+2.11
+</td>
+<td style="text-align:right;">
+2.21
+</td>
+<td style="text-align:right;">
+2.84
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Terrorism
+</td>
+<td style="text-align:left;">
+<a href="http://en.wikipedia.org/wiki/terrorism" class="uri">http://en.wikipedia.org/wiki/terrorism</a>
+</td>
+<td style="text-align:right;">
+2.19
+</td>
+<td style="text-align:right;">
+2.05
+</td>
+<td style="text-align:right;">
+2.16
+</td>
+<td style="text-align:right;">
+2.79
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Terror
+</td>
+<td style="text-align:left;">
+<a href="http://en.wikipedia.org/wiki/terror" class="uri">http://en.wikipedia.org/wiki/terror</a>
+</td>
+<td style="text-align:right;">
+1.98
+</td>
+<td style="text-align:right;">
+1.96
+</td>
+<td style="text-align:right;">
+2.01
+</td>
+<td style="text-align:right;">
+2.64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Attack
+</td>
+<td style="text-align:left;">
+<a href="http://en.wikipedia.org/wiki/attack" class="uri">http://en.wikipedia.org/wiki/attack</a>
+</td>
+<td style="text-align:right;">
+1.92
+</td>
+<td style="text-align:right;">
+1.91
+</td>
+<td style="text-align:right;">
+1.92
+</td>
+<td style="text-align:right;">
+2.56
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Iraq
+</td>
+<td style="text-align:left;">
+<a href="http://en.wikipedia.org/wiki/iraq" class="uri">http://en.wikipedia.org/wiki/iraq</a>
+</td>
+<td style="text-align:right;">
+1.60
+</td>
+<td style="text-align:right;">
+1.74
+</td>
+<td style="text-align:right;">
+1.76
+</td>
+<td style="text-align:right;">
+2.25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+<a href="http://en.wikipedia.org/wiki/afghanistan" class="uri">http://en.wikipedia.org/wiki/afghanistan</a>
+</td>
+<td style="text-align:right;">
+1.61
+</td>
+<td style="text-align:right;">
+1.71
+</td>
+<td style="text-align:right;">
+1.75
+</td>
+<td style="text-align:right;">
+2.23
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># getting wiki trends
+
+# we can call all keywords at once
+# but some keywords aren&#39;t return values, 
+# so let&#39;s iterate over each one
+
+# making a &quot;safe version&quot;, returning NULL instead of an error
+safe_wpTrend &lt;- safely(wp_trend, otherwise = NULL, quiet = T)
+
+# for all keywords
+trends &lt;- keywords$wikipedia_articles %&gt;% 
+  # extract from &quot;url&quot; the article name
+  str_extract(&quot;(?&lt;=wiki/)(.*)&quot;) %&gt;% 
+  # for each article, download the historic page views
+  map_df(function(.kw){
+    # &quot;...over a 32-month period from the beginning of January 2012 to the end of August 2014...&quot;
+    trends_resp &lt;- safe_wpTrend(
+      page = .kw, 
+      lang = c(&quot;en&quot;), 
+      from = &quot;2012-01-01&quot;,
+      to   = &quot;2014-06-30&quot; # removing last two months because they are returning 0 views
+    )
+    # will return NULL inst
+    return(trends_resp$result)
+  }) 
+
+# &quot;...aggregated Wikipedia article view counts on a monthly basis...&quot;
+terrorism_articles &lt;- trends %&gt;% 
+  # remove some zeros from data
+  filter( views &gt; 0) %&gt;% 
+  # group by &quot;month&quot; and sums the pageviews
+  mutate(date = floor_date(date, &quot;month&quot;) ) %&gt;% 
+  group_by(date) %&gt;% 
+  summarise( views = sum(views) ) %&gt;% 
+  # mark the data related pre/pos Snowden revelations in June 2013
+  mutate( trend = if_else(date &lt; ymd(&quot;20130601&quot;), &quot;Terrorism Article Trend Pre-June&quot;,&quot;Terrorism Article Trend Post-June&quot;) ) %&gt;% 
+  ungroup()
+
+# Let&#39;s see the data
+terrorism_articles %&gt;% 
+  ggplot(aes(x=date, y=views, color=trend)) +
+    geom_point(size=2.5) +
+    # ... the Snowden revelations in June 2013...
+    geom_vline(xintercept = ymd(&quot;20130515&quot;), color=&quot;dark grey&quot;, linetype=&quot;dashed&quot;, size=1) +
+    geom_smooth(method = &quot;lm&quot;, formula = y~x) + 
+    theme_minimal() +
+    theme( legend.position = &quot;bottom&quot;) +
+    labs(title=&quot;Pre and After June 13 Articles Trends&quot;, subtitle=&quot;Terrorism related keywords&quot;)</code></pre>
+<p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/fig2-1.png" width="672" /></p>
+</div>
+<div id="part-b" class="section level3">
+<h3>Part B</h3>
+<p>Next, replicate figure 4A, which compares the study group (“Terrorism”-related articles) with a comparator group using keywords categorized under “DHS &amp; Other Agencies” from the DHS list (see appendix <a href="./keywords_table10.txt">table 10</a> and footnote 139). Interpret the findings.</p>
+<div class="figure">
+<img src="fig4a.png" alt="" />
+<p class="caption">fig 4A</p>
+</div>
+<pre class="r"><code># load table 10
+comp_table &lt;- read.delim(&quot;./keywords_table10.txt&quot;) %&gt;% 
+  janitor::clean_names()
+
+# lets see
+head(comp_table) %&gt;% 
+  knitr::kable() %&gt;% 
+  kable_styling(font_size = 11)</code></pre>
+<table class="table" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+topic_keyword
+</th>
+<th style="text-align:left;">
+wikipedia_articles
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Department of Homeland Security
+</td>
+<td style="text-align:left;">
+<a href="https://en.wikipedia.org/wiki/United_States_Department_of_Homeland_Security" class="uri">https://en.wikipedia.org/wiki/United_States_Department_of_Homeland_Security</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Federal Emergency Management Agency
+</td>
+<td style="text-align:left;">
+<a href="https://en.wikipedia.org/wiki/Federal_Emergency_Management_Agency" class="uri">https://en.wikipedia.org/wiki/Federal_Emergency_Management_Agency</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Coast Guard
+</td>
+<td style="text-align:left;">
+<a href="https://en.wikipedia.org/wiki/Coast_guard" class="uri">https://en.wikipedia.org/wiki/Coast_guard</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Customs and Border Protection
+</td>
+<td style="text-align:left;">
+<a href="https://en.wikipedia.org/wiki/Customs_and_Border_Protection" class="uri">https://en.wikipedia.org/wiki/Customs_and_Border_Protection</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Border patrol
+</td>
+<td style="text-align:left;">
+<a href="https://en.wikipedia.org/wiki/Border_Patrol" class="uri">https://en.wikipedia.org/wiki/Border_Patrol</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Secret Service
+</td>
+<td style="text-align:left;">
+<a href="https://en.wikipedia.org/wiki/Secret_Service" class="uri">https://en.wikipedia.org/wiki/Secret_Service</a>
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># get the trends
+comp_trends &lt;- comp_table$wikipedia_articles %&gt;% 
+  str_extract(&quot;(?&lt;=wiki/)(.*)&quot;) %&gt;% 
+  str_to_lower() %&gt;% 
+  map_df(function(.kw){
+    # &quot;...over a 32-month period from the beginning of January 2012 to the end of August 2014...&quot;
+    trends_resp &lt;- safe_wpTrend(
+      page = .kw, 
+      lang = c(&quot;en&quot;), 
+      from = &quot;2012-01-01&quot;,
+      to   = &quot;2014-06-30&quot;
+    )
+    # will return NULL inst
+    return(trends_resp$result)
+  })
+
+# &quot;...aggregated Wikipedia article view counts on a monthly basis...&quot;
+sec_articles &lt;- comp_trends %&gt;% 
+  filter( views &gt; 0 ) %&gt;% 
+  mutate(date = floor_date(date, &quot;month&quot;) ) %&gt;% 
+  group_by(date) %&gt;% 
+  summarise( views = sum(views) ) %&gt;% 
+   # ... the Snowden revelations in June 2013...
+  mutate( trend = if_else(date &lt; ymd(&quot;20130601&quot;), &quot;Security Articles Trend Pre-June&quot;,&quot;Security Articles Trend Post-June&quot;) ) %&gt;% 
+  ungroup()
+
+sec_articles %&gt;% 
+  bind_rows(terrorism_articles) %&gt;% 
+  ggplot(aes(x=date, y=views, color=trend)) +
+    geom_point(size=2) +
+    geom_vline(xintercept = ymd(&quot;20130515&quot;), color=&quot;dark grey&quot;, linetype=&quot;dashed&quot;, size=1) +
+    geom_smooth(method = &quot;lm&quot;, formula = y~x) + 
+    theme_minimal() +
+    theme( legend.position = &quot;bottom&quot; )</code></pre>
+<p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/domesticLoading-1.png" width="672" /></p>
+</div>
+</div>
+<div id="extra" class="section level2">
+<h2>Extra</h2>
+<div id="the-statistical-model" class="section level3">
+<h3>The Statistical Model</h3>
+<p>From Jesse Lecy and Federica Fusi’s <a href="https://ds4ps.org/pe4ps-textbook/docs/p-020-time-series.html#the-statistical-model">Interrupted Time Series</a> we have the following scenario:</p>
+<p><img src="Picture3.4.png" /></p>
+<p>In mathematical terms, it means that the time series equation includes four key coefficients:</p>
+<p><span class="math display">\[Y=b_0+b_1T+b_2D+b_3P+e\]</span></p>
+<p>Where:
+* <span class="math inline">\(Y\)</span> is the outcome variable;
+* <span class="math inline">\(T\)</span> is a continuous variable which indicates the time (e.g., days, months, years…) passed from the start of the observational period;
+* <span class="math inline">\(D\)</span> is a dummy variable indicating observation collected before (=0) or after (=1) the policy intervention;
+* <span class="math inline">\(P\)</span> is a continuous variable indicating time passed since the intervention has occured (before intervention has occured P is equal to 0).</p>
+<p>To model this, We would to have a dataset with this format:</p>
+<p><img src="Picture5.png" /></p>
+<p>So, let’s build ours</p>
+<pre class="r"><code># building the dummy vars
+regr_data &lt;- trends %&gt;% 
+  # group trends by months
+  filter( views &gt; 0 ) %&gt;%
+  mutate( date = floor_date(date, unit = &quot;month&quot;)) %&gt;% 
+  group_by( date ) %&gt;% 
+  summarise( views = sum(views) ) %&gt;% 
+  ungroup() %&gt;%
+  arrange(date) %&gt;%
+  mutate(
+    T = row_number(),         # time var
+    D = if_else(T&lt;=18,0,1),   # post-event data 18 is 2013-06-01
+    P = if_else(T&lt;=18,0,T-18) # post event time var
+  ) %&gt;% 
+  rename( Y=views ) # just to make equal to the model
+  
+# what we have
+regr_data %&gt;% 
+  filter( T&gt;14, T&lt;=22) %&gt;% 
+  knitr::kable() %&gt;% 
+  kable_styling(font_size = 11)</code></pre>
+<table class="table" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:right;">
+Y
+</th>
+<th style="text-align:right;">
+T
+</th>
+<th style="text-align:right;">
+D
+</th>
+<th style="text-align:right;">
+P
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2013-03-01
+</td>
+<td style="text-align:right;">
+3868814
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-04-01
+</td>
+<td style="text-align:right;">
+3595489
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-05-01
+</td>
+<td style="text-align:right;">
+3235093
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-06-01
+</td>
+<td style="text-align:right;">
+2725519
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-07-01
+</td>
+<td style="text-align:right;">
+2399060
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-08-01
+</td>
+<td style="text-align:right;">
+2451065
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-09-01
+</td>
+<td style="text-align:right;">
+2559672
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-10-01
+</td>
+<td style="text-align:right;">
+2550031
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># building the model
+mod1 &lt;- lm( Y ~ T + D + P, data=regr_data )
+
+# let&#39;s see
+regr_data %&gt;% 
+  mutate( pred = predict(mod1) ) %&gt;% 
+  ggplot(aes(x=date, color=D)) +
+  geom_point(aes(y=Y)) +
+  geom_line(aes(y=pred)) +
+  geom_vline(xintercept = ymd(20130615), linetype=&quot;dashed&quot;, size=1) +
+  theme_minimal() +
+  labs(
+    title=&quot;Pre and After June 13 Articles Trends&quot;, 
+    subtitle=&quot;Terrorism related keywords&quot;,
+    x=&quot;Date&quot;, y=&quot;Monthly Page Views&quot;)</code></pre>
+<p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/statModel-1.png" width="672" /></p>
+<pre class="r"><code>summary(mod1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Y ~ T + D + P, data = regr_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -775138 -288426   57308  195202  842379 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2579316     194174  13.284 4.27e-13 ***
+## T              51186      17939   2.853  0.00838 ** 
+## D           -1078677     301608  -3.576  0.00140 ** 
+## P             -59553      37578  -1.585  0.12510    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 394900 on 26 degrees of freedom
+## Multiple R-squared:  0.5415, Adjusted R-squared:  0.4886 
+## F-statistic: 10.23 on 3 and 26 DF,  p-value: 0.0001255</code></pre>
+<p>We can see the significant drop in the moment of the event (<span class="math inline">\(D\)</span>) and also a change in the trend after (<span class="math inline">\(P\)</span> compared to <span class="math inline">\(T\)</span>).</p>
+</div>
+</div>
+<div id="statistical-model-control-group" class="section level2">
+<h2>Statistical Model: Control Group</h2>
+<p>Yet from Jesse Lecy and Federica Fusi’s <a href="https://ds4ps.org/pe4ps-textbook/docs/p-020-time-series.html#validity-threats-control-groups-and-multiple-time-series">Interrupted Time Series</a></p>
+<p>A time series are also subject to threats to internal validity, such as:</p>
+<ul>
+<li>Another event occurred at the same time of the intervention and cause the immediate and sustained effect that we observe;</li>
+<li>Selection processes, as only some individuals are affected by the policy intervention.</li>
+</ul>
+<p>To address these issues, you can:</p>
+<ul>
+<li>Use as a control a group that is not subject to the intervention (e.g., students who do not attend the well being class)</li>
+</ul>
+<p>This design makes sure that the observed effect is the result of the policy intervention. The data will have two observations per each point in time and will include a dummy variable to differentiate the treatment (=1) and the control (=0). The model has a similar structure but (1) we will include a dummy variable that indicates the treatment and the control group and (2) we will interact the group dummy variable with all 3 time serie coefficients to see if there is a statistically significant difference across the 2 groups.</p>
+<p><img src="Picture10.1.png" /></p>
+<p>You can see this in the following equation, where <span class="math inline">\(G\)</span> is a dummy indicating treatment and control group.</p>
+<p><span class="math display">\[Y=b_0+b_1∗T+b_2∗D+b_3∗P+b_4∗G+b_5∗G∗T+b_6∗G∗D+b_7∗G∗P\]</span></p>
+<pre class="r"><code># building the dataset with control group
+regr_control &lt;- comp_trends %&gt;%
+  # summarise by monthly
+  filter( views &gt; 0 ) %&gt;%
+  mutate( date = floor_date(date, unit = &quot;month&quot;)) %&gt;% 
+  group_by( date ) %&gt;% 
+  summarise( views = sum(views) ) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(
+    T = row_number(),         # Time var in months
+    D = if_else(T&lt;=18,0,1),   # Mark Pre/Pos event data, 18 is 2013-06-01
+    P = if_else(T&lt;=18,0,T-18),# Time after the event
+    G=0                       # Control Group is 0
+  ) %&gt;% 
+  rename( Y=views ) %&gt;% 
+  # add the effected data marked as treatment data
+  bind_rows( mutate(regr_data, G=1 ))
+
+# let&#39;s see
+regr_control %&gt;% 
+  filter( T&gt;15, T&lt;=21) %&gt;%
+  arrange(T,D,G,P) %&gt;% 
+  knitr::kable()  %&gt;% 
+  kable_styling(font_size = 11)</code></pre>
+<table class="table" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:right;">
+Y
+</th>
+<th style="text-align:right;">
+T
+</th>
+<th style="text-align:right;">
+D
+</th>
+<th style="text-align:right;">
+P
+</th>
+<th style="text-align:right;">
+G
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2013-04-01
+</td>
+<td style="text-align:right;">
+1032305
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-04-01
+</td>
+<td style="text-align:right;">
+3595489
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-05-01
+</td>
+<td style="text-align:right;">
+873192
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-05-01
+</td>
+<td style="text-align:right;">
+3235093
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-06-01
+</td>
+<td style="text-align:right;">
+747513
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-06-01
+</td>
+<td style="text-align:right;">
+2725519
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-07-01
+</td>
+<td style="text-align:right;">
+632677
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-07-01
+</td>
+<td style="text-align:right;">
+2399060
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-08-01
+</td>
+<td style="text-align:right;">
+641141
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-08-01
+</td>
+<td style="text-align:right;">
+2451065
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-09-01
+</td>
+<td style="text-align:right;">
+705947
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2013-09-01
+</td>
+<td style="text-align:right;">
+2559672
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># lets fit the model
+mod2 &lt;- lm( Y ~ T + D + P + G + G*T + G*D + G*P, data=regr_control )
+
+summary(mod2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Y ~ T + D + P + G + G * T + G * D + G * P, data = regr_control)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -775138 -161714   28511  136682  842379 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   743019     151953   4.890 1.01e-05 ***
+## T              10751      14038   0.766  0.44724    
+## D             -86033     236027  -0.365  0.71696    
+## P              -4588      29407  -0.156  0.87662    
+## G            1836297     214894   8.545 1.77e-11 ***
+## T:G            40435      19853   2.037  0.04678 *  
+## D:G          -992644     333792  -2.974  0.00445 ** 
+## P:G           -54965      41587  -1.322  0.19206    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 309000 on 52 degrees of freedom
+## Multiple R-squared:  0.924,  Adjusted R-squared:  0.9137 
+## F-statistic: 90.28 on 7 and 52 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>To interpret the coefficients you need to remember that the reference group is the treatment group (=1). The Group dummy <span class="math inline">\(b_4\)</span> (coef <span class="math inline">\(G\)</span>) indicates the difference between the treatment and the control group. <span class="math inline">\(b_5\)</span> (coef <span class="math inline">\(T:G\)</span>) represents the slope difference between the intervention and control group in the pre-intervention period. <span class="math inline">\(b_6\)</span> (coef <span class="math inline">\(D:G\)</span>) represents the difference between the control and intervention group associated with the intervention. <span class="math inline">\(b_7\)</span> (coef <span class="math inline">\(P:G\)</span>) represents the difference between the sustained effect of the control and intervention group after the intervention.</p>
+</div>
+<div id="reference" class="section level2">
+<h2>Reference</h2>
+<ul>
+<li><p>Penney, Jonathon. 2016. “Chilling Effects: Online Surveillance and Wikipedia Use.” Berkeley Technology Law Journal 31 (1): 117. <a href="doi:10.15779/Z38SS13" class="uri">doi:10.15779/Z38SS13</a>. - <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645" class="uri">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645</a></p></li>
+<li><p>Jesse Lecy and Federica Fusi. “Foundations of Program Evaluation: Regression Tools for Impact Analysis” - <a href="https://ds4ps.org/pe4ps-textbook/docs/index.html" class="uri">https://ds4ps.org/pe4ps-textbook/docs/index.html</a></p></li>
+</ul>
+</div>
