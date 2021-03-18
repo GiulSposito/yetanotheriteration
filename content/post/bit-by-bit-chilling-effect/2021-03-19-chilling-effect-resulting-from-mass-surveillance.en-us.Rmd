@@ -12,13 +12,13 @@ tags:
 - en-US
 keywords:
 - tech
-coverImage: /images/books_cover.png
+coverImage: /images/mass_surveillance_cover.jpg
 thumbnailImage: /images/mass_surveillance_tn.png
-thumbnailImagePosition: left
+thumbnailImagePosition: right
 metaAlignment: center
 ---
 
-[Jon Penney (2016)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645) explored whether the widespread publicity about NSA/PRISM surveillance (i.e., _the Snowden revelations_) in June 2013 was associated with a sharp and sudden decrease in traffic to Wikipedia articles on topics that raise privacy concerns. This post tries to reproduct some of this findings.
+[Jon Penney (2016)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645) explored whether the widespread publicity about NSA/PRISM surveillance (i.e., _the Snowden revelations_) in June 2013 was associated with a sharp and sudden decrease in traffic to Wikipedia articles on topics that raise privacy concerns. This post tries to reproduce some of this findings.
 
 
 <!--more-->
@@ -61,7 +61,8 @@ trend_data %>%
   theme_light() +
   theme(legend.position = "bottom") + 
   ylim(0,25000) + 
-  labs(title="Daily Page Views",subtitle = "Last 2 Years for articles of R and Python in english language")
+  labs(title="Daily Page Views",
+       subtitle = "Last 2 Years for articles of R and Python in english language")
   
 
 ```
@@ -136,7 +137,9 @@ terrorism_articles %>%
     geom_smooth(method = "lm", formula = y~x) + 
     theme_minimal() +
     theme( legend.position = "bottom") +
-    labs(title="Pre and After June 13 Articles Trends", subtitle="Terrorism related keywords")
+    labs(title="Pre and After June 13 Articles Trends", 
+         subtitle="Terrorism related keywords",
+         x="date",y="monthly page views")
 
 ```
 
@@ -181,17 +184,23 @@ sec_articles <- comp_trends %>%
   group_by(date) %>% 
   summarise( views = sum(views) ) %>% 
    # ... the Snowden revelations in June 2013...
-  mutate( trend = if_else(date < ymd("20130601"), "Security Articles Trend Pre-June","Security Articles Trend Post-June") ) %>% 
+  mutate( trend = if_else(date < ymd("20130601"),
+                    "Control Group Articles Trend Pre-June",
+                    "Control Group Articles Trend Post-June") ) %>% 
   ungroup()
 
 sec_articles %>% 
   bind_rows(terrorism_articles) %>% 
   ggplot(aes(x=date, y=views, color=trend)) +
     geom_point(size=2) +
-    geom_vline(xintercept = ymd("20130515"), color="dark grey", linetype="dashed", size=1) +
+    geom_vline(xintercept = ymd("20130515"), color="dark grey", 
+               linetype="dashed", size=1) +
     geom_smooth(method = "lm", formula = y~x) + 
     theme_minimal() +
-    theme( legend.position = "bottom" )
+    theme( legend.position = "right" ) +
+    labs(title="Pre and After June 13 Articles Trends", 
+         subtitle="Terrorism related keywords and Control Group",
+         x="date",y="monthly page views")
 ```
 
 ## Extra
@@ -260,9 +269,10 @@ regr_data %>%
   geom_line(aes(y=pred)) +
   geom_vline(xintercept = ymd(20130615), linetype="dashed", size=1) +
   theme_minimal() +
+  theme( legend.position = "none" )+
   labs(
     title="Pre and After June 13 Articles Trends", 
-    subtitle="Terrorism related keywords",
+    subtitle="Empirical Data and Model Prediction",
     x="Date", y="Monthly Page Views")
   
 

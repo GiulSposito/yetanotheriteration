@@ -1,0 +1,26 @@
+Topic Keyword	Wikipedia Articles
+Department of Homeland Security	https://en.wikipedia.org/wiki/United_States_Department_of_Homeland_Security
+Federal Emergency Management Agency	https://en.wikipedia.org/wiki/Federal_Emergency_Management_Agency
+Coast Guard	https://en.wikipedia.org/wiki/Coast_guard
+Customs and Border Protection	https://en.wikipedia.org/wiki/Customs_and_Border_Protection
+Border patrol	https://en.wikipedia.org/wiki/Border_Patrol
+Secret Service	https://en.wikipedia.org/wiki/Secret_Service
+Bureau of Land Management	https://en.wikipedia.org/wiki/Bureau_of_Land_Management
+Homeland defense	https://en.wikipedia.org/wiki/Homeland_defense
+Agent/Espionage	https://en.wikipedia.org/wiki/Espionage
+Task Force 88	https://en.wikipedia.org/wiki/Task_Force_88_(anti-terrorist_unit)
+Central Intelligence Agency	https://en.wikipedia.org/wiki/Central_Intelligence_Agency
+Fusion center	https://en.wikipedia.org/wiki/Fusion_center
+DEA	https://en.wikipedia.org/wiki/DEA
+Secure Border Initiative	https://en.wikipedia.org/wiki/Secure_Border_Initiative
+Federal Bureau of Investigation	https://en.wikipedia.org/wiki/Federal_Bureau_of_Investigation
+Alcohol and Tobacco Tax and Trade Bureau	https://en.wikipedia.org/wiki/Alcohol_and_Tobacco_Tax_and_Trade_Bureau
+U.S. Citizenship and Immigration Services	https://en.wikipedia.org/wiki/United_States_Citizenship_and_Immigration_Services
+Federal Air Marshal Service	https://en.wikipedia.org/wiki/Federal_Air_Marshal_Service
+Transportation Security Administration	https://en.wikipedia.org/wiki/Transportation_Security_Administration
+Air Marshal	https://en.wikipedia.org/wiki/Air_marshal
+Federal Aviation Administration	https://en.wikipedia.org/wiki/Federal_Aviation_Administration
+National Guard	https://en.wikipedia.org/wiki/National_Guard
+Disaster Relief / Emergency Management	https://en.wikipedia.org/wiki/Emergency_management
+U.S. Immigration and Customs Enforcement	https://en.wikipedia.org/wiki/U.S._Immigration_and_Customs_Enforcement
+United Nations	https://en.wikipedia.org/wiki/United_Nations

@@ -12,9 +12,9 @@ tags:
 - en-US
 keywords:
 - tech
-coverImage: /images/books_cover.png
+coverImage: /images/mass_surveillance_cover.jpg
 thumbnailImage: /images/mass_surveillance_tn.png
-thumbnailImagePosition: left
+thumbnailImagePosition: right
 metaAlignment: center
 ---
 
@@ -23,7 +23,7 @@ metaAlignment: center
 <link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
-<p><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645">Jon Penney (2016)</a> explored whether the widespread publicity about NSA/PRISM surveillance (i.e., <em>the Snowden revelations</em>) in June 2013 was associated with a sharp and sudden decrease in traffic to Wikipedia articles on topics that raise privacy concerns. This post tries to reproduct some of this findings.</p>
+<p><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2769645">Jon Penney (2016)</a> explored whether the widespread publicity about NSA/PRISM surveillance (i.e., <em>the Snowden revelations</em>) in June 2013 was associated with a sharp and sudden decrease in traffic to Wikipedia articles on topics that raise privacy concerns. This post tries to reproduce some of this findings.</p>
 <!--more-->
 <p>This post is based in one exercise of Matthew J. Salganik’s book <a href="https://www.amazon.com/Bit-Social-Research-Digital-Age/dp/0691158649">Bit by Bit: Social Research in the Digital Age</a>, from chapter 2.</p>
 <div id="introduction" class="section level2">
@@ -182,7 +182,8 @@ trend_data %&gt;%
   theme_light() +
   theme(legend.position = &quot;bottom&quot;) + 
   ylim(0,25000) + 
-  labs(title=&quot;Daily Page Views&quot;,subtitle = &quot;Last 2 Years for articles of R and Python in english language&quot;)</code></pre>
+  labs(title=&quot;Daily Page Views&quot;,
+       subtitle = &quot;Last 2 Years for articles of R and Python in english language&quot;)</code></pre>
 <p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/wikiPackage-1.png" width="672" /></p>
 </div>
 <div id="reproduction" class="section level2">
@@ -395,7 +396,9 @@ terrorism_articles %&gt;%
     geom_smooth(method = &quot;lm&quot;, formula = y~x) + 
     theme_minimal() +
     theme( legend.position = &quot;bottom&quot;) +
-    labs(title=&quot;Pre and After June 13 Articles Trends&quot;, subtitle=&quot;Terrorism related keywords&quot;)</code></pre>
+    labs(title=&quot;Pre and After June 13 Articles Trends&quot;, 
+         subtitle=&quot;Terrorism related keywords&quot;,
+         x=&quot;date&quot;,y=&quot;monthly page views&quot;)</code></pre>
 <p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/fig2-1.png" width="672" /></p>
 </div>
 <div id="part-b" class="section level3">
@@ -498,17 +501,23 @@ sec_articles &lt;- comp_trends %&gt;%
   group_by(date) %&gt;% 
   summarise( views = sum(views) ) %&gt;% 
    # ... the Snowden revelations in June 2013...
-  mutate( trend = if_else(date &lt; ymd(&quot;20130601&quot;), &quot;Security Articles Trend Pre-June&quot;,&quot;Security Articles Trend Post-June&quot;) ) %&gt;% 
+  mutate( trend = if_else(date &lt; ymd(&quot;20130601&quot;),
+                    &quot;Control Group Articles Trend Pre-June&quot;,
+                    &quot;Control Group Articles Trend Post-June&quot;) ) %&gt;% 
   ungroup()
 
 sec_articles %&gt;% 
   bind_rows(terrorism_articles) %&gt;% 
   ggplot(aes(x=date, y=views, color=trend)) +
     geom_point(size=2) +
-    geom_vline(xintercept = ymd(&quot;20130515&quot;), color=&quot;dark grey&quot;, linetype=&quot;dashed&quot;, size=1) +
+    geom_vline(xintercept = ymd(&quot;20130515&quot;), color=&quot;dark grey&quot;, 
+               linetype=&quot;dashed&quot;, size=1) +
     geom_smooth(method = &quot;lm&quot;, formula = y~x) + 
     theme_minimal() +
-    theme( legend.position = &quot;bottom&quot; )</code></pre>
+    theme( legend.position = &quot;right&quot; ) +
+    labs(title=&quot;Pre and After June 13 Articles Trends&quot;, 
+         subtitle=&quot;Terrorism related keywords and Control Group&quot;,
+         x=&quot;date&quot;,y=&quot;monthly page views&quot;)</code></pre>
 <p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/domesticLoading-1.png" width="672" /></p>
 </div>
 </div>
@@ -719,9 +728,10 @@ regr_data %&gt;%
   geom_line(aes(y=pred)) +
   geom_vline(xintercept = ymd(20130615), linetype=&quot;dashed&quot;, size=1) +
   theme_minimal() +
+  theme( legend.position = &quot;none&quot; )+
   labs(
     title=&quot;Pre and After June 13 Articles Trends&quot;, 
-    subtitle=&quot;Terrorism related keywords&quot;,
+    subtitle=&quot;Empirical Data and Model Prediction&quot;,
     x=&quot;Date&quot;, y=&quot;Monthly Page Views&quot;)</code></pre>
 <p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/statModel-1.png" width="672" /></p>
 <pre class="r"><code>summary(mod1)</code></pre>
