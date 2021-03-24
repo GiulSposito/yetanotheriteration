@@ -82,10 +82,10 @@ en
 python_(programming_language)
 </td>
 <td style="text-align:left;">
-2019-03-18
+2019-03-24
 </td>
 <td style="text-align:right;">
-7341
+5215
 </td>
 </tr>
 <tr>
@@ -99,10 +99,10 @@ en
 r_(programming_language)
 </td>
 <td style="text-align:left;">
-2019-03-18
+2019-03-24
 </td>
 <td style="text-align:right;">
-4542
+2545
 </td>
 </tr>
 <tr>
@@ -116,10 +116,10 @@ en
 python_(programming_language)
 </td>
 <td style="text-align:left;">
-2019-03-19
+2019-03-25
 </td>
 <td style="text-align:right;">
-7880
+7463
 </td>
 </tr>
 <tr>
@@ -133,10 +133,10 @@ en
 r_(programming_language)
 </td>
 <td style="text-align:left;">
-2019-03-19
+2019-03-25
 </td>
 <td style="text-align:right;">
-3860
+3762
 </td>
 </tr>
 <tr>
@@ -150,10 +150,10 @@ en
 python_(programming_language)
 </td>
 <td style="text-align:left;">
-2019-03-20
+2019-03-26
 </td>
 <td style="text-align:right;">
-7469
+7568
 </td>
 </tr>
 <tr>
@@ -167,10 +167,10 @@ en
 r_(programming_language)
 </td>
 <td style="text-align:left;">
-2019-03-20
+2019-03-26
 </td>
 <td style="text-align:right;">
-3663
+3914
 </td>
 </tr>
 </tbody>
@@ -1093,6 +1093,65 @@ summary(mod2)</code></pre>
 ## Multiple R-squared:  0.924,  Adjusted R-squared:  0.9137 
 ## F-statistic: 90.28 on 7 and 52 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>To interpret the coefficients you need to remember that the reference group is the treatment group (=1). The Group dummy <span class="math inline">\(b_4\)</span> (coef <span class="math inline">\(G\)</span>) indicates the difference between the treatment and the control group. <span class="math inline">\(b_5\)</span> (coef <span class="math inline">\(T:G\)</span>) represents the slope difference between the intervention and control group in the pre-intervention period. <span class="math inline">\(b_6\)</span> (coef <span class="math inline">\(D:G\)</span>) represents the difference between the control and intervention group associated with the intervention. <span class="math inline">\(b_7\)</span> (coef <span class="math inline">\(P:G\)</span>) represents the difference between the sustained effect of the control and intervention group after the intervention.</p>
+<pre class="r"><code># can we see the points (trend and control) and the model fitted
+regr_control %&gt;% 
+  mutate(pred = predict(mod2)) %&gt;%
+  mutate( article = factor(G, labels = c(&quot;control&quot;,&quot;terror related&quot;))) %&gt;% 
+  ggplot(aes(x=date, color=article, group=article)) +
+  geom_point(aes(y=Y)) +
+  geom_line(aes(y=pred)) +
+  labs(title=&quot;Monthly Page Views&quot;,
+       subtitle = &quot;Terrorism Related Articles vs Control Group&quot;,
+       y=&quot;page views&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="extra-ii" class="section level2">
+<h2>Extra II</h2>
+<div id="finding-change-points-in-time-series" class="section level3">
+<h3>Finding Change Points in Time Series</h3>
+<p>After these analysis I was thinking if is possible to find automatically a change points in time series. The <em>Interrupted Time Series</em> analysis assume a “change point” and check if the series, in fact, changes its behavior. How to check if this is a transition point indeed? As we know a linear regression made of arbitrary choice of points (interval in this case) can find false patterns.</p>
+<p>Indeed, there is a plenty of R Packages can detect change points in a time series, ideal to make this type of analysis more robust. <a href="https://twitter.com/jonaslindeloev">Jonas Kristoffer Lindeløv</a> compared some of these packages in <a href="https://lindeloev.github.io/mcp/articles/packages.html">this vignette</a> of your <a href="https://lindeloev.net/mcp-regression-with-multiple-change-points/">own new package</a>: the <a href="https://lindeloev.github.io/mcp/">mcp package</a> to detect and do regressions with <a href="https://twitter.com/jonaslindeloev/status/1181515695948996609">multiple change points</a>.</p>
+<p>Let’s try use this package in your scenario:</p>
+<pre class="r"><code>library(mcp)
+
+# lets detect &quot;two&quot; linear trends
+# with interruption in the time series
+models &lt;- list( Y ~ 1 + T, ~ 1 + T)
+
+# fit the models
+set.seed(42)
+fit_mcp &lt;- mcp(models, data=regr_data, par_x = &quot;T&quot;)</code></pre>
+<pre><code>## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+## Graph information:
+##    Observed stochastic nodes: 30
+##    Unobserved stochastic nodes: 6
+##    Total graph size: 446
+## 
+## Initializing model</code></pre>
+<pre class="r"><code># checking what we find
+plot(fit_mcp)</code></pre>
+<p><img src="/post/bit-by-bit-chilling-effect/2021-03-19-chilling-effect-resulting-from-mass-surveillance.en-us_files/figure-html/mcpPackage-1.png" width="672" /></p>
+<pre class="r"><code># see the parameters
+fit_mcp</code></pre>
+<pre><code>## Family: gaussian(link = &#39;identity&#39;)
+## Iterations: 9000 from 3 chains.
+## Segments:
+##   1: Y ~ 1 + T
+##   2: Y ~ 1 ~ 1 + T
+## 
+## Population-level parameters:
+##     name    mean   lower   upper Rhat n.eff
+##     cp_1      17       9      19  1.0   183
+##    int_1 2624422 2189633 3018769  1.1    91
+##    int_2 2514952 2029134 3546651  1.2    23
+##  sigma_1  388638  277833  505014  1.0   563
+##      T_1   46473   -5651   97145  1.2    44
+##      T_2  -10744  -73057   34129  1.0  1563</code></pre>
+<p>That is cool, we can see that we detect a change point (parameter <span class="math inline">\(cp_1\)</span>) around the 16o period, that is june, in your dataset. The model also show us the parameters fitted in each linear regression (<span class="math inline">\(int\)</span> for intercepts and <span class="math inline">\(T\)</span> for slopes).</p>
+</div>
 </div>
 <div id="reference" class="section level2">
 <h2>Reference</h2>

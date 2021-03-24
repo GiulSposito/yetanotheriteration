@@ -346,6 +346,51 @@ summary(mod2)
 
 To interpret the coefficients you need to remember that the reference group is the treatment group (=1). The Group dummy $b_4$ (coef $G$) indicates the difference between the treatment and the control group. $b_5$ (coef $T:G$) represents the slope difference between the intervention and control group in the pre-intervention period. $b_6$ (coef $D:G$) represents the difference between the control and intervention group associated with the intervention. $b_7$ (coef $P:G$) represents the difference between the sustained effect of the control and intervention group after the intervention.
 
+```{r}
+# can we see the points (trend and control) and the model fitted
+regr_control %>% 
+  mutate(pred = predict(mod2)) %>%
+  mutate( article = factor(G, labels = c("control","terror related"))) %>% 
+  ggplot(aes(x=date, color=article, group=article)) +
+  geom_point(aes(y=Y)) +
+  geom_line(aes(y=pred)) +
+  labs(title="Monthly Page Views",
+       subtitle = "Terrorism Related Articles vs Control Group",
+       y="page views") +
+  theme_minimal()
+```
+
+
+## Extra II
+
+### Finding Change Points in Time Series
+
+After these analysis I was thinking if is possible to find automatically a change points in time series. The _Interrupted Time Series_ analysis assume a "change point" and check if the series, in fact, changes its behavior. How to check if this is a transition point indeed? As we know a linear regression made of arbitrary choice of points (interval in this case) can find false patterns.
+
+Indeed, there is a plenty of R Packages can detect change points in a time series, ideal to make this type of analysis more robust. [Jonas Kristoffer Lindeløv](https://twitter.com/jonaslindeloev) compared some of these packages in [this vignette](https://lindeloev.github.io/mcp/articles/packages.html) of your [own new package](https://lindeloev.net/mcp-regression-with-multiple-change-points/): the [mcp package](https://lindeloev.github.io/mcp/) to detect and do regressions with [multiple change points](https://twitter.com/jonaslindeloev/status/1181515695948996609).
+
+Let's try use this package in your scenario:
+
+```{r mcpPackage, warning=FALSE, message=FALSE}
+library(mcp)
+
+# lets detect "two" linear trends
+# with interruption in the time series
+models <- list( Y ~ 1 + T, ~ 1 + T)
+
+# fit the models
+set.seed(42)
+fit_mcp <- mcp(models, data=regr_data, par_x = "T")
+
+# checking what we find
+plot(fit_mcp)
+
+# see the parameters
+fit_mcp
+
+```
+
+That is cool, we can see that we detect a change point (parameter $cp_1$) around the 16o period, that is june, in your dataset. The model also show us the parameters fitted in each linear regression ($int$ for intercepts and $T$ for slopes).
 
 ## Reference
 
