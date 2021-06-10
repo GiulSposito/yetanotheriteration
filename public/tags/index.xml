@@ -6,10 +6,55 @@
     <description>Recent content in Tags on Yet Another Iteration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jun 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>data science</title>
+      <link>/tags/data-science/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-science/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>en-US</title>
+      <link>/tags/en-us/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/en-us/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine learning</title>
+      <link>/tags/machine-learning/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstats</title>
+      <link>/tags/rstats/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rstats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidymodels</title>
+      <link>/tags/tidymodels/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tidymodels/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>bit-by-bit</title>
@@ -26,15 +71,6 @@
       <pubDate>Fri, 19 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-analysis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>en-US</title>
-      <link>/tags/en-us/</link>
-      <pubDate>Fri, 19 Mar 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/en-us/</guid>
       <description></description>
     </item>
     
@@ -66,15 +102,6 @@
     </item>
     
     <item>
-      <title>rstats</title>
-      <link>/tags/rstats/</link>
-      <pubDate>Sat, 19 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/rstats/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>graph</title>
       <link>/tags/graph/</link>
       <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
@@ -98,15 +125,6 @@
       <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/tidygraph/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>data science</title>
-      <link>/tags/data-science/</link>
-      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/data-science/</guid>
       <description></description>
     </item>
     
@@ -323,15 +341,6 @@
       <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/keras/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>machine learning</title>
-      <link>/tags/machine-learning/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/machine-learning/</guid>
       <description></description>
     </item>
     

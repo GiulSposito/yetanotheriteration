@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.74.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Giuliano Sposito">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+“The only way to learn mathematics is to do mathematics.” - Paul Halmos. Taking time out of the day-to-day rush to finally learn how to use {tidymodels} for machine learning. These are the notebooks that I did to enter in this universe.
+">
+
+
+<meta property="og:description" content="
+
+
+
+“The only way to learn mathematics is to do mathematics.” - Paul Halmos. Taking time out of the day-to-day rush to finally learn how to use {tidymodels} for machine learning. These are the notebooks that I did to enter in this universe.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="My Tidymodels Exercises">
+<meta name="twitter:title" content="My Tidymodels Exercises">
+<meta property="og:url" content="/2021/06/my-tidymodels-exercises/">
+<meta property="twitter:url" content="/2021/06/my-tidymodels-exercises/">
+<meta property="og:site_name" content="Yet Another Iteration">
+<meta property="og:description" content="
+
+
+
+“The only way to learn mathematics is to do mathematics.” - Paul Halmos. Taking time out of the day-to-day rush to finally learn how to use {tidymodels} for machine learning. These are the notebooks that I did to enter in this universe.
+">
+<meta name="twitter:description" content="
+
+
+
+“The only way to learn mathematics is to do mathematics.” - Paul Halmos. Taking time out of the day-to-day rush to finally learn how to use {tidymodels} for machine learning. These are the notebooks that I did to enter in this universe.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2021-06-10T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2021-06-10T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="data science">
+    
+  
+  
+    
+      <meta property="article:tag" content="data science">
+    
+      <meta property="article:tag" content="machine learning">
+    
+      <meta property="article:tag" content="rstats">
+    
+      <meta property="article:tag" content="en-US">
+    
+      <meta property="article:tag" content="tidymodels">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@gsposito">
+
+
+  <meta name="twitter:creator" content="@gsposito">
+
+
+
+
+
+
+  <meta property="og:image" content="/images/myTidymodels_tn.png">
+  <meta property="twitter:image" content="/images/myTidymodels_tn.png">
+
+
+  <meta property="og:image" content="/images/myTidymodels_header.jpg">
+  <meta property="twitter:image" content="/images/myTidymodels_header.jpg">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=640">
+
+
+    <title>My Tidymodels Exercises</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+      <link rel="publisher" href="https://plus.google.com/&#43;giulianosposito">
+    
+
+    <link rel="canonical" href="/2021/06/my-tidymodels-exercises/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-112393378-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Yet Another Iteration</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Giuliano Sposito</h4>
+        
+          <h5 class="sidebar-profile-bio">Computer Engineer<!-- raw HTML omitted -->Masters in Tech Innovation Mgt<!-- raw HTML omitted -->Specialized in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/giulsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/gsposito">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/myTidymodels_header.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      My Tidymodels Exercises
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2021-06-10T00:00:00Z">
+        
+  June 10, 2021
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">data science</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Better later than never. I take a time to finally learn how to use <a href="https://www.tidymodels.org/"><code>{tidymodels}</code></a> for machine learning. Tidymodels is a set of packages that replaces the <a href="http://topepo.github.io/caret/index.html"><code>{caret}</code></a> package as a ML framework to cover various aspects of the pipeline and try to standardizing the use of many different algorithms.</p>
+<p>It’s powerful set of packages, but also with a very different APIs and design principles, so I have to stop and learn how to use doing some scripts to test the several packages of this universe. This one bellow is the “simplest case” and a put other cases in my <a href="https://github.com/GiulSposito/myTidymodels">GitHub</a>.</p>
+<p><img src="tidymodel_packages.png" /></p>
+<div id="the-simplest-pipeline" class="section level2">
+<h2>The Simplest Pipeline</h2>
+</div>
+<div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>The simplest steps to make a straightforward ML pipeline using <a href="https://www.tidymodels.org/"><code>{tidyverse}</code></a> packages follows these steps:</p>
+<ol style="list-style-type: decimal">
+<li>use <a href="https://rsample.tidymodels.org/"><code>{rsample}</code></a> to split the dataset between training and testing subsets</li>
+<li>use <a href="https://recipes.tidymodels.org/"><code>{recipes}</code></a> to make some data preprocessing script</li>
+<li>use <a href="https://parsnip.tidymodels.org/"><code>{parsnip}</code></a> to define a <strong>ranger random forest</strong> model</li>
+<li>put the recipe and the model in a <a href="https://workflows.tidymodels.org/"><code>{workflow}</code></a> object</li>
+<li>fit a model using the training subset</li>
+<li>use the fitted model to make a prediction</li>
+<li>use <a href="https://yardstick.tidymodels.org/"><code>{yardstick}</code></a> the check the model performance</li>
+</ol>
+<div id="packages" class="section level3">
+<h3>Packages</h3>
+<pre class="r"><code>library(tidymodels)  
+library(mlbench)    # mlbench is a library with several dataset to perform ML training
+library(skimr)      # to look the dataset
+
+# loading &quot;Boston Housing&quot; dataset
+data(&quot;BostonHousing&quot;)</code></pre>
+</div>
+<div id="dataset-boston-housing-dataset" class="section level3">
+<h3>Dataset: Boston Housing Dataset</h3>
+<p>Housing data contains 506 census tracts of Boston from the 1970 census. The dataframe BostonHousing contains the original data by Harrison and Rubinfeld (1979), the dataframe BostonHousing2 the corrected version with additional spatial information.</p>
+<p>You can include this data by installing mlbench library or download the dataset. The data has following features, medv being the target variable:</p>
+<ul>
+<li>crim - per capita crime rate by town</li>
+<li>zn - proportion of residential land zoned for lots over 25,000 sq.ft</li>
+<li>indus - proportion of non-retail business acres per town</li>
+<li>chas - Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)</li>
+<li>nox - nitric oxides concentration (parts per 10 million)</li>
+<li>rm - average number of rooms per dwelling</li>
+<li>age - proportion of owner-occupied units built prior to 1940</li>
+<li>dis - weighted distances to five Boston employment centers</li>
+<li>rad - index of accessibility to radial highways</li>
+<li>tax - full-value property-tax rate per USD 10,000</li>
+<li>ptratio- pupil-teacher ratio by town</li>
+<li>b 1000(B - 0.63)^2, where B is the proportion of blacks by town</li>
+<li>lstat - percentage of lower status of the population</li>
+<li>medv - median value of owner-occupied homes in USD 1000’s</li>
+</ul>
+<pre class="r"><code>BostonHousing %&gt;% 
+  skim()</code></pre>
+<table>
+<caption><span id="tab:dataoverview">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">Piped data</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">506</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">14</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">factor</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">13</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">ordered</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">chas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">0: 471, 1: 35</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">crim</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3.61</td>
+<td align="right">8.60</td>
+<td align="right">0.01</td>
+<td align="right">0.08</td>
+<td align="right">0.26</td>
+<td align="right">3.68</td>
+<td align="right">88.98</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">zn</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">11.36</td>
+<td align="right">23.32</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">12.50</td>
+<td align="right">100.00</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">indus</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">11.14</td>
+<td align="right">6.86</td>
+<td align="right">0.46</td>
+<td align="right">5.19</td>
+<td align="right">9.69</td>
+<td align="right">18.10</td>
+<td align="right">27.74</td>
+<td align="left">▇▆▁▇▁</td>
+</tr>
+<tr class="even">
+<td align="left">nox</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.55</td>
+<td align="right">0.12</td>
+<td align="right">0.38</td>
+<td align="right">0.45</td>
+<td align="right">0.54</td>
+<td align="right">0.62</td>
+<td align="right">0.87</td>
+<td align="left">▇▇▆▅▁</td>
+</tr>
+<tr class="odd">
+<td align="left">rm</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">6.28</td>
+<td align="right">0.70</td>
+<td align="right">3.56</td>
+<td align="right">5.89</td>
+<td align="right">6.21</td>
+<td align="right">6.62</td>
+<td align="right">8.78</td>
+<td align="left">▁▂▇▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">age</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">68.57</td>
+<td align="right">28.15</td>
+<td align="right">2.90</td>
+<td align="right">45.02</td>
+<td align="right">77.50</td>
+<td align="right">94.07</td>
+<td align="right">100.00</td>
+<td align="left">▂▂▂▃▇</td>
+</tr>
+<tr class="odd">
+<td align="left">dis</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3.80</td>
+<td align="right">2.11</td>
+<td align="right">1.13</td>
+<td align="right">2.10</td>
+<td align="right">3.21</td>
+<td align="right">5.19</td>
+<td align="right">12.13</td>
+<td align="left">▇▅▂▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">rad</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">9.55</td>
+<td align="right">8.71</td>
+<td align="right">1.00</td>
+<td align="right">4.00</td>
+<td align="right">5.00</td>
+<td align="right">24.00</td>
+<td align="right">24.00</td>
+<td align="left">▇▂▁▁▃</td>
+</tr>
+<tr class="odd">
+<td align="left">tax</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">408.24</td>
+<td align="right">168.54</td>
+<td align="right">187.00</td>
+<td align="right">279.00</td>
+<td align="right">330.00</td>
+<td align="right">666.00</td>
+<td align="right">711.00</td>
+<td align="left">▇▇▃▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">ptratio</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">18.46</td>
+<td align="right">2.16</td>
+<td align="right">12.60</td>
+<td align="right">17.40</td>
+<td align="right">19.05</td>
+<td align="right">20.20</td>
+<td align="right">22.00</td>
+<td align="left">▁▃▅▅▇</td>
+</tr>
+<tr class="odd">
+<td align="left">b</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">356.67</td>
+<td align="right">91.29</td>
+<td align="right">0.32</td>
+<td align="right">375.38</td>
+<td align="right">391.44</td>
+<td align="right">396.22</td>
+<td align="right">396.90</td>
+<td align="left">▁▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">lstat</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">12.65</td>
+<td align="right">7.14</td>
+<td align="right">1.73</td>
+<td align="right">6.95</td>
+<td align="right">11.36</td>
+<td align="right">16.96</td>
+<td align="right">37.97</td>
+<td align="left">▇▇▅▂▁</td>
+</tr>
+<tr class="odd">
+<td align="left">medv</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">22.53</td>
+<td align="right">9.20</td>
+<td align="right">5.00</td>
+<td align="right">17.02</td>
+<td align="right">21.20</td>
+<td align="right">25.00</td>
+<td align="right">50.00</td>
+<td align="left">▂▇▅▁▁</td>
+</tr>
+</tbody>
+</table>
+<p>We’ll try to predict <strong>medv</strong> (median value of owner-occupied homes).</p>
+</div>
+<div id="step-1-training-testing-datasets" class="section level3">
+<h3>Step 1: Training &amp; Testing Datasets</h3>
+<pre class="r"><code>boston_split &lt;- initial_split(BostonHousing)
+boston_split</code></pre>
+<pre><code>## &lt;Analysis/Assess/Total&gt;
+## &lt;380/126/506&gt;</code></pre>
+</div>
+<div id="step-2-data-preprocessing" class="section level3">
+<h3>Step 2: Data Preprocessing</h3>
+<pre class="r"><code>recp &lt;- BostonHousing %&gt;% 
+  recipe(medv~.) %&gt;%                               # formula goes here
+  step_nzv(all_predictors(), -all_nominal()) %&gt;%   # remove near zero var
+  step_center(all_predictors(),-all_nominal()) %&gt;% # center 
+  step_scale(all_predictors(),-all_nominal()) %&gt;%  # scale
+  step_BoxCox(all_predictors(), -all_nominal())    # box cox normalization
+recp</code></pre>
+<pre><code>## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         13
+## 
+## Operations:
+## 
+## Sparse, unbalanced variable filter on all_predictors(), -all_nominal()
+## Centering for all_predictors(), -all_nominal()
+## Scaling for all_predictors(), -all_nominal()
+## Box-Cox transformation on all_predictors(), -all_nominal()</code></pre>
+</div>
+<div id="step-3-model-specification" class="section level3">
+<h3>Step 3: Model Specification</h3>
+<pre class="r"><code>model_eng &lt;- rand_forest(mode=&quot;regression&quot;) %&gt;% 
+  set_engine(&quot;ranger&quot;)
+model_eng</code></pre>
+<pre><code>## Random Forest Model Specification (regression)
+## 
+## Computational engine: ranger</code></pre>
+</div>
+<div id="step-4-put-all-together-in-a-workflow" class="section level3">
+<h3>Step 4: Put all together in a Workflow</h3>
+<pre class="r"><code>wf &lt;- workflow() %&gt;% 
+  add_recipe(recp) %&gt;%  # preprocessing specification (with formula)
+  add_model(model_eng)  # model specification
+wf</code></pre>
+<pre><code>## == Workflow ====================================================================
+## Preprocessor: Recipe
+## Model: rand_forest()
+## 
+## -- Preprocessor ----------------------------------------------------------------
+## 4 Recipe Steps
+## 
+## * step_nzv()
+## * step_center()
+## * step_scale()
+## * step_BoxCox()
+## 
+## -- Model -----------------------------------------------------------------------
+## Random Forest Model Specification (regression)
+## 
+## Computational engine: ranger</code></pre>
+</div>
+<div id="step-5-training-the-model" class="section level3">
+<h3>Step 5: Training the model</h3>
+<pre class="r"><code># the  do all by itself
+# calculates the data preprocessing (recipe)
+# apply to the training set
+# fit the model using it
+model_fit &lt;- fit(wf, training(boston_split)) 
+model_fit</code></pre>
+<pre><code>## == Workflow [trained] ==========================================================
+## Preprocessor: Recipe
+## Model: rand_forest()
+## 
+## -- Preprocessor ----------------------------------------------------------------
+## 4 Recipe Steps
+## 
+## * step_nzv()
+## * step_center()
+## * step_scale()
+## * step_BoxCox()
+## 
+## -- Model -----------------------------------------------------------------------
+## Ranger result
+## 
+## Call:
+##  ranger::ranger(x = maybe_data_frame(x), y = y, num.threads = 1,      verbose = FALSE, seed = sample.int(10^5, 1)) 
+## 
+## Type:                             Regression 
+## Number of trees:                  500 
+## Sample size:                      380 
+## Number of independent variables:  13 
+## Mtry:                             3 
+## Target node size:                 5 
+## Variable importance mode:         none 
+## Splitrule:                        variance 
+## OOB prediction error (MSE):       11.94244 
+## R squared (OOB):                  0.8714785</code></pre>
+</div>
+<div id="step-6-make-some-predictions" class="section level3">
+<h3>Step 6: Make some predictions</h3>
+<pre class="r"><code># the prediction applied on the fitted  automatically
+# apply the trained transformation on the new dataset
+# and predict the output using the trained model
+y_hat &lt;- predict(model_fit, testing(boston_split))
+head(y_hat)</code></pre>
+<pre><code>## # A tibble: 6 x 1
+##   .pred
+##   &lt;dbl&gt;
+## 1  29.4
+## 2  34.9
+## 3  20.0
+## 4  21.2
+## 5  20.5
+## 6  19.5</code></pre>
+</div>
+<div id="step-7-evaluate-the-model-performance" class="section level3">
+<h3>Step 7: Evaluate the model performance</h3>
+<pre class="r"><code>y_hat %&gt;% 
+  bind_cols(testing(boston_split)) %&gt;% # binds the &quot;true value&quot;
+  metrics(truth=medv, estimate=.pred)  # get the estimation metrics (automatically)</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard       2.75 
+## 2 rsq     standard       0.873
+## 3 mae     standard       1.97</code></pre>
+</div>
+</div>
+<div id="other-cases" class="section level2">
+<h2>Other Cases</h2>
+<p>I create a <a href="https://github.com/GiulSposito/myTidymodels">GitHub</a> with with others notebooks that I did to learn to use the Tidymodels package and to serve as a reference guide to myself:</p>
+<ul>
+<li><a href="https://github.com/GiulSposito/myTidymodels/blob/main/Rmd/simplest_wf.md">Simplest Tidymodel WF</a>: straightforward ML with tidymodels</li>
+<li><a href="https://github.com/GiulSposito/myTidymodels/blob/main/Rmd/tidymodels_regression_walkthrough.md">Regression Pipeline Building Blocks</a>: understanding the building blocks of tidymodel ML pipeline</li>
+<li><a href="https://github.com/GiulSposito/myTidymodels/blob/main/Rmd/tidymodels_classification_walkthrough.md">Classification Pipeline Building Blocks</a>: understanding the use of worklfow.</li>
+<li><a href="https://github.com/GiulSposito/myTidymodels/blob/main/Rmd/tidymodels_tunning_hyperparameters.md">Hyper Parameter Tunning</a>: understanding Cross Validation and Hyperparameter Tuning.</li>
+</ul>
+</div>
+<div id="full-code" class="section level2">
+<h2>Full Code</h2>
+<pre class="r"><code>library(tidymodels)  
+library(mlbench)    # mlbench is a library with several dataset to perform ML training
+library(skimr)      # to look the dataset
+
+# loading &quot;Boston Housing&quot; dataset
+data(&quot;BostonHousing&quot;)
+
+# data overview
+BostonHousing %&gt;% 
+  skim()
+
+# split 
+boston_split &lt;- initial_split(BostonHousing)
+
+# recipe: preprocessing script
+recp &lt;- BostonHousing %&gt;% 
+  recipe(medv~.) %&gt;%                               # formula goes here
+  step_nzv(all_predictors(), -all_nominal()) %&gt;%   # remove near zero var
+  step_center(all_predictors(),-all_nominal()) %&gt;% # center 
+  step_scale(all_predictors(),-all_nominal()) %&gt;%  # scale
+  step_BoxCox(all_predictors(), -all_nominal())    # box cox normalization
+
+# Model Specification
+
+model_eng &lt;- rand_forest(mode=&quot;regression&quot;) %&gt;% 
+  set_engine(&quot;ranger&quot;)
+
+# Workflow
+
+wf &lt;- workflow() %&gt;% 
+  add_recipe(recp) %&gt;%  # preprocessing specification (with formula)
+  add_model(model_eng)  # model specification
+
+# Training the model with workflow
+# the  do all by itself  calculates the data preprocessing (recipe)
+# apply to the training set fit the model using it
+model_fit &lt;- fit(wf, training(boston_split)) 
+
+# Predict
+y_hat &lt;- predict(model_fit, testing(boston_split))
+head(y_hat)
+
+# Evaluate
+y_hat %&gt;% 
+  bind_cols(testing(boston_split)) %&gt;% # binds the &quot;true value&quot;
+  metrics(truth=medv, estimate=.pred)  # get the estimation metrics (automatically)</code></pre>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/data-science/">data science</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/machine-learning/">machine learning</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/rstats/">rstats</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/en-us/">en-US</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/tidymodels/">tidymodels</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2021/03/chilling-effect-resulting-from-mass-surveillance.en-us/" data-tooltip="Chilling Effect Resulting from Mass Surveillance">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2021/06/my-tidymodels-exercises/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2021/06/my-tidymodels-exercises/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2021/06/my-tidymodels-exercises/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2021 Giuliano Sposito. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2021/03/chilling-effect-resulting-from-mass-surveillance.en-us/" data-tooltip="Chilling Effect Resulting from Mass Surveillance">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2021/06/my-tidymodels-exercises/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2021/06/my-tidymodels-exercises/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2021/06/my-tidymodels-exercises/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2021%2F06%2Fmy-tidymodels-exercises%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2021%2F06%2Fmy-tidymodels-exercises%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2021%2F06%2Fmy-tidymodels-exercises%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2adfb1930aa9591ea756b0d94ca3603b?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Giuliano Sposito</h4>
+    
+      <div id="about-card-bio">Computer Engineer<!-- raw HTML omitted -->Masters in Tech Innovation Mgt<!-- raw HTML omitted -->Specialized in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Senior Manager<!-- raw HTML omitted --><a href="http://www.ciandt.com">CI&amp;T</a>
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Brazil
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('/images/new_cover_emboss.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2021\/06\/my-tidymodels-exercises\/';
+          
+            this.page.identifier = '\/2021\/06\/my-tidymodels-exercises\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yet-another-iteration';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    <script src="//yihui.org/js/math-code.js"></script>
+<script async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+    
+  </body>
+</html>
+

@@ -3,12 +3,62 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/tags/bit-by-bit/</loc>
-    <lastmod>2021-03-19T00:00:00+00:00</lastmod>
+    <loc>/categories/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>/tags/data-science/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/data-science/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/en-us/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/machine-learning/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2021/06/my-tidymodels-exercises/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/rstats/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tidymodels/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/bit-by-bit/</loc>
     <lastmod>2021-03-19T00:00:00+00:00</lastmod>
   </url>
   
@@ -23,32 +73,7 @@
   </url>
   
   <url>
-    <loc>/categories/data-science/</loc>
-    <lastmod>2021-03-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/en-us/</loc>
-    <lastmod>2021-03-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/model/</loc>
-    <lastmod>2021-03-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2021-03-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2021-03-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
     <lastmod>2021-03-19T00:00:00+00:00</lastmod>
   </url>
   
@@ -69,11 +94,6 @@
   
   <url>
     <loc>/tags/data-handling/</loc>
-    <lastmod>2020-12-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/rstats/</loc>
     <lastmod>2020-12-19T00:00:00+00:00</lastmod>
   </url>
   
@@ -99,11 +119,6 @@
   
   <url>
     <loc>/2020/12/advent-of-code-2020-part_02/</loc>
-    <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/data-science/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url>
   
@@ -279,11 +294,6 @@
   
   <url>
     <loc>/tags/keras/</loc>
-    <lastmod>2019-01-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/machine-learning/</loc>
     <lastmod>2019-01-25T00:00:00+00:00</lastmod>
   </url>
   
